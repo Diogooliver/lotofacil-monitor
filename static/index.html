@@ -1,351 +1,637 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lotofácil Monitor V2</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5b2df5">
+  <title>🍀 Lotofácil Monitor V5</title>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    color: #222;
-}
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f8;
+      color: #171717;
+    }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 18px;
-}
+    .wrap {
+      max-width: 900px;
+      margin: auto;
+      padding: 18px;
+    }
 
-header {
-    background: #6b2cff;
-    color: white;
-    padding: 22px;
-    border-radius: 18px;
-    margin-bottom: 18px;
-}
+    header {
+      background: linear-gradient(135deg, #5b2df5, #7c3aed);
+      color: #fff;
+      border-radius: 28px;
+      padding: 28px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px #0001;
+    }
 
-header h1 {
-    margin: 0 0 6px;
-    font-size: 25px;
-}
+    h1 {
+      font-size: 30px;
+      margin: 0 0 8px;
+    }
 
-header p {
-    margin: 0;
-    opacity: .9;
-}
+    h2 {
+      margin: 0 0 16px;
+      font-size: 25px;
+    }
 
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.08);
-}
+    h3 {
+      margin-top: 18px;
+    }
 
-h2 {
-    margin-top: 0;
-    font-size: 20px;
-}
+    .sub {
+      font-size: 17px;
+      opacity: .95;
+    }
 
-.info {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 22px;
+      margin: 18px 0;
+      box-shadow: 0 5px 22px #0000000b;
+    }
 
-.box {
-    background: #f0f1f5;
-    border-radius: 12px;
-    padding: 12px;
-}
+    .muted {
+      color: #666;
+    }
 
-.box strong {
-    display: block;
-    font-size: 20px;
-    margin-top: 4px;
-}
+    .small {
+      font-size: 14px;
+    }
 
-.numbers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 12px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-.number {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #6b2cff;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
+    .metric {
+      background: #f4f4f7;
+      border-radius: 16px;
+      padding: 15px;
+    }
 
-button {
-    border: 0;
-    background: #6b2cff;
-    color: white;
-    padding: 13px 18px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-}
+    .metric b {
+      display: block;
+      font-size: 25px;
+      margin-top: 5px;
+    }
 
-button:active {
-    transform: scale(.98);
-}
+    button {
+      border: 0;
+      background: #5b2df5;
+      color: white;
+      font-weight: 800;
+      font-size: 17px;
+      border-radius: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+    }
 
-.status {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #666;
-}
+    button:disabled {
+      opacity: .6;
+    }
 
-.resultado {
-    margin-top: 12px;
-    padding: 12px;
-    background: #f5f5f7;
-    border-radius: 10px;
-}
+    .balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
 
-@media(max-width:600px) {
-    .info {
+    .ball {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      background: #5b2df5;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .list {
+      margin: 8px 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding: 9px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .game {
+      border: 1px solid #e8e8ee;
+      border-radius: 18px;
+      padding: 15px;
+      margin-top: 12px;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 14px;
+      background: #f1f1f5;
+      margin-top: 12px;
+    }
+
+    .ok {
+      color: #197a38;
+    }
+
+    .warn {
+      color: #9a5b00;
+    }
+
+    @media (max-width: 620px) {
+      .grid,
+      .two {
         grid-template-columns: 1fr;
-    }
+      }
 
-    .container {
+      .wrap {
         padding: 12px;
+      }
+
+      header {
+        padding: 23px 18px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
     }
-}
-</style>
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="wrap">
 
-<header>
-    <h1>🍀 Lotofácil Monitor V2</h1>
-    <p>Monitoramento e análise estatística dos concursos</p>
-</header>
+  <header>
+    <h1>🍀 Lotofácil Monitor V5</h1>
+    <div class="sub">
+      Monitoramento, estatísticas e backtests históricos
+    </div>
+  </header>
 
-<div class="card">
+  <section class="card">
     <h2>🎯 Último concurso</h2>
+    <div id="latest">Carregando...</div>
+  </section>
 
-    <div class="info">
-        <div class="box">
-            Concurso
-            <strong id="concurso">--</strong>
-        </div>
+  <section class="card">
+    <h2>📊 Análise estatística</h2>
 
-        <div class="box">
-            Data
-            <strong id="data">--</strong>
-        </div>
+    <div class="grid" id="metrics">
+      <div class="metric">
+        Concursos analisados
+        <b>—</b>
+      </div>
+
+      <div class="metric">
+        Pares / ímpares
+        <b>—</b>
+      </div>
     </div>
 
-    <div id="dezenas" class="numbers"></div>
+    <div class="two" style="margin-top:16px">
 
-    <div class="status" id="status">
-        Carregando...
+      <div>
+        <h3>🔥 Mais frequentes</h3>
+        <ul class="list" id="hot"></ul>
+      </div>
+
+      <div>
+        <h3>❄️ Menos frequentes</h3>
+        <ul class="list" id="cold"></ul>
+      </div>
+
     </div>
-</div>
 
-<div class="card">
-    <h2>📊 Análise</h2>
+    <div>
+      <h3>⏳ Mais atrasados</h3>
+      <ul class="list" id="late"></ul>
+    </div>
 
-    <button onclick="executarBacktest()">
-        Executar Backtest
+    <h3>📍 Média por faixa</h3>
+    <ul class="list" id="ranges"></ul>
+
+  </section>
+
+  <section class="card">
+
+    <h2>🧪 Backtest</h2>
+
+    <button id="backtestBtn">
+      Executar Backtest
     </button>
 
-    <div id="backtest" class="resultado">
-        Nenhuma análise executada.
+    <div id="backtest" class="status">
+      Aguardando execução...
     </div>
-</div>
 
-<div class="card">
+  </section>
+
+  <section class="card">
+
+    <h2>🎲 Candidatos para teste</h2>
+
+    <button id="gamesBtn">
+      Gerar candidatos e testar
+    </button>
+
+    <div id="games"></div>
+
+  </section>
+
+  <section class="card">
+
     <h2>📜 Últimos concursos</h2>
 
-    <div id="historico">
-        Carregando histórico...
+    <div id="history">
+      Carregando...
     </div>
-</div>
+
+  </section>
+
+  <section class="card small muted">
+
+    As análises são históricas e estatísticas.
+    Frequência, atraso, tendência e conjuntos candidatos
+    não garantem nem preveem o resultado de um concurso.
+
+  </section>
 
 </div>
 
 <script>
 
-async function carregarUltimo() {
+const $ = id => document.getElementById(id);
 
-    try {
+const esc = s =>
+  String(s).replace(
+    /[&<>"']/g,
+    c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c])
+  );
 
-        const resposta = await fetch(
-            "/api/lotofacil/latest"
-        );
+const balls = nums => `
+  <div class="balls">
+    ${nums.map(
+      n => `<span class="ball">${esc(n)}</span>`
+    ).join('')}
+  </div>
+`;
 
-        if (!resposta.ok) {
-            throw new Error("Erro na API");
-        }
+async function getJson(url) {
 
-        const dados = await resposta.json();
+  const r = await fetch(
+    url,
+    { cache: 'no-store' }
+  );
 
-        document.getElementById("concurso").textContent =
-            dados.concurso ?? "--";
+  const j = await r.json();
 
-        document.getElementById("data").textContent =
-            dados.data ?? "--";
+  if (j.ok === false) {
+    throw new Error(
+      j.erro || 'Erro'
+    );
+  }
 
-        const area = document.getElementById("dezenas");
-
-        area.innerHTML = "";
-
-        (dados.dezenas || []).forEach(numero => {
-
-            const bola = document.createElement("div");
-
-            bola.className = "number";
-
-            bola.textContent = numero;
-
-            area.appendChild(bola);
-
-        });
-
-        document.getElementById("status").textContent =
-            "✅ Dados atualizados com sucesso.";
-
-    } catch (erro) {
-
-        document.getElementById("status").textContent =
-            "❌ Não foi possível carregar os dados.";
-
-        console.error(erro);
-    }
+  return j;
 }
 
 
-async function carregarHistorico() {
+async function load() {
 
-    try {
+  try {
 
-        const resposta = await fetch(
-            "/api/lotofacil/history?limit=10"
-        );
+    const [
+      latest,
+      analysis,
+      history
+    ] = await Promise.all([
 
-        const dados = await resposta.json();
+      getJson(
+        '/api/lotofacil/latest'
+      ),
 
-        const area =
-            document.getElementById("historico");
+      getJson(
+        '/api/lotofacil/analysis?limit=100&recent=20'
+      ),
 
-        area.innerHTML = "";
+      getJson(
+        '/api/lotofacil/history?limit=10'
+      )
 
-        (dados.concursos || []).forEach(concurso => {
+    ]);
 
-            const item =
-                document.createElement("div");
 
-            item.className = "resultado";
+    $('latest').innerHTML = `
 
-            item.innerHTML = `
-                <strong>Concurso ${concurso.concurso}</strong>
-                — ${concurso.data}
-                <br>
-                ${concurso.dezenas.join(" - ")}
-            `;
+      <div class="grid">
 
-            area.appendChild(item);
+        <div class="metric">
+          Concurso
+          <b>${latest.concurso}</b>
+        </div>
 
-        });
+        <div class="metric">
+          Data
+          <b>${esc(latest.data)}</b>
+        </div>
 
-    } catch (erro) {
+      </div>
 
-        document.getElementById("historico").textContent =
-            "Erro ao carregar histórico.";
+      ${balls(latest.dezenas)}
 
-        console.error(erro);
-    }
+      <div class="status ok">
+        ✅ Dados atualizados com sucesso.
+      </div>
+
+    `;
+
+
+    $('metrics').innerHTML = `
+
+      <div class="metric">
+        Concursos analisados
+        <b>${analysis.amostra}</b>
+      </div>
+
+      <div class="metric">
+        Pares médios
+        <b>
+          ${analysis.paresMedia}
+          /
+          ${analysis.imparesMedia}
+        </b>
+      </div>
+
+    `;
+
+
+    $('hot').innerHTML =
+      analysis.quentes.map(
+        x =>
+          `<li>
+            <b>${x.numero}</b>
+            — ${x.ocorrencias} vezes
+          </li>`
+      ).join('');
+
+
+    $('cold').innerHTML =
+      analysis.frios.map(
+        x =>
+          `<li>
+            <b>${x.numero}</b>
+            — ${x.ocorrencias} vezes
+          </li>`
+      ).join('');
+
+
+    $('late').innerHTML =
+      analysis.atrasados.map(
+        x =>
+          `<li>
+            <b>${x.numero}</b>
+            — ${x.concursosSemSair} concurso(s)
+          </li>`
+      ).join('');
+
+
+    $('ranges').innerHTML =
+      Object.entries(
+        analysis.faixasMedia
+      ).map(
+        ([k, v]) =>
+          `<li>
+            <b>${k}</b>
+            — média ${v}
+          </li>`
+      ).join('');
+
+
+    $('history').innerHTML =
+      history.concursos.map(
+        d => `
+
+          <div class="status">
+
+            <b>
+              Concurso ${d.concurso}
+            </b>
+
+            —
+            ${esc(d.data)}
+
+            ${balls(d.dezenas)}
+
+          </div>
+
+        `
+      ).join('');
+
+
+  } catch (e) {
+
+    $('latest').innerHTML = `
+      <div class="status warn">
+        ❌ ${esc(e.message)}
+      </div>
+    `;
+
+  }
+
 }
 
 
-async function executarBacktest() {
+$('backtestBtn').onclick =
+  async () => {
 
-    const area =
-        document.getElementById("backtest");
+    const b = $('backtestBtn');
 
-    area.innerHTML =
-        "⏳ Executando análise histórica...";
+    b.disabled = true;
+    b.textContent = 'Analisando...';
+
+    $('backtest').textContent =
+      'Executando backtest...';
 
     try {
 
-        const resposta = await fetch(
-            "/api/lotofacil/backtest?limit=100&window=20"
+      const j =
+        await getJson(
+          '/api/lotofacil/backtest?limit=100&window=20'
         );
 
-        const dados = await resposta.json();
 
-        let html = `
-            <strong>📈 Backtest</strong>
-            <br><br>
-            Amostra: ${dados.amostra} concursos
-            <br>
-            Janela: ${dados.janela} concursos
-            <br><br>
+      $('backtest').innerHTML =
+        j.resultados.map(
+          x => `
+
+            <div class="status">
+
+              <b>
+                ${esc(x.estrategia)}
+              </b>
+
+              <br>
+
+              Média:
+              <b>${x.mediaAcertos}</b>
+              acertos
+
+              <br>
+
+              Mínimo:
+              ${x.minAcertos}
+
+              ·
+
+              Máximo:
+              ${x.maxAcertos}
+
+              <br>
+
+              Testes:
+              ${x.testes}
+
+            </div>
+
+          `
+        ).join('') +
+
+        `
+
+          <p class="small muted">
+            ${esc(j.observacao)}
+          </p>
+
         `;
 
-        dados.resultados.forEach(resultado => {
 
-            html += `
-                <div style="margin-bottom:15px">
-                    <strong>
-                        Estratégia: ${resultado.estrategia}
-                    </strong>
-                    <br>
-                    Média de acertos:
-                    ${resultado.mediaAcertos ?? "--"}
-                    <br>
-                    Mínimo:
-                    ${resultado.minAcertos ?? "--"}
-                    <br>
-                    Máximo:
-                    ${resultado.maxAcertos ?? "--"}
-                </div>
-            `;
+    } catch (e) {
 
-        });
+      $('backtest').textContent =
+        '❌ ' + e.message;
 
-        html += `
-            <small>
-            ℹ️ A análise é histórica e não representa
-            garantia ou previsão do próximo concurso.
-            </small>
+    }
+
+    b.disabled = false;
+
+    b.textContent =
+      'Executar Backtest';
+
+  };
+
+
+$('gamesBtn').onclick =
+  async () => {
+
+    const b = $('gamesBtn');
+
+    b.disabled = true;
+
+    b.textContent =
+      'Gerando...';
+
+    $('games').textContent =
+      'Gerando e testando candidatos...';
+
+    try {
+
+      const j =
+        await getJson(
+          '/api/lotofacil/candidates?games=5&recent=20&backtest=100'
+        );
+
+
+      $('games').innerHTML =
+        j.jogos.map(
+          g => `
+
+            <div class="game">
+
+              <b>
+                Candidato ${g.id}
+              </b>
+
+              · score médio
+              ${g.pontuacaoMedia}
+
+              ${balls(g.dezenas)}
+
+              <div
+                class="small"
+                style="margin-top:10px"
+              >
+
+                Backtest:
+
+                média
+                ${g.backtest.mediaAcertos}
+
+                · mínimo
+                ${g.backtest.minAcertos}
+
+                · máximo
+                ${g.backtest.maxAcertos}
+
+              </div>
+
+            </div>
+
+          `
+        ).join('') +
+
+        `
+
+          <p class="small muted">
+            ${esc(j.observacao)}
+          </p>
+
         `;
 
-        area.innerHTML = html;
 
-    } catch (erro) {
+    } catch (e) {
 
-        area.innerHTML =
-            "❌ Erro ao executar o backtest.";
+      $('games').textContent =
+        '❌ ' + e.message;
 
-        console.error(erro);
     }
-}
+
+    b.disabled = false;
+
+    b.textContent =
+      'Gerar candidatos e testar';
+
+  };
 
 
-// Inicialização
-carregarUltimo();
-carregarHistorico();
+load();
 
 </script>
 
