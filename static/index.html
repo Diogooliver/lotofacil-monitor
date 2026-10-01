@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#5b2df5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Lotofácil V7">
-  <title>🍀 Lotofácil Monitor V7</title>
+  <meta name="apple-mobile-web-app-title" content="Lotofácil V8">
+  <title>🍀 Lotofácil Monitor V8</title>
 
   <style>
     * {
@@ -149,7 +149,7 @@
     }
 
     .status {
-      padding: 12px;
+      padding: 14px;
       border-radius: 14px;
       background: #f1f1f5;
       margin-top: 12px;
@@ -202,6 +202,47 @@
       border-left: 5px solid #9a5b00;
     }
 
+    .fold {
+      border: 1px solid #e2e2e8;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 12px;
+      background: #fafafd;
+    }
+
+    .fold h3 {
+      margin-top: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+    }
+
+    th,
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e5e5e8;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      font-weight: 800;
+    }
+
+    .big-number {
+      font-size: 30px;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
     .number-line {
       font-size: 16px;
       line-height: 1.8;
@@ -238,20 +279,22 @@
 <div class="wrap">
 
   <header>
-    <h1>🍀 Lotofácil Monitor V7</h1>
+    <h1>🍀 Lotofácil Monitor V8</h1>
 
     <div class="sub">
-      Monitoramento, estatísticas, backtests e validação fora da amostra
+      Monitoramento, estatísticas, backtests e validação Walk-Forward
     </div>
 
     <div class="install-box">
-      📱 <b>Versão V7</b><br>
-      Nova validação comparando estratégias com jogos aleatórios.
+      📱 <b>Versão V8</b><br>
+      Validação em múltiplos períodos históricos.
     </div>
   </header>
 
 
-  <!-- ÚLTIMO CONCURSO -->
+  <!-- =====================================================
+       ÚLTIMO CONCURSO
+  ====================================================== -->
 
   <section class="card highlight">
 
@@ -264,7 +307,6 @@
     <button
       class="refresh"
       id="refreshBtn"
-      style="margin-top:14px"
     >
       🔄 Atualizar dados
     </button>
@@ -272,7 +314,9 @@
   </section>
 
 
-  <!-- ANÁLISE -->
+  <!-- =====================================================
+       ANÁLISE
+  ====================================================== -->
 
   <section class="card">
 
@@ -292,7 +336,6 @@
 
     </div>
 
-
     <div class="two" style="margin-top:16px">
 
       <div>
@@ -304,7 +347,6 @@
         </ul>
 
       </div>
-
 
       <div>
 
@@ -318,7 +360,6 @@
 
     </div>
 
-
     <div>
 
       <h3>⏳ Mais atrasados</h3>
@@ -329,7 +370,6 @@
 
     </div>
 
-
     <h3>📍 Média por faixa</h3>
 
     <ul class="list" id="ranges">
@@ -339,7 +379,9 @@
   </section>
 
 
-  <!-- BACKTEST ORIGINAL -->
+  <!-- =====================================================
+       BACKTEST ORIGINAL
+  ====================================================== -->
 
   <section class="card">
 
@@ -360,24 +402,21 @@
   </section>
 
 
-  <!-- NOVA VALIDAÇÃO -->
+  <!-- =====================================================
+       V7
+  ====================================================== -->
 
   <section class="card highlight">
 
     <h2>🔬 Validação V7</h2>
 
     <p>
-      Esta seção separa o histórico em duas partes:
+      Separação simples entre treino e teste.
     </p>
 
-    <ul>
-      <li><b>Treino:</b> concursos mais antigos.</li>
-      <li><b>Teste:</b> concursos mais recentes.</li>
-    </ul>
-
     <p class="small muted">
-      As estratégias são montadas usando apenas a parte de treino
-      e avaliadas nos concursos reservados para teste.
+      Esta seção continua disponível para comparação com a nova
+      metodologia Walk-Forward.
     </p>
 
     <button id="validationBtn">
@@ -391,7 +430,53 @@
   </section>
 
 
-  <!-- CANDIDATOS -->
+  <!-- =====================================================
+       V8 WALK-FORWARD
+  ====================================================== -->
+
+  <section class="card highlight">
+
+    <h2>🧠 Validação V8 — Walk-Forward</h2>
+
+    <p>
+      O algoritmo é treinado em um período histórico e
+      testado imediatamente nos concursos seguintes.
+    </p>
+
+    <div class="status">
+
+      <b>Como funciona:</b>
+
+      <br><br>
+
+      1️⃣ Usa concursos antigos para montar a estratégia.<br>
+      2️⃣ Testa nos concursos seguintes que ainda não foram usados.<br>
+      3️⃣ Avança no tempo.<br>
+      4️⃣ Repete o processo em vários períodos.<br>
+      5️⃣ Compara com jogos aleatórios.
+
+    </div>
+
+    <p class="small muted">
+      O objetivo é verificar se algum comportamento permanece
+      consistente em diferentes períodos, e não apenas em uma
+      única janela histórica.
+    </p>
+
+    <button id="walkBtn">
+      🧠 Executar Walk-Forward V8
+    </button>
+
+    <div id="walkforward" class="status">
+      Aguardando execução...
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CANDIDATOS
+  ====================================================== -->
 
   <section class="card">
 
@@ -411,7 +496,9 @@
   </section>
 
 
-  <!-- HISTÓRICO -->
+  <!-- =====================================================
+       HISTÓRICO
+  ====================================================== -->
 
   <section class="card">
 
@@ -424,7 +511,9 @@
   </section>
 
 
-  <!-- AVISO -->
+  <!-- =====================================================
+       SOBRE
+  ====================================================== -->
 
   <section class="card small muted">
 
@@ -441,12 +530,21 @@
       um concurso futuro.
     </p>
 
+    <p>
+      A validação Walk-Forward serve para medir o comportamento
+      histórico das estratégias em períodos diferentes.
+    </p>
+
   </section>
 
 </div>
 
 
 <script>
+
+/* =========================================================
+   FUNÇÕES BÁSICAS
+========================================================= */
 
 const $ = id =>
   document.getElementById(id);
@@ -484,11 +582,6 @@ const balls = nums => {
 };
 
 
-/* =========================================================
-   UTILITÁRIOS
-========================================================= */
-
-
 async function getJson(url) {
 
   const r = await fetch(
@@ -499,18 +592,24 @@ async function getJson(url) {
   );
 
   if (!r.ok) {
+
     throw new Error(
       'Servidor respondeu com erro HTTP ' +
       r.status
     );
+
   }
 
-  const j = await r.json();
+  const j =
+    await r.json();
 
   if (j.ok === false) {
+
     throw new Error(
-      j.erro || 'Erro retornado pela API'
+      j.erro ||
+      'Erro retornado pela API'
     );
+
   }
 
   return j;
@@ -536,21 +635,36 @@ function clearLoading(element) {
 
 
 /* =========================================================
-   NORMALIZAÇÃO DOS CONCURSOS
+   NORMALIZAÇÃO
 ========================================================= */
-
 
 function normalizeDraw(d) {
 
   return {
-    concurso: Number(d.concurso),
-    data: d.data,
-    dezenas: Array.isArray(d.dezenas)
-      ? d.dezenas
-          .map(Number)
-          .filter(n => n >= 1 && n <= 25)
-          .sort((a, b) => a - b)
-      : []
+
+    concurso:
+      Number(d.concurso),
+
+    data:
+      d.data,
+
+    dezenas:
+      Array.isArray(d.dezenas)
+
+        ? d.dezenas
+            .map(Number)
+            .filter(
+              n =>
+                n >= 1 &&
+                n <= 25
+            )
+            .sort(
+              (a, b) =>
+                a - b
+            )
+
+        : []
+
   };
 
 }
@@ -559,27 +673,39 @@ function normalizeDraw(d) {
 function sortDraws(draws) {
 
   return draws
+
     .map(normalizeDraw)
-    .filter(d => d.dezenas.length === 15)
+
+    .filter(
+      d =>
+        d.dezenas.length === 15
+    )
+
     .sort(
       (a, b) =>
-        a.concurso - b.concurso
+        a.concurso -
+        b.concurso
     );
 
 }
 
 
 /* =========================================================
-   CONTAGEM DE FREQUÊNCIA
+   FREQUÊNCIA
 ========================================================= */
-
 
 function frequency(draws) {
 
   const count = {};
 
-  for (let n = 1; n <= 25; n++) {
+  for (
+    let n = 1;
+    n <= 25;
+    n++
+  ) {
+
     count[n] = 0;
+
   }
 
   draws.forEach(d => {
@@ -598,9 +724,8 @@ function frequency(draws) {
 
 
 /* =========================================================
-   GERA JOGO POR FREQUÊNCIA
+   ESTRATÉGIA FREQUÊNCIA
 ========================================================= */
-
 
 function gameByFrequency(draws) {
 
@@ -608,42 +733,60 @@ function gameByFrequency(draws) {
     frequency(draws);
 
   return Object.keys(count)
+
     .map(Number)
+
     .sort(
       (a, b) =>
-        count[b] - count[a] ||
+        count[b] -
+        count[a] ||
         a - b
     )
+
     .slice(0, 15)
-    .sort((a, b) => a - b);
+
+    .sort(
+      (a, b) =>
+        a - b
+    );
 
 }
 
 
 /* =========================================================
-   GERA JOGO POR RECÊNCIA
+   ESTRATÉGIA RECENTE
 ========================================================= */
-
 
 function gameByRecent(draws) {
 
   const recent =
     draws.slice(
-      Math.max(0, draws.length - 20)
+      Math.max(
+        0,
+        draws.length - 20
+      )
     );
 
   const count =
     frequency(recent);
 
   return Object.keys(count)
+
     .map(Number)
+
     .sort(
       (a, b) =>
-        count[b] - count[a] ||
+        count[b] -
+        count[a] ||
         a - b
     )
+
     .slice(0, 15)
-    .sort((a, b) => a - b);
+
+    .sort(
+      (a, b) =>
+        a - b
+    );
 
 }
 
@@ -652,35 +795,51 @@ function gameByRecent(draws) {
    ESTRATÉGIA COMBINADA
 ========================================================= */
 
-
 function gameCombined(draws) {
 
   const all =
     frequency(draws);
 
-  const recent =
-    frequency(
-      draws.slice(
-        Math.max(0, draws.length - 20)
+  const recentDraws =
+    draws.slice(
+      Math.max(
+        0,
+        draws.length - 20
       )
     );
 
-  const scored =
-    [];
+  const recent =
+    frequency(
+      recentDraws
+    );
 
-  for (let n = 1; n <= 25; n++) {
+  const scored = [];
 
-    const total =
-      draws.length || 1;
+  const total =
+    Math.max(
+      1,
+      draws.length
+    );
 
-    const recentTotal =
-      Math.min(20, draws.length) || 1;
+  const recentTotal =
+    Math.max(
+      1,
+      recentDraws.length
+    );
+
+  for (
+    let n = 1;
+    n <= 25;
+    n++
+  ) {
 
     const f =
-      all[n] / total;
+      all[n] /
+      total;
 
     const r =
-      recent[n] / recentTotal;
+      recent[n] /
+      recentTotal;
 
     const score =
       (f * 0.60) +
@@ -694,14 +853,26 @@ function gameCombined(draws) {
   }
 
   return scored
+
     .sort(
       (a, b) =>
-        b.score - a.score ||
-        a.n - b.n
+        b.score -
+        a.score ||
+        a.n -
+        b.n
     )
+
     .slice(0, 15)
-    .map(x => x.n)
-    .sort((a, b) => a - b);
+
+    .map(
+      x =>
+        x.n
+    )
+
+    .sort(
+      (a, b) =>
+        a - b
+    );
 
 }
 
@@ -710,25 +881,31 @@ function gameCombined(draws) {
    JOGO ALEATÓRIO
 ========================================================= */
 
-
 function randomGame() {
 
-  const numbers =
-    [];
+  const numbers = [];
 
-  for (let n = 1; n <= 25; n++) {
+  for (
+    let n = 1;
+    n <= 25;
+    n++
+  ) {
+
     numbers.push(n);
+
   }
 
   for (
-    let i = numbers.length - 1;
+    let i =
+      numbers.length - 1;
     i > 0;
     i--
   ) {
 
     const j =
       Math.floor(
-        Math.random() * (i + 1)
+        Math.random() *
+        (i + 1)
       );
 
     [
@@ -743,16 +920,20 @@ function randomGame() {
   }
 
   return numbers
+
     .slice(0, 15)
-    .sort((a, b) => a - b);
+
+    .sort(
+      (a, b) =>
+        a - b
+    );
 
 }
 
 
 /* =========================================================
-   CONTAGEM DE ACERTOS
+   ACERTOS
 ========================================================= */
-
 
 function hits(game, draw) {
 
@@ -763,8 +944,12 @@ function hits(game, draw) {
 
   game.forEach(n => {
 
-    if (set.has(n)) {
+    if (
+      set.has(n)
+    ) {
+
       total++;
+
     }
 
   });
@@ -775,11 +960,13 @@ function hits(game, draw) {
 
 
 /* =========================================================
-   AVALIAÇÃO DE UM JOGO
+   AVALIAÇÃO
 ========================================================= */
 
-
-function evaluateGame(game, testDraws) {
+function evaluateGame(
+  game,
+  testDraws
+) {
 
   const results =
     testDraws.map(
@@ -793,30 +980,38 @@ function evaluateGame(game, testDraws) {
   if (!results.length) {
 
     return {
+
       media: 0,
       minimo: 0,
       maximo: 0,
       resultados: []
+
     };
 
   }
 
   const soma =
     results.reduce(
-      (a, b) => a + b,
+      (a, b) =>
+        a + b,
       0
     );
 
   return {
 
     media:
-      soma / results.length,
+      soma /
+      results.length,
 
     minimo:
-      Math.min(...results),
+      Math.min(
+        ...results
+      ),
 
     maximo:
-      Math.max(...results),
+      Math.max(
+        ...results
+      ),
 
     resultados:
       results
@@ -827,14 +1022,65 @@ function evaluateGame(game, testDraws) {
 
 
 /* =========================================================
+   ESTATÍSTICAS
+========================================================= */
+
+function mean(values) {
+
+  if (!values.length) {
+    return 0;
+  }
+
+  return values.reduce(
+    (a, b) =>
+      a + b,
+    0
+  ) / values.length;
+
+}
+
+
+function stddev(values) {
+
+  if (
+    values.length < 2
+  ) {
+
+    return 0;
+
+  }
+
+  const m =
+    mean(values);
+
+  const variance =
+    mean(
+      values.map(
+        x =>
+          Math.pow(
+            x - m,
+            2
+          )
+      )
+    );
+
+  return Math.sqrt(
+    variance
+  );
+
+}
+
+
+/* =========================================================
    BASELINE ALEATÓRIO
 ========================================================= */
 
+function randomBaseline(
+  testDraws,
+  simulations = 200
+) {
 
-function randomBaseline(testDraws, simulations = 300) {
-
-  const values =
-    [];
+  const values = [];
 
   for (
     let i = 0;
@@ -857,17 +1103,27 @@ function randomBaseline(testDraws, simulations = 300) {
 
   }
 
-  const media =
-    values.reduce(
-      (a, b) => a + b,
-      0
-    ) / values.length;
-
   return {
-    media,
-    minimo: Math.min(...values),
-    maximo: Math.max(...values),
-    simulacoes: simulations
+
+    media:
+      mean(values),
+
+    desvio:
+      stddev(values),
+
+    minimo:
+      Math.min(
+        ...values
+      ),
+
+    maximo:
+      Math.max(
+        ...values
+      ),
+
+    simulacoes:
+      simulations
+
   };
 
 }
@@ -877,13 +1133,21 @@ function randomBaseline(testDraws, simulations = 300) {
    DISTRIBUIÇÃO
 ========================================================= */
 
-
-function distribution(game, testDraws) {
+function distribution(
+  game,
+  testDraws
+) {
 
   const counts = {};
 
-  for (let n = 0; n <= 15; n++) {
+  for (
+    let n = 0;
+    n <= 15;
+    n++
+  ) {
+
     counts[n] = 0;
+
   }
 
   testDraws.forEach(d => {
@@ -903,15 +1167,23 @@ function distribution(game, testDraws) {
 }
 
 
-function distributionHTML(dist) {
+function distributionHTML(
+  dist
+) {
 
   let html =
     '<div class="number-line">';
 
-  for (let n = 6; n <= 15; n++) {
+  for (
+    let n = 6;
+    n <= 15;
+    n++
+  ) {
 
     html +=
-      `<b>${n}</b> acertos: ${dist[n] || 0}<br>`;
+      `<b>${n}</b> acertos: ${
+        dist[n] || 0
+      }<br>`;
 
   }
 
@@ -924,9 +1196,8 @@ function distributionHTML(dist) {
 
 
 /* =========================================================
-   VALIDAÇÃO V7
+   V7
 ========================================================= */
-
 
 async function runValidation() {
 
@@ -946,80 +1217,78 @@ async function runValidation() {
       history.concursos || []
     );
 
-  if (draws.length < 30) {
+  if (
+    draws.length < 30
+  ) {
 
     throw new Error(
-      'É necessário ter pelo menos 30 concursos válidos para executar a validação.'
+      'É necessário ter pelo menos 30 concursos válidos.'
     );
 
   }
 
-
-  /*
-    Separação temporal:
-
-    treino = parte antiga
-    teste  = parte recente
-  */
-
   const testSize =
     Math.max(
       20,
-      Math.floor(draws.length * 0.20)
+      Math.floor(
+        draws.length *
+        0.20
+      )
     );
 
   const train =
     draws.slice(
       0,
-      draws.length - testSize
+      draws.length -
+      testSize
     );
 
   const test =
     draws.slice(
-      draws.length - testSize
+      draws.length -
+      testSize
     );
 
+  const games = {
 
-  /*
-    Estratégias
-  */
+    frequency:
+      gameByFrequency(
+        train
+      ),
 
-  const frequencyGame =
-    gameByFrequency(train);
+    recent:
+      gameByRecent(
+        train
+      ),
 
-  const recentGame =
-    gameByRecent(train);
+    combined:
+      gameCombined(
+        train
+      )
 
-  const combinedGame =
-    gameCombined(train);
+  };
 
+  const results = {
 
-  /*
-    Avaliações
-  */
+    frequency:
+      evaluateGame(
+        games.frequency,
+        test
+      ),
 
-  const frequencyResult =
-    evaluateGame(
-      frequencyGame,
-      test
-    );
+    recent:
+      evaluateGame(
+        games.recent,
+        test
+      ),
 
-  const recentResult =
-    evaluateGame(
-      recentGame,
-      test
-    );
+    combined:
+      evaluateGame(
+        games.combined,
+        test
+      )
 
-  const combinedResult =
-    evaluateGame(
-      combinedGame,
-      test
-    );
-
-
-  /*
-    Baseline aleatório
-  */
+  };
 
   const random =
     randomBaseline(
@@ -1027,66 +1296,48 @@ async function runValidation() {
       300
     );
 
-
-  /*
-    Diferenças
-  */
-
-  const diffFrequency =
-    frequencyResult.media -
-    random.media;
-
-  const diffRecent =
-    recentResult.media -
-    random.media;
-
-  const diffCombined =
-    combinedResult.media -
-    random.media;
-
-
   const format =
     n =>
       Number(n).toFixed(3);
 
-
-  const card =
+  const renderStrategy =
     (
       title,
       game,
-      result,
-      diff
+      result
     ) => {
 
-      let cls =
-        'result-neutral';
+      const diff =
+        result.media -
+        random.media;
 
-      if (diff > 0) {
-        cls =
-          'result-good';
-      }
-
-      if (diff < 0) {
-        cls =
-          'result-warn';
-      }
+      const cls =
+        diff > 0
+          ? 'result-good'
+          : diff < 0
+            ? 'result-warn'
+            : 'result-neutral';
 
       return `
 
         <div class="status ${cls}">
 
-          <h3>${esc(title)}</h3>
+          <h3>
+            ${title}
+          </h3>
 
-          <div>
-            <b>Jogo utilizado:</b>
-          </div>
+          <b>Jogo utilizado:</b>
 
           ${balls(game)}
 
           <br>
 
           Média:
-          <b>${format(result.media)}</b>
+          <b>
+            ${format(
+              result.media
+            )}
+          </b>
 
           acertos
 
@@ -1102,8 +1353,14 @@ async function runValidation() {
 
           <br>
 
-          Diferença para o aleatório:
-          <b>${diff >= 0 ? '+' : ''}${format(diff)}</b>
+          Diferença para aleatório:
+          <b>
+            ${
+              diff >= 0
+                ? '+'
+                : ''
+            }${format(diff)}
+          </b>
 
         </div>
 
@@ -1111,35 +1368,15 @@ async function runValidation() {
 
     };
 
-
-  const freqDist =
-    distribution(
-      frequencyGame,
-      test
-    );
-
-  const recentDist =
-    distribution(
-      recentGame,
-      test
-    );
-
-  const combinedDist =
-    distribution(
-      combinedGame,
-      test
-    );
-
-
   area.innerHTML = `
 
     <div class="status">
 
-      <b>🔬 Separação do teste</b>
+      <b>Separação do teste</b>
 
       <br><br>
 
-      Concursos utilizados:
+      Concursos:
       <b>${draws.length}</b>
 
       <br>
@@ -1147,33 +1384,35 @@ async function runValidation() {
       Treino:
       <b>${train.length}</b>
 
-      concursos
-
       <br>
 
       Teste:
       <b>${test.length}</b>
 
-      concursos
+      <br>
 
-      <br><br>
-
-      Intervalo de teste:
+      Intervalo:
       <b>
-        ${esc(test[0].concurso)}
+        ${test[0].concurso}
         até
-        ${esc(test[test.length - 1].concurso)}
+        ${test[test.length - 1].concurso}
       </b>
 
     </div>
 
-
     <div class="status">
 
-      <h3>🎲 Referência aleatória</h3>
+      <h3>
+        🎲 Referência aleatória
+      </h3>
 
-      Média dos jogos aleatórios:
-      <b>${format(random.media)}</b>
+      Média:
+      <b>
+        ${format(
+          random.media
+        )}
+      </b>
+
       acertos
 
       <br>
@@ -1181,90 +1420,63 @@ async function runValidation() {
       Simulações:
       ${random.simulacoes}
 
-      <br><br>
-
-      <span class="small muted">
-        Para um jogo de 15 dezenas contra um sorteio
-        de 15 dezenas entre 25, a expectativa matemática
-        é aproximadamente 9 acertos.
-      </span>
-
     </div>
 
-
-    ${card(
+    ${renderStrategy(
       '🔥 Estratégia por frequência',
-      frequencyGame,
-      frequencyResult,
-      diffFrequency
+      games.frequency,
+      results.frequency
     )}
 
     <div class="status small muted">
 
-      <b>Distribuição no teste</b>
-
-      <br><br>
-
-      ${distributionHTML(freqDist)}
+      ${distributionHTML(
+        distribution(
+          games.frequency,
+          test
+        )
+      )}
 
     </div>
 
-
-    ${card(
+    ${renderStrategy(
       '🕒 Estratégia recente',
-      recentGame,
-      recentResult,
-      diffRecent
+      games.recent,
+      results.recent
     )}
 
     <div class="status small muted">
 
-      <b>Distribuição no teste</b>
-
-      <br><br>
-
-      ${distributionHTML(recentDist)}
+      ${distributionHTML(
+        distribution(
+          games.recent,
+          test
+        )
+      )}
 
     </div>
 
-
-    ${card(
+    ${renderStrategy(
       '🧠 Estratégia combinada',
-      combinedGame,
-      combinedResult,
-      diffCombined
+      games.combined,
+      results.combined
     )}
 
     <div class="status small muted">
 
-      <b>Distribuição no teste</b>
-
-      <br><br>
-
-      ${distributionHTML(combinedDist)}
+      ${distributionHTML(
+        distribution(
+          games.combined,
+          test
+        )
+      )}
 
     </div>
-
 
     <div class="status warn">
 
-      ⚠️ <b>Como interpretar:</b>
-
-      <br><br>
-
-      Este teste não demonstra capacidade de prever
-      o próximo concurso.
-
-      <br><br>
-
-      Uma diferença pequena em relação ao aleatório
-      pode ocorrer simplesmente por variação estatística.
-
-      <br><br>
-
-      O objetivo desta versão é verificar se existe
-      algum sinal consistente antes de evoluirmos
-      o algoritmo.
+      ⚠️ Esta validação é histórica.
+      Ela não prevê o próximo concurso.
 
     </div>
 
@@ -1274,13 +1486,643 @@ async function runValidation() {
 
 
 /* =========================================================
-   CARREGAMENTO PRINCIPAL
+   WALK-FORWARD V8
 ========================================================= */
 
+async function runWalkForward() {
+
+  const area =
+    $('walkforward');
+
+  area.innerHTML =
+    '🧠 Carregando histórico...';
+
+  const history =
+    await getJson(
+      '/api/lotofacil/history?limit=100'
+    );
+
+  const draws =
+    sortDraws(
+      history.concursos || []
+    );
+
+  if (
+    draws.length < 60
+  ) {
+
+    throw new Error(
+      'É necessário ter pelo menos 60 concursos válidos para o Walk-Forward.'
+    );
+
+  }
+
+
+  /*
+    CONFIGURAÇÃO
+
+    Treino mínimo:
+    50 concursos
+
+    Cada teste:
+    10 concursos
+
+    Avanço:
+    10 concursos
+  */
+
+  const trainSize = 50;
+
+  const testSize = 10;
+
+  const step = 10;
+
+
+  const folds = [];
+
+
+  for (
+    let start = trainSize;
+    start + testSize <= draws.length;
+    start += step
+  ) {
+
+    const train =
+      draws.slice(
+        0,
+        start
+      );
+
+    const test =
+      draws.slice(
+        start,
+        start +
+        testSize
+      );
+
+
+    /*
+      Cria as três estratégias
+      utilizando SOMENTE o treino.
+    */
+
+    const gameFrequency =
+      gameByFrequency(
+        train
+      );
+
+    const gameRecent =
+      gameByRecent(
+        train
+      );
+
+    const gameCombined =
+      gameCombinedSafe(
+        train
+      );
+
+
+    /*
+      Avalia nos concursos
+      seguintes.
+    */
+
+    const resultFrequency =
+      evaluateGame(
+        gameFrequency,
+        test
+      );
+
+    const resultRecent =
+      evaluateGame(
+        gameRecent,
+        test
+      );
+
+    const resultCombined =
+      evaluateGame(
+        gameCombined,
+        test
+      );
+
+
+    /*
+      Baseline aleatório
+    */
+
+    const random =
+      randomBaseline(
+        test,
+        200
+      );
+
+
+    folds.push({
+
+      index:
+        folds.length + 1,
+
+      trainStart:
+        train[0].concurso,
+
+      trainEnd:
+        train[
+          train.length - 1
+        ].concurso,
+
+      testStart:
+        test[0].concurso,
+
+      testEnd:
+        test[
+          test.length - 1
+        ].concurso,
+
+      frequency:
+        resultFrequency.media,
+
+      recent:
+        resultRecent.media,
+
+      combined:
+        resultCombined.media,
+
+      random:
+        random.media
+
+    });
+
+  }
+
+
+  if (
+    !folds.length
+  ) {
+
+    throw new Error(
+      'Não foi possível criar as janelas Walk-Forward.'
+    );
+
+  }
+
+
+  /*
+    Totais
+  */
+
+  const frequencyValues =
+    folds.map(
+      f =>
+        f.frequency
+    );
+
+  const recentValues =
+    folds.map(
+      f =>
+        f.recent
+    );
+
+  const combinedValues =
+    folds.map(
+      f =>
+        f.combined
+    );
+
+  const randomValues =
+    folds.map(
+      f =>
+        f.random
+    );
+
+
+  const frequencyMean =
+    mean(
+      frequencyValues
+    );
+
+  const recentMean =
+    mean(
+      recentValues
+    );
+
+  const combinedMean =
+    mean(
+      combinedValues
+    );
+
+  const randomMean =
+    mean(
+      randomValues
+    );
+
+
+  const frequencyDiff =
+    frequencyMean -
+    randomMean;
+
+  const recentDiff =
+    recentMean -
+    randomMean;
+
+  const combinedDiff =
+    combinedMean -
+    randomMean;
+
+
+  const format =
+    n =>
+      Number(n).toFixed(3);
+
+
+  /*
+    Tabela das janelas
+  */
+
+  let rows = '';
+
+  folds.forEach(
+    f => {
+
+      rows += `
+
+        <tr>
+
+          <td>
+            ${f.index}
+          </td>
+
+          <td>
+            ${f.trainStart}
+            →
+            ${f.trainEnd}
+          </td>
+
+          <td>
+            ${f.testStart}
+            →
+            ${f.testEnd}
+          </td>
+
+          <td>
+            ${format(
+              f.frequency
+            )}
+          </td>
+
+          <td>
+            ${format(
+              f.recent
+            )}
+          </td>
+
+          <td>
+            ${format(
+              f.combined
+            )}
+          </td>
+
+          <td>
+            ${format(
+              f.random
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  /*
+    Conta em quantas janelas
+    cada estratégia superou o
+    aleatório.
+  */
+
+  const frequencyWins =
+    folds.filter(
+      f =>
+        f.frequency >
+        f.random
+    ).length;
+
+  const recentWins =
+    folds.filter(
+      f =>
+        f.recent >
+        f.random
+    ).length;
+
+  const combinedWins =
+    folds.filter(
+      f =>
+        f.combined >
+        f.random
+    ).length;
+
+
+  /*
+    Renderização
+  */
+
+  area.innerHTML = `
+
+    <div class="status">
+
+      <h3>
+        🔬 Resumo Walk-Forward
+      </h3>
+
+      <b>
+        Janelas testadas:
+      </b>
+
+      ${folds.length}
+
+      <br>
+
+      Treino por janela:
+      ${trainSize}
+      concursos
+
+      <br>
+
+      Teste por janela:
+      ${testSize}
+      concursos
+
+      <br>
+
+      Avanço:
+      ${step}
+      concursos
+
+    </div>
+
+
+    <div class="grid">
+
+      <div class="metric">
+
+        🔥 Frequência
+
+        <div class="big-number">
+          ${format(
+            frequencyMean
+          )}
+        </div>
+
+        <span class="small">
+          média geral
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        🕒 Recente
+
+        <div class="big-number">
+          ${format(
+            recentMean
+          )}
+        </div>
+
+        <span class="small">
+          média geral
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        🧠 Combinada
+
+        <div class="big-number">
+          ${format(
+            combinedMean
+          )}
+        </div>
+
+        <span class="small">
+          média geral
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        🎲 Aleatório
+
+        <div class="big-number">
+          ${format(
+            randomMean
+          )}
+        </div>
+
+        <span class="small">
+          referência
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="status">
+
+      <h3>
+        📊 Diferença média
+      </h3>
+
+      🔥 Frequência:
+      <b>
+        ${
+          frequencyDiff >= 0
+            ? '+'
+            : ''
+        }${format(
+          frequencyDiff
+        )}
+      </b>
+
+      <br>
+
+      🕒 Recente:
+      <b>
+        ${
+          recentDiff >= 0
+            ? '+'
+            : ''
+        }${format(
+          recentDiff
+        )}
+      </b>
+
+      <br>
+
+      🧠 Combinada:
+      <b>
+        ${
+          combinedDiff >= 0
+            ? '+'
+            : ''
+        }${format(
+          combinedDiff
+        )}
+      </b>
+
+    </div>
+
+
+    <div class="status">
+
+      <h3>
+        📈 Janelas acima do aleatório
+      </h3>
+
+      🔥 Frequência:
+      <b>
+        ${frequencyWins}
+        /
+        ${folds.length}
+      </b>
+
+      <br>
+
+      🕒 Recente:
+      <b>
+        ${recentWins}
+        /
+        ${folds.length}
+      </b>
+
+      <br>
+
+      🧠 Combinada:
+      <b>
+        ${combinedWins}
+        /
+        ${folds.length}
+      </b>
+
+    </div>
+
+
+    <div class="status">
+
+      <h3>
+        📋 Resultado de cada janela
+      </h3>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Janela
+              </th>
+
+              <th>
+                Treino
+              </th>
+
+              <th>
+                Teste
+              </th>
+
+              <th>
+                Frequência
+              </th>
+
+              <th>
+                Recente
+              </th>
+
+              <th>
+                Combinada
+              </th>
+
+              <th>
+                Aleatório
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${rows}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <div class="status warn">
+
+      ⚠️ <b>Interpretação:</b>
+
+      <br><br>
+
+      O Walk-Forward reduz o risco de avaliar
+      uma estratégia usando os mesmos dados
+      utilizados para construí-la.
+
+      <br><br>
+
+      Mesmo que uma estratégia supere o aleatório
+      em algumas janelas, isso sozinho não prova
+      capacidade de prever concursos futuros.
+
+      <br><br>
+
+      O resultado deve ser observado pela
+      consistência entre várias janelas.
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PROTEÇÃO CONTRA SOMBREAMENTO
+========================================================= */
+
+function gameCombinedSafe(draws) {
+
+  return gameCombined(
+    draws
+  );
+
+}
+
+
+/* =========================================================
+   LOAD PRINCIPAL
+========================================================= */
 
 async function load() {
 
-  setLoading($('latest'));
+  setLoading(
+    $('latest')
+  );
 
   try {
 
@@ -1288,21 +2130,22 @@ async function load() {
       latest,
       analysis,
       history
-    ] = await Promise.all([
+    ] =
+      await Promise.all([
 
-      getJson(
-        '/api/lotofacil/latest'
-      ),
+        getJson(
+          '/api/lotofacil/latest'
+        ),
 
-      getJson(
-        '/api/lotofacil/analysis?limit=100&recent=20'
-      ),
+        getJson(
+          '/api/lotofacil/analysis?limit=100&recent=20'
+        ),
 
-      getJson(
-        '/api/lotofacil/history?limit=10'
-      )
+        getJson(
+          '/api/lotofacil/history?limit=10'
+        )
 
-    ]);
+      ]);
 
 
     $('latest').innerHTML = `
@@ -1314,7 +2157,9 @@ async function load() {
           Concurso
 
           <b>
-            ${esc(latest.concurso)}
+            ${esc(
+              latest.concurso
+            )}
           </b>
 
         </div>
@@ -1325,14 +2170,18 @@ async function load() {
           Data
 
           <b>
-            ${esc(latest.data)}
+            ${esc(
+              latest.data
+            )}
           </b>
 
         </div>
 
       </div>
 
-      ${balls(latest.dezenas)}
+      ${balls(
+        latest.dezenas
+      )}
 
       <div class="status ok">
 
@@ -1350,7 +2199,9 @@ async function load() {
         Concursos analisados
 
         <b>
-          ${esc(analysis.amostra)}
+          ${esc(
+            analysis.amostra
+          )}
         </b>
 
       </div>
@@ -1361,9 +2212,17 @@ async function load() {
         Pares / ímpares
 
         <b>
-          ${esc(analysis.paresMedia)}
+
+          ${esc(
+            analysis.paresMedia
+          )}
+
           /
-          ${esc(analysis.imparesMedia)}
+
+          ${esc(
+            analysis.imparesMedia
+          )}
+
         </b>
 
       </div>
@@ -1372,70 +2231,116 @@ async function load() {
 
 
     $('hot').innerHTML =
-      analysis.quentes.map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.ocorrencias)} vezes
-          </li>`
-      ).join('');
+      analysis.quentes
+        .map(
+          x =>
+            `<li>
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+              —
+              ${esc(
+                x.ocorrencias
+              )}
+              vezes
+            </li>`
+        )
+        .join('');
 
 
     $('cold').innerHTML =
-      analysis.frios.map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.ocorrencias)} vezes
-          </li>`
-      ).join('');
+      analysis.frios
+        .map(
+          x =>
+            `<li>
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+              —
+              ${esc(
+                x.ocorrencias
+              )}
+              vezes
+            </li>`
+        )
+        .join('');
 
 
     $('late').innerHTML =
-      analysis.atrasados.map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.concursosSemSair)}
-            concurso(s)
-          </li>`
-      ).join('');
+      analysis.atrasados
+        .map(
+          x =>
+            `<li>
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+              —
+              ${esc(
+                x.concursosSemSair
+              )}
+              concurso(s)
+            </li>`
+        )
+        .join('');
 
 
     $('ranges').innerHTML =
       Object.entries(
         analysis.faixasMedia
-      ).map(
-        ([k, v]) =>
-          `<li>
-            <b>${esc(k)}</b>
-            — média ${esc(v)}
-          </li>`
-      ).join('');
+      )
+        .map(
+          ([k, v]) =>
+            `<li>
+              <b>
+                ${esc(k)}
+              </b>
+              —
+              média
+              ${esc(v)}
+            </li>`
+        )
+        .join('');
 
 
     $('history').innerHTML =
-      history.concursos.map(
-        d => `
+      history.concursos
+        .map(
+          d => `
 
-          <div class="status">
+            <div class="status">
 
-            <b>
-              Concurso ${esc(d.concurso)}
-            </b>
+              <b>
+                Concurso
+                ${esc(
+                  d.concurso
+                )}
+              </b>
 
-            —
-            ${esc(d.data)}
+              —
+              ${esc(
+                d.data
+              )}
 
-            ${balls(d.dezenas)}
+              ${balls(
+                d.dezenas
+              )}
 
-          </div>
+            </div>
 
-        `
-      ).join('');
+          `
+        )
+        .join('');
 
 
-    clearLoading($('latest'));
+    clearLoading(
+      $('latest')
+    );
 
   } catch (e) {
 
@@ -1447,13 +2352,17 @@ async function load() {
 
         <br><br>
 
-        ${esc(e.message)}
+        ${esc(
+          e.message
+        )}
 
       </div>
 
     `;
 
-    clearLoading($('latest'));
+    clearLoading(
+      $('latest')
+    );
 
   }
 
@@ -1464,21 +2373,22 @@ async function load() {
    ATUALIZAR
 ========================================================= */
 
-
 $('refreshBtn').onclick =
   async () => {
 
     const b =
       $('refreshBtn');
 
-    b.disabled = true;
+    b.disabled =
+      true;
 
     b.textContent =
       '🔄 Atualizando...';
 
     await load();
 
-    b.disabled = false;
+    b.disabled =
+      false;
 
     b.textContent =
       '🔄 Atualizar dados';
@@ -1487,9 +2397,8 @@ $('refreshBtn').onclick =
 
 
 /* =========================================================
-   BACKTEST ORIGINAL
+   BACKTEST
 ========================================================= */
-
 
 $('backtestBtn').onclick =
   async () => {
@@ -1497,14 +2406,14 @@ $('backtestBtn').onclick =
     const b =
       $('backtestBtn');
 
-    b.disabled = true;
+    b.disabled =
+      true;
 
     b.textContent =
       '⏳ Analisando...';
 
     $('backtest').innerHTML =
       'Executando backtest...';
-
 
     try {
 
@@ -1526,48 +2435,66 @@ $('backtestBtn').onclick =
 
         $('backtest').innerHTML =
 
-          j.resultados.map(
-            x => `
+          j.resultados
 
-              <div class="status">
+            .map(
+              x => `
 
-                <b>
-                  ${esc(x.estrategia)}
-                </b>
+                <div class="status">
 
-                <br><br>
+                  <b>
+                    ${esc(
+                      x.estrategia
+                    )}
+                  </b>
 
-                Média:
-                <b>
-                  ${esc(x.mediaAcertos)}
-                </b>
-                acertos
+                  <br><br>
 
-                <br>
+                  Média:
+                  <b>
+                    ${esc(
+                      x.mediaAcertos
+                    )}
+                  </b>
+                  acertos
 
-                Mínimo:
-                ${esc(x.minAcertos)}
+                  <br>
 
-                ·
+                  Mínimo:
+                  ${esc(
+                    x.minAcertos
+                  )}
 
-                Máximo:
-                ${esc(x.maxAcertos)}
+                  ·
 
-                <br>
+                  Máximo:
+                  ${esc(
+                    x.maxAcertos
+                  )}
 
-                Testes:
-                ${esc(x.testes)}
+                  <br>
 
-              </div>
+                  Testes:
+                  ${esc(
+                    x.testes
+                  )}
 
-            `
-          ).join('') +
+                </div>
+
+              `
+            )
+            .join('')
+
+          +
 
           `
 
             <p class="small muted">
 
-              ${esc(j.observacao || '')}
+              ${esc(
+                j.observacao ||
+                ''
+              )}
 
             </p>
 
@@ -1575,14 +2502,16 @@ $('backtestBtn').onclick =
 
       }
 
-
     } catch (e) {
 
       $('backtest').innerHTML = `
 
         <div class="status error">
 
-          ❌ ${esc(e.message)}
+          ❌
+          ${esc(
+            e.message
+          )}
 
         </div>
 
@@ -1590,8 +2519,8 @@ $('backtestBtn').onclick =
 
     }
 
-
-    b.disabled = false;
+    b.disabled =
+      false;
 
     b.textContent =
       '▶️ Executar Backtest';
@@ -1603,21 +2532,20 @@ $('backtestBtn').onclick =
    CANDIDATOS
 ========================================================= */
 
-
 $('gamesBtn').onclick =
   async () => {
 
     const b =
       $('gamesBtn');
 
-    b.disabled = true;
+    b.disabled =
+      true;
 
     b.textContent =
       '⏳ Gerando...';
 
     $('games').textContent =
       'Gerando e testando candidatos...';
-
 
     try {
 
@@ -1639,48 +2567,71 @@ $('gamesBtn').onclick =
 
         $('games').innerHTML =
 
-          j.jogos.map(
-            g => `
+          j.jogos
 
-              <div class="game">
+            .map(
+              g => `
 
-                <b>
-                  Candidato ${esc(g.id)}
-                </b>
+                <div class="game">
 
-                · score médio
-                ${esc(g.pontuacaoMedia)}
+                  <b>
+                    Candidato
+                    ${esc(
+                      g.id
+                    )}
+                  </b>
 
-                ${balls(g.dezenas)}
+                  · score médio
+                  ${esc(
+                    g.pontuacaoMedia
+                  )}
 
-                <div
-                  class="small"
-                  style="margin-top:10px"
-                >
+                  ${balls(
+                    g.dezenas
+                  )}
 
-                  <b>Backtest:</b>
+                  <div
+                    class="small"
+                    style="margin-top:10px"
+                  >
 
-                  média
-                  ${esc(g.backtest.mediaAcertos)}
+                    <b>
+                      Backtest:
+                    </b>
 
-                  · mínimo
-                  ${esc(g.backtest.minAcertos)}
+                    média
+                    ${esc(
+                      g.backtest.mediaAcertos
+                    )}
 
-                  · máximo
-                  ${esc(g.backtest.maxAcertos)}
+                    · mínimo
+                    ${esc(
+                      g.backtest.minAcertos
+                    )}
+
+                    · máximo
+                    ${esc(
+                      g.backtest.maxAcertos
+                    )}
+
+                  </div>
 
                 </div>
 
-              </div>
+              `
+            )
+            .join('')
 
-            `
-          ).join('') +
+          +
 
           `
 
             <p class="small muted">
 
-              ${esc(j.observacao || '')}
+              ${esc(
+                j.observacao ||
+                ''
+              )}
 
             </p>
 
@@ -1688,14 +2639,16 @@ $('gamesBtn').onclick =
 
       }
 
-
     } catch (e) {
 
       $('games').innerHTML = `
 
         <div class="status error">
 
-          ❌ ${esc(e.message)}
+          ❌
+          ${esc(
+            e.message
+          )}
 
         </div>
 
@@ -1703,8 +2656,8 @@ $('gamesBtn').onclick =
 
     }
 
-
-    b.disabled = false;
+    b.disabled =
+      false;
 
     b.textContent =
       '🎲 Gerar candidatos e testar';
@@ -1713,9 +2666,8 @@ $('gamesBtn').onclick =
 
 
 /* =========================================================
-   BOTÃO DA VALIDAÇÃO V7
+   V7
 ========================================================= */
-
 
 $('validationBtn').onclick =
   async () => {
@@ -1723,7 +2675,8 @@ $('validationBtn').onclick =
     const b =
       $('validationBtn');
 
-    b.disabled = true;
+    b.disabled =
+      true;
 
     b.textContent =
       '⏳ Validando...';
@@ -1738,7 +2691,10 @@ $('validationBtn').onclick =
 
         <div class="status error">
 
-          ❌ ${esc(e.message)}
+          ❌
+          ${esc(
+            e.message
+          )}
 
         </div>
 
@@ -1746,7 +2702,8 @@ $('validationBtn').onclick =
 
     }
 
-    b.disabled = false;
+    b.disabled =
+      false;
 
     b.textContent =
       '🔬 Executar validação V7';
@@ -1755,9 +2712,57 @@ $('validationBtn').onclick =
 
 
 /* =========================================================
-   INICIALIZAÇÃO
+   V8
 ========================================================= */
 
+$('walkBtn').onclick =
+  async () => {
+
+    const b =
+      $('walkBtn');
+
+    b.disabled =
+      true;
+
+    b.textContent =
+      '⏳ Executando...';
+
+    $('walkforward').innerHTML =
+      '🧠 Executando Walk-Forward. Aguarde...';
+
+    try {
+
+      await runWalkForward();
+
+    } catch (e) {
+
+      $('walkforward').innerHTML = `
+
+        <div class="status error">
+
+          ❌
+          ${esc(
+            e.message
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+    b.disabled =
+      false;
+
+    b.textContent =
+      '🧠 Executar Walk-Forward V8';
+
+  };
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
 
 load();
 
