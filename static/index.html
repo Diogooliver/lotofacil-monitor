@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#5b2df5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Lotofácil V6">
-  <title>🍀 Lotofácil Monitor V6</title>
+  <meta name="apple-mobile-web-app-title" content="Lotofácil V7">
+  <title>🍀 Lotofácil Monitor V7</title>
 
   <style>
     * {
@@ -190,6 +190,23 @@
       opacity: .65;
     }
 
+    .result-good {
+      border-left: 5px solid #197a38;
+    }
+
+    .result-neutral {
+      border-left: 5px solid #777;
+    }
+
+    .result-warn {
+      border-left: 5px solid #9a5b00;
+    }
+
+    .number-line {
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
     @media (max-width: 620px) {
       .grid,
       .two {
@@ -221,18 +238,20 @@
 <div class="wrap">
 
   <header>
-    <h1>🍀 Lotofácil Monitor V6</h1>
+    <h1>🍀 Lotofácil Monitor V7</h1>
 
     <div class="sub">
-      Monitoramento, estatísticas e backtests históricos
+      Monitoramento, estatísticas, backtests e validação fora da amostra
     </div>
 
     <div class="install-box">
-      📱 <b>Versão V6</b><br>
-      Painel otimizado para celular e instalação como aplicativo.
+      📱 <b>Versão V7</b><br>
+      Nova validação comparando estratégias com jogos aleatórios.
     </div>
   </header>
 
+
+  <!-- ÚLTIMO CONCURSO -->
 
   <section class="card highlight">
 
@@ -252,6 +271,8 @@
 
   </section>
 
+
+  <!-- ANÁLISE -->
 
   <section class="card">
 
@@ -318,12 +339,14 @@
   </section>
 
 
+  <!-- BACKTEST ORIGINAL -->
+
   <section class="card">
 
     <h2>🧪 Backtest</h2>
 
     <p class="small muted">
-      Teste estratégias usando concursos históricos.
+      Teste das estratégias disponibilizadas pelo servidor.
     </p>
 
     <button id="backtestBtn">
@@ -336,6 +359,39 @@
 
   </section>
 
+
+  <!-- NOVA VALIDAÇÃO -->
+
+  <section class="card highlight">
+
+    <h2>🔬 Validação V7</h2>
+
+    <p>
+      Esta seção separa o histórico em duas partes:
+    </p>
+
+    <ul>
+      <li><b>Treino:</b> concursos mais antigos.</li>
+      <li><b>Teste:</b> concursos mais recentes.</li>
+    </ul>
+
+    <p class="small muted">
+      As estratégias são montadas usando apenas a parte de treino
+      e avaliadas nos concursos reservados para teste.
+    </p>
+
+    <button id="validationBtn">
+      🔬 Executar validação V7
+    </button>
+
+    <div id="validation" class="status">
+      Aguardando execução...
+    </div>
+
+  </section>
+
+
+  <!-- CANDIDATOS -->
 
   <section class="card">
 
@@ -355,6 +411,8 @@
   </section>
 
 
+  <!-- HISTÓRICO -->
+
   <section class="card">
 
     <h2>📜 Últimos concursos</h2>
@@ -365,6 +423,8 @@
 
   </section>
 
+
+  <!-- AVISO -->
 
   <section class="card small muted">
 
@@ -424,6 +484,11 @@ const balls = nums => {
 };
 
 
+/* =========================================================
+   UTILITÁRIOS
+========================================================= */
+
+
 async function getJson(url) {
 
   const r = await fetch(
@@ -468,6 +533,749 @@ function clearLoading(element) {
   }
 
 }
+
+
+/* =========================================================
+   NORMALIZAÇÃO DOS CONCURSOS
+========================================================= */
+
+
+function normalizeDraw(d) {
+
+  return {
+    concurso: Number(d.concurso),
+    data: d.data,
+    dezenas: Array.isArray(d.dezenas)
+      ? d.dezenas
+          .map(Number)
+          .filter(n => n >= 1 && n <= 25)
+          .sort((a, b) => a - b)
+      : []
+  };
+
+}
+
+
+function sortDraws(draws) {
+
+  return draws
+    .map(normalizeDraw)
+    .filter(d => d.dezenas.length === 15)
+    .sort(
+      (a, b) =>
+        a.concurso - b.concurso
+    );
+
+}
+
+
+/* =========================================================
+   CONTAGEM DE FREQUÊNCIA
+========================================================= */
+
+
+function frequency(draws) {
+
+  const count = {};
+
+  for (let n = 1; n <= 25; n++) {
+    count[n] = 0;
+  }
+
+  draws.forEach(d => {
+
+    d.dezenas.forEach(n => {
+
+      count[n]++;
+
+    });
+
+  });
+
+  return count;
+
+}
+
+
+/* =========================================================
+   GERA JOGO POR FREQUÊNCIA
+========================================================= */
+
+
+function gameByFrequency(draws) {
+
+  const count =
+    frequency(draws);
+
+  return Object.keys(count)
+    .map(Number)
+    .sort(
+      (a, b) =>
+        count[b] - count[a] ||
+        a - b
+    )
+    .slice(0, 15)
+    .sort((a, b) => a - b);
+
+}
+
+
+/* =========================================================
+   GERA JOGO POR RECÊNCIA
+========================================================= */
+
+
+function gameByRecent(draws) {
+
+  const recent =
+    draws.slice(
+      Math.max(0, draws.length - 20)
+    );
+
+  const count =
+    frequency(recent);
+
+  return Object.keys(count)
+    .map(Number)
+    .sort(
+      (a, b) =>
+        count[b] - count[a] ||
+        a - b
+    )
+    .slice(0, 15)
+    .sort((a, b) => a - b);
+
+}
+
+
+/* =========================================================
+   ESTRATÉGIA COMBINADA
+========================================================= */
+
+
+function gameCombined(draws) {
+
+  const all =
+    frequency(draws);
+
+  const recent =
+    frequency(
+      draws.slice(
+        Math.max(0, draws.length - 20)
+      )
+    );
+
+  const scored =
+    [];
+
+  for (let n = 1; n <= 25; n++) {
+
+    const total =
+      draws.length || 1;
+
+    const recentTotal =
+      Math.min(20, draws.length) || 1;
+
+    const f =
+      all[n] / total;
+
+    const r =
+      recent[n] / recentTotal;
+
+    const score =
+      (f * 0.60) +
+      (r * 0.40);
+
+    scored.push({
+      n,
+      score
+    });
+
+  }
+
+  return scored
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.n - b.n
+    )
+    .slice(0, 15)
+    .map(x => x.n)
+    .sort((a, b) => a - b);
+
+}
+
+
+/* =========================================================
+   JOGO ALEATÓRIO
+========================================================= */
+
+
+function randomGame() {
+
+  const numbers =
+    [];
+
+  for (let n = 1; n <= 25; n++) {
+    numbers.push(n);
+  }
+
+  for (
+    let i = numbers.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      numbers[i],
+      numbers[j]
+    ] =
+    [
+      numbers[j],
+      numbers[i]
+    ];
+
+  }
+
+  return numbers
+    .slice(0, 15)
+    .sort((a, b) => a - b);
+
+}
+
+
+/* =========================================================
+   CONTAGEM DE ACERTOS
+========================================================= */
+
+
+function hits(game, draw) {
+
+  const set =
+    new Set(draw);
+
+  let total = 0;
+
+  game.forEach(n => {
+
+    if (set.has(n)) {
+      total++;
+    }
+
+  });
+
+  return total;
+
+}
+
+
+/* =========================================================
+   AVALIAÇÃO DE UM JOGO
+========================================================= */
+
+
+function evaluateGame(game, testDraws) {
+
+  const results =
+    testDraws.map(
+      d =>
+        hits(
+          game,
+          d.dezenas
+        )
+    );
+
+  if (!results.length) {
+
+    return {
+      media: 0,
+      minimo: 0,
+      maximo: 0,
+      resultados: []
+    };
+
+  }
+
+  const soma =
+    results.reduce(
+      (a, b) => a + b,
+      0
+    );
+
+  return {
+
+    media:
+      soma / results.length,
+
+    minimo:
+      Math.min(...results),
+
+    maximo:
+      Math.max(...results),
+
+    resultados:
+      results
+
+  };
+
+}
+
+
+/* =========================================================
+   BASELINE ALEATÓRIO
+========================================================= */
+
+
+function randomBaseline(testDraws, simulations = 300) {
+
+  const values =
+    [];
+
+  for (
+    let i = 0;
+    i < simulations;
+    i++
+  ) {
+
+    const game =
+      randomGame();
+
+    const result =
+      evaluateGame(
+        game,
+        testDraws
+      );
+
+    values.push(
+      result.media
+    );
+
+  }
+
+  const media =
+    values.reduce(
+      (a, b) => a + b,
+      0
+    ) / values.length;
+
+  return {
+    media,
+    minimo: Math.min(...values),
+    maximo: Math.max(...values),
+    simulacoes: simulations
+  };
+
+}
+
+
+/* =========================================================
+   DISTRIBUIÇÃO
+========================================================= */
+
+
+function distribution(game, testDraws) {
+
+  const counts = {};
+
+  for (let n = 0; n <= 15; n++) {
+    counts[n] = 0;
+  }
+
+  testDraws.forEach(d => {
+
+    const h =
+      hits(
+        game,
+        d.dezenas
+      );
+
+    counts[h]++;
+
+  });
+
+  return counts;
+
+}
+
+
+function distributionHTML(dist) {
+
+  let html =
+    '<div class="number-line">';
+
+  for (let n = 6; n <= 15; n++) {
+
+    html +=
+      `<b>${n}</b> acertos: ${dist[n] || 0}<br>`;
+
+  }
+
+  html +=
+    '</div>';
+
+  return html;
+
+}
+
+
+/* =========================================================
+   VALIDAÇÃO V7
+========================================================= */
+
+
+async function runValidation() {
+
+  const area =
+    $('validation');
+
+  area.innerHTML =
+    'Carregando histórico para validação...';
+
+  const history =
+    await getJson(
+      '/api/lotofacil/history?limit=100'
+    );
+
+  const draws =
+    sortDraws(
+      history.concursos || []
+    );
+
+  if (draws.length < 30) {
+
+    throw new Error(
+      'É necessário ter pelo menos 30 concursos válidos para executar a validação.'
+    );
+
+  }
+
+
+  /*
+    Separação temporal:
+
+    treino = parte antiga
+    teste  = parte recente
+  */
+
+  const testSize =
+    Math.max(
+      20,
+      Math.floor(draws.length * 0.20)
+    );
+
+  const train =
+    draws.slice(
+      0,
+      draws.length - testSize
+    );
+
+  const test =
+    draws.slice(
+      draws.length - testSize
+    );
+
+
+  /*
+    Estratégias
+  */
+
+  const frequencyGame =
+    gameByFrequency(train);
+
+  const recentGame =
+    gameByRecent(train);
+
+  const combinedGame =
+    gameCombined(train);
+
+
+  /*
+    Avaliações
+  */
+
+  const frequencyResult =
+    evaluateGame(
+      frequencyGame,
+      test
+    );
+
+  const recentResult =
+    evaluateGame(
+      recentGame,
+      test
+    );
+
+  const combinedResult =
+    evaluateGame(
+      combinedGame,
+      test
+    );
+
+
+  /*
+    Baseline aleatório
+  */
+
+  const random =
+    randomBaseline(
+      test,
+      300
+    );
+
+
+  /*
+    Diferenças
+  */
+
+  const diffFrequency =
+    frequencyResult.media -
+    random.media;
+
+  const diffRecent =
+    recentResult.media -
+    random.media;
+
+  const diffCombined =
+    combinedResult.media -
+    random.media;
+
+
+  const format =
+    n =>
+      Number(n).toFixed(3);
+
+
+  const card =
+    (
+      title,
+      game,
+      result,
+      diff
+    ) => {
+
+      let cls =
+        'result-neutral';
+
+      if (diff > 0) {
+        cls =
+          'result-good';
+      }
+
+      if (diff < 0) {
+        cls =
+          'result-warn';
+      }
+
+      return `
+
+        <div class="status ${cls}">
+
+          <h3>${esc(title)}</h3>
+
+          <div>
+            <b>Jogo utilizado:</b>
+          </div>
+
+          ${balls(game)}
+
+          <br>
+
+          Média:
+          <b>${format(result.media)}</b>
+
+          acertos
+
+          <br>
+
+          Mínimo:
+          ${result.minimo}
+
+          ·
+
+          Máximo:
+          ${result.maximo}
+
+          <br>
+
+          Diferença para o aleatório:
+          <b>${diff >= 0 ? '+' : ''}${format(diff)}</b>
+
+        </div>
+
+      `;
+
+    };
+
+
+  const freqDist =
+    distribution(
+      frequencyGame,
+      test
+    );
+
+  const recentDist =
+    distribution(
+      recentGame,
+      test
+    );
+
+  const combinedDist =
+    distribution(
+      combinedGame,
+      test
+    );
+
+
+  area.innerHTML = `
+
+    <div class="status">
+
+      <b>🔬 Separação do teste</b>
+
+      <br><br>
+
+      Concursos utilizados:
+      <b>${draws.length}</b>
+
+      <br>
+
+      Treino:
+      <b>${train.length}</b>
+
+      concursos
+
+      <br>
+
+      Teste:
+      <b>${test.length}</b>
+
+      concursos
+
+      <br><br>
+
+      Intervalo de teste:
+      <b>
+        ${esc(test[0].concurso)}
+        até
+        ${esc(test[test.length - 1].concurso)}
+      </b>
+
+    </div>
+
+
+    <div class="status">
+
+      <h3>🎲 Referência aleatória</h3>
+
+      Média dos jogos aleatórios:
+      <b>${format(random.media)}</b>
+      acertos
+
+      <br>
+
+      Simulações:
+      ${random.simulacoes}
+
+      <br><br>
+
+      <span class="small muted">
+        Para um jogo de 15 dezenas contra um sorteio
+        de 15 dezenas entre 25, a expectativa matemática
+        é aproximadamente 9 acertos.
+      </span>
+
+    </div>
+
+
+    ${card(
+      '🔥 Estratégia por frequência',
+      frequencyGame,
+      frequencyResult,
+      diffFrequency
+    )}
+
+    <div class="status small muted">
+
+      <b>Distribuição no teste</b>
+
+      <br><br>
+
+      ${distributionHTML(freqDist)}
+
+    </div>
+
+
+    ${card(
+      '🕒 Estratégia recente',
+      recentGame,
+      recentResult,
+      diffRecent
+    )}
+
+    <div class="status small muted">
+
+      <b>Distribuição no teste</b>
+
+      <br><br>
+
+      ${distributionHTML(recentDist)}
+
+    </div>
+
+
+    ${card(
+      '🧠 Estratégia combinada',
+      combinedGame,
+      combinedResult,
+      diffCombined
+    )}
+
+    <div class="status small muted">
+
+      <b>Distribuição no teste</b>
+
+      <br><br>
+
+      ${distributionHTML(combinedDist)}
+
+    </div>
+
+
+    <div class="status warn">
+
+      ⚠️ <b>Como interpretar:</b>
+
+      <br><br>
+
+      Este teste não demonstra capacidade de prever
+      o próximo concurso.
+
+      <br><br>
+
+      Uma diferença pequena em relação ao aleatório
+      pode ocorrer simplesmente por variação estatística.
+
+      <br><br>
+
+      O objetivo desta versão é verificar se existe
+      algum sinal consistente antes de evoluirmos
+      o algoritmo.
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   CARREGAMENTO PRINCIPAL
+========================================================= */
 
 
 async function load() {
@@ -652,6 +1460,11 @@ async function load() {
 }
 
 
+/* =========================================================
+   ATUALIZAR
+========================================================= */
+
+
 $('refreshBtn').onclick =
   async () => {
 
@@ -671,6 +1484,11 @@ $('refreshBtn').onclick =
       '🔄 Atualizar dados';
 
   };
+
+
+/* =========================================================
+   BACKTEST ORIGINAL
+========================================================= */
 
 
 $('backtestBtn').onclick =
@@ -781,6 +1599,11 @@ $('backtestBtn').onclick =
   };
 
 
+/* =========================================================
+   CANDIDATOS
+========================================================= */
+
+
 $('gamesBtn').onclick =
   async () => {
 
@@ -887,6 +1710,53 @@ $('gamesBtn').onclick =
       '🎲 Gerar candidatos e testar';
 
   };
+
+
+/* =========================================================
+   BOTÃO DA VALIDAÇÃO V7
+========================================================= */
+
+
+$('validationBtn').onclick =
+  async () => {
+
+    const b =
+      $('validationBtn');
+
+    b.disabled = true;
+
+    b.textContent =
+      '⏳ Validando...';
+
+    try {
+
+      await runValidation();
+
+    } catch (e) {
+
+      $('validation').innerHTML = `
+
+        <div class="status error">
+
+          ❌ ${esc(e.message)}
+
+        </div>
+
+      `;
+
+    }
+
+    b.disabled = false;
+
+    b.textContent =
+      '🔬 Executar validação V7';
+
+  };
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
 
 
 load();
