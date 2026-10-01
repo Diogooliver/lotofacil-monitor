@@ -1,14 +1,37 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#5b2df5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Lotofácil V11">
 
-  <title>🍀 Lotofácil Monitor V11</title>
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#5b2df5"
+  >
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+  >
+
+  <meta
+    name="apple-mobile-web-app-title"
+    content="Lotofácil V12"
+  >
+
+  <title>🍀 Lotofácil Monitor V12</title>
+
 
   <style>
 
@@ -16,8 +39,11 @@
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -25,16 +51,25 @@
         sans-serif;
 
       background: #f3f4f8;
+
       color: #171717;
+
     }
+
 
     .wrap {
-      max-width: 900px;
+
+      max-width: 950px;
+
       margin: auto;
+
       padding: 16px;
+
     }
 
+
     header {
+
       background:
         linear-gradient(
           135deg,
@@ -43,44 +78,73 @@
         );
 
       color: white;
+
       border-radius: 28px;
+
       padding: 28px 22px;
+
       margin-bottom: 18px;
 
       box-shadow:
         0 10px 30px #0002;
+
     }
+
 
     h1 {
-      margin: 0 0 8px;
+
+      margin:
+        0 0 8px;
+
       font-size: 30px;
+
     }
+
 
     h2 {
-      margin: 0 0 16px;
+
+      margin:
+        0 0 16px;
+
       font-size: 25px;
+
     }
+
 
     h3 {
-      margin-top: 20px;
+
+      margin-top: 22px;
+
     }
+
 
     .sub {
+
       font-size: 17px;
+
       opacity: .95;
+
     }
 
+
     .card {
+
       background: white;
+
       border-radius: 24px;
+
       padding: 22px;
+
       margin: 18px 0;
 
       box-shadow:
         0 5px 22px #0000000b;
+
     }
 
-    .v11 {
+
+    .v12 {
+
       background:
         linear-gradient(
           135deg,
@@ -88,224 +152,475 @@
           #eee9ff
         );
 
-      border: 1px solid #dcd2ff;
+      border:
+        1px solid #dcd2ff;
+
     }
+
 
     .metric {
+
       background: #f4f4f7;
+
       border-radius: 17px;
+
       padding: 16px;
+
     }
+
 
     .metric b {
+
       display: block;
+
       font-size: 27px;
+
       margin-top: 6px;
+
     }
+
 
     .grid {
+
       display: grid;
+
       grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
 
       gap: 12px;
+
     }
+
 
     .three {
+
       display: grid;
+
       grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
 
       gap: 12px;
+
     }
 
+
+    .four {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 12px;
+
+    }
+
+
     button {
+
       width: 100%;
+
       border: 0;
 
       background: #5b2df5;
+
       color: white;
 
       font-weight: 800;
+
       font-size: 17px;
 
       border-radius: 16px;
+
       padding: 16px 20px;
 
       cursor: pointer;
+
     }
+
 
     button:disabled {
+
       opacity: .55;
+
     }
+
 
     .secondary {
+
       background: #111827;
+
     }
+
 
     .status {
+
       background: #f1f1f5;
+
       border-radius: 16px;
+
       padding: 15px;
+
       margin-top: 14px;
+
     }
+
 
     .ok {
+
       color: #197a38;
+
     }
+
 
     .warn {
+
       color: #996000;
+
     }
+
 
     .error {
+
       color: #b42318;
+
       background: #fff1f0;
+
     }
+
 
     .muted {
+
       color: #666;
+
     }
+
 
     .small {
+
       font-size: 14px;
+
     }
+
 
     .balls {
+
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 8px;
+
       margin-top: 14px;
+
     }
 
+
     .ball {
+
       width: 43px;
+
       height: 43px;
 
       border-radius: 50%;
 
       background: #5b2df5;
+
       color: white;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       font-weight: 800;
+
     }
+
 
     .strategy {
-      border: 1px solid #e4e1ee;
+
+      border:
+        1px solid #e4e1ee;
+
       border-radius: 19px;
+
       padding: 17px;
+
       margin-top: 13px;
+
     }
+
 
     .strategy-title {
+
       font-size: 20px;
+
       font-weight: 800;
+
     }
+
 
     .positive {
+
       color: #197a38;
+
       font-weight: 800;
+
     }
+
 
     .negative {
+
       color: #b42318;
+
       font-weight: 800;
+
     }
+
+
+    .neutral {
+
+      color: #666;
+
+      font-weight: 800;
+
+    }
+
 
     .table-wrap {
+
       overflow-x: auto;
+
       margin-top: 14px;
+
     }
 
+
     table {
+
       width: 100%;
+
       border-collapse: collapse;
-      min-width: 600px;
+
+      min-width: 700px;
+
     }
+
 
     th,
     td {
-      padding: 13px 10px;
-      border-bottom: 1px solid #eee;
+
+      padding:
+        13px 10px;
+
+      border-bottom:
+        1px solid #eee;
+
       text-align: left;
+
     }
+
 
     th {
+
       font-weight: 800;
+
       background: #f7f7fa;
+
     }
+
 
     .loading {
+
       opacity: .6;
+
     }
+
 
     .note {
+
       background: #fff8df;
-      border: 1px solid #f1d47b;
+
+      border:
+        1px solid #f1d47b;
+
       color: #805b00;
+
       border-radius: 18px;
+
       padding: 17px;
+
       margin-top: 16px;
+
     }
+
 
     .progress {
+
       height: 12px;
+
       background: #e7e7ed;
+
       border-radius: 20px;
+
       overflow: hidden;
+
       margin-top: 12px;
+
     }
 
+
     .progress-bar {
+
       height: 100%;
+
       width: 0%;
+
       background: #5b2df5;
-      transition: width .2s;
+
+      transition:
+        width .2s;
+
     }
+
+
+    .rank {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 34px;
+
+      height: 34px;
+
+      border-radius: 50%;
+
+      background: #eee9ff;
+
+      font-weight: 900;
+
+    }
+
+
+    .winner-box {
+
+      background:
+        linear-gradient(
+          135deg,
+          #f4efff,
+          #eee9ff
+        );
+
+      border:
+        1px solid #d8ccff;
+
+      border-radius: 20px;
+
+      padding: 18px;
+
+      margin-top: 16px;
+
+    }
+
+
+    @media (max-width: 760px) {
+
+      .four {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+
+      }
+
+    }
+
 
     @media (max-width: 620px) {
 
       .grid,
-      .three {
-        grid-template-columns: 1fr;
+      .three,
+      .four {
+
+        grid-template-columns:
+          1fr;
+
       }
+
 
       .wrap {
+
         padding: 12px;
+
       }
+
 
       header {
-        padding: 24px 18px;
+
+        padding:
+          24px 18px;
+
       }
+
 
       h1 {
+
         font-size: 27px;
+
       }
 
+
       .ball {
+
         width: 40px;
+
         height: 40px;
+
       }
+
     }
 
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="wrap">
+
 
   <header>
 
-    <h1>🍀 Lotofácil Monitor V11</h1>
+    <h1>
+      🍀 Lotofácil Monitor V12
+    </h1>
+
 
     <div class="sub">
-      Validação fora da amostra, Walk-Forward e comparação estatística
+
+      Motor de estratégias,
+      Walk-Forward e comparação estatística
+
     </div>
+
 
     <div
       class="status"
@@ -315,10 +630,14 @@
       "
     >
 
-      🔬 <b>V11 — Teste cego histórico</b><br>
+      🧬 <b>V12 — Motor de estratégias</b>
 
-      A estratégia é construída usando somente
-      concursos anteriores ao período testado.
+      <br>
+
+      O sistema testa diferentes
+      comportamentos históricos
+      sem utilizar informações
+      posteriores ao período de treino.
 
     </div>
 
@@ -327,20 +646,32 @@
 
   <!-- ÚLTIMO CONCURSO -->
 
-  <section class="card highlight">
 
-    <h2>🎯 Último concurso</h2>
+  <section class="card">
 
-    <div id="latest" class="loading">
+    <h2>
+      🎯 Último concurso
+    </h2>
+
+
+    <div
+      id="latest"
+      class="loading"
+    >
+
       Carregando...
+
     </div>
+
 
     <button
       id="refreshBtn"
       class="secondary"
       style="margin-top:14px"
     >
+
       🔄 Atualizar dados
+
     </button>
 
   </section>
@@ -348,9 +679,13 @@
 
   <!-- ESTATÍSTICAS -->
 
+
   <section class="card">
 
-    <h2>📊 Análise estatística</h2>
+    <h2>
+      📊 Análise estatística
+    </h2>
+
 
     <div
       class="grid"
@@ -358,29 +693,50 @@
     >
 
       <div class="metric">
+
         Concursos analisados
+
         <b>—</b>
+
       </div>
 
+
       <div class="metric">
+
         Pares / ímpares
+
         <b>—</b>
+
       </div>
 
     </div>
 
 
-    <div class="grid" style="margin-top:15px">
+    <div
+      class="grid"
+      style="margin-top:15px"
+    >
+
 
       <div>
 
-        <h3>🔥 Mais frequentes</h3>
+        <h3>
+          🔥 Mais frequentes
+        </h3>
+
 
         <ul
           id="hot"
-          style="list-style:none;padding:0"
+          style="
+            list-style:none;
+            padding:0
+          "
         >
-          <li>Carregando...</li>
+
+          <li>
+            Carregando...
+          </li>
+
         </ul>
 
       </div>
@@ -388,13 +744,23 @@
 
       <div>
 
-        <h3>❄️ Menos frequentes</h3>
+        <h3>
+          ❄️ Menos frequentes
+        </h3>
+
 
         <ul
           id="cold"
-          style="list-style:none;padding:0"
+          style="
+            list-style:none;
+            padding:0
+          "
         >
-          <li>Carregando...</li>
+
+          <li>
+            Carregando...
+          </li>
+
         </ul>
 
       </div>
@@ -402,39 +768,60 @@
     </div>
 
 
-    <h3>⏳ Mais atrasados</h3>
+    <h3>
+      ⏳ Mais atrasados
+    </h3>
+
 
     <ul
       id="late"
-      style="list-style:none;padding:0"
+      style="
+        list-style:none;
+        padding:0
+      "
     >
-      <li>Carregando...</li>
+
+      <li>
+        Carregando...
+      </li>
+
     </ul>
 
   </section>
 
 
-  <!-- V11 -->
+  <!-- V12 -->
 
-  <section class="card v11">
 
-    <h2>🔬 Validação V11</h2>
+  <section class="card v12">
+
+
+    <h2>
+      🧬 Motor V12
+    </h2>
+
 
     <p>
-      O V11 separa os concursos em blocos de
-      <b>treino</b> e <b>teste</b>.
+
+      O V12 testa oito formas diferentes
+      de construir um jogo de 15 dezenas.
+
     </p>
+
 
     <p class="muted">
 
-      O jogo utilizado em cada período é criado
-      somente com informações disponíveis antes
-      daquele período.
+      Cada janela possui
+      <b>50 concursos de treino</b>
+      e
+      <b>20 concursos de teste</b>,
+      avançando 20 concursos por vez.
 
     </p>
 
 
-    <div class="three">
+    <div class="four">
+
 
       <div class="metric">
 
@@ -468,21 +855,36 @@
 
       </div>
 
+
+      <div class="metric">
+
+        🧬 Estratégias
+
+        <b>8</b>
+
+        modelos
+
+      </div>
+
+
     </div>
 
 
     <button
-      id="v11Btn"
+      id="v12Btn"
       style="margin-top:18px"
     >
-      🔬 Executar validação V11
+
+      🧬 Executar validação V12
+
     </button>
 
 
     <div
-      id="v11Status"
+      id="v12Status"
       class="status"
     >
+
       Aguardando execução...
 
     </div>
@@ -502,82 +904,119 @@
     </div>
 
 
-    <div id="v11Result"></div>
+    <div id="v12Result"></div>
+
 
   </section>
 
 
   <!-- CANDIDATOS -->
 
+
   <section class="card">
 
-    <h2>🎲 Candidatos</h2>
+
+    <h2>
+      🎲 Candidatos
+    </h2>
+
 
     <p class="muted">
 
-      Depois da validação V11, podemos gerar
-      candidatos usando as estratégias estudadas.
+      Gera um jogo de cada estratégia
+      utilizando o histórico mais recente.
 
     </p>
+
 
     <button
       id="candidateBtn"
     >
-      🎲 Gerar candidatos
+
+      🎲 Gerar candidatos V12
+
     </button>
 
+
     <div id="candidates"></div>
+
 
   </section>
 
 
   <!-- HISTÓRICO -->
 
+
   <section class="card">
 
-    <h2>📜 Últimos concursos</h2>
+
+    <h2>
+      📜 Últimos concursos
+    </h2>
+
 
     <div id="history">
+
       Carregando...
+
     </div>
+
 
   </section>
 
 
   <!-- AVISO -->
 
+
   <section class="card">
+
 
     <div class="note">
 
-      ⚠️ <b>Como interpretar o V11</b>
+
+      ⚠️ <b>Como interpretar o V12</b>
+
 
       <p>
 
-        Uma diferença positiva em relação ao
-        aleatório não demonstra, sozinha,
-        capacidade de prever concursos futuros.
+        O V12 é um laboratório estatístico.
+        Ele testa estratégias históricas
+        em períodos que não participaram
+        da construção daquele jogo.
 
       </p>
+
 
       <p>
 
-        O objetivo desta versão é verificar se
-        determinado comportamento permanece
-        quando a estratégia é aplicada em
-        concursos que não participaram da sua
-        construção.
+        Uma média próxima de 9 acertos
+        é compatível com a referência
+        matemática de um jogo aleatório
+        de 15 dezenas.
 
       </p>
+
 
       <p>
 
-        Pequenas diferenças podem ocorrer
-        naturalmente por variação estatística.
+        Uma diferença positiva em uma
+        determinada amostra não significa
+        que ela continuará existindo
+        em concursos futuros.
 
       </p>
+
+
+      <p>
+
+        O sistema não garante previsão,
+        premiação ou vantagem futura.
+
+      </p>
+
 
     </div>
+
 
   </section>
 
@@ -592,68 +1031,117 @@
 // UTILITÁRIOS
 // =====================================================
 
-const $ = id =>
-  document.getElementById(id);
+
+const $ =
+  id =>
+    document.getElementById(id);
 
 
-const esc = value =>
-  String(value ?? '')
+const esc =
+  value =>
+
+    String(
+      value ?? ''
+    )
+
     .replace(
       /[&<>"']/g,
+
       c => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
+
+        '&':
+          '&amp;',
+
+        '<':
+          '&lt;',
+
+        '>':
+          '&gt;',
+
+        '"':
+          '&quot;',
+
+        "'":
+          '&#39;'
+
       }[c])
+
     );
 
 
-const balls = nums => {
+const balls =
+  nums => {
 
-  if (!Array.isArray(nums)) {
-    return '';
-  }
 
-  return `
-    <div class="balls">
+    if (
+      !Array.isArray(nums)
+    ) {
 
-      ${
-        nums
-          .slice()
-          .sort((a,b) => Number(a)-Number(b))
-          .map(
-            n =>
-              `<span class="ball">
-                ${esc(
-                  String(n).padStart(2,'0')
-                )}
-              </span>`
-          )
-          .join('')
-      }
+      return '';
 
-    </div>
-  `;
-};
+    }
+
+
+    return `
+
+      <div class="balls">
+
+        ${
+          nums
+            .slice()
+            .sort(
+              (a,b) =>
+                Number(a) -
+                Number(b)
+            )
+            .map(
+
+              n =>
+
+                `<span class="ball">
+
+                  ${esc(
+                    String(n)
+                      .padStart(
+                        2,
+                        '0'
+                      )
+                  )}
+
+                </span>`
+
+            )
+            .join('')
+
+        }
+
+      </div>
+
+    `;
+
+  };
 
 
 async function getJson(url) {
+
 
   const response =
     await fetch(
       url,
       {
-        cache: 'no-store'
+        cache:
+          'no-store'
       }
     );
 
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
 
     throw new Error(
-      'HTTP ' + response.status
+      'HTTP ' +
+      response.status
     );
 
   }
@@ -663,7 +1151,9 @@ async function getJson(url) {
     await response.json();
 
 
-  if (json.ok === false) {
+  if (
+    json.ok === false
+  ) {
 
     throw new Error(
       json.erro ||
@@ -674,48 +1164,70 @@ async function getJson(url) {
 
 
   return json;
+
 }
 
 
 // =====================================================
-// NORMALIZAÇÃO DO HISTÓRICO
+// NORMALIZAÇÃO
 // =====================================================
+
 
 function normalizeDraw(draw) {
 
+
   const numbers =
+
     (
       draw.dezenas ||
       draw.numeros ||
       draw.numbers ||
       []
     )
+
     .map(Number)
+
     .filter(
+
       n =>
+
         Number.isFinite(n) &&
         n >= 1 &&
         n <= 25
+
     );
 
 
   return {
 
     concurso:
+
       Number(
+
         draw.concurso ||
         draw.numero ||
         0
+
       ),
 
+
     data:
-      draw.data || '',
+
+      draw.data ||
+      '',
+
 
     dezenas:
+
       [
-        ...new Set(numbers)
-      ].sort(
-        (a,b) => a-b
+        ...new Set(
+          numbers
+        )
+      ]
+
+      .sort(
+        (a,b) =>
+          a-b
       )
 
   };
@@ -724,10 +1236,12 @@ function normalizeDraw(draw) {
 
 
 // =====================================================
-// CONTAGEM DE FREQUÊNCIA
+// FREQUÊNCIA
 // =====================================================
 
+
 function frequency(draws) {
+
 
   const count =
     Array(26).fill(0);
@@ -754,28 +1268,99 @@ function frequency(draws) {
 
 
 // =====================================================
-// ESTRATÉGIA POR FREQUÊNCIA
+// ATRASO
 // =====================================================
 
+
+function delays(draws) {
+
+
+  const result =
+    Array(26).fill(
+      draws.length
+    );
+
+
+  for (
+    let i =
+      draws.length - 1;
+
+    i >= 0;
+
+    i--
+  ) {
+
+
+    for (
+      const n of
+        draws[i].dezenas
+    ) {
+
+
+      if (
+        result[n] ===
+        draws.length
+      ) {
+
+        result[n] =
+          draws.length -
+          1 -
+          i;
+
+      }
+
+    }
+
+  }
+
+
+  return result;
+
+}
+
+
+// =====================================================
+// ESTRATÉGIA FREQUÊNCIA
+// =====================================================
+
+
 function frequencyGame(draws) {
+
 
   const count =
     frequency(draws);
 
 
   return Array
+
     .from(
-      {length:25},
-      (_,i) => i + 1
+      {
+        length: 25
+      },
+
+      (_,i) =>
+        i + 1
     )
+
+    .sort(
+
+      (a,b) =>
+
+        count[b] -
+        count[a] ||
+
+        a-b
+
+    )
+
+    .slice(
+      0,
+      15
+    )
+
     .sort(
       (a,b) =>
-        count[b] - count[a] ||
-        a - b
-    )
-    .slice(0,15)
-    .sort(
-      (a,b) => a-b
+        a-b
     );
 
 }
@@ -785,17 +1370,23 @@ function frequencyGame(draws) {
 // ESTRATÉGIA RECENTE
 // =====================================================
 
+
 function recentGame(
   draws,
   recentSize = 20
 ) {
 
+
   const recent =
+
     draws.slice(
+
       Math.max(
         0,
-        draws.length - recentSize
+        draws.length -
+        recentSize
       )
+
     );
 
 
@@ -807,13 +1398,517 @@ function recentGame(
 
 
 // =====================================================
-// ESTRATÉGIA COMBINADA
+// ESTRATÉGIA ATRASADOS
 // =====================================================
+
+
+function overdueGame(draws) {
+
+
+  const delay =
+    delays(draws);
+
+
+  return Array
+
+    .from(
+      {
+        length: 25
+      },
+
+      (_,i) =>
+        i + 1
+    )
+
+    .sort(
+
+      (a,b) =>
+
+        delay[b] -
+        delay[a] ||
+
+        a-b
+
+    )
+
+    .slice(
+      0,
+      15
+    )
+
+    .sort(
+      (a,b) =>
+        a-b
+    );
+
+}
+
+
+// =====================================================
+// ESTRATÉGIA REPETIÇÃO
+// =====================================================
+
+
+function repeatGame(draws) {
+
+
+  if (
+    !draws.length
+  ) {
+
+    return [];
+
+  }
+
+
+  return draws[
+    draws.length - 1
+  ]
+  .dezenas
+  .slice()
+  .sort(
+    (a,b) =>
+      a-b
+  );
+
+}
+
+
+// =====================================================
+// MÉDIA DE PARES
+// =====================================================
+
+
+function parityTarget(draws) {
+
+
+  if (
+    !draws.length
+  ) {
+
+    return 7;
+
+  }
+
+
+  const values =
+    draws.map(
+
+      draw =>
+
+        draw.dezenas
+          .filter(
+            n =>
+              n % 2 === 0
+          )
+          .length
+
+    );
+
+
+  const count = {};
+
+
+  for (
+    const value of values
+  ) {
+
+    count[value] =
+      (
+        count[value] ||
+        0
+      ) + 1;
+
+  }
+
+
+  return Number(
+
+    Object.keys(count)
+
+      .sort(
+
+        (a,b) =>
+
+          count[b] -
+          count[a] ||
+
+          Number(a) -
+          Number(b)
+
+      )[0]
+
+  );
+
+}
+
+
+// =====================================================
+// ESTRATÉGIA PARES / ÍMPARES
+// =====================================================
+
+
+function parityGame(draws) {
+
+
+  const count =
+    frequency(draws);
+
+
+  const target =
+    parityTarget(draws);
+
+
+  const evens =
+    Array
+      .from(
+        {
+          length: 25
+        },
+        (_,i) =>
+          i + 1
+      )
+
+      .filter(
+        n =>
+          n % 2 === 0
+      )
+
+      .sort(
+
+        (a,b) =>
+          count[b] -
+          count[a] ||
+          a-b
+
+      );
+
+
+  const odds =
+    Array
+      .from(
+        {
+          length: 25
+        },
+        (_,i) =>
+          i + 1
+      )
+
+      .filter(
+        n =>
+          n % 2 !== 0
+      )
+
+      .sort(
+
+        (a,b) =>
+          count[b] -
+          count[a] ||
+          a-b
+
+      );
+
+
+  const result = [
+
+    ...evens.slice(
+      0,
+      target
+    ),
+
+    ...odds.slice(
+      0,
+      15 - target
+    )
+
+  ];
+
+
+  return result.sort(
+    (a,b) =>
+      a-b
+  );
+
+}
+
+
+// =====================================================
+// FAIXAS
+// =====================================================
+
+
+function bandOf(n) {
+
+
+  if (
+    n <= 5
+  ) {
+
+    return 0;
+
+  }
+
+
+  if (
+    n <= 10
+  ) {
+
+    return 1;
+
+  }
+
+
+  if (
+    n <= 15
+  ) {
+
+    return 2;
+
+  }
+
+
+  if (
+    n <= 20
+  ) {
+
+    return 3;
+
+  }
+
+
+  return 4;
+
+}
+
+
+// =====================================================
+// QUANTIDADE MÉDIA POR FAIXA
+// =====================================================
+
+
+function bandTargets(draws) {
+
+
+  const sums =
+    [0,0,0,0,0];
+
+
+  for (
+    const draw of draws
+  ) {
+
+
+    for (
+      const n of draw.dezenas
+    ) {
+
+      sums[
+        bandOf(n)
+      ]++;
+
+    }
+
+  }
+
+
+  if (
+    !draws.length
+  ) {
+
+    return [
+      3,
+      3,
+      3,
+      3,
+      3
+    ];
+
+  }
+
+
+  const raw =
+    sums.map(
+      x =>
+        x /
+        draws.length
+    );
+
+
+  const result =
+    raw.map(
+      x =>
+        Math.floor(x)
+    );
+
+
+  let total =
+    result.reduce(
+      (a,b) =>
+        a+b,
+      0
+    );
+
+
+  const order =
+    raw
+
+      .map(
+        (value,index) => ({
+          index,
+          rest:
+            value -
+            Math.floor(value)
+        })
+      )
+
+      .sort(
+        (a,b) =>
+          b.rest -
+          a.rest
+      );
+
+
+  let pointer = 0;
+
+
+  while (
+    total < 15
+  ) {
+
+    result[
+      order[
+        pointer %
+        order.length
+      ].index
+    ]++;
+
+    total++;
+
+    pointer++;
+
+  }
+
+
+  while (
+    total > 15
+  ) {
+
+    const candidate =
+      result.findIndex(
+        x =>
+          x > 0
+      );
+
+
+    if (
+      candidate < 0
+    ) {
+
+      break;
+
+    }
+
+
+    result[candidate]--;
+
+    total--;
+
+  }
+
+
+  return result;
+
+}
+
+
+// =====================================================
+// ESTRATÉGIA POR FAIXAS
+// =====================================================
+
+
+function bandGame(draws) {
+
+
+  const count =
+    frequency(draws);
+
+
+  const targets =
+    bandTargets(draws);
+
+
+  const result = [];
+
+
+  for (
+    let band = 0;
+    band < 5;
+    band++
+  ) {
+
+
+    const numbers =
+
+      Array
+        .from(
+          {
+            length: 25
+          },
+          (_,i) =>
+            i + 1
+        )
+
+        .filter(
+          n =>
+            bandOf(n) ===
+            band
+        )
+
+        .sort(
+
+          (a,b) =>
+            count[b] -
+            count[a] ||
+            a-b
+
+        );
+
+
+    result.push(
+
+      ...numbers.slice(
+        0,
+        targets[band]
+      )
+
+    );
+
+  }
+
+
+  return result
+    .slice(
+      0,
+      15
+    )
+    .sort(
+      (a,b) =>
+        a-b
+    );
+
+}
+
+
+// =====================================================
+// COMBINADA
+// =====================================================
+
 
 function combinedGame(
   draws,
   recentSize = 20
 ) {
+
 
   const allCount =
     frequency(draws);
@@ -821,10 +1916,13 @@ function combinedGame(
 
   const recent =
     draws.slice(
+
       Math.max(
         0,
-        draws.length - recentSize
+        draws.length -
+        recentSize
       )
+
     );
 
 
@@ -833,25 +1931,34 @@ function combinedGame(
 
 
   const scores =
+
     Array
       .from(
-        {length:25},
+        {
+          length: 25
+        },
         (_,i) => {
 
           const n =
             i + 1;
+
 
           return {
 
             n,
 
             score:
+
               (
-                allCount[n] * 0.60
+                allCount[n] *
+                0.60
               )
+
               +
+
               (
-                recentCount[n] * 0.40
+                recentCount[n] *
+                0.40
               )
 
           };
@@ -861,17 +1968,173 @@ function combinedGame(
 
 
   return scores
+
+    .sort(
+
+      (a,b) =>
+
+        b.score -
+        a.score ||
+
+        a.n-b.n
+
+    )
+
+    .slice(
+      0,
+      15
+    )
+
+    .map(
+      x =>
+        x.n
+    )
+
     .sort(
       (a,b) =>
-        b.score - a.score ||
-        a.n - b.n
-    )
-    .slice(0,15)
-    .map(
-      x => x.n
-    )
+        a-b
+    );
+
+}
+
+
+// =====================================================
+// HÍBRIDA
+// =====================================================
+
+
+function hybridGame(
+  draws
+) {
+
+
+  const count =
+    frequency(draws);
+
+
+  const recent =
+    draws.slice(
+      Math.max(
+        0,
+        draws.length -
+        20
+      )
+    );
+
+
+  const recentCount =
+    frequency(recent);
+
+
+  const delay =
+    delays(draws);
+
+
+  const scores = [];
+
+
+  for (
+    let n = 1;
+    n <= 25;
+    n++
+  ) {
+
+
+    const maxFrequency =
+      Math.max(
+        ...count.slice(
+          1
+        )
+      );
+
+
+    const maxRecent =
+      Math.max(
+        ...recentCount.slice(
+          1
+        )
+      );
+
+
+    const maxDelay =
+      Math.max(
+        ...delay.slice(
+          1
+        )
+      );
+
+
+    const frequencyScore =
+      maxFrequency
+        ? count[n] /
+          maxFrequency
+        : 0;
+
+
+    const recentScore =
+      maxRecent
+        ? recentCount[n] /
+          maxRecent
+        : 0;
+
+
+    const delayScore =
+      maxDelay
+        ? delay[n] /
+          maxDelay
+        : 0;
+
+
+    scores.push({
+
+      n,
+
+      score:
+
+        frequencyScore *
+        0.45
+
+        +
+
+        recentScore *
+        0.35
+
+        +
+
+        delayScore *
+        0.20
+
+    });
+
+  }
+
+
+  return scores
+
     .sort(
-      (a,b) => a-b
+
+      (a,b) =>
+
+        b.score -
+        a.score ||
+
+        a.n-b.n
+
+    )
+
+    .slice(
+      0,
+      15
+    )
+
+    .map(
+      x =>
+        x.n
+    )
+
+    .sort(
+      (a,b) =>
+        a-b
     );
 
 }
@@ -881,10 +2144,12 @@ function combinedGame(
 // ACERTOS
 // =====================================================
 
+
 function hits(
   game,
   draw
 ) {
+
 
   const set =
     new Set(
@@ -893,7 +2158,8 @@ function hits(
 
 
   return game.filter(
-    n => set.has(n)
+    n =>
+      set.has(n)
   ).length;
 
 }
@@ -903,17 +2169,31 @@ function hits(
 // MÉDIA
 // =====================================================
 
+
 function average(values) {
 
-  if (!values.length) {
+
+  if (
+    !values.length
+  ) {
+
     return 0;
+
   }
 
+
   return (
+
     values.reduce(
-      (a,b) => a+b,
+      (a,b) =>
+        a+b,
       0
-    ) / values.length
+    )
+
+    /
+
+    values.length
+
   );
 
 }
@@ -923,10 +2203,16 @@ function average(values) {
 // MEDIANA
 // =====================================================
 
+
 function median(values) {
 
-  if (!values.length) {
+
+  if (
+    !values.length
+  ) {
+
     return 0;
+
   }
 
 
@@ -934,42 +2220,61 @@ function median(values) {
     values
       .slice()
       .sort(
-        (a,b) => a-b
+        (a,b) =>
+          a-b
       );
 
 
   const middle =
     Math.floor(
-      sorted.length / 2
+      sorted.length /
+      2
     );
 
 
   if (
-    sorted.length % 2
+    sorted.length %
+    2
   ) {
 
-    return sorted[middle];
+    return sorted[
+      middle
+    ];
 
   }
 
 
   return (
-    sorted[middle - 1]
+
+    sorted[
+      middle - 1
+    ]
+
     +
-    sorted[middle]
+
+    sorted[
+      middle
+    ]
+
   ) / 2;
 
 }
 
 
 // =====================================================
-// DESVIO PADRÃO
+// DESVIO
 // =====================================================
+
 
 function std(values) {
 
-  if (values.length < 2) {
+
+  if (
+    values.length < 2
+  ) {
+
     return 0;
+
   }
 
 
@@ -979,13 +2284,17 @@ function std(values) {
 
   const variance =
     average(
+
       values.map(
+
         x =>
           Math.pow(
             x - avg,
             2
           )
+
       )
+
     );
 
 
@@ -1000,9 +2309,12 @@ function std(values) {
 // DISTRIBUIÇÃO
 // =====================================================
 
+
 function distribution(values) {
 
+
   const result = {};
+
 
   for (
     let i = 0;
@@ -1019,8 +2331,10 @@ function distribution(values) {
     const value of values
   ) {
 
+
     if (
-      result[value] !== undefined
+      result[value] !==
+      undefined
     ) {
 
       result[value]++;
@@ -1036,8 +2350,137 @@ function distribution(values) {
 
 
 // =====================================================
-// WALK-FORWARD V11
+// ESTRATÉGIAS V12
 // =====================================================
+
+
+function getStrategies() {
+
+
+  return {
+
+    frequencia: {
+
+      name:
+        '🔥 Frequência',
+
+      build:
+        train =>
+          frequencyGame(
+            train
+          )
+
+    },
+
+
+    recente: {
+
+      name:
+        '🕒 Recente',
+
+      build:
+        train =>
+          recentGame(
+            train,
+            20
+          )
+
+    },
+
+
+    atrasados: {
+
+      name:
+        '❄️ Atrasados',
+
+      build:
+        train =>
+          overdueGame(
+            train
+          )
+
+    },
+
+
+    repeticao: {
+
+      name:
+        '🔄 Repetição',
+
+      build:
+        train =>
+          repeatGame(
+            train
+          )
+
+    },
+
+
+    paridade: {
+
+      name:
+        '⚖️ Paridade',
+
+      build:
+        train =>
+          parityGame(
+            train
+          )
+
+    },
+
+
+    faixas: {
+
+      name:
+        '📊 Faixas',
+
+      build:
+        train =>
+          bandGame(
+            train
+          )
+
+    },
+
+
+    combinada: {
+
+      name:
+        '🧠 Combinada',
+
+      build:
+        train =>
+          combinedGame(
+            train,
+            20
+          )
+
+    },
+
+
+    hibrida: {
+
+      name:
+        '🧬 Híbrida',
+
+      build:
+        train =>
+          hybridGame(
+            train
+          )
+
+    }
+
+  };
+
+}
+
+
+// =====================================================
+// WALK-FORWARD V12
+// =====================================================
+
 
 function runWalkForward(
   draws,
@@ -1046,46 +2489,21 @@ function runWalkForward(
   step = 20
 ) {
 
-  const strategies = {
 
-    frequencia: {
-      name: '🔥 Frequência',
-      build:
-        train =>
-          frequencyGame(train)
-    },
-
-    recente: {
-      name: '🕒 Recente',
-      build:
-        train =>
-          recentGame(
-            train,
-            20
-          )
-    },
-
-    combinada: {
-      name: '🧠 Combinada',
-      build:
-        train =>
-          combinedGame(
-            train,
-            20
-          )
-    }
-
-  };
+  const strategies =
+    getStrategies();
 
 
   const results = {};
 
 
   for (
-    const key of Object.keys(
-      strategies
-    )
+    const key of
+      Object.keys(
+        strategies
+      )
   ) {
+
 
     results[key] = {
 
@@ -1109,21 +2527,41 @@ function runWalkForward(
 
 
   while (
-    start + trainSize + testSize
-    <= draws.length
+
+    start +
+    trainSize +
+    testSize
+
+    <=
+
+    draws.length
+
   ) {
 
+
     const train =
+
       draws.slice(
+
         start,
-        start + trainSize
+
+        start +
+        trainSize
+
       );
 
 
     const test =
+
       draws.slice(
-        start + trainSize,
-        start + trainSize + testSize
+
+        start +
+        trainSize,
+
+        start +
+        trainSize +
+        testSize
+
       );
 
 
@@ -1131,24 +2569,33 @@ function runWalkForward(
 
 
     for (
-      const key of Object.keys(
-        strategies
-      )
+      const key of
+        Object.keys(
+          strategies
+        )
     ) {
 
+
       const game =
+
         strategies[key]
-          .build(train);
+          .build(
+            train
+          );
 
 
-      const windowHits = [];
+      const windowHits =
+        [];
 
 
       for (
-        const draw of test
+        const draw of
+          test
       ) {
 
+
         const value =
+
           hits(
             game,
             draw
@@ -1157,20 +2604,26 @@ function runWalkForward(
 
         results[key]
           .hits
-          .push(value);
+          .push(
+            value
+          );
 
 
         windowHits.push(
           value
         );
 
+
         results[key]
           .games
           .push({
+
             concurso:
               draw.concurso,
+
             hits:
               value
+
           });
 
       }
@@ -1220,12 +2673,14 @@ function runWalkForward(
 
 
 // =====================================================
-// DISTRIBUIÇÃO DE RESULTADOS
+// DISTRIBUIÇÃO HTML
 // =====================================================
+
 
 function resultDistribution(
   hitsArray
 ) {
+
 
   const d =
     distribution(
@@ -1234,45 +2689,55 @@ function resultDistribution(
 
 
   return Object
+
     .keys(d)
+
     .filter(
       key =>
         Number(key) >= 6
     )
+
     .map(
+
       key =>
+
         `<li>
           <b>${key} acertos:</b>
           ${d[key]}
         </li>`
+
     )
+
     .join('');
 
 }
 
 
 // =====================================================
-// RENDER V11
+// RENDER V12
 // =====================================================
 
-function renderV11(
+
+function renderV12(
   results,
   draws
 ) {
+
 
   const randomExpected =
     9.0;
 
 
-  const names = [
-    'frequencia',
-    'recente',
-    'combinada'
-  ];
+  const names =
+    Object.keys(
+      results
+    );
 
 
   const summary =
+
     names.map(
+
       key => {
 
         const r =
@@ -1298,45 +2763,97 @@ function renderV11(
 
 
         const difference =
-          avg - randomExpected;
+          avg -
+          randomExpected;
 
 
         const above9 =
           r.hits.filter(
-            x => x > 9
+            x =>
+              x > 9
+          ).length;
+
+
+        const above10 =
+          r.hits.filter(
+            x =>
+              x >= 10
+          ).length;
+
+
+        const above11 =
+          r.hits.filter(
+            x =>
+              x >= 11
+          ).length;
+
+
+        const above12 =
+          r.hits.filter(
+            x =>
+              x >= 12
           ).length;
 
 
         return {
 
           key,
-          name: r.name,
+
+          name:
+            r.name,
+
           avg,
+
           med,
+
           deviation,
+
           difference,
+
           above9,
+
+          above10,
+
+          above11,
+
+          above12,
+
           total:
             r.hits.length
 
         };
 
       }
+
     );
 
 
   const totalWindows =
-    results
-      .frequencia
+    results[
+      names[0]
+    ]
       .windows
       .length;
+
+
+  const sorted =
+    summary
+      .slice()
+      .sort(
+
+        (a,b) =>
+
+          b.avg -
+          a.avg
+
+      );
 
 
   let html = `
 
     <div class="status ok">
 
-      ✅ <b>V11 concluído.</b>
+      ✅ <b>V12 concluído.</b>
 
       <br><br>
 
@@ -1350,24 +2867,43 @@ function renderV11(
       <b>${esc(totalWindows)}</b>
       janelas Walk-Forward.
 
+      <br>
+
+      Foram testadas
+      <b>${esc(names.length)}</b>
+      estratégias.
+
     </div>
 
 
-    <h3>📌 Resumo geral</h3>
+    <h3>
+      📌 Resumo das estratégias
+    </h3>
 
-    <div class="three">
+
+    <div class="four">
 
   `;
 
 
   for (
-    const s of summary
+    const s of sorted
   ) {
 
+
     const cls =
-      s.difference >= 0
+
+      s.difference > 0
         ? 'positive'
-        : 'negative';
+
+        :
+
+      s.difference < 0
+        ? 'negative'
+
+        :
+
+        'neutral';
 
 
     html += `
@@ -1382,7 +2918,12 @@ function renderV11(
 
         <span class="${cls}">
 
-          ${s.difference >= 0 ? '+' : ''}
+          ${
+            s.difference >= 0
+              ? '+'
+              : ''
+          }
+
           ${s.difference.toFixed(3)}
 
         </span>
@@ -1406,8 +2947,9 @@ function renderV11(
 
 
     <h3>
-      📊 Comparação com a referência aleatória
+      📊 Referência estatística
     </h3>
+
 
     <div class="status">
 
@@ -1416,15 +2958,23 @@ function renderV11(
 
       <br><br>
 
-      O valor serve como referência estatística.
-      Ele não representa uma previsão de concurso.
+      A diferença apresentada
+      é simplesmente a diferença
+      entre a média observada
+      e 9,000.
+
+      <br><br>
+
+      Isso não constitui previsão
+      de concursos futuros.
 
     </div>
 
 
     <h3>
-      📋 Todas as estratégias
+      📋 Comparação completa
     </h3>
+
 
     <div class="table-wrap">
 
@@ -1434,17 +2984,37 @@ function renderV11(
 
           <tr>
 
-            <th>Estratégia</th>
+            <th>
+              Estratégia
+            </th>
 
-            <th>Média</th>
+            <th>
+              Média
+            </th>
 
-            <th>Mediana</th>
+            <th>
+              Mediana
+            </th>
 
-            <th>Desvio</th>
+            <th>
+              Desvio
+            </th>
 
-            <th>Diferença</th>
+            <th>
+              Diferença
+            </th>
 
-            <th>> 9</th>
+            <th>
+              ≥10
+            </th>
+
+            <th>
+              ≥11
+            </th>
+
+            <th>
+              ≥12
+            </th>
 
           </tr>
 
@@ -1456,13 +3026,22 @@ function renderV11(
 
 
   for (
-    const s of summary
+    const s of sorted
   ) {
 
+
     const cls =
-      s.difference >= 0
+
+      s.difference > 0
         ? 'positive'
-        : 'negative';
+
+        :
+
+      s.difference < 0
+        ? 'negative'
+
+        :
+          'neutral';
 
 
     html += `
@@ -1470,13 +3049,13 @@ function renderV11(
       <tr>
 
         <td>
-          ${esc(s.name)}
+          <b>
+            ${esc(s.name)}
+          </b>
         </td>
 
         <td>
-          <b>
-            ${s.avg.toFixed(3)}
-          </b>
+          ${s.avg.toFixed(3)}
         </td>
 
         <td>
@@ -1489,15 +3068,26 @@ function renderV11(
 
         <td class="${cls}">
 
-          ${s.difference >= 0 ? '+' : ''}
+          ${
+            s.difference >= 0
+              ? '+'
+              : ''
+          }
+
           ${s.difference.toFixed(3)}
 
         </td>
 
         <td>
+          ${s.above10}/${s.total}
+        </td>
 
-          ${s.above9}/${s.total}
+        <td>
+          ${s.above11}/${s.total}
+        </td>
 
+        <td>
+          ${s.above12}/${s.total}
         </td>
 
       </tr>
@@ -1516,6 +3106,30 @@ function renderV11(
     </div>
 
 
+    <div class="winner-box">
+
+      📌 <b>Como ler esta tabela</b>
+
+      <p>
+
+        As estratégias estão ordenadas
+        apenas pela média histórica
+        observada nesta execução.
+
+      </p>
+
+      <p>
+
+        Essa ordem é descritiva.
+        Ela não significa que uma estratégia
+        terá desempenho superior nos
+        próximos concursos.
+
+      </p>
+
+    </div>
+
+
     <h3>
       📈 Resultado por janela
     </h3>
@@ -1526,6 +3140,7 @@ function renderV11(
   for (
     const key of names
   ) {
+
 
     const r =
       results[key];
@@ -1541,6 +3156,7 @@ function renderV11(
 
         </div>
 
+
         <div class="table-wrap">
 
           <table>
@@ -1549,17 +3165,26 @@ function renderV11(
 
               <tr>
 
-                <th>Janela</th>
+                <th>
+                  Janela
+                </th>
 
-                <th>Treino</th>
+                <th>
+                  Treino
+                </th>
 
-                <th>Teste</th>
+                <th>
+                  Teste
+                </th>
 
-                <th>Média</th>
+                <th>
+                  Média
+                </th>
 
               </tr>
 
             </thead>
+
 
             <tbody>
 
@@ -1567,8 +3192,10 @@ function renderV11(
 
 
     for (
-      const w of r.windows
+      const w of
+        r.windows
     ) {
+
 
       html += `
 
@@ -1579,21 +3206,31 @@ function renderV11(
           </td>
 
           <td>
+
             ${esc(w.trainStart)}
+
             →
+
             ${esc(w.trainEnd)}
+
           </td>
 
           <td>
+
             ${esc(w.testStart)}
+
             →
+
             ${esc(w.testEnd)}
+
           </td>
 
           <td>
+
             <b>
               ${w.average.toFixed(3)}
             </b>
+
           </td>
 
         </tr>
@@ -1630,6 +3267,7 @@ function renderV11(
   for (
     const key of names
   ) {
+
 
     const r =
       results[key];
@@ -1668,33 +3306,34 @@ function renderV11(
 
       <p>
 
-        O V11 utiliza uma separação temporal:
-        primeiro a estratégia é construída
-        usando o passado e depois é aplicada
-        aos concursos seguintes.
+        O V12 separa temporalmente
+        treino e teste.
 
       </p>
 
       <p>
 
-        Isso reduz o risco de vazamento de
-        informação entre treino e teste.
+        Cada jogo é construído
+        somente com os concursos
+        disponíveis antes do período
+        de teste correspondente.
 
       </p>
 
       <p>
 
-        Mesmo assim, uma diferença positiva
-        pequena em relação a 9,000 pode ocorrer
-        por variação estatística.
+        Isso reduz o risco de
+        vazamento de informação
+        entre treinamento e teste.
 
       </p>
 
       <p>
 
-        O V11 é uma ferramenta de análise
-        histórica e não garante previsão de
-        resultados futuros.
+        Mesmo uma diferença positiva
+        consistente em uma amostra
+        histórica não garante que
+        ela continuará existindo.
 
       </p>
 
@@ -1703,57 +3342,75 @@ function renderV11(
   `;
 
 
-  $('v11Result').innerHTML =
-    html;
+  $('v12Result')
+    .innerHTML =
+      html;
 
 }
 
 
 // =====================================================
-// EXECUTAR V11
+// EXECUTAR V12
 // =====================================================
 
-async function executeV11() {
+
+async function executeV12() {
+
 
   const button =
-    $('v11Btn');
+    $('v12Btn');
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
-    '⏳ Executando V11...';
+    '⏳ Executando V12...';
 
 
-  $('v11Status').innerHTML =
-    'Carregando histórico para validação...';
+  $('v12Status')
+    .innerHTML =
+      'Carregando histórico para validação...';
 
 
-  $('progressBox').style.display =
-    'block';
+  $('progressBox')
+    .style
+    .display =
+      'block';
 
 
-  $('progressBar').style.width =
-    '5%';
+  $('progressBar')
+    .style
+    .width =
+      '5%';
 
 
   try {
 
-    // CORREÇÃO V11:
-    // Antes era limit=600.
-    // Agora usamos 500 para evitar HTTP 422.
+
+    // IMPORTANTE:
+    // usamos 500 e não 600
+    // para permanecer compatível
+    // com o endpoint atual.
+
 
     const data =
       await getJson(
+
         '/api/lotofacil/history?limit=500'
+
       );
 
 
-    $('progressBar').style.width =
-      '20%';
+    $('progressBar')
+      .style
+      .width =
+        '15%';
 
 
     const raw =
+
       data.concursos ||
       data.historico ||
       data.data ||
@@ -1761,19 +3418,30 @@ async function executeV11() {
 
 
     let draws =
+
       raw
-        .map(normalizeDraw)
+
+        .map(
+          normalizeDraw
+        )
+
         .filter(
+
           d =>
-            d.dezenas.length === 15
+            d.dezenas.length ===
+            15
+
         );
 
 
     draws =
       draws.sort(
+
         (a,b) =>
+
           a.concurso -
           b.concurso
+
       );
 
 
@@ -1781,30 +3449,80 @@ async function executeV11() {
       draws.length < 70
     ) {
 
+
       throw new Error(
+
         'Histórico insuficiente. ' +
-        'São necessários pelo menos 70 concursos.'
+
+        'São necessários pelo menos ' +
+
+        '70 concursos.'
+
       );
 
     }
 
 
-    $('v11Status').innerHTML = `
+    $('v12Status')
+      .innerHTML = `
 
-      📚 Histórico carregado:
+        📚 Histórico carregado:
 
-      <b>${draws.length}</b>
-      concursos válidos.
+        <b>
+          ${draws.length}
+        </b>
 
-      <br><br>
+        concursos válidos.
 
-      🔬 Separando treino e teste...
+        <br><br>
 
-    `;
+        🧬 Preparando oito estratégias...
+
+      `;
 
 
-    $('progressBar').style.width =
-      '35%';
+    $('progressBar')
+      .style
+      .width =
+        '30%';
+
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          100
+        )
+    );
+
+
+    $('v12Status')
+      .innerHTML = `
+
+        🔬 Executando Walk-Forward...
+
+        <br><br>
+
+        Treino:
+        <b>50</b>
+
+        |
+
+        Teste:
+        <b>20</b>
+
+        |
+
+        Avanço:
+        <b>20</b>
+
+      `;
+
+
+    $('progressBar')
+      .style
+      .width =
+        '45%';
 
 
     await new Promise(
@@ -1817,16 +3535,24 @@ async function executeV11() {
 
 
     const results =
+
       runWalkForward(
+
         draws,
+
         50,
+
         20,
+
         20
+
       );
 
 
-    $('progressBar').style.width =
-      '90%';
+    $('progressBar')
+      .style
+      .width =
+        '85%';
 
 
     await new Promise(
@@ -1838,87 +3564,112 @@ async function executeV11() {
     );
 
 
-    renderV11(
+    renderV12(
       results,
       draws
     );
 
 
-    $('progressBar').style.width =
-      '100%';
+    $('progressBar')
+      .style
+      .width =
+        '100%';
 
 
-    $('v11Status').innerHTML = `
+    $('v12Status')
+      .innerHTML = `
 
-      ✅ <b>Validação V11 concluída.</b>
+        ✅ <b>
+          Validação V12 concluída.
+        </b>
 
-      <br><br>
+        <br><br>
 
-      As estratégias foram construídas
-      usando somente dados anteriores
-      aos respectivos testes.
+        Todas as estratégias foram
+        testadas em períodos posteriores
+        aos seus respectivos treinos.
 
-    `;
+      `;
 
 
   } catch (error) {
 
-    $('v11Status').innerHTML = `
 
-      <div class="status error">
+    $('v12Status')
+      .innerHTML = `
 
-        ❌ <b>Erro no V11</b>
+        <div class="status error">
 
-        <br><br>
+          ❌ <b>
+            Erro no V12
+          </b>
 
-        ${esc(
-          error.message
-        )}
+          <br><br>
 
-      </div>
+          ${esc(
+            error.message
+          )}
 
-    `;
+        </div>
+
+      `;
 
   }
 
 
-  button.disabled = false;
+  button.disabled =
+    false;
+
 
   button.textContent =
-    '🔬 Executar validação V11';
+    '🧬 Executar validação V12';
 
 }
 
 
 // =====================================================
-// CANDIDATOS
+// CANDIDATOS V12
 // =====================================================
 
+
 async function generateCandidates() {
+
 
   const button =
     $('candidateBtn');
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
     '⏳ Gerando...';
 
 
-  $('candidates').innerHTML =
-    '<div class="status">Gerando candidatos...</div>';
+  $('candidates')
+    .innerHTML =
+
+      '<div class="status">' +
+
+      'Gerando oito candidatos...' +
+
+      '</div>';
 
 
   try {
 
+
     const data =
       await getJson(
+
         '/api/lotofacil/history?limit=200'
+
       );
 
 
     const raw =
+
       data.concursos ||
       data.historico ||
       data.data ||
@@ -1926,22 +3677,34 @@ async function generateCandidates() {
 
 
     const draws =
+
       raw
-        .map(normalizeDraw)
-        .filter(
-          d =>
-            d.dezenas.length === 15
+
+        .map(
+          normalizeDraw
         )
+
+        .filter(
+
+          d =>
+            d.dezenas.length ===
+            15
+
+        )
+
         .sort(
+
           (a,b) =>
             a.concurso -
             b.concurso
+
         );
 
 
     if (
       draws.length < 50
     ) {
+
 
       throw new Error(
         'Histórico insuficiente.'
@@ -1950,44 +3713,31 @@ async function generateCandidates() {
     }
 
 
-    const games = [
-
-      {
-        name:
-          '🔥 Frequência',
-        numbers:
-          frequencyGame(draws)
-      },
-
-      {
-        name:
-          '🕒 Recente',
-        numbers:
-          recentGame(
-            draws,
-            20
-          )
-      },
-
-      {
-        name:
-          '🧠 Combinada',
-        numbers:
-          combinedGame(
-            draws,
-            20
-          )
-      }
-
-    ];
+    const strategies =
+      getStrategies();
 
 
-    let html = '';
+    let html =
+      '';
 
 
     for (
-      const game of games
+      const key of
+        Object.keys(
+          strategies
+        )
     ) {
+
+
+      const strategy =
+        strategies[key];
+
+
+      const numbers =
+        strategy.build(
+          draws
+        );
+
 
       html += `
 
@@ -1996,13 +3746,13 @@ async function generateCandidates() {
           <div class="strategy-title">
 
             ${esc(
-              game.name
+              strategy.name
             )}
 
           </div>
 
           ${balls(
-            game.numbers
+            numbers
           )}
 
         </div>
@@ -2016,44 +3766,53 @@ async function generateCandidates() {
 
       <div class="note">
 
-        ⚠️ Estes são candidatos estatísticos
-        baseados no histórico.
+        ⚠️ Estes oito jogos são
+        candidatos estatísticos
+        derivados do histórico.
 
         <br><br>
 
-        Eles não representam previsão ou
-        garantia de resultado.
+        Eles não representam
+        previsão ou garantia
+        de resultado futuro.
 
       </div>
 
     `;
 
 
-    $('candidates').innerHTML =
-      html;
+    $('candidates')
+      .innerHTML =
+        html;
 
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
-    $('candidates').innerHTML = `
 
-      <div class="status error">
+    $('candidates')
+      .innerHTML = `
 
-        ❌ ${esc(
-          error.message
-        )}
+        <div class="status error">
 
-      </div>
+          ❌ ${esc(
+            error.message
+          )}
 
-    `;
+        </div>
+
+      `;
 
   }
 
 
-  button.disabled = false;
+  button.disabled =
+    false;
+
 
   button.textContent =
-    '🎲 Gerar candidatos';
+    '🎲 Gerar candidatos V12';
 
 }
 
@@ -2062,210 +3821,316 @@ async function generateCandidates() {
 // CARREGAMENTO PRINCIPAL
 // =====================================================
 
+
 async function load() {
+
 
   try {
 
+
     const [
+
       latest,
+
       analysis,
+
       history
-    ] = await Promise.all([
 
-      getJson(
-        '/api/lotofacil/latest'
-      ),
+    ] =
 
-      getJson(
-        '/api/lotofacil/analysis?limit=100&recent=20'
-      ),
+      await Promise.all([
 
-      getJson(
-        '/api/lotofacil/history?limit=10'
-      )
+        getJson(
+          '/api/lotofacil/latest'
+        ),
 
-    ]);
+        getJson(
+          '/api/lotofacil/analysis?limit=100&recent=20'
+        ),
 
+        getJson(
+          '/api/lotofacil/history?limit=10'
+        )
 
-    $('latest').innerHTML = `
-
-      <div class="grid">
-
-        <div class="metric">
-
-          Concurso
-
-          <b>
-            ${esc(
-              latest.concurso
-            )}
-          </b>
-
-        </div>
-
-        <div class="metric">
-
-          Data
-
-          <b>
-            ${esc(
-              latest.data
-            )}
-          </b>
-
-        </div>
-
-      </div>
-
-      ${balls(
-        latest.dezenas
-      )}
-
-      <div class="status ok">
-
-        ✅ Dados atualizados com sucesso.
-
-      </div>
-
-    `;
+      ]);
 
 
-    $('metrics').innerHTML = `
+    $('latest')
+      .innerHTML = `
 
-      <div class="metric">
+        <div class="grid">
 
-        Concursos analisados
+          <div class="metric">
 
-        <b>
-          ${esc(
-            analysis.amostra
-          )}
-        </b>
-
-      </div>
-
-
-      <div class="metric">
-
-        Pares / ímpares
-
-        <b>
-
-          ${esc(
-            analysis.paresMedia
-          )}
-
-          /
-
-          ${esc(
-            analysis.imparesMedia
-          )}
-
-        </b>
-
-      </div>
-
-    `;
-
-
-    $('hot').innerHTML =
-      (
-        analysis.quentes ||
-        []
-      )
-      .map(
-        x =>
-          `<li style="padding:8px 0">
-            <b>${esc(x.numero)}</b>
-            —
-            ${esc(x.ocorrencias)}
-            vezes
-          </li>`
-      )
-      .join('');
-
-
-    $('cold').innerHTML =
-      (
-        analysis.frios ||
-        []
-      )
-      .map(
-        x =>
-          `<li style="padding:8px 0">
-            <b>${esc(x.numero)}</b>
-            —
-            ${esc(x.ocorrencias)}
-            vezes
-          </li>`
-      )
-      .join('');
-
-
-    $('late').innerHTML =
-      (
-        analysis.atrasados ||
-        []
-      )
-      .map(
-        x =>
-          `<li style="padding:8px 0">
-            <b>${esc(x.numero)}</b>
-            —
-            ${esc(x.concursosSemSair)}
-            concurso(s)
-          </li>`
-      )
-      .join('');
-
-
-    $('history').innerHTML =
-      (
-        history.concursos ||
-        []
-      )
-      .map(
-        d =>
-          `
-
-          <div class="status">
+            Concurso
 
             <b>
-              Concurso
-              ${esc(d.concurso)}
+
+              ${esc(
+                latest.concurso
+              )}
+
             </b>
-
-            —
-            ${esc(d.data)}
-
-            ${balls(
-              d.dezenas
-            )}
 
           </div>
 
-          `
-      )
-      .join('');
+
+          <div class="metric">
+
+            Data
+
+            <b>
+
+              ${esc(
+                latest.data
+              )}
+
+            </b>
+
+          </div>
+
+        </div>
 
 
-  } catch (error) {
-
-    $('latest').innerHTML = `
-
-      <div class="status error">
-
-        ❌ Não foi possível carregar os dados.
-
-        <br><br>
-
-        ${esc(
-          error.message
+        ${balls(
+          latest.dezenas
         )}
 
-      </div>
 
-    `;
+        <div class="status ok">
+
+          ✅ Dados atualizados
+          com sucesso.
+
+        </div>
+
+      `;
+
+
+    $('metrics')
+      .innerHTML = `
+
+        <div class="metric">
+
+          Concursos analisados
+
+          <b>
+
+            ${esc(
+              analysis.amostra
+            )}
+
+          </b>
+
+        </div>
+
+
+        <div class="metric">
+
+          Pares / ímpares
+
+          <b>
+
+            ${esc(
+              analysis.paresMedia
+            )}
+
+            /
+
+            ${esc(
+              analysis.imparesMedia
+            )}
+
+          </b>
+
+        </div>
+
+      `;
+
+
+    $('hot')
+      .innerHTML =
+
+        (
+          analysis.quentes ||
+          []
+        )
+
+        .map(
+
+          x =>
+
+            `<li
+              style="
+                padding:8px 0
+              "
+            >
+
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+
+              —
+
+              ${esc(
+                x.ocorrencias
+              )}
+
+              vezes
+
+            </li>`
+
+        )
+
+        .join('');
+
+
+    $('cold')
+      .innerHTML =
+
+        (
+          analysis.frios ||
+          []
+        )
+
+        .map(
+
+          x =>
+
+            `<li
+              style="
+                padding:8px 0
+              "
+            >
+
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+
+              —
+
+              ${esc(
+                x.ocorrencias
+              )}
+
+              vezes
+
+            </li>`
+
+        )
+
+        .join('');
+
+
+    $('late')
+      .innerHTML =
+
+        (
+          analysis.atrasados ||
+          []
+        )
+
+        .map(
+
+          x =>
+
+            `<li
+              style="
+                padding:8px 0
+              "
+            >
+
+              <b>
+                ${esc(
+                  x.numero
+                )}
+              </b>
+
+              —
+
+              ${esc(
+                x.concursosSemSair
+              )}
+
+              concurso(s)
+
+            </li>`
+
+        )
+
+        .join('');
+
+
+    $('history')
+      .innerHTML =
+
+        (
+          history.concursos ||
+          []
+        )
+
+        .map(
+
+          d =>
+
+            `
+
+            <div class="status">
+
+              <b>
+
+                Concurso
+                ${esc(
+                  d.concurso
+                )}
+
+              </b>
+
+              —
+
+              ${esc(
+                d.data
+              )}
+
+              ${balls(
+                d.dezenas
+              )}
+
+            </div>
+
+            `
+
+        )
+
+        .join('');
+
+
+  } catch (
+    error
+  ) {
+
+
+    $('latest')
+      .innerHTML = `
+
+        <div class="status error">
+
+          ❌ Não foi possível
+          carregar os dados.
+
+          <br><br>
+
+          ${esc(
+            error.message
+          )}
+
+        </div>
+
+      `;
 
   }
 
@@ -2276,14 +4141,20 @@ async function load() {
 // EVENTOS
 // =====================================================
 
-$('refreshBtn').onclick =
+
+$('refreshBtn')
+  .onclick =
+
   async () => {
+
 
     const button =
       $('refreshBtn');
 
 
-    button.disabled = true;
+    button.disabled =
+      true;
+
 
     button.textContent =
       '🔄 Atualizando...';
@@ -2292,7 +4163,9 @@ $('refreshBtn').onclick =
     await load();
 
 
-    button.disabled = false;
+    button.disabled =
+      false;
+
 
     button.textContent =
       '🔄 Atualizar dados';
@@ -2300,21 +4173,27 @@ $('refreshBtn').onclick =
   };
 
 
-$('v11Btn').onclick =
-  executeV11;
+$('v12Btn')
+  .onclick =
+    executeV12;
 
 
-$('candidateBtn').onclick =
-  generateCandidates;
+$('candidateBtn')
+  .onclick =
+    generateCandidates;
 
 
 // =====================================================
 // INICIAR
 // =====================================================
 
+
 load();
+
 
 </script>
 
+
 </body>
+
 </html>
