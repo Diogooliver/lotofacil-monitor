@@ -1,1479 +1,2263 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#5b2df5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Lotofácil V9">
-  <title>🍀 Lotofácil Monitor V9</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#5b2df5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Lotofácil V10">
+<title>🍀 Lotofácil Monitor V10</title>
 
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f4f8;color:#171717}
-    .wrap{max-width:900px;margin:auto;padding:14px}
-    header{background:linear-gradient(135deg,#5b2df5,#7c3aed);color:#fff;border-radius:28px;padding:26px 20px;margin-bottom:16px;box-shadow:0 10px 30px #0001}
-    h1{font-size:30px;margin:0 0 8px} h2{margin:0 0 14px;font-size:25px} h3{margin:18px 0 10px}
-    .sub{font-size:17px;opacity:.95}.card{background:#fff;border-radius:24px;padding:20px;margin:16px 0;box-shadow:0 5px 22px #0000000b}
-    .highlight{background:linear-gradient(135deg,#f7f3ff,#eee9ff);border:1px solid #ded5ff}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .metric{background:#f4f4f7;border-radius:16px;padding:14px}.metric b{display:block;font-size:25px;margin-top:5px}
-    .small{font-size:14px}.muted{color:#666}
-    button{border:0;background:#5b2df5;color:#fff;font-weight:800;font-size:17px;border-radius:15px;padding:15px 18px;cursor:pointer;width:100%}
-    button:disabled{opacity:.6}.dark{background:#111827}.balls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .ball{width:42px;height:42px;border-radius:50%;background:#5b2df5;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-    .status{padding:13px;border-radius:14px;background:#f1f1f5;margin-top:12px}.ok{color:#197a38}.warn{color:#9a5b00}.error{color:#b42318;background:#fff1f0}
-    .list{margin:8px 0;padding:0;list-style:none}.list li{padding:8px 0;border-bottom:1px solid #eee}
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.game{border:1px solid #e8e8ee;border-radius:18px;padding:15px;margin-top:12px}
-    .install-box{background:#f7f5ff;border:1px solid #ddd5ff;border-radius:18px;padding:14px;margin-top:14px}
-    .loading{opacity:.65}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eee9ff;color:#4b21b6;font-weight:800;font-size:13px;margin:3px}
-    .tablewrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:620px}.table th,.table td{text-align:left;padding:10px;border-bottom:1px solid #eee}.table th{background:#f6f6f8}
-    .good{font-weight:800}.bar{height:10px;background:#e9e9ef;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:#5b2df5;border-radius:99px}
-    .section-v9{border:1px solid #ddd5ff;background:linear-gradient(135deg,#fbf9ff,#f3efff)}
-    @media(max-width:620px){.grid,.two{grid-template-columns:1fr}.wrap{padding:10px}header{padding:23px 17px}h1{font-size:27px}.ball{width:39px;height:39px}}
-  </style>
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:#f3f4f8;
+color:#171717
+}
+
+.wrap{
+max-width:920px;
+margin:auto;
+padding:12px
+}
+
+header{
+background:linear-gradient(135deg,#5b2df5,#7c3aed);
+color:#fff;
+border-radius:28px;
+padding:26px 20px;
+margin-bottom:16px;
+box-shadow:0 10px 30px #0001
+}
+
+h1{font-size:29px;margin:0 0 8px}
+h2{font-size:24px;margin:0 0 14px}
+h3{font-size:20px;margin:18px 0 10px}
+
+.sub{
+font-size:17px;
+opacity:.96
+}
+
+.card{
+background:#fff;
+border-radius:24px;
+padding:20px;
+margin:16px 0;
+box-shadow:0 5px 22px #0000000b
+}
+
+.highlight{
+background:linear-gradient(135deg,#f8f4ff,#eee9ff);
+border:1px solid #ddd5ff
+}
+
+.v10{
+background:linear-gradient(135deg,#fbf9ff,#f0ebff);
+border:1px solid #ddd5ff
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px
+}
+
+.metric{
+background:#f4f4f7;
+border-radius:17px;
+padding:15px
+}
+
+.metric b{
+display:block;
+font-size:25px;
+margin-top:5px
+}
+
+.small{font-size:14px}
+.muted{color:#666}
+
+button{
+border:0;
+background:#5b2df5;
+color:#fff;
+font-weight:800;
+font-size:17px;
+border-radius:15px;
+padding:15px 18px;
+cursor:pointer;
+width:100%
+}
+
+button:disabled{opacity:.55}
+
+.dark{background:#111827}
+.green{background:#197a38}
+
+.status{
+padding:13px;
+border-radius:14px;
+background:#f1f1f5;
+margin-top:12px
+}
+
+.ok{color:#197a38}
+.warn{color:#985c00}
+.error{
+color:#b42318;
+background:#fff1f0
+}
+
+.balls{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-top:12px
+}
+
+.ball{
+width:41px;
+height:41px;
+border-radius:50%;
+background:#5b2df5;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:800
+}
+
+.list{
+margin:8px 0;
+padding:0;
+list-style:none
+}
+
+.list li{
+padding:8px 0;
+border-bottom:1px solid #eee
+}
+
+.two{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px
+}
+
+.game{
+border:1px solid #e6e3ef;
+border-radius:19px;
+padding:15px;
+margin-top:13px;
+background:#fff
+}
+
+.install{
+background:#f7f5ff;
+border:1px solid #ddd5ff;
+border-radius:18px;
+padding:14px;
+margin-top:14px
+}
+
+.pill{
+display:inline-block;
+padding:6px 10px;
+border-radius:999px;
+background:#eee9ff;
+color:#4b21b6;
+font-weight:800;
+font-size:13px;
+margin:3px
+}
+
+.tablewrap{
+overflow-x:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:650px
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #eee;
+text-align:left
+}
+
+th{
+background:#f5f4f8
+}
+
+.bar{
+height:9px;
+background:#e5e5eb;
+border-radius:99px;
+overflow:hidden;
+margin-top:7px
+}
+
+.bar i{
+display:block;
+height:100%;
+background:#5b2df5;
+border-radius:99px
+}
+
+.loading{opacity:.6}
+
+.note{
+background:#fff8e7;
+border:1px solid #f2d18a;
+color:#805500;
+border-radius:18px;
+padding:15px;
+margin-top:15px
+}
+
+@media(max-width:620px){
+.grid,.two{
+grid-template-columns:1fr
+}
+
+.wrap{
+padding:9px
+}
+
+header{
+padding:23px 17px
+}
+
+h1{
+font-size:27px
+}
+
+.ball{
+width:39px;
+height:39px
+}
+}
+</style>
 </head>
 
 <body>
+
 <div class="wrap">
 
 <header>
-  <h1>🍀 Lotofácil Monitor V9</h1>
-  <div class="sub">Monitoramento, estatísticas e validação Walk-Forward de estratégias</div>
-  <div class="install-box">
-    📱 <b>V9 — Validação de robustez</b><br>
-    Agora o sistema testa várias janelas e tamanhos de histórico antes de usar qualquer estratégia para gerar candidatos.
-  </div>
+
+<h1>🍀 Lotofácil Monitor V10</h1>
+
+<div class="sub">
+Análise estatística, validação histórica e geração de candidatos
+</div>
+
+<div class="install">
+📱 <b>V10 — Laboratório de estratégias</b><br>
+O sistema compara diferentes métodos e testa os candidatos no histórico.
+</div>
+
 </header>
 
+
 <section class="card highlight">
-  <h2>🎯 Último concurso</h2>
-  <div id="latest" class="loading">Carregando...</div>
-  <button class="dark" id="refreshBtn" style="margin-top:14px">🔄 Atualizar dados</button>
+
+<h2>🎯 Último concurso</h2>
+
+<div id="latest" class="loading">
+Carregando...
+</div>
+
+<button
+id="refreshBtn"
+class="dark"
+style="margin-top:14px"
+>
+🔄 Atualizar dados
+</button>
+
 </section>
+
 
 <section class="card">
-  <h2>📊 Análise estatística</h2>
-  <div class="grid" id="metrics">
-    <div class="metric">Concursos analisados<b>—</b></div>
-    <div class="metric">Pares / ímpares<b>—</b></div>
-  </div>
 
-  <div class="two" style="margin-top:16px">
-    <div>
-      <h3>🔥 Mais frequentes</h3>
-      <ul class="list" id="hot">
-        <li>Carregando...</li>
-      </ul>
-    </div>
+<h2>📊 Análise estatística</h2>
 
-    <div>
-      <h3>❄️ Menos frequentes</h3>
-      <ul class="list" id="cold">
-        <li>Carregando...</li>
-      </ul>
-    </div>
-  </div>
+<div
+class="grid"
+id="metrics"
+>
 
-  <h3>⏳ Mais atrasados</h3>
-  <ul class="list" id="late">
-    <li>Carregando...</li>
-  </ul>
+<div class="metric">
+Concursos analisados
+<b>—</b>
+</div>
 
-  <h3>📍 Média por faixa</h3>
-  <ul class="list" id="ranges">
-    <li>Carregando...</li>
-  </ul>
+<div class="metric">
+Pares / ímpares
+<b>—</b>
+</div>
+
+</div>
+
+
+<div class="two" style="margin-top:16px">
+
+<div>
+
+<h3>🔥 Mais frequentes</h3>
+
+<ul
+class="list"
+id="hot"
+>
+<li>Carregando...</li>
+</ul>
+
+</div>
+
+
+<div>
+
+<h3>❄️ Menos frequentes</h3>
+
+<ul
+class="list"
+id="cold"
+>
+<li>Carregando...</li>
+</ul>
+
+</div>
+
+</div>
+
+
+<h3>⏳ Mais atrasados</h3>
+
+<ul
+class="list"
+id="late"
+>
+<li>Carregando...</li>
+</ul>
+
+
+<h3>📍 Média por faixa</h3>
+
+<ul
+class="list"
+id="ranges"
+>
+<li>Carregando...</li>
+</ul>
+
 </section>
 
-<section class="card section-v9">
-  <h2>🔬 V9 — Validação de robustez</h2>
 
-  <p>
-    O V9 testa <b>frequência</b>, <b>recente</b> e <b>combinada</b> em várias janelas
-    Walk-Forward. O treino vem antes do teste, sem usar os concursos de teste para montar o jogo.
-  </p>
+<section class="card v10">
 
-  <div class="grid">
-    <div class="metric">
-      Treinos testados
-      <b>50 / 100 / 200</b>
-    </div>
+<h2>🔬 V10 — Validação avançada</h2>
 
-    <div class="metric">
-      Testes por janela
-      <b>20 concursos</b>
-    </div>
+<p>
+O V10 separa períodos de treino e teste e compara
+as estratégias em várias janelas.
+</p>
 
-    <div class="metric">
-      Avanço
-      <b>20 concursos</b>
-    </div>
+<div class="grid">
 
-    <div class="metric">
-      Referência
-      <b>9,000 acertos</b>
-    </div>
-  </div>
+<div class="metric">
+Referência aleatória
+<b>9,000</b>
+</div>
 
-  <button id="v9Btn" style="margin-top:14px">
-    🔬 Executar validação V9
-  </button>
+<div class="metric">
+Treinos
+<b>50 / 100 / 200</b>
+</div>
 
-  <div id="v9" class="status">
-    Aguardando execução...
-  </div>
+<div class="metric">
+Teste por janela
+<b>20</b>
+</div>
+
+<div class="metric">
+Estratégias
+<b>3</b>
+</div>
+
+</div>
+
+<button
+id="v10Btn"
+style="margin-top:14px"
+>
+🔬 Executar validação V10
+</button>
+
+<div
+id="v10"
+class="status"
+>
+Aguardando execução...
+</div>
+
 </section>
+
 
 <section class="card">
-  <h2>🧪 Backtest</h2>
 
-  <p class="small muted">
-    Backtest histórico simples para comparação.
-  </p>
+<h2>⚖️ Estrutura do histórico</h2>
 
-  <button id="backtestBtn">
-    ▶️ Executar Backtest
-  </button>
+<button
+id="structureBtn"
+>
+📊 Analisar estrutura
+</button>
 
-  <div id="backtest" class="status">
-    Aguardando execução...
-  </div>
+<div
+id="structure"
+class="status"
+>
+Aguardando análise...
+</div>
+
 </section>
+
+
+<section class="card v10">
+
+<h2>🎯 Gerador V10</h2>
+
+<p class="muted">
+Os candidatos são construídos usando uma combinação
+de frequência histórica, comportamento recente,
+equilíbrio de pares/ímpares, faixas e repetição.
+</p>
+
+<button
+id="generateBtn"
+>
+🎲 Gerar 5 candidatos V10
+</button>
+
+<div
+id="candidates"
+>
+</div>
+
+</section>
+
 
 <section class="card">
-  <h2>🎲 Candidatos para teste</h2>
 
-  <p class="small muted">
-    Gera conjuntos candidatos com base nas estatísticas disponíveis e testa no histórico.
-  </p>
+<h2>🧪 Backtest tradicional</h2>
 
-  <button id="gamesBtn">
-    🎲 Gerar candidatos e testar
-  </button>
+<button
+id="backtestBtn"
+>
+▶️ Executar Backtest
+</button>
 
-  <div id="games"></div>
+<div
+id="backtest"
+class="status"
+>
+Aguardando execução...
+</div>
+
 </section>
+
 
 <section class="card">
-  <h2>📜 Últimos concursos</h2>
-  <div id="history">
-    Carregando...
-  </div>
+
+<h2>📜 Últimos concursos</h2>
+
+<div id="history">
+Carregando...
+</div>
+
 </section>
+
 
 <section class="card small muted">
-  <b>ℹ️ Sobre o V9</b>
 
-  <p>
-    O V9 é uma ferramenta de análise histórica. Ele não altera as probabilidades
-    matemáticas do sorteio e não garante nem prevê o próximo concurso.
-  </p>
+<b>ℹ️ Importante</b>
 
-  <p>
-    A referência de <b>9,000 acertos</b> é a expectativa matemática de um jogo
-    de 15 dezenas comparado a um sorteio de 15 dezenas entre 25.
-  </p>
+<p>
+O V10 é uma ferramenta estatística.
+Ele não consegue garantir ou prever o próximo sorteio.
+</p>
+
+<p>
+A referência de 9,000 acertos representa a expectativa
+matemática média de um jogo de 15 dezenas contra um sorteio
+de 15 dezenas entre 25.
+</p>
+
 </section>
 
 </div>
 
+
 <script>
 
-const $ = id => document.getElementById(id);
+const $=id=>
+document.getElementById(id);
 
 
-const esc = s =>
-  String(s ?? '').replace(
-    /[&<>"']/g,
-    c => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c])
-  );
+function esc(s){
+
+return String(s??'').replace(
+/[&<>"']/g,
+c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c])
+);
+
+}
 
 
-const balls = nums => {
+function balls(nums){
 
-  if(!Array.isArray(nums)) return '';
+if(!Array.isArray(nums))
+return '';
 
-  return `
-    <div class="balls">
+return `
+<div class="balls">
 
-      ${nums.map(
-        n =>
-          `<span class="ball">${esc(n)}</span>`
-      ).join('')}
+${nums.map(
+n=>
+`<span class="ball">${esc(n)}</span>`
+).join('')}
 
-    </div>
-  `;
-};
+</div>
+`;
+
+}
 
 
 async function getJson(url){
 
-  const r =
-    await fetch(
-      url,
-      {
-        cache:'no-store'
-      }
-    );
+const r=
+await fetch(
+url,
+{
+cache:'no-store'
+}
+);
 
-  if(!r.ok){
+if(!r.ok)
+throw new Error(
+'HTTP '+r.status
+);
 
-    throw new Error(
-      'Servidor respondeu com HTTP ' +
-      r.status
-    );
+const j=
+await r.json();
 
-  }
+if(j.ok===false)
+throw new Error(
+j.erro||'Erro da API'
+);
 
-  const j =
-    await r.json();
+return j;
 
-  if(j.ok === false){
-
-    throw new Error(
-      j.erro ||
-      'Erro retornado pela API'
-    );
-
-  }
-
-  return j;
 }
 
 
 function mean(a){
 
-  return a.length
-    ? a.reduce(
-        (x,y)=>x+y,
-        0
-      ) / a.length
-    : 0;
-
-}
-
-
-function median(a){
-
-  if(!a.length) return 0;
-
-  const b =
-    [...a].sort(
-      (x,y)=>x-y
-    );
-
-  const m =
-    Math.floor(
-      b.length / 2
-    );
-
-  return b.length % 2
-    ? b[m]
-    : (b[m-1] + b[m]) / 2;
+return a.length
+? a.reduce(
+(a,b)=>a+b,
+0
+)/a.length
+:0;
 
 }
 
 
 function sd(a){
 
-  if(a.length < 2)
-    return 0;
+if(a.length<2)
+return 0;
 
-  const m =
-    mean(a);
+const m=mean(a);
 
-  return Math.sqrt(
-    mean(
-      a.map(
-        x => (x-m)**2
-      )
-    )
-  );
+return Math.sqrt(
+mean(
+a.map(
+x=>(x-m)**2
+)
+)
+);
 
 }
 
 
 function fmt(n,d=3){
 
-  return Number(n).toFixed(d);
-
-}
-
-
-function pct(n){
-
-  return (
-    n * 100
-  ).toFixed(1) + '%';
+return Number(n).toFixed(d);
 
 }
 
 
 function normalizeDraw(d){
 
-  const nums =
-    Array.isArray(d.dezenas)
-      ? d.dezenas
-          .map(Number)
-          .filter(
-            n => n >= 1 && n <= 25
-          )
-      : [];
+const nums=
+Array.isArray(d.dezenas)
+? d.dezenas
+.map(Number)
+.filter(
+n=>n>=1&&n<=25
+)
+:[];
 
-  return {
-    ...d,
-    dezenas:
-      [...new Set(nums)]
-        .sort(
-          (a,b)=>a-b
-        )
-  };
-
-}
-
-
-function countFreq(draws){
-
-  const f =
-    Array.from(
-      {length:26},
-      ()=>0
-    );
-
-  draws.forEach(
-    d =>
-      d.dezenas.forEach(
-        n => f[n]++
-      )
-  );
-
-  return f;
+return {
+...d,
+dezenas:
+[...new Set(nums)]
+.sort(
+(a,b)=>a-b
+)
+};
 
 }
 
 
-function top15ByScore(scores){
+async function history(limit=500){
 
-  return Array.from(
-    {length:25},
-    (_,i)=>i+1
-  )
-  .sort(
-    (a,b)=>
-      (scores[b] || 0) -
-      (scores[a] || 0) ||
-      a-b
-  )
-  .slice(0,15)
-  .sort(
-    (a,b)=>a-b
-  );
+const j=
+await getJson(
+'/api/lotofacil/history?limit='+limit
+);
 
-}
+const a=
+(j.concursos||[])
+.map(normalizeDraw)
+.filter(
+d=>d.dezenas.length===15
+);
 
+a.sort(
+(a,b)=>
+Number(a.concurso)-
+Number(b.concurso)
+);
 
-function frequencyGame(train){
-
-  const f =
-    countFreq(train);
-
-  return top15ByScore(f);
+return a;
 
 }
 
 
-function recentGame(
-  train,
-  recentN=20
+function frequency(draws){
+
+const f=
+Array(26).fill(0);
+
+draws.forEach(
+d=>
+d.dezenas.forEach(
+n=>f[n]++
+)
+);
+
+return f;
+
+}
+
+
+function topNumbers(scores){
+
+return Array.from(
+{length:25},
+(_,i)=>i+1
+)
+.sort(
+(a,b)=>
+(scores[b]||0)-
+(scores[a]||0)||
+a-b
+)
+.slice(0,15)
+.sort(
+(a,b)=>a-b
+);
+
+}
+
+
+function gameFrequency(draws){
+
+return topNumbers(
+frequency(draws)
+);
+
+}
+
+
+function gameRecent(draws){
+
+const r=
+draws.slice(
+-Math.min(20,draws.length)
+);
+
+return topNumbers(
+frequency(r)
+);
+
+}
+
+
+function gameCombined(draws){
+
+const all=
+frequency(draws);
+
+const r=
+frequency(
+draws.slice(
+-Math.min(20,draws.length)
+)
+);
+
+const scores=
+Array(26).fill(0);
+
+for(
+let n=1;n<=25;n++
 ){
 
-  const recent =
-    train.slice(
-      -Math.min(
-        recentN,
-        train.length
-      )
-    );
-
-  const f =
-    countFreq(recent);
-
-  return top15ByScore(f);
+scores[n]=
+0.45*
+(all[n]/Math.max(1,draws.length))
++
+0.55*
+(r[n]/Math.max(
+1,
+Math.min(20,draws.length)
+));
 
 }
 
-
-function combinedGame(train){
-
-  const fAll =
-    countFreq(train);
-
-  const recent =
-    train.slice(
-      -Math.min(
-        20,
-        train.length
-      )
-    );
-
-  const fRecent =
-    countFreq(recent);
-
-  const scores =
-    Array(26).fill(0);
-
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
-
-    const allRate =
-      fAll[n] /
-      Math.max(
-        1,
-        train.length
-      );
-
-    const recRate =
-      fRecent[n] /
-      Math.max(
-        1,
-        recent.length
-      );
-
-    scores[n] =
-      0.45 * allRate +
-      0.55 * recRate;
-
-  }
-
-  return top15ByScore(
-    scores
-  );
+return topNumbers(scores);
 
 }
 
 
 function hits(game,draw){
 
-  const set =
-    new Set(
-      draw.dezenas
-    );
+const s=
+new Set(draw.dezenas);
 
-  return game.reduce(
-    (s,n)=>
-      s +
-      (
-        set.has(n)
-          ? 1
-          : 0
-      ),
-    0
-  );
+return game.reduce(
+(t,n)=>
+t+(s.has(n)?1:0),
+0
+);
 
 }
 
 
-function evaluate(
-  gameFn,
-  train,
-  test
-){
+function parity(game){
 
-  const vals =
-    test.map(
-      d =>
-        hits(
-          gameFn(train),
-          d
-        )
-    );
+let p=0;
 
-  return {
+game.forEach(
+n=>{
+if(n%2===0)p++;
+}
+);
 
-    vals,
+return {
+pares:p,
+impares:15-p
+};
 
-    mean:
-      mean(vals),
+}
 
-    median:
-      median(vals),
 
-    min:
-      Math.min(...vals),
+function ranges(game){
 
-    max:
-      Math.max(...vals),
+return [
 
-    sd:
-      sd(vals)
+game.filter(n=>n<=5).length,
 
-  };
+game.filter(
+n=>n>=6&&n<=10
+).length,
+
+game.filter(
+n=>n>=11&&n<=15
+).length,
+
+game.filter(
+n=>n>=16&&n<=20
+).length,
+
+game.filter(
+n=>n>=21
+).length
+
+];
+
+}
+
+
+function overlap(a,b){
+
+const s=
+new Set(b);
+
+return a.filter(
+n=>s.has(n)
+).length;
+
+}
+
+
+function similarity(a,b){
+
+return overlap(a,b)/15;
 
 }
 
 
 function windows(
-  draws,
-  trainSize,
-  testSize,
-  step
+draws,
+train,
+test,
+step
 ){
 
-  const out = [];
+const out=[];
 
-  for(
-    let start=0;
-    start +
-      trainSize +
-      testSize <=
-      draws.length;
-    start += step
-  ){
+for(
+let i=0;
+i+train+test<=draws.length;
+i+=step
+){
 
-    out.push({
+out.push({
 
-      train:
-        draws.slice(
-          start,
-          start + trainSize
-        ),
+train:
+draws.slice(
+i,
+i+train
+),
 
-      test:
-        draws.slice(
-          start + trainSize,
-          start +
-            trainSize +
-            testSize
-        )
+test:
+draws.slice(
+i+train,
+i+train+test
+)
 
-    });
+});
 
-  }
+}
 
-  return out;
+return out;
 
 }
 
 
-async function loadHistory(
-  limit=500
+function evaluate(
+fn,
+train,
+test
 ){
 
-  const j =
-    await getJson(
-      '/api/lotofacil/history?limit=' +
-      limit
-    );
+const vals=
+test.map(
+d=>
+hits(
+fn(train),
+d
+)
+);
 
-  const arr =
-    (j.concursos || [])
-      .map(normalizeDraw)
-      .filter(
-        d =>
-          d.dezenas.length === 15
-      );
+return {
 
-  arr.sort(
-    (a,b)=>
-      Number(a.concurso) -
-      Number(b.concurso)
-  );
+mean:mean(vals),
 
-  return arr;
+min:Math.min(...vals),
+
+max:Math.max(...vals),
+
+sd:sd(vals),
+
+above:
+vals.filter(
+x=>x>9
+).length,
+
+tests:vals.length
+
+};
 
 }
 
 
 async function load(){
 
-  $('latest')
-    .classList
-    .add('loading');
+try{
 
-  try{
+const [
+latest,
+analysis,
+hist
+]=
+await Promise.all([
 
-    const [
-      latest,
-      analysis,
-      history
-    ] =
-      await Promise.all([
+getJson(
+'/api/lotofacil/latest'
+),
 
-        getJson(
-          '/api/lotofacil/latest'
-        ),
+getJson(
+'/api/lotofacil/analysis?limit=100&recent=20'
+),
 
-        getJson(
-          '/api/lotofacil/analysis?limit=100&recent=20'
-        ),
+getJson(
+'/api/lotofacil/history?limit=10'
+)
 
-        getJson(
-          '/api/lotofacil/history?limit=10'
-        )
-
-      ]);
+]);
 
 
-    $('latest').innerHTML = `
+$('latest').innerHTML=`
 
-      <div class="grid">
+<div class="grid">
 
-        <div class="metric">
+<div class="metric">
+Concurso
+<b>
+${esc(latest.concurso)}
+</b>
+</div>
 
-          Concurso
+<div class="metric">
+Data
+<b>
+${esc(latest.data)}
+</b>
+</div>
 
-          <b>
-            ${esc(latest.concurso)}
-          </b>
+</div>
 
-        </div>
+${balls(latest.dezenas)}
 
-        <div class="metric">
+<div class="status ok">
+✅ Dados atualizados com sucesso.
+</div>
 
-          Data
-
-          <b>
-            ${esc(latest.data)}
-          </b>
-
-        </div>
-
-      </div>
-
-      ${balls(latest.dezenas)}
-
-      <div class="status ok">
-        ✅ Dados atualizados com sucesso.
-      </div>
-
-    `;
+`;
 
 
-    $('metrics').innerHTML = `
+$('metrics').innerHTML=`
 
-      <div class="metric">
+<div class="metric">
+Concursos analisados
+<b>
+${esc(analysis.amostra)}
+</b>
+</div>
 
-        Concursos analisados
+<div class="metric">
+Pares / ímpares
+<b>
+${esc(analysis.paresMedia)}
+/
+${esc(analysis.imparesMedia)}
+</b>
+</div>
 
-        <b>
-          ${esc(analysis.amostra)}
-        </b>
-
-      </div>
-
-      <div class="metric">
-
-        Pares / ímpares
-
-        <b>
-          ${esc(analysis.paresMedia)}
-          /
-          ${esc(analysis.imparesMedia)}
-        </b>
-
-      </div>
-
-    `;
+`;
 
 
-    $('hot').innerHTML =
-      (analysis.quentes || [])
-      .map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.ocorrencias)} vezes
-          </li>`
-      )
-      .join('');
+$('hot').innerHTML=
+(analysis.quentes||[])
+.map(
+x=>
+`<li>
+<b>${esc(x.numero)}</b>
+— ${esc(x.ocorrencias)} vezes
+</li>`
+)
+.join('');
 
 
-    $('cold').innerHTML =
-      (analysis.frios || [])
-      .map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.ocorrencias)} vezes
-          </li>`
-      )
-      .join('');
+$('cold').innerHTML=
+(analysis.frios||[])
+.map(
+x=>
+`<li>
+<b>${esc(x.numero)}</b>
+— ${esc(x.ocorrencias)} vezes
+</li>`
+)
+.join('');
 
 
-    $('late').innerHTML =
-      (analysis.atrasados || [])
-      .map(
-        x =>
-          `<li>
-            <b>${esc(x.numero)}</b>
-            — ${esc(x.concursosSemSair)}
-            concurso(s)
-          </li>`
-      )
-      .join('');
+$('late').innerHTML=
+(analysis.atrasados||[])
+.map(
+x=>
+`<li>
+<b>${esc(x.numero)}</b>
+— ${esc(x.concursosSemSair)} concurso(s)
+</li>`
+)
+.join('');
 
 
-    $('ranges').innerHTML =
-      Object.entries(
-        analysis.faixasMedia || {}
-      )
-      .map(
-        ([k,v]) =>
-          `<li>
-            <b>${esc(k)}</b>
-            — média ${esc(v)}
-          </li>`
-      )
-      .join('');
+$('ranges').innerHTML=
+Object.entries(
+analysis.faixasMedia||{}
+)
+.map(
+([k,v])=>
+`<li>
+<b>${esc(k)}</b>
+— média ${esc(v)}
+</li>`
+)
+.join('');
 
 
-    $('history').innerHTML =
-      (history.concursos || [])
-      .map(
-        d => `
+$('history').innerHTML=
+(hist.concursos||[])
+.map(
+d=>
+`<div class="status">
 
-          <div class="status">
+<b>
+Concurso ${esc(d.concurso)}
+</b>
 
-            <b>
-              Concurso ${esc(d.concurso)}
-            </b>
+—
+${esc(d.data)}
 
-            —
-            ${esc(d.data)}
+${balls(d.dezenas)}
 
-            ${balls(d.dezenas)}
-
-          </div>
-
-        `
-      )
-      .join('');
+</div>`
+)
+.join('');
 
 
-    $('latest')
-      .classList
-      .remove('loading');
+}catch(e){
 
+$('latest').innerHTML=`
 
-  }catch(e){
+<div class="status error">
+❌ ${esc(e.message)}
+</div>
 
-    $('latest').innerHTML = `
+`;
 
-      <div class="status error">
-
-        ❌ ${esc(e.message)}
-
-      </div>
-
-    `;
-
-    $('latest')
-      .classList
-      .remove('loading');
-
-  }
+}
 
 }
 
 
-async function runV9(){
+async function runV10(){
 
-  const btn =
-    $('v9Btn');
+const b=$('v10Btn');
 
-  btn.disabled = true;
+b.disabled=true;
 
-  btn.textContent =
-    '⏳ Executando V9...';
+b.textContent=
+'⏳ Executando V10...';
 
-  $('v9').innerHTML =
-    'Carregando histórico e executando as janelas...';
+$('v10').innerHTML=
+'Carregando histórico e executando as validações...';
 
 
-  try{
+try{
 
-    const draws =
-      await loadHistory(500);
+const draws=
+await history(500);
 
 
-    if(
-      draws.length < 130
-    ){
+const strategies=[
 
-      throw new Error(
-        'Histórico insuficiente. Foram encontrados apenas ' +
-        draws.length +
-        ' concursos válidos.'
-      );
+{
+key:'frequency',
+name:'🔥 Frequência',
+fn:gameFrequency
+},
 
-    }
+{
+key:'recent',
+name:'🕒 Recente',
+fn:gameRecent
+},
 
+{
+key:'combined',
+name:'🧠 Combinada',
+fn:gameCombined
+}
 
-    const configs = [
+];
 
-      {
-        train:50,
-        test:20,
-        step:20
-      },
 
-      {
-        train:100,
-        test:20,
-        step:20
-      },
+const configs=[
 
-      {
-        train:200,
-        test:20,
-        step:20
-      }
+{train:50,test:20,step:20},
 
-    ];
+{train:100,test:20,step:20},
 
+{train:200,test:20,step:20}
 
-    const strategies = [
+];
 
-      {
-        key:'freq',
-        name:'🔥 Frequência',
-        fn:frequencyGame
-      },
 
-      {
-        key:'recent',
-        name:'🕒 Recente',
-        fn:recentGame
-      },
+const rows=[];
 
-      {
-        key:'combined',
-        name:'🧠 Combinada',
-        fn:combinedGame
-      }
 
-    ];
+strategies.forEach(
+st=>{
 
+configs.forEach(
+cfg=>{
 
-    const all = [];
+const ws=
+windows(
+draws,
+cfg.train,
+cfg.test,
+cfg.step
+);
 
+const results=
+ws.map(
+w=>
+evaluate(
+st.fn,
+w.train,
+w.test
+)
+);
 
-    for(
-      const cfg of configs
-    ){
+rows.push({
 
-      const ws =
-        windows(
-          draws,
-          cfg.train,
-          cfg.test,
-          cfg.step
-        );
+name:st.name,
 
+train:cfg.train,
 
-      for(
-        const st of strategies
-      ){
+test:cfg.test,
 
-        const values = [];
-        const above = [];
-        const medians = [];
-        const sds = [];
+windows:results.length,
 
+mean:
+mean(
+results.map(
+x=>x.mean
+)
+),
 
-        ws.forEach(
-          w => {
+min:
+Math.min(
+...results.map(
+x=>x.mean
+)
+),
 
-            const r =
-              evaluate(
-                st.fn,
-                w.train,
-                w.test
-              );
+max:
+Math.max(
+...results.map(
+x=>x.mean
+)
+),
 
-            values.push(
-              r.mean
-            );
+above:
+results.reduce(
+(a,x)=>a+x.above,
+0
+),
 
-            medians.push(
-              r.median
-            );
+tests:
+results.reduce(
+(a,x)=>a+x.tests,
+0
+)
 
-            sds.push(
-              r.sd
-            );
+});
 
-            above.push(
-              r.mean > 9
-            );
+});
 
-          }
-        );
+});
 
 
-        all.push({
+const summary=
+strategies.map(
+st=>{
 
-          ...cfg,
+const r=
+rows.filter(
+x=>x.name===st.name
+);
 
-          key:
-            st.key,
+return {
 
-          name:
-            st.name,
+name:st.name,
 
-          windows:
-            ws.length,
+mean:
+mean(
+r.map(x=>x.mean)
+),
 
-          mean:
-            mean(values),
+above:
+r.reduce(
+(a,x)=>a+x.above,
+0
+),
 
-          median:
-            mean(medians),
+tests:
+r.reduce(
+(a,x)=>a+x.tests,
+0
+)
 
-          sd:
-            mean(sds),
+};
 
-          min:
-            Math.min(...values),
+});
 
-          max:
-            Math.max(...values),
 
-          above:
-            above.filter(
-              Boolean
-            ).length,
+$('v10').innerHTML=`
 
-          aboveRate:
-            above.length
-              ? above.filter(
-                  Boolean
-                ).length /
-                above.length
-              : 0
+<div class="status ok">
 
-        });
+✅ V10 concluído.
 
-      }
+<br>
 
-    }
+Foram analisados
+<b>${draws.length}</b>
+concursos válidos.
 
+</div>
 
-    const overall = {};
 
+<h3>
+📌 Resumo das estratégias
+</h3>
 
-    for(
-      const st of strategies
-    ){
 
-      const rows =
-        all.filter(
-          x =>
-            x.key ===
-            st.key
-        );
+<div class="grid">
 
+${summary.map(
+x=>`
 
-      overall[st.key] = {
+<div class="metric">
 
-        name:
-          st.name,
+${x.name}
 
-        mean:
-          mean(
-            rows.map(
-              x => x.mean
-            )
-          ),
+<b>
+${fmt(x.mean)}
+</b>
 
-        above:
-          rows.reduce(
-            (a,x)=>
-              a + x.above,
-            0
-          ),
+<span class="small muted">
+${x.above} testes acima de 9 em ${x.tests}
+</span>
 
-        total:
-          rows.reduce(
-            (a,x)=>
-              a + x.windows,
-            0
-          )
+</div>
 
-      };
+`
+).join('')}
 
-    }
+</div>
 
 
-    const rows =
-      all.map(
-        x => `
+<h3>
+📋 Todas as configurações
+</h3>
 
-          <tr>
 
-            <td>
-              ${esc(x.name)}
-            </td>
+<div class="tablewrap">
 
-            <td>
-              ${x.train}
-            </td>
+<table>
 
-            <td>
-              ${x.test}
-            </td>
+<thead>
 
-            <td>
-              ${x.windows}
-            </td>
+<tr>
 
-            <td>
-              <b>
-                ${fmt(x.mean)}
-              </b>
-            </td>
+<th>
+Estratégia
+</th>
 
-            <td>
-              ${fmt(x.median)}
-            </td>
+<th>
+Treino
+</th>
 
-            <td>
-              ${fmt(x.min,2)}
-              –
-              ${fmt(x.max,2)}
-            </td>
+<th>
+Teste
+</th>
 
-            <td>
-              ${x.above}/${x.windows}
-              (${pct(x.aboveRate)})
-            </td>
+<th>
+Janelas
+</th>
 
-          </tr>
+<th>
+Média
+</th>
 
-        `
-      )
-      .join('');
+<th>
+Faixa
+</th>
 
+<th>
+>9
+</th>
 
-    const overallHtml =
-      Object.values(
-        overall
-      )
-      .map(
-        x => `
+</tr>
 
-          <div class="metric">
+</thead>
 
-            ${x.name}
+<tbody>
 
-            <b>
-              ${fmt(x.mean)}
-            </b>
+${rows.map(
+x=>`
 
-            <span class="small muted">
+<tr>
 
-              ${x.above}/${x.total}
-              janelas acima de 9,000
+<td>
+${esc(x.name)}
+</td>
 
-            </span>
+<td>
+${x.train}
+</td>
 
-          </div>
+<td>
+${x.test}
+</td>
 
-        `
-      )
-      .join('');
+<td>
+${x.windows}
+</td>
 
+<td>
+<b>${fmt(x.mean)}</b>
+</td>
 
-    $('v9').innerHTML = `
+<td>
+${fmt(x.min,2)}
+–
+${fmt(x.max,2)}
+</td>
 
-      <div class="status ok">
+<td>
+${x.above}
+</td>
 
-        ✅ Validação V9 concluída com
-        ${draws.length}
-        concursos válidos.
+</tr>
 
-      </div>
+`
+).join('')}
 
+</tbody>
 
-      <h3>
-        📌 Resumo geral
-      </h3>
+</table>
 
+</div>
 
-      <div class="grid">
 
-        ${overallHtml}
+<div class="note">
 
-      </div>
+⚠️ <b>Leitura correta:</b><br><br>
 
+O objetivo desta validação é verificar
+se uma estratégia apresenta comportamento
+consistente em diferentes períodos.
 
-      <h3>
-        📋 Todas as configurações
-      </h3>
+Uma média próxima de 9,000 não significa
+vantagem comprovada. Pequenas diferenças
+podem surgir naturalmente por variação estatística.
 
+</div>
 
-      <div class="tablewrap">
+`;
 
-        <table class="table">
+}catch(e){
 
-          <thead>
+$('v10').innerHTML=`
 
-            <tr>
+<div class="status error">
+❌ ${esc(e.message)}
+</div>
 
-              <th>
-                Estratégia
-              </th>
+`;
 
-              <th>
-                Treino
-              </th>
+}
 
-              <th>
-                Teste
-              </th>
+b.disabled=false;
 
-              <th>
-                Janelas
-              </th>
-
-              <th>
-                Média
-              </th>
-
-              <th>
-                Mediana
-              </th>
-
-              <th>
-                Min–Máx
-              </th>
-
-              <th>
-                Acima de 9
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            ${rows}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-
-      <div class="status warn">
-
-        ⚠️ <b>Como interpretar:</b>
-
-        <br><br>
-
-        O V9 não procura apenas a maior média.
-        Ele verifica se um resultado aparece de forma
-        consistente em diferentes tamanhos de treino
-        e em diferentes períodos.
-
-        Pequenas diferenças em torno de 9,000
-        podem ocorrer por variação estatística.
-
-      </div>
-
-    `;
-
-
-  }catch(e){
-
-    $('v9').innerHTML = `
-
-      <div class="status error">
-
-        ❌ ${esc(e.message)}
-
-      </div>
-
-    `;
-
-  }
-
-
-  btn.disabled = false;
-
-  btn.textContent =
-    '🔬 Executar validação V9';
+b.textContent=
+'🔬 Executar validação V10';
 
 }
 
 
-$('refreshBtn').onclick =
-  async () => {
+async function runStructure(){
 
-    const b =
-      $('refreshBtn');
+const b=
+$('structureBtn');
 
-    b.disabled = true;
+b.disabled=true;
 
-    b.textContent =
-      '🔄 Atualizando...';
+b.textContent=
+'⏳ Analisando...';
 
-    await load();
+$('structure').innerHTML=
+'Calculando estrutura histórica...';
 
-    b.disabled = false;
 
-    b.textContent =
-      '🔄 Atualizar dados';
+try{
 
-  };
+const draws=
+await history(300);
 
+if(draws.length<30)
+throw new Error(
+'Histórico insuficiente.'
+);
 
-$('v9Btn').onclick =
-  runV9;
 
+const recent=
+draws.slice(-50);
 
-$('backtestBtn').onclick =
-  async () => {
+const freq=
+frequency(draws);
 
-    const b =
-      $('backtestBtn');
+const fr=
+frequency(recent);
 
-    b.disabled = true;
 
-    b.textContent =
-      '⏳ Analisando...';
+const latest=
+draws[draws.length-1];
 
-    $('backtest').innerHTML =
-      'Executando backtest...';
+const previous=
+draws[draws.length-2];
 
 
-    try{
+const repeated=
+overlap(
+latest.dezenas,
+previous.dezenas
+);
 
-      const j =
-        await getJson(
-          '/api/lotofacil/backtest?limit=100&window=20'
-        );
 
+const parityCounts={};
 
-      if(
-        !j.resultados?.length
-      ){
+draws.forEach(
+d=>{
 
-        $('backtest').innerHTML =
-          'Nenhum resultado retornado.';
+const p=
+parity(d).pares;
 
-      }else{
+parityCounts[p]=
+(parityCounts[p]||0)+1;
 
-        $('backtest').innerHTML =
-          j.resultados
-          .map(
-            x => `
+});
 
-              <div class="status">
 
-                <b>
-                  ${esc(x.estrategia)}
-                </b>
+const rangeTotals=
+[0,0,0,0,0];
 
-                <br><br>
+draws.forEach(
+d=>{
 
-                Média:
+ranges(d).forEach(
+(v,i)=>
+rangeTotals[i]+=v
+);
 
-                <b>
-                  ${esc(x.mediaAcertos)}
-                </b>
+});
 
-                acertos
 
-                <br>
+const rangeAvg=
+rangeTotals.map(
+x=>x/draws.length
+);
 
-                Mínimo:
-                ${esc(x.minAcertos)}
 
-                ·
+const topRecent=
+Array.from(
+{length:25},
+(_,i)=>i+1
+)
+.sort(
+(a,b)=>
+(fr[b]||0)-
+(fr[a]||0)
+)
+.slice(0,10);
 
-                Máximo:
-                ${esc(x.maxAcertos)}
 
-                <br>
+$('structure').innerHTML=`
 
-                Testes:
-                ${esc(x.testes)}
+<div class="status ok">
+✅ Estrutura calculada com ${draws.length} concursos.
+</div>
+
+
+<h3>
+⚖️ Pares e ímpares
+</h3>
+
+<ul class="list">
+
+${Object.entries(
+parityCounts
+)
+.sort(
+(a,b)=>Number(a[0])-Number(b[0])
+)
+.map(
+([p,n])=>
+`<li>
+<b>${p} pares / ${15-p} ímpares</b>
+— ${n} concursos
+</li>`
+)
+.join('')}
 
-              </div>
+</ul>
 
-            `
-          )
-          .join('') +
 
-          `
+<h3>
+🔁 Repetição entre concursos
+</h3>
 
-            <p class="small muted">
+<div class="grid">
 
-              ${esc(
-                j.observacao || ''
-              )}
+<div class="metric">
+Último x anterior
+<b>${repeated}</b>
+</div>
 
-            </p>
+<div class="metric">
+Média
+<b>
+${fmt(
+mean(
+draws.slice(1).map(
+(d,i)=>
+overlap(
+d.dezenas,
+draws[i].dezenas
+)
+)
+)
+)}
+</b>
+</div>
 
-          `;
+</div>
 
-      }
 
+<h3>
+📍 Média por faixa
+</h3>
 
-    }catch(e){
+${rangeAvg.map(
+(v,i)=>
+`
 
-      $('backtest').innerHTML = `
+<div>
 
-        <div class="status error">
+<b>
+${i*5+1}–${i*5+5}
+</b>
 
-          ❌ ${esc(e.message)}
+<span style="float:right">
+${fmt(v)}
+</span>
 
-        </div>
+<div class="bar">
+<i
+style="width:${Math.min(
+100,
+v/4*100
+)}%"
+></i>
+</div>
 
-      `;
+</div>
 
-    }
+`
+).join('')}
 
 
-    b.disabled = false;
+<h3>
+🔥 Mais presentes nos últimos 50
+</h3>
 
-    b.textContent =
-      '▶️ Executar Backtest';
+${topRecent.map(
+n=>
+`<span class="pill">
+${String(n).padStart(2,'0')}
+— ${fr[n]}x
+</span>`
+).join('')}
 
-  };
 
+<div class="note">
 
-$('gamesBtn').onclick =
-  async () => {
+ℹ️ Estas informações descrevem o histórico.
+Elas não significam que uma dezena esteja
+"destinada" a sair no próximo concurso.
 
-    const b =
-      $('gamesBtn');
+</div>
 
-    b.disabled = true;
+`;
 
-    b.textContent =
-      '⏳ Gerando...';
+}catch(e){
 
-    $('games').textContent =
-      'Gerando e testando candidatos...';
+$('structure').innerHTML=`
 
+<div class="status error">
+❌ ${esc(e.message)}
+</div>
 
-    try{
+`;
 
-      const j =
-        await getJson(
-          '/api/lotofacil/candidates?games=5&recent=20&backtest=100'
-        );
+}
 
+b.disabled=false;
 
-      if(
-        !j.jogos?.length
-      ){
+b.textContent=
+'📊 Analisar estrutura';
 
-        $('games').innerHTML =
-          'Nenhum candidato retornado.';
+}
 
-      }else{
 
-        $('games').innerHTML =
-          j.jogos
-          .map(
-            g => `
+function scoreNumber(
+n,
+all,
+recent,
+previous
+){
 
-              <div class="game">
+const allRate=
+all[n]/
+Math.max(
+1,
+all.total
+);
 
-                <b>
-                  Candidato
-                  ${esc(g.id)}
-                </b>
+const recentRate=
+recent[n]/
+Math.max(
+1,
+recent.total
+);
 
-                · score médio
-                ${esc(g.pontuacaoMedia)}
 
-                ${balls(g.dezenas)}
+let score=
+0.45*allRate+
+0.55*recentRate;
 
-                <div
-                  class="small"
-                  style="margin-top:10px"
-                >
 
-                  <b>
-                    Backtest:
-                  </b>
+if(previous.has(n))
+score+=0.015;
 
-                  média
-                  ${esc(
-                    g.backtest.mediaAcertos
-                  )}
 
-                  · mínimo
-                  ${esc(
-                    g.backtest.minAcertos
-                  )}
+return score;
 
-                  · máximo
-                  ${esc(
-                    g.backtest.maxAcertos
-                  )}
+}
 
-                </div>
 
-              </div>
+function generateCandidate(
+draws,
+mode
+){
 
-            `
-          )
-          .join('') +
+const fAll=
+frequency(draws);
 
-          `
+const recentDraws=
+draws.slice(
+-Math.min(
+30,
+draws.length
+)
+);
 
-            <p class="small muted">
+const fRecent=
+frequency(recentDraws);
 
-              ${esc(
-                j.observacao || ''
-              )}
+const previous=
+new Set(
+draws[draws.length-1].dezenas
+);
 
-            </p>
 
-          `;
+const all={
+...fAll,
+total:draws.length
+};
 
-      }
+const recent={
+...fRecent,
+total:recentDraws.length
+};
 
 
-    }catch(e){
+const scores={};
 
-      $('games').innerHTML = `
 
-        <div class="status error">
+for(
+let n=1;n<=25;n++
+){
 
-          ❌ ${esc(e.message)}
+scores[n]=
+scoreNumber(
+n,
+all,
+recent,
+previous
+);
 
-        </div>
+}
 
-      `;
 
-    }
+const sorted=
+Array.from(
+{length:25},
+(_,i)=>i+1
+)
+.sort(
+(a,b)=>
+scores[b]-scores[a]
+);
 
 
-    b.disabled = false;
+const targetParity=[
+7,8
+];
 
-    b.textContent =
-      '🎲 Gerar candidatos e testar';
 
-  };
+const targetRanges=[
+3,3,3,3,3
+];
+
+
+const chosen=[];
+
+
+function validCandidate(
+candidate
+){
+
+const p=
+parity(candidate).pares;
+
+const r=
+ranges(candidate);
+
+const parityOk=
+targetParity.includes(p);
+
+const rangesOk=
+r.every(
+x=>x>=2&&x<=4
+);
+
+return parityOk&&rangesOk;
+
+}
+
+
+for(
+const n of sorted
+){
+
+if(
+chosen.length>=15
+)break;
+
+
+const test=
+[...chosen,n];
+
+if(
+test.length<15
+){
+
+chosen.push(n);
+
+continue;
+
+}
+
+
+if(
+validCandidate(test)
+){
+
+chosen.push(n);
+
+}
+
+}
+
+
+if(
+chosen.length<15
+){
+
+for(
+const n of sorted
+){
+
+if(
+!chosen.includes(n)
+){
+
+chosen.push(n);
+
+}
+
+if(
+chosen.length===15
+)break;
+
+}
+
+}
+
+
+return chosen
+.sort(
+(a,b)=>a-b
+);
+
+}
+
+
+function generateCandidates(
+draws
+){
+
+const games=[];
+
+
+const base=
+[
+gameFrequency(draws),
+gameRecent(draws),
+gameCombined(draws)
+];
+
+
+base.forEach(
+g=>games.push(g)
+);
+
+
+while(
+games.length<5
+){
+
+const g=
+generateCandidate(
+draws,
+games.length
+);
+
+
+let tooSimilar=false;
+
+for(
+const old of games
+){
+
+if(
+similarity(g,old)>=0.87
+){
+
+tooSimilar=true;
+break;
+
+}
+
+}
+
+
+if(!tooSimilar){
+
+games.push(g);
+
+}else{
+
+const shuffled=
+[...g]
+.sort(
+()=>Math.random()-0.5
+);
+
+const alt=
+shuffled
+.slice(0,15)
+.sort(
+(a,b)=>a-b
+);
+
+if(
+!games.some(
+old=>
+similarity(alt,old)>=0.87
+)
+){
+
+games.push(alt);
+
+}
+
+}
+
+}
+
+
+return games.slice(0,5);
+
+}
+
+
+function testGame(
+game,
+draws
+){
+
+const test=
+draws.slice(
+-Math.min(
+100,
+draws.length
+)
+);
+
+const vals=
+test.map(
+d=>hits(game,d)
+);
+
+return {
+
+mean:mean(vals),
+
+min:Math.min(...vals),
+
+max:Math.max(...vals),
+
+above9:
+vals.filter(
+x=>x>9
+).length,
+
+above10:
+vals.filter(
+x=>x>10
+).length,
+
+above11:
+vals.filter(
+x=>x>11
+).length
+
+};
+
+}
+
+
+async function generateV10(){
+
+const b=
+$('generateBtn');
+
+b.disabled=true;
+
+b.textContent=
+'⏳ Gerando candidatos...';
+
+$('candidates').innerHTML=
+'Analisando histórico...';
+
+
+try{
+
+const draws=
+await history(500);
+
+if(draws.length<100)
+throw new Error(
+'Histórico insuficiente para gerar candidatos.'
+);
+
+
+const games=
+generateCandidates(draws);
+
+
+$('candidates').innerHTML=
+games.map(
+(g,i)=>{
+
+const r=
+testGame(
+g,
+draws
+);
+
+const p=
+parity(g);
+
+const rg=
+ranges(g);
+
+
+return `
+
+<div class="game">
+
+<h3>
+🎯 Candidato ${i+1}
+</h3>
+
+${balls(g)}
+
+
+<div
+class="grid"
+style="margin-top:14px"
+>
+
+<div class="metric">
+Média histórica
+<b>
+${fmt(r.mean)}
+</b>
+</div>
+
+<div class="metric">
+Mínimo / máximo
+<b>
+${r.min} / ${r.max}
+</b>
+</div>
+
+<div class="metric">
+Acima de 9
+<b>
+${r.above9}/100
+</b>
+</div>
+
+<div class="metric">
+Pares / ímpares
+<b>
+${p.pares}/${p.impares}
+</b>
+</div>
+
+</div>
+
+
+<p class="small muted">
+
+Faixas:
+${rg.join(' / ')}
+
+</p>
+
+</div>
+
+`;
+
+}
+).join('');
+
+
+$('candidates').innerHTML+=`
+
+<div class="note">
+
+⚠️ <b>Importante:</b>
+
+<br><br>
+
+O teste histórico serve para comparar
+o comportamento do método em concursos
+passados. Ele não transforma o candidato
+em uma previsão do próximo concurso.
+
+</div>
+
+`;
+
+}catch(e){
+
+$('candidates').innerHTML=`
+
+<div class="status error">
+❌ ${esc(e.message)}
+</div>
+
+`;
+
+}
+
+b.disabled=false;
+
+b.textContent=
+'🎲 Gerar 5 candidatos V10';
+
+}
+
+
+$('refreshBtn').onclick=
+async()=>{
+
+const b=
+$('refreshBtn');
+
+b.disabled=true;
+
+b.textContent=
+'🔄 Atualizando...';
+
+await load();
+
+b.disabled=false;
+
+b.textContent=
+'🔄 Atualizar dados';
+
+};
+
+
+$('v10Btn').onclick=
+runV10;
+
+
+$('structureBtn').onclick=
+runStructure;
+
+
+$('generateBtn').onclick=
+generateV10;
+
+
+$('backtestBtn').onclick=
+async()=>{
+
+const b=
+$('backtestBtn');
+
+b.disabled=true;
+
+b.textContent=
+'⏳ Analisando...';
+
+$('backtest').innerHTML=
+'Executando backtest...';
+
+
+try{
+
+const j=
+await getJson(
+'/api/lotofacil/backtest?limit=100&window=20'
+);
+
+
+if(!j.resultados?.length){
+
+$('backtest').innerHTML=
+'Nenhum resultado retornado.';
+
+}else{
+
+$('backtest').innerHTML=
+j.resultados
+.map(
+x=>`
+
+<div class="status">
+
+<b>
+${esc(x.estrategia)}
+</b>
+
+<br><br>
+
+Média:
+<b>
+${esc(x.mediaAcertos)}
+</b>
+acertos
+
+<br>
+
+Mínimo:
+${esc(x.minAcertos)}
+
+· Máximo:
+${esc(x.maxAcertos)}
+
+<br>
+
+Testes:
+${esc(x.testes)}
+
+</div>
+
+`
+)
+.join('')+
+
+`
+
+<p class="small muted">
+${esc(j.observacao||'')}
+</p>
+
+`;
+
+}
+
+}catch(e){
+
+$('backtest').innerHTML=`
+
+<div class="status error">
+❌ ${esc(e.message)}
+</div>
+
+`;
+
+}
+
+b.disabled=false;
+
+b.textContent=
+'▶️ Executar Backtest';
+
+};
 
 
 load();
