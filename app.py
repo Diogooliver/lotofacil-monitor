@@ -6,134 +6,219 @@ from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI(title="Lotofácil Monitor V3")
+app = FastAPI(title="Lotofácil Monitor V4")
 
-# Fonte alternativa aos servidores da Caixa.
-# O arquivo contém os resultados históricos da Lotofácil.
-DATA_URL = (
-    "https://raw.githubusercontent.com/"
-    "guilhermeasn/loteria.json/master/data/lotofacil.json"
-)
+
+# ============================================================
+# FONTE DE DADOS
+# ============================================================
+
+DATA_URL = "https://valorfinal.com.br/data/lotofacil-historico.json"
 
 CACHE: dict[str, tuple[float, Any]] = {}
+
+# 15 minutos
 CACHE_TTL = 15 * 60
 
 
-def cache_get(key):
+# ============================================================
+# CACHE
+# ============================================================
+
+def cache_get(key: str):
     item = CACHE.get(key)
 
-    if item and time.time() - item[0] < CACHE_TTL:
-        return item[1]
+    if item is None:
+        return None
+
+    timestamp, value = item
+
+    if time.time() - timestamp < CACHE_TTL:
+        return value
+
+    CACHE.pop(key, None)
 
     return None
 
 
-def cache_put(key, value):
+def cache_put(key: str, value: Any):
     CACHE[key] = (time.time(), value)
 
 
+# ============================================================
+# NORMALIZAÇÃO
+# ============================================================
+
 def normalize_numbers(numbers):
-    if not numbers:
+    if not isinstance(numbers, list):
         return []
 
+    result = []
+
+    for number in numbers:
+
+        try:
+            value = int(number)
+
+            if 1 <= value <= 25:
+                result.append(str(value).zfill(2))
+
+        except (TypeError, ValueError):
+            continue
+
     return sorted(
-        [str(x).zfill(2) for x in numbers],
+        list(dict.fromkeys(result)),
         key=lambda x: int(x)
     )
 
 
-def normalize_draw(concurso, numbers):
+def normalize_draw(item):
+    """
+    Formato esperado do ValorFinal:
+
+    [
+        concurso,
+        data,
+        [dezenas]
+    ]
+    """
+
+    if not isinstance(item, list):
+        return None
+
+    if len(item) < 3:
+        return None
+
+    try:
+        concurso = int(item[0])
+    except (TypeError, ValueError):
+        return None
+
+    data = str(item[1] or "")
+
+    dezenas = normalize_numbers(item[2])
+
+    if len(dezenas) != 15:
+        return None
+
     return {
-        "concurso": int(concurso),
-        "data": "",
-        "dezenas": normalize_numbers(numbers),
+        "concurso": concurso,
+        "data": data,
+        "dezenas": dezenas,
         "acumulou": None,
         "valorEstimadoProximo": None,
-        "proximoConcurso": int(concurso) + 1,
+        "proximoConcurso": concurso + 1,
     }
 
 
-async def fetch_history():
-    cached = cache_get("all_history")
+# ============================================================
+# BUSCA DO HISTÓRICO
+# ============================================================
 
-    if cached:
+async def fetch_history():
+
+    cached = cache_get("history_all")
+
+    if cached is not None:
         return cached
 
     headers = {
-        "User-Agent": "Mozilla/5.0 LotofacilMonitor/3.0",
+        "User-Agent": (
+            "Mozilla/5.0 "
+            "(iPhone; CPU iPhone OS 18_0 like Mac OS X) "
+            "AppleWebKit/605.1.15 "
+            "Version/18.0 Mobile/15E148 Safari/604.1"
+        ),
         "Accept": "application/json,text/plain,*/*",
     }
 
-    async with httpx.AsyncClient(
-        timeout=20,
-        follow_redirects=True
-    ) as client:
+    try:
 
-        response = await client.get(
-            DATA_URL,
-            headers=headers
+        async with httpx.AsyncClient(
+            timeout=httpx.Timeout(
+                connect=10,
+                read=30,
+                write=10,
+                pool=10,
+            ),
+            follow_redirects=True,
+        ) as client:
+
+            response = await client.get(
+                DATA_URL,
+                headers=headers,
+            )
+
+            response.raise_for_status()
+
+            raw = response.json()
+
+    except Exception as exc:
+
+        raise RuntimeError(
+            f"Falha ao consultar fonte de dados: {exc}"
+        ) from exc
+
+    if not isinstance(raw, dict):
+
+        raise RuntimeError(
+            "A fonte retornou um formato JSON inesperado."
         )
 
-        response.raise_for_status()
+    raw_draws = raw.get("concursos", [])
 
-        raw = response.json()
+    if not isinstance(raw_draws, list):
+
+        raise RuntimeError(
+            "O campo 'concursos' não foi encontrado."
+        )
 
     draws = []
 
-    # Formato esperado:
-    # {
-    #   "1": [1,2,3,...],
-    #   "2": [1,2,3,...],
-    #   ...
-    # }
+    for item in raw_draws:
 
-    if isinstance(raw, dict):
+        draw = normalize_draw(item)
 
-        for concurso, numbers in raw.items():
-
-            try:
-                numero = int(concurso)
-            except (TypeError, ValueError):
-                continue
-
-            if isinstance(numbers, list):
-
-                draw = normalize_draw(
-                    numero,
-                    numbers
-                )
-
-                if len(draw["dezenas"]) == 15:
-                    draws.append(draw)
+        if draw is not None:
+            draws.append(draw)
 
     draws.sort(
-        key=lambda x: int(x["concurso"])
+        key=lambda x: x["concurso"]
     )
 
-    cache_put("all_history", draws)
+    if not draws:
+
+        raise RuntimeError(
+            "Nenhum concurso válido foi encontrado."
+        )
+
+    cache_put(
+        "history_all",
+        draws
+    )
 
     return draws
 
+
+# ============================================================
+# ÚLTIMO CONCURSO
+# ============================================================
 
 @app.get("/api/lotofacil/latest")
 async def latest():
 
     cached = cache_get("latest")
 
-    if cached:
+    if cached is not None:
         return cached
 
     try:
-        draws = await fetch_history()
 
-        if not draws:
-            return {
-                "erro": "Nenhum resultado encontrado."
-            }
+        draws = await fetch_history()
 
         latest_draw = draws[-1]
 
-        data = {
+        result = {
             "concurso": latest_draw["concurso"],
             "data": latest_draw["data"],
             "dezenas": latest_draw["dezenas"],
@@ -146,24 +231,32 @@ async def latest():
             ],
         }
 
-        cache_put("latest", data)
+        cache_put(
+            "latest",
+            result
+        )
 
-        return data
+        return result
 
-    except Exception as e:
+    except Exception as exc:
 
         return {
-            "erro": "Não foi possível carregar o resultado.",
-            "detalhe": str(e)
+            "ok": False,
+            "erro": "Não foi possível carregar o último concurso.",
+            "detalhe": str(exc),
         }
 
+
+# ============================================================
+# HISTÓRICO
+# ============================================================
 
 @app.get("/api/lotofacil/history")
 async def history(
     limit: int = Query(
         50,
         ge=5,
-        le=500
+        le=500,
     )
 ):
 
@@ -177,29 +270,30 @@ async def history(
             reversed(selected)
         )
 
-        latest_num = (
-            draws[-1]["concurso"]
-            if draws
-            else None
-        )
-
         return {
-            "concursoAtual": latest_num,
-            "concursos": selected
+            "ok": True,
+            "concursoAtual": draws[-1]["concurso"],
+            "amostra": len(selected),
+            "concursos": selected,
         }
 
-    except Exception as e:
+    except Exception as exc:
 
         return {
+            "ok": False,
             "erro": "Não foi possível carregar o histórico.",
-            "detalhe": str(e),
-            "concursos": []
+            "detalhe": str(exc),
+            "concursos": [],
         }
 
+
+# ============================================================
+# ESTRATÉGIA 1 — FREQUÊNCIA
+# ============================================================
 
 def strategy_frequency(
     history,
-    top_n=15
+    top_n=15,
 ):
 
     counts = {
@@ -215,10 +309,10 @@ def strategy_frequency(
 
     ordered = sorted(
         counts,
-        key=lambda n: (
-            -counts[n],
-            int(n)
-        )
+        key=lambda number: (
+            -counts[number],
+            int(number),
+        ),
     )
 
     return set(
@@ -226,9 +320,13 @@ def strategy_frequency(
     )
 
 
+# ============================================================
+# ESTRATÉGIA 2 — RECENTES
+# ============================================================
+
 def strategy_recent(
     history,
-    top_n=15
+    top_n=15,
 ):
 
     counts = {
@@ -238,9 +336,11 @@ def strategy_recent(
 
     for age, draw in enumerate(history):
 
+        # Concursos mais recentes recebem
+        # um peso maior.
         weight = max(
             1,
-            10 - age
+            10 - age,
         )
 
         for number in draw["dezenas"]:
@@ -249,10 +349,10 @@ def strategy_recent(
 
     ordered = sorted(
         counts,
-        key=lambda n: (
-            -counts[n],
-            int(n)
-        )
+        key=lambda number: (
+            -counts[number],
+            int(number),
+        ),
     )
 
     return set(
@@ -260,27 +360,31 @@ def strategy_recent(
     )
 
 
+# ============================================================
+# BACKTEST
+# ============================================================
+
 def evaluate_strategy(
     draws,
     strategy_name,
     window=20,
-    pick=15
+    pick=15,
 ):
 
     ordered = sorted(
         draws,
-        key=lambda x: int(x["concurso"])
+        key=lambda x: int(x["concurso"]),
     )
 
     rows = []
 
     for i in range(
         window,
-        len(ordered)
+        len(ordered),
     ):
 
         prior = ordered[
-            max(0, i - window):i
+            i - window:i
         ]
 
         target = ordered[i]
@@ -289,14 +393,14 @@ def evaluate_strategy(
 
             selected = strategy_frequency(
                 prior,
-                pick
+                pick,
             )
 
         else:
 
             selected = strategy_recent(
                 prior,
-                pick
+                pick,
             )
 
         hits = len(
@@ -305,15 +409,17 @@ def evaluate_strategy(
             )
         )
 
-        rows.append({
-            "concurso": target["concurso"],
-            "acertos": hits,
-            "selecionadas": sorted(
-                selected,
-                key=int
-            ),
-            "resultado": target["dezenas"],
-        })
+        rows.append(
+            {
+                "concurso": target["concurso"],
+                "acertos": hits,
+                "selecionadas": sorted(
+                    selected,
+                    key=int,
+                ),
+                "resultado": target["dezenas"],
+            }
+        )
 
     if not rows:
 
@@ -322,7 +428,10 @@ def evaluate_strategy(
             "janela": window,
             "testes": 0,
             "mediaAcertos": None,
-            "distribuicao": {}
+            "minAcertos": None,
+            "maxAcertos": None,
+            "distribuicao": {},
+            "ultimos": [],
         }
 
     distribution = {}
@@ -334,7 +443,8 @@ def evaluate_strategy(
         )
 
         distribution[hits] = (
-            distribution.get(hits, 0) + 1
+            distribution.get(hits, 0)
+            + 1
         )
 
     average = (
@@ -351,7 +461,7 @@ def evaluate_strategy(
         "testes": len(rows),
         "mediaAcertos": round(
             average,
-            3
+            3,
         ),
         "minAcertos": min(
             row["acertos"]
@@ -362,66 +472,101 @@ def evaluate_strategy(
             for row in rows
         ),
         "distribuicao": distribution,
-        "ultimos": rows[-10:]
+        "ultimos": rows[-10:],
     }
 
+
+# ============================================================
+# ENDPOINT DO BACKTEST
+# ============================================================
 
 @app.get("/api/lotofacil/backtest")
 async def backtest(
     limit: int = Query(
         100,
         ge=30,
-        le=500
+        le=500,
     ),
     window: int = Query(
         20,
         ge=5,
-        le=100
-    )
+        le=100,
+    ),
 ):
 
-    draws = await fetch_history()
+    try:
 
-    draws = draws[-limit:]
+        draws = await fetch_history()
 
-    return {
-        "amostra": len(draws),
-        "janela": window,
-        "resultados": [
-            evaluate_strategy(
-                draws,
-                "frequency",
-                window
-            ),
-            evaluate_strategy(
-                draws,
-                "recent",
-                window
-            )
-        ],
-        "observacao": (
-            "Backtest descritivo sobre dados "
-            "históricos; não representa garantia "
-            "ou previsão do próximo concurso."
+        draws = draws[-limit:]
+
+        frequency = evaluate_strategy(
+            draws,
+            "frequency",
+            window,
         )
-    }
 
+        recent = evaluate_strategy(
+            draws,
+            "recent",
+            window,
+        )
+
+        return {
+            "ok": True,
+            "amostra": len(draws),
+            "janela": window,
+            "resultados": [
+                frequency,
+                recent,
+            ],
+            "observacao": (
+                "Backtest descritivo baseado "
+                "em resultados históricos. "
+                "Não representa garantia ou "
+                "previsão do próximo concurso."
+            ),
+        }
+
+    except Exception as exc:
+
+        return {
+            "ok": False,
+            "erro": "Não foi possível executar o backtest.",
+            "detalhe": str(exc),
+            "resultados": [],
+        }
+
+
+# ============================================================
+# HEALTH CHECK
+# ============================================================
 
 @app.get("/api/health")
 async def health():
 
     return {
         "ok": True,
-        "service": "Lotofácil Monitor V3"
+        "service": "Lotofácil Monitor V4",
     }
 
 
+# ============================================================
+# ARQUIVOS ESTÁTICOS
+# ============================================================
+
 app.mount(
     "/static",
-    StaticFiles(directory="static"),
-    name="static"
+    StaticFiles(
+        directory="static"
+    ),
+    name="static",
 )
 
+
+# ============================================================
+# PÁGINA PRINCIPAL
+# ============================================================
 
 @app.get("/")
 async def index():
