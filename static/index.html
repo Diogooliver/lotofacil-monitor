@@ -1739,9 +1739,13 @@ async function executeV11() {
 
   try {
 
+    // CORREÇÃO V11:
+    // Antes era limit=600.
+    // Agora usamos 500 para evitar HTTP 422.
+
     const data =
       await getJson(
-        '/api/lotofacil/history?limit=600'
+        '/api/lotofacil/history?limit=500'
       );
 
 
