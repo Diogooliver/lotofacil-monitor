@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lotofácil Monitor V2</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 18px;
+}
+
+header {
+    background: #6b2cff;
+    color: white;
+    padding: 22px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+}
+
+header h1 {
+    margin: 0 0 6px;
+    font-size: 25px;
+}
+
+header p {
+    margin: 0;
+    opacity: .9;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.box {
+    background: #f0f1f5;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.box strong {
+    display: block;
+    font-size: 20px;
+    margin-top: 4px;
+}
+
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.number {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #6b2cff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+button {
+    border: 0;
+    background: #6b2cff;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.status {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #666;
+}
+
+.resultado {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f5f5f7;
+    border-radius: 10px;
+}
+
+@media(max-width:600px) {
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>🍀 Lotofácil Monitor V2</h1>
+    <p>Monitoramento e análise estatística dos concursos</p>
+</header>
+
+<div class="card">
+    <h2>🎯 Último concurso</h2>
+
+    <div class="info">
+        <div class="box">
+            Concurso
+            <strong id="concurso">--</strong>
+        </div>
+
+        <div class="box">
+            Data
+            <strong id="data">--</strong>
+        </div>
+    </div>
+
+    <div id="dezenas" class="numbers"></div>
+
+    <div class="status" id="status">
+        Carregando...
+    </div>
+</div>
+
+<div class="card">
+    <h2>📊 Análise</h2>
+
+    <button onclick="executarBacktest()">
+        Executar Backtest
+    </button>
+
+    <div id="backtest" class="resultado">
+        Nenhuma análise executada.
+    </div>
+</div>
+
+<div class="card">
+    <h2>📜 Últimos concursos</h2>
+
+    <div id="historico">
+        Carregando histórico...
+    </div>
+</div>
+
+</div>
+
+<script>
+
+async function carregarUltimo() {
+
+    try {
+
+        const resposta = await fetch(
+            "/api/lotofacil/latest"
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro na API");
+        }
+
+        const dados = await resposta.json();
+
+        document.getElementById("concurso").textContent =
+            dados.concurso ?? "--";
+
+        document.getElementById("data").textContent =
+            dados.data ?? "--";
+
+        const area = document.getElementById("dezenas");
+
+        area.innerHTML = "";
+
+        (dados.dezenas || []).forEach(numero => {
+
+            const bola = document.createElement("div");
+
+            bola.className = "number";
+
+            bola.textContent = numero;
+
+            area.appendChild(bola);
+
+        });
+
+        document.getElementById("status").textContent =
+            "✅ Dados atualizados com sucesso.";
+
+    } catch (erro) {
+
+        document.getElementById("status").textContent =
+            "❌ Não foi possível carregar os dados.";
+
+        console.error(erro);
+    }
+}
+
+
+async function carregarHistorico() {
+
+    try {
+
+        const resposta = await fetch(
+            "/api/lotofacil/history?limit=10"
+        );
+
+        const dados = await resposta.json();
+
+        const area =
+            document.getElementById("historico");
+
+        area.innerHTML = "";
+
+        (dados.concursos || []).forEach(concurso => {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "resultado";
+
+            item.innerHTML = `
+                <strong>Concurso ${concurso.concurso}</strong>
+                — ${concurso.data}
+                <br>
+                ${concurso.dezenas.join(" - ")}
+            `;
+
+            area.appendChild(item);
+
+        });
+
+    } catch (erro) {
+
+        document.getElementById("historico").textContent =
+            "Erro ao carregar histórico.";
+
+        console.error(erro);
+    }
+}
+
+
+async function executarBacktest() {
+
+    const area =
+        document.getElementById("backtest");
+
+    area.innerHTML =
+        "⏳ Executando análise histórica...";
+
+    try {
+
+        const resposta = await fetch(
+            "/api/lotofacil/backtest?limit=100&window=20"
+        );
+
+        const dados = await resposta.json();
+
+        let html = `
+            <strong>📈 Backtest</strong>
+            <br><br>
+            Amostra: ${dados.amostra} concursos
+            <br>
+            Janela: ${dados.janela} concursos
+            <br><br>
+        `;
+
+        dados.resultados.forEach(resultado => {
+
+            html += `
+                <div style="margin-bottom:15px">
+                    <strong>
+                        Estratégia: ${resultado.estrategia}
+                    </strong>
+                    <br>
+                    Média de acertos:
+                    ${resultado.mediaAcertos ?? "--"}
+                    <br>
+                    Mínimo:
+                    ${resultado.minAcertos ?? "--"}
+                    <br>
+                    Máximo:
+                    ${resultado.maxAcertos ?? "--"}
+                </div>
+            `;
+
+        });
+
+        html += `
+            <small>
+            ℹ️ A análise é histórica e não representa
+            garantia ou previsão do próximo concurso.
+            </small>
+        `;
+
+        area.innerHTML = html;
+
+    } catch (erro) {
+
+        area.innerHTML =
+            "❌ Erro ao executar o backtest.";
+
+        console.error(erro);
+    }
+}
+
+
+// Inicialização
+carregarUltimo();
+carregarHistorico();
+
+</script>
+
+</body>
+</html>
