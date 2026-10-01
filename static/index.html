@@ -1,29 +1,29 @@
 <!doctype html>
+
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#5b2df5">
-  <title>🍀 Lotofácil Monitor V5</title>
-
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lotofácil V6">
+  <title>🍀 Lotofácil Monitor V6</title>
   <style>
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #f3f4f8;
       color: #171717;
     }
-
     .wrap {
       max-width: 900px;
       margin: auto;
       padding: 18px;
     }
-
     header {
       background: linear-gradient(135deg, #5b2df5, #7c3aed);
       color: #fff;
@@ -32,26 +32,21 @@
       margin-bottom: 18px;
       box-shadow: 0 10px 30px #0001;
     }
-
     h1 {
       font-size: 30px;
       margin: 0 0 8px;
     }
-
     h2 {
       margin: 0 0 16px;
       font-size: 25px;
     }
-
     h3 {
       margin-top: 18px;
     }
-
     .sub {
       font-size: 17px;
       opacity: .95;
     }
-
     .card {
       background: #fff;
       border-radius: 24px;
@@ -59,33 +54,27 @@
       margin: 18px 0;
       box-shadow: 0 5px 22px #0000000b;
     }
-
     .muted {
       color: #666;
     }
-
     .small {
       font-size: 14px;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
-
     .metric {
       background: #f4f4f7;
       border-radius: 16px;
       padding: 15px;
     }
-
     .metric b {
       display: block;
       font-size: 25px;
       margin-top: 5px;
     }
-
     button {
       border: 0;
       background: #5b2df5;
@@ -95,19 +84,17 @@
       border-radius: 15px;
       padding: 15px 20px;
       cursor: pointer;
+      width: 100%;
     }
-
     button:disabled {
       opacity: .6;
     }
-
     .balls {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 14px;
     }
-
     .ball {
       width: 43px;
       height: 43px;
@@ -119,172 +106,188 @@
       justify-content: center;
       font-weight: 800;
     }
-
     .list {
       margin: 8px 0;
       padding: 0;
       list-style: none;
     }
-
     .list li {
       padding: 9px 0;
       border-bottom: 1px solid #eee;
     }
-
     .two {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-
     .game {
       border: 1px solid #e8e8ee;
       border-radius: 18px;
       padding: 15px;
       margin-top: 12px;
     }
-
     .status {
       padding: 12px;
       border-radius: 14px;
       background: #f1f1f5;
       margin-top: 12px;
     }
-
     .ok {
       color: #197a38;
     }
-
     .warn {
       color: #9a5b00;
     }
-
+    .error {
+      color: #b42318;
+      background: #fff1f0;
+    }
+    .refresh {
+      margin-top: 12px;
+      background: #111827;
+    }
+    .install-box {
+      background: #f7f5ff;
+      border: 1px solid #ddd5ff;
+      border-radius: 18px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #f7f3ff, #eee9ff);
+      border: 1px solid #ded5ff;
+    }
+    .loading {
+      opacity: .65;
+    }
     @media (max-width: 620px) {
       .grid,
       .two {
         grid-template-columns: 1fr;
       }
-
       .wrap {
         padding: 12px;
       }
-
       header {
         padding: 23px 18px;
       }
-
       h1 {
         font-size: 27px;
+      }
+      .ball {
+        width: 40px;
+        height: 40px;
       }
     }
   </style>
 </head>
-
 <body>
-
 <div class="wrap">
-
   <header>
-    <h1>🍀 Lotofácil Monitor V5</h1>
-    <div class="sub">
-      Monitoramento, estatísticas e backtests históricos
-    </div>
-  </header>
-
-  <section class="card">
-    <h2>🎯 Último concurso</h2>
-    <div id="latest">Carregando...</div>
-  </section>
-
-  <section class="card">
-    <h2>📊 Análise estatística</h2>
-
-    <div class="grid" id="metrics">
-      <div class="metric">
-        Concursos analisados
-        <b>—</b>
-      </div>
-
-      <div class="metric">
-        Pares / ímpares
-        <b>—</b>
-      </div>
-    </div>
-
-    <div class="two" style="margin-top:16px">
-
-      <div>
-        <h3>🔥 Mais frequentes</h3>
-        <ul class="list" id="hot"></ul>
-      </div>
-
-      <div>
-        <h3>❄️ Menos frequentes</h3>
-        <ul class="list" id="cold"></ul>
-      </div>
-
-    </div>
-
-    <div>
-      <h3>⏳ Mais atrasados</h3>
-      <ul class="list" id="late"></ul>
-    </div>
-
-    <h3>📍 Média por faixa</h3>
-    <ul class="list" id="ranges"></ul>
-
-  </section>
-
-  <section class="card">
-
-    <h2>🧪 Backtest</h2>
-
-    <button id="backtestBtn">
-      Executar Backtest
-    </button>
-
-    <div id="backtest" class="status">
-      Aguardando execução...
-    </div>
-
-  </section>
-
-  <section class="card">
-
-    <h2>🎲 Candidatos para teste</h2>
-
-    <button id="gamesBtn">
-      Gerar candidatos e testar
-    </button>
-
-    <div id="games"></div>
-
-  </section>
-
-  <section class="card">
-
-    <h2>📜 Últimos concursos</h2>
-
-    <div id="history">
-      Carregando...
-    </div>
-
-  </section>
-
-  <section class="card small muted">
-
-    As análises são históricas e estatísticas.
-    Frequência, atraso, tendência e conjuntos candidatos
-    não garantem nem preveem o resultado de um concurso.
-
-  </section>
-
+    <h1>🍀 Lotofácil Monitor V6</h1>
+<div class="sub">
+  Monitoramento, estatísticas e backtests históricos
 </div>
-
+<div class="install-box">
+  📱 <b>Versão V6</b><br>
+  Painel otimizado para celular e instalação como aplicativo.
+</div>
+  </header>
+  <section class="card highlight">
+<h2>🎯 Último concurso</h2>
+<div id="latest" class="loading">
+  Carregando...
+</div>
+<button
+  class="refresh"
+  id="refreshBtn"
+  style="margin-top:14px"
+>
+  🔄 Atualizar dados
+</button>
+  </section>
+  <section class="card">
+<h2>📊 Análise estatística</h2>
+<div class="grid" id="metrics">
+  <div class="metric">
+    Concursos analisados
+    <b>—</b>
+  </div>
+  <div class="metric">
+    Pares / ímpares
+    <b>—</b>
+  </div>
+</div>
+<div class="two" style="margin-top:16px">
+  <div>
+    <h3>🔥 Mais frequentes</h3>
+    <ul class="list" id="hot">
+      <li>Carregando...</li>
+    </ul>
+  </div>
+  <div>
+    <h3>❄️ Menos frequentes</h3>
+    <ul class="list" id="cold">
+      <li>Carregando...</li>
+    </ul>
+  </div>
+</div>
+<div>
+  <h3>⏳ Mais atrasados</h3>
+  <ul class="list" id="late">
+    <li>Carregando...</li>
+  </ul>
+</div>
+<h3>📍 Média por faixa</h3>
+<ul class="list" id="ranges">
+  <li>Carregando...</li>
+</ul>
+  </section>
+  <section class="card">
+<h2>🧪 Backtest</h2>
+<p class="small muted">
+  Teste estratégias usando concursos históricos.
+</p>
+<button id="backtestBtn">
+  ▶️ Executar Backtest
+</button>
+<div id="backtest" class="status">
+  Aguardando execução...
+</div>
+  </section>
+  <section class="card">
+<h2>🎲 Candidatos para teste</h2>
+<p class="small muted">
+  Gera conjuntos candidatos com base nas estatísticas
+  disponíveis e realiza um teste histórico.
+</p>
+<button id="gamesBtn">
+  🎲 Gerar candidatos e testar
+</button>
+<div id="games"></div>
+  </section>
+  <section class="card">
+<h2>📜 Últimos concursos</h2>
+<div id="history">
+  Carregando...
+</div>
+  </section>
+  <section class="card small muted">
+<b>ℹ️ Sobre o monitor</b>
+<p>
+  As análises apresentadas são baseadas em dados históricos
+  e estatísticos.
+</p>
+<p>
+  Frequência, atraso, tendência, backtests e conjuntos
+  candidatos não garantem nem preveem o resultado de
+  um concurso futuro.
+</p>
+  </section>
+</div>
 <script>
-
-const $ = id => document.getElementById(id);
-
+const $ = id =>
+  document.getElementById(id);
 const esc = s =>
   String(s).replace(
     /[&<>"']/g,
@@ -296,344 +299,303 @@ const esc = s =>
       "'": '&#39;'
     }[c])
   );
-
-const balls = nums => `
-  <div class="balls">
-    ${nums.map(
-      n => `<span class="ball">${esc(n)}</span>`
-    ).join('')}
-  </div>
-`;
-
+const balls = nums => {
+  if (!Array.isArray(nums)) {
+    return '';
+  }
+  return `
+    <div class="balls">
+      ${nums.map(
+        n =>
+          `<span class="ball">${esc(n)}</span>`
+      ).join('')}
+    </div>
+  `;
+};
 async function getJson(url) {
-
   const r = await fetch(
     url,
-    { cache: 'no-store' }
+    {
+      cache: 'no-store'
+    }
   );
-
-  const j = await r.json();
-
-  if (j.ok === false) {
+  if (!r.ok) {
     throw new Error(
-      j.erro || 'Erro'
+      'Servidor respondeu com erro HTTP ' +
+      r.status
     );
   }
-
+  const j = await r.json();
+  if (j.ok === false) {
+    throw new Error(
+      j.erro || 'Erro retornado pela API'
+    );
+  }
   return j;
 }
-
-
+function setLoading(element) {
+  if (element) {
+    element.classList.add('loading');
+  }
+}
+function clearLoading(element) {
+  if (element) {
+    element.classList.remove('loading');
+  }
+}
 async function load() {
-
+  setLoading($('latest'));
   try {
-
     const [
       latest,
       analysis,
       history
     ] = await Promise.all([
-
       getJson(
         '/api/lotofacil/latest'
       ),
-
       getJson(
         '/api/lotofacil/analysis?limit=100&recent=20'
       ),
-
       getJson(
         '/api/lotofacil/history?limit=10'
       )
-
     ]);
-
-
     $('latest').innerHTML = `
-
       <div class="grid">
-
         <div class="metric">
           Concurso
-          <b>${latest.concurso}</b>
+          <b>
+            ${esc(latest.concurso)}
+          </b>
         </div>
-
         <div class="metric">
           Data
-          <b>${esc(latest.data)}</b>
+          <b>
+            ${esc(latest.data)}
+          </b>
         </div>
-
       </div>
-
       ${balls(latest.dezenas)}
-
       <div class="status ok">
         ✅ Dados atualizados com sucesso.
       </div>
-
     `;
-
-
     $('metrics').innerHTML = `
-
       <div class="metric">
         Concursos analisados
-        <b>${analysis.amostra}</b>
-      </div>
-
-      <div class="metric">
-        Pares médios
         <b>
-          ${analysis.paresMedia}
-          /
-          ${analysis.imparesMedia}
+          ${esc(analysis.amostra)}
         </b>
       </div>
-
+      <div class="metric">
+        Pares / ímpares
+        <b>
+          ${esc(analysis.paresMedia)}
+          /
+          ${esc(analysis.imparesMedia)}
+        </b>
+      </div>
     `;
-
-
     $('hot').innerHTML =
       analysis.quentes.map(
         x =>
           `<li>
-            <b>${x.numero}</b>
-            — ${x.ocorrencias} vezes
+            <b>${esc(x.numero)}</b>
+            — ${esc(x.ocorrencias)} vezes
           </li>`
       ).join('');
-
-
     $('cold').innerHTML =
       analysis.frios.map(
         x =>
           `<li>
-            <b>${x.numero}</b>
-            — ${x.ocorrencias} vezes
+            <b>${esc(x.numero)}</b>
+            — ${esc(x.ocorrencias)} vezes
           </li>`
       ).join('');
-
-
     $('late').innerHTML =
       analysis.atrasados.map(
         x =>
           `<li>
-            <b>${x.numero}</b>
-            — ${x.concursosSemSair} concurso(s)
+            <b>${esc(x.numero)}</b>
+            — ${esc(x.concursosSemSair)}
+            concurso(s)
           </li>`
       ).join('');
-
-
     $('ranges').innerHTML =
       Object.entries(
         analysis.faixasMedia
       ).map(
         ([k, v]) =>
           `<li>
-            <b>${k}</b>
-            — média ${v}
+            <b>${esc(k)}</b>
+            — média ${esc(v)}
           </li>`
       ).join('');
-
-
     $('history').innerHTML =
       history.concursos.map(
         d => `
-
           <div class="status">
-
             <b>
-              Concurso ${d.concurso}
+              Concurso ${esc(d.concurso)}
             </b>
-
             —
             ${esc(d.data)}
-
             ${balls(d.dezenas)}
-
           </div>
-
         `
       ).join('');
-
-
+    clearLoading($('latest'));
   } catch (e) {
-
     $('latest').innerHTML = `
-      <div class="status warn">
-        ❌ ${esc(e.message)}
+      <div class="status error">
+        ❌ Não foi possível carregar os dados.
+        <br><br>
+        ${esc(e.message)}
       </div>
     `;
-
+    clearLoading($('latest'));
   }
-
 }
-
-
+$('refreshBtn').onclick =
+  async () => {
+    const b =
+      $('refreshBtn');
+    b.disabled = true;
+    b.textContent =
+      '🔄 Atualizando...';
+    await load();
+    b.disabled = false;
+    b.textContent =
+      '🔄 Atualizar dados';
+  };
 $('backtestBtn').onclick =
   async () => {
-
-    const b = $('backtestBtn');
-
+    const b =
+      $('backtestBtn');
     b.disabled = true;
-    b.textContent = 'Analisando...';
-
-    $('backtest').textContent =
+    b.textContent =
+      '⏳ Analisando...';
+    $('backtest').innerHTML =
       'Executando backtest...';
-
     try {
-
       const j =
         await getJson(
           '/api/lotofacil/backtest?limit=100&window=20'
         );
-
-
-      $('backtest').innerHTML =
-        j.resultados.map(
-          x => `
-
-            <div class="status">
-
-              <b>
-                ${esc(x.estrategia)}
-              </b>
-
-              <br>
-
-              Média:
-              <b>${x.mediaAcertos}</b>
-              acertos
-
-              <br>
-
-              Mínimo:
-              ${x.minAcertos}
-
-              ·
-
-              Máximo:
-              ${x.maxAcertos}
-
-              <br>
-
-              Testes:
-              ${x.testes}
-
-            </div>
-
+      if (
+        !j.resultados ||
+        !j.resultados.length
+      ) {
+        $('backtest').innerHTML =
+          'Nenhum resultado retornado.';
+      } else {
+        $('backtest').innerHTML =
+          j.resultados.map(
+            x => `
+              <div class="status">
+                <b>
+                  ${esc(x.estrategia)}
+                </b>
+                <br><br>
+                Média:
+                <b>
+                  ${esc(x.mediaAcertos)}
+                </b>
+                acertos
+                <br>
+                Mínimo:
+                ${esc(x.minAcertos)}
+                ·
+                Máximo:
+                ${esc(x.maxAcertos)}
+                <br>
+                Testes:
+                ${esc(x.testes)}
+              </div>
+            `
+          ).join('') +
           `
-        ).join('') +
-
-        `
-
-          <p class="small muted">
-            ${esc(j.observacao)}
-          </p>
-
-        `;
-
-
+            <p class="small muted">
+              ${esc(j.observacao || '')}
+            </p>
+          `;
+      }
     } catch (e) {
-
-      $('backtest').textContent =
-        '❌ ' + e.message;
-
+      $('backtest').innerHTML = `
+        <div class="status error">
+          ❌ ${esc(e.message)}
+        </div>
+      `;
     }
-
     b.disabled = false;
-
     b.textContent =
-      'Executar Backtest';
-
+      '▶️ Executar Backtest';
   };
-
-
 $('gamesBtn').onclick =
   async () => {
-
-    const b = $('gamesBtn');
-
+    const b =
+      $('gamesBtn');
     b.disabled = true;
-
     b.textContent =
-      'Gerando...';
-
+      '⏳ Gerando...';
     $('games').textContent =
       'Gerando e testando candidatos...';
-
     try {
-
       const j =
         await getJson(
           '/api/lotofacil/candidates?games=5&recent=20&backtest=100'
         );
-
-
-      $('games').innerHTML =
-        j.jogos.map(
-          g => `
-
-            <div class="game">
-
-              <b>
-                Candidato ${g.id}
-              </b>
-
-              · score médio
-              ${g.pontuacaoMedia}
-
-              ${balls(g.dezenas)}
-
-              <div
-                class="small"
-                style="margin-top:10px"
-              >
-
-                Backtest:
-
-                média
-                ${g.backtest.mediaAcertos}
-
-                · mínimo
-                ${g.backtest.minAcertos}
-
-                · máximo
-                ${g.backtest.maxAcertos}
-
+      if (
+        !j.jogos ||
+        !j.jogos.length
+      ) {
+        $('games').innerHTML =
+          'Nenhum candidato retornado.';
+      } else {
+        $('games').innerHTML =
+          j.jogos.map(
+            g => `
+              <div class="game">
+                <b>
+                  Candidato ${esc(g.id)}
+                </b>
+                · score médio
+                ${esc(g.pontuacaoMedia)}
+                ${balls(g.dezenas)}
+                <div
+                  class="small"
+                  style="margin-top:10px"
+                >
+                  <b>Backtest:</b>
+                  média
+                  ${esc(g.backtest.mediaAcertos)}
+                  · mínimo
+                  ${esc(g.backtest.minAcertos)}
+                  · máximo
+                  ${esc(g.backtest.maxAcertos)}
+                </div>
               </div>
-
-            </div>
-
+            `
+          ).join('') +
           `
-        ).join('') +
-
-        `
-
-          <p class="small muted">
-            ${esc(j.observacao)}
-          </p>
-
-        `;
-
-
+            <p class="small muted">
+              ${esc(j.observacao || '')}
+            </p>
+          `;
+      }
     } catch (e) {
-
-      $('games').textContent =
-        '❌ ' + e.message;
-
+      $('games').innerHTML = `
+        <div class="status error">
+          ❌ ${esc(e.message)}
+        </div>
+      `;
     }
-
     b.disabled = false;
-
     b.textContent =
-      'Gerar candidatos e testar';
-
+      '🎲 Gerar candidatos e testar';
   };
-
-
 load();
-
 </script>
-
 </body>
 </html>
