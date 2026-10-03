@@ -12,7 +12,12 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
-body{margin:0;background:linear-gradient(180deg,#f7f5ff 0%,#eeeaff 100%);color:#17151f;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{
+margin:0;
+background:linear-gradient(180deg,#f7f5ff,#eeeaff);
+color:#17151f;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif
+}
 button,input{font:inherit}
 button{cursor:pointer}
 .app{width:100%;max-width:900px;margin:auto;padding:14px 12px 80px}
@@ -21,7 +26,6 @@ button{cursor:pointer}
 background:#fff;border-radius:30px;padding:23px 20px;margin-bottom:18px;
 box-shadow:0 10px 35px rgba(62,39,120,.08)
 }
-
 .logo-row{display:flex;align-items:center;gap:13px}
 .logo{
 width:58px;height:58px;border-radius:18px;
@@ -29,7 +33,6 @@ background:linear-gradient(135deg,#6a3df4,#4f25d8);
 display:flex;align-items:center;justify-content:center;
 font-size:30px;box-shadow:0 8px 20px rgba(91,45,245,.25)
 }
-
 .header h1{margin:0;font-size:27px;font-weight:900;letter-spacing:-1px}
 .header p{margin:5px 0 0;color:#777483;font-size:14px;font-weight:650}
 
@@ -37,20 +40,18 @@ font-size:30px;box-shadow:0 8px 20px rgba(91,45,245,.25)
 background:#fff;border-radius:30px;padding:23px;margin-bottom:18px;
 box-shadow:0 10px 35px rgba(62,39,120,.07)
 }
-
 .card-title{display:flex;align-items:center;gap:11px;margin-bottom:19px}
 .card-title .emoji{font-size:29px}
-.card-title h2{margin:0;font-size:26px;line-height:1.1;font-weight:900;letter-spacing:-.8px}
+.card-title h2{margin:0;font-size:26px;line-height:1.1;font-weight:900}
 
 .status-box{
 border:2px solid #ddd6ff;background:#f8f6ff;border-radius:24px;padding:18px
 }
-
 .status-line{display:flex;align-items:center;gap:10px;margin-bottom:7px}
 .status-dot{width:12px;height:12px;border-radius:50%;background:#8f8a98}
-.status-dot.green{background:#24b36b;box-shadow:0 0 0 5px rgba(36,179,107,.12)}
-.status-dot.orange{background:#e9a400;box-shadow:0 0 0 5px rgba(233,164,0,.12)}
-.status-dot.red{background:#e44a4a;box-shadow:0 0 0 5px rgba(228,74,74,.12)}
+.status-dot.green{background:#24b36b}
+.status-dot.orange{background:#e9a400}
+.status-dot.red{background:#e44a4a}
 .status-title{font-size:18px;font-weight:900}
 .status-text{color:#777483;font-size:14px;line-height:1.5;font-weight:600}
 
@@ -60,7 +61,6 @@ background:linear-gradient(135deg,#6d42f4,#4f27d8);
 color:#fff;font-size:17px;font-weight:900;
 box-shadow:0 10px 24px rgba(91,45,245,.25);margin-top:15px
 }
-
 .main-button:active{transform:scale(.98)}
 .main-button:disabled{opacity:.65}
 
@@ -68,98 +68,61 @@ box-shadow:0 10px 24px rgba(91,45,245,.25);margin-top:15px
 width:100%;border:2px solid #ddd6ff;border-radius:18px;padding:14px;
 background:#faf9ff;color:#4f2ad4;font-size:16px;font-weight:900;margin-top:10px
 }
-
 .danger-button{
 width:100%;border:2px solid #ffd7d7;border-radius:18px;padding:14px;
 background:#fff8f8;color:#bd3838;font-size:15px;font-weight:900;margin-top:10px
 }
 
-.data-grid,.info-grid{
-display:grid;grid-template-columns:1fr 1fr;gap:10px
-}
-
+.data-grid,.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .data-grid{margin-top:15px}
-
 .data-card,.info{
 background:#f8f7fd;border:2px solid #e0daf5;border-radius:20px;padding:15px
 }
-
-.data-card strong,.info strong{
-display:block;font-size:22px;font-weight:900
-}
-
-.data-card span,.info span{
-color:#777483;font-size:12px;font-weight:700
-}
+.data-card strong,.info strong{display:block;font-size:22px;font-weight:900}
+.data-card span,.info span{color:#777483;font-size:12px;font-weight:700}
 
 .latest-result{
 margin-top:15px;border:2px solid #ddd6ff;
 background:linear-gradient(180deg,#faf9ff,#f6f3ff);
 border-radius:24px;padding:18px
 }
-
 .latest-head{
 display:flex;justify-content:space-between;align-items:center;
 gap:10px;margin-bottom:13px
 }
-
 .latest-title{font-size:18px;font-weight:900}
-
 .latest-contest{
 background:#eae5ff;color:#5730d8;border-radius:999px;
 padding:8px 12px;font-size:13px;font-weight:900;white-space:nowrap
 }
-
-.latest-date{
-color:#777483;font-size:12px;font-weight:700;margin:-5px 0 13px
+.latest-date{color:#777483;font-size:12px;font-weight:700;margin:-5px 0 13px}
+.result-balls,.selected-numbers,.balls{display:flex;flex-wrap:wrap;gap:8px}
+.result-ball,.selected-number,.ball{
+border-radius:50%;display:flex;align-items:center;justify-content:center;
+font-weight:900
 }
-
-.result-balls{display:flex;flex-wrap:wrap;gap:8px}
-
 .result-ball{
-width:39px;height:39px;border-radius:50%;
-background:linear-gradient(145deg,#6c3cf0,#5930df);
-color:#fff;display:flex;align-items:center;justify-content:center;
-font-weight:900;font-size:14px
+width:39px;height:39px;background:linear-gradient(145deg,#6c3cf0,#5930df);
+color:#fff;font-size:14px
 }
 
 .nucleus{
 border:2px solid #ddd6ff;background:#f8f6ff;
 border-radius:25px;padding:20px
 }
-
-.nucleus-title{
-display:flex;align-items:center;gap:10px;margin-bottom:12px
-}
-
+.nucleus-title{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .nucleus-title h3{margin:0;font-size:24px;font-weight:900}
-
-.nucleus-description{
-color:#777483;font-size:15px;line-height:1.55;font-weight:600
-}
-
-.selected-numbers{
-display:flex;flex-wrap:wrap;gap:8px;margin-top:18px
-}
-
+.nucleus-description{color:#777483;font-size:15px;line-height:1.55;font-weight:600}
+.selected-numbers{margin-top:18px}
 .selected-number{
-width:43px;height:43px;border-radius:50%;
-background:#6337ed;color:#fff;display:flex;
-align-items:center;justify-content:center;
-font-weight:900;font-size:15px
+width:43px;height:43px;background:#6337ed;color:#fff;font-size:15px
 }
-
 .score-list{margin-top:19px;display:grid;gap:9px}
-
 .score-row{
 display:grid;grid-template-columns:42px 1fr 60px;
 align-items:center;gap:9px;font-size:13px;font-weight:900
 }
-
-.score-bar{
-height:8px;background:#e8e4f8;border-radius:99px;overflow:hidden
-}
-
+.score-bar{height:8px;background:#e8e4f8;border-radius:99px;overflow:hidden}
 .score-fill{
 height:100%;background:linear-gradient(90deg,#7350f5,#5129db);
 border-radius:99px
@@ -167,80 +130,49 @@ border-radius:99px
 
 .history-input{
 width:100%;border:2px solid #ded9ef;background:#fbfaff;
-border-radius:18px;padding:15px;outline:none;
-font-size:16px;font-weight:700
+border-radius:18px;padding:15px;outline:none;font-size:16px;font-weight:700
 }
-
 .history-input:focus{border-color:#7046ef}
-
-.help{
-color:#777483;font-size:13px;line-height:1.5;margin:9px 2px 0
-}
+.help{color:#777483;font-size:13px;line-height:1.5;margin:9px 2px 0}
 
 .strategy{
 border:2px solid #ddd8f2;background:#f8f7fd;
 border-radius:24px;padding:20px;margin-top:12px
 }
-
 .strategy-head{display:flex;align-items:center;gap:10px}
 .strategy-head .emoji{font-size:27px}
 .strategy h3{margin:0;font-size:21px;font-weight:900}
-
-.strategy p{
-margin:11px 0 0;color:#777483;
-font-size:15px;line-height:1.55;font-weight:600
-}
-
-.strategy-score{
-margin-top:12px;color:#5730d8;font-size:14px;font-weight:900
-}
+.strategy p{margin:11px 0 0;color:#777483;font-size:15px;line-height:1.55;font-weight:600}
+.strategy-score{margin-top:12px;color:#5730d8;font-size:14px;font-weight:900}
 
 .game{
 border:2px solid #ddd8f2;background:#faf9ff;
 border-radius:25px;padding:20px;margin-top:15px
 }
-
 .game-top{
-display:flex;justify-content:space-between;
-align-items:center;gap:10px;margin-bottom:18px
+display:flex;justify-content:space-between;align-items:center;
+gap:10px;margin-bottom:18px
 }
-
 .game-name{font-size:21px;font-weight:900}
-
 .badge{
 background:#eae5ff;color:#5730d8;border-radius:999px;
 padding:9px 13px;font-size:13px;font-weight:900
 }
-
-.balls{display:flex;flex-wrap:wrap;gap:9px}
-
 .ball{
-width:43px;height:43px;border-radius:50%;
+width:43px;height:43px;
 background:linear-gradient(145deg,#6c3cf0,#5930df);
-color:#fff;display:flex;align-items:center;
-justify-content:center;font-weight:900;font-size:15px
+color:#fff;font-size:15px
 }
 
 .recent-draw{
 border:2px solid #ddd8f2;background:#f8f7fd;
 border-radius:20px;padding:14px;margin-top:10px
 }
-
-.recent-draw strong{
-display:block;font-size:16px
-}
-
+.recent-draw strong{display:block;font-size:16px}
 .recent-draw span{
-display:block;color:#777483;font-size:12px;
-margin-top:5px;line-height:1.5
+display:block;color:#777483;font-size:12px;margin-top:5px;line-height:1.5
 }
-
-.footer{
-text-align:center;color:#888493;font-size:12px;
-line-height:1.5;padding:10px 20px 30px
-}
-
-.hidden{display:none!important}
+.footer{text-align:center;color:#888493;font-size:12px;line-height:1.5;padding:10px 20px 30px}
 
 @media(max-width:500px){
 .app{padding:10px 9px 60px}
@@ -280,9 +212,7 @@ line-height:1.5;padding:10px 20px 30px
 <div class="status-box">
 <div class="status-line">
 <div id="dataDot" class="status-dot"></div>
-<div id="dataStatusTitle" class="status-title">
-Aguardando atualização
-</div>
+<div id="dataStatusTitle" class="status-title">Aguardando atualização</div>
 </div>
 
 <div id="dataStatusText" class="status-text">
@@ -290,9 +220,7 @@ Clique em "Atualizar resultados" para buscar os concursos disponíveis.
 </div>
 </div>
 
-<button id="updateBtn"
-class="main-button"
-onclick="updateAutomaticHistory()">
+<button id="updateBtn" class="main-button" onclick="updateAutomaticHistory()">
 📡 Atualizar resultados automaticamente
 </button>
 
@@ -313,15 +241,8 @@ onclick="updateAutomaticHistory()">
 <div id="latestResult" class="latest-result">
 
 <div class="latest-head">
-
-<div class="latest-title">
-🎯 Resultado do último concurso
-</div>
-
-<div id="latestResultContest" class="latest-contest">
-—
-</div>
-
+<div class="latest-title">🎯 Resultado do último concurso</div>
+<div id="latestResultContest" class="latest-contest">—</div>
 </div>
 
 <div id="latestResultDate" class="latest-date">
@@ -335,7 +256,6 @@ Atualize os resultados para visualizar as 15 dezenas.
 </div>
 
 </div>
-
 </section>
 
 <section class="card">
@@ -361,7 +281,6 @@ Nenhuma seleção calculada ainda.
 <div id="scoreList" class="score-list"></div>
 
 </div>
-
 </section>
 
 <section class="card">
@@ -375,15 +294,13 @@ Nenhuma seleção calculada ainda.
 O V21 testa pesos em concursos anteriores, escolhe a configuração adaptativa e gera 6 jogos de 15 dezenas.
 </div>
 
-<button id="generateBtn"
-class="main-button"
-onclick="generateGames()">
+<button id="generateBtn" class="main-button" onclick="generateGames()">
 🎲 Gerar jogos para o próximo concurso
 </button>
 
 </section>
 
-<section class="card" id="historySection">
+<section class="card">
 
 <div class="card-title">
 <span class="emoji">📊</span>
@@ -402,13 +319,11 @@ placeholder="01 02 04 05 07 08 10 12 14 16 18 19 21 23 25"
 Caso a atualização automática esteja indisponível, você pode inserir um concurso manualmente.
 </div>
 
-<button class="secondary-button"
-onclick="addManualDraw()">
+<button class="secondary-button" onclick="addManualDraw()">
 ➕ Adicionar concurso
 </button>
 
-<button class="danger-button"
-onclick="clearHistory()">
+<button class="danger-button" onclick="clearHistory()">
 🗑️ Limpar histórico
 </button>
 
@@ -421,8 +336,7 @@ onclick="clearHistory()">
 <h2>Últimos 5 concursos</h2>
 </div>
 
-<div id="recentHistoryList"
-class="nucleus-description">
+<div id="recentHistoryList" class="nucleus-description">
 Aguardando dados...
 </div>
 
@@ -436,139 +350,79 @@ Aguardando dados...
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">🧪</span>
 <h3>Backtest adaptativo</h3>
 </div>
-
 <p>
 Testa configurações de pesos usando somente concursos anteriores ao alvo e escolhe a configuração com melhor média histórica.
 </p>
-
 <div id="backtestScore" class="strategy-score">
 Aguardando dados...
 </div>
-
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">🔥</span>
 <h3>Frequência</h3>
 </div>
-
-<p>
-Mede quantas vezes cada dezena apareceu no histórico carregado.
-</p>
-
-<div id="freqScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Mede quantas vezes cada dezena apareceu no histórico carregado.</p>
+<div id="freqScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">❄️</span>
 <h3>Atrasados</h3>
 </div>
-
-<p>
-Mede há quantos concursos cada dezena não aparece.
-</p>
-
-<div id="lateScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Mede há quantos concursos cada dezena não aparece.</p>
+<div id="lateScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">🕐</span>
 <h3>Recente</h3>
 </div>
-
-<p>
-Dá mais peso aos concursos mais recentes.
-</p>
-
-<div id="recentScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Dá mais peso aos concursos mais recentes.</p>
+<div id="recentScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">🔄</span>
 <h3>Repetição</h3>
 </div>
-
-<p>
-Analisa a repetição das dezenas do concurso anterior.
-</p>
-
-<div id="repeatScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Analisa a repetição das dezenas do concurso anterior.</p>
+<div id="repeatScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">⚖️</span>
 <h3>Paridade</h3>
 </div>
-
-<p>
-Ajuda a manter equilíbrio entre pares e ímpares nos jogos.
-</p>
-
-<div id="parityScore" class="strategy-score">
-Estrutura do jogo
-</div>
-
+<p>Ajuda a manter equilíbrio entre pares e ímpares nos jogos.</p>
+<div id="parityScore" class="strategy-score">Estrutura do jogo</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">📊</span>
 <h3>Faixas</h3>
 </div>
-
-<p>
-Analisa a distribuição entre 1–5, 6–10, 11–15, 16–20 e 21–25.
-</p>
-
-<div id="rangeScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Analisa a distribuição entre 1–5, 6–10, 11–15, 16–20 e 21–25.</p>
+<div id="rangeScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 <div class="strategy">
-
 <div class="strategy-head">
 <span class="emoji">🧠</span>
 <h3>Combinada</h3>
 </div>
-
-<p>
-Junta os indicadores em uma pontuação final para cada dezena.
-</p>
-
-<div id="combinedScore" class="strategy-score">
-Aguardando dados...
-</div>
-
+<p>Junta os indicadores em uma pontuação final para cada dezena.</p>
+<div id="combinedScore" class="strategy-score">Aguardando dados...</div>
 </div>
 
 </section>
@@ -618,7 +472,6 @@ Atualize os resultados e depois clique em gerar jogos.
 </div>
 
 </div>
-
 </section>
 
 <div class="footer">
@@ -662,8 +515,8 @@ const j=Math.floor(Math.random()*(i+1));
 return a;
 }
 
-function clamp(value,min,max){
-return Math.max(min,Math.min(max,value));
+function clamp(v,min,max){
+return Math.max(min,Math.min(max,v));
 }
 
 function average(arr){
@@ -712,9 +565,9 @@ history=[];
 history=
 history
 .filter(x=>
-x&&
-x.concurso&&
-Array.isArray(x.dezenas)&&
+x &&
+x.concurso &&
+Array.isArray(x.dezenas) &&
 x.dezenas.length===15
 )
 .sort(
@@ -733,8 +586,7 @@ function setDataStatus(type,title,text){
 const dot=
 document.getElementById("dataDot");
 
-dot.className=
-"status-dot "+type;
+dot.className="status-dot "+type;
 
 document.getElementById(
 "dataStatusTitle"
@@ -769,19 +621,17 @@ return await response.json();
 
 function extractNumbers(data){
 
-const possible=[
+const arrays=[
 data?.listaDezenas,
 data?.dezenas,
 data?.dezenasSorteadas,
 data?.dezenasSorteadasOrdemSorteio
 ];
 
-for(const arr of possible){
+for(const arr of arrays){
 
-if(
-Array.isArray(arr)&&
-arr.length>=15
-){
+if(!Array.isArray(arr))
+continue;
 
 const nums=
 arr
@@ -798,11 +648,7 @@ const unique=
 [...new Set(nums)];
 
 if(unique.length===15)
-return unique.sort(
-(a,b)=>a-b
-);
-
-}
+return unique.sort((a,b)=>a-b);
 
 }
 
@@ -813,9 +659,9 @@ return null;
 function extractContest(data){
 
 return Number(
-data?.numero||
-data?.concurso||
-data?.numeroConcurso||
+data?.numero ||
+data?.concurso ||
+data?.numeroConcurso ||
 0
 );
 
@@ -828,24 +674,19 @@ await fetchJSON(
 CAIXA_API+"/"+contest
 );
 
-const numbers=
+const dezenas=
 extractNumbers(data);
 
 const numero=
 extractContest(data);
 
-if(!numbers||!numero)
-throw new Error(
-"Resultado inválido"
-);
+if(!dezenas||!numero)
+throw new Error("Resultado inválido");
 
 return {
 concurso:numero,
-dezenas:numbers,
-data:
-data?.dataApuracao||
-data?.data||
-""
+dezenas:dezenas,
+data:data?.dataApuracao||data?.data||""
 };
 
 }
@@ -857,37 +698,29 @@ history
 .slice()
 .sort(
 (a,b)=>
-Number(b.concurso)-
-Number(a.concurso)
+Number(b.concurso)-Number(a.concurso)
 )[0];
 
-const contestEl=
+const contest=
 document.getElementById(
 "latestResultContest"
 );
 
-const dateEl=
+const date=
 document.getElementById(
 "latestResultDate"
 );
 
-const numbersEl=
+const numbers=
 document.getElementById(
 "latestResultNumbers"
 );
 
-if(
-!latest||
-!Array.isArray(latest.dezenas)||
-latest.dezenas.length!==15
-){
+if(!latest){
 
-contestEl.innerText="—";
-
-dateEl.innerText=
-"Nenhum resultado carregado.";
-
-numbersEl.innerHTML=
+contest.innerText="—";
+date.innerText="Nenhum resultado carregado.";
+numbers.innerHTML=
 '<span class="nucleus-description">Atualize os resultados para visualizar as 15 dezenas.</span>';
 
 return;
@@ -895,27 +728,25 @@ return;
 }
 
 latestContest=
-Number(latest.concurso)||null;
+Number(latest.concurso);
 
 document.getElementById(
 "latestContest"
-).innerText=
-latestContest||"—";
+).innerText=latestContest;
 
-contestEl.innerText=
+contest.innerText=
 "Concurso "+latestContest;
 
-dateEl.innerText=
-latest.data&&latest.data!=="Manual"
-?
-"Data do sorteio: "+latest.data
-:
+date.innerText=
+latest.data &&
+latest.data!=="Manual" ?
+"Data do sorteio: "+latest.data :
 "Resultado salvo no histórico";
 
-numbersEl.innerHTML=
+numbers.innerHTML=
 latest.dezenas
-.map(
-n=>`<div class="result-ball">${number(n)}</div>`
+.map(n=>
+`<div class="result-ball">${number(n)}</div>`
 )
 .join("");
 
@@ -924,14 +755,10 @@ n=>`<div class="result-ball">${number(n)}</div>`
 async function updateAutomaticHistory(){
 
 const button=
-document.getElementById(
-"updateBtn"
-);
+document.getElementById("updateBtn");
 
 button.disabled=true;
-
-button.innerText=
-"📡 Buscando resultados...";
+button.innerText="📡 Buscando resultados...";
 
 setDataStatus(
 "orange",
@@ -942,37 +769,29 @@ setDataStatus(
 try{
 
 const latest=
-await fetchJSON(
-CAIXA_API
-);
+await fetchJSON(CAIXA_API);
 
 const latestNumber=
 extractContest(latest);
 
 if(!latestNumber)
 throw new Error(
-"Não foi possível identificar o concurso."
+"Concurso não identificado"
 );
 
-latestContest=
-latestNumber;
+latestContest=latestNumber;
 
 document.getElementById(
 "latestContest"
-).innerText=
-latestNumber;
+).innerText=latestNumber;
 
 const LIMIT=60;
 const contests=[];
 
-for(
-let n=0;
-n<LIMIT;
-n++
-){
+for(let i=0;i<LIMIT;i++){
 
 const contest=
-latestNumber-n;
+latestNumber-i;
 
 if(contest<=0)
 break;
@@ -982,19 +801,12 @@ contests.push(contest);
 }
 
 const downloaded=[];
-const BATCH_SIZE=6;
+const BATCH=6;
 
-for(
-let i=0;
-i<contests.length;
-i+=BATCH_SIZE
-){
+for(let i=0;i<contests.length;i+=BATCH){
 
 const batch=
-contests.slice(
-i,
-i+BATCH_SIZE
-);
+contests.slice(i,i+BATCH);
 
 setDataStatus(
 "orange",
@@ -1005,60 +817,40 @@ setDataStatus(
 const results=
 await Promise.allSettled(
 batch.map(
-contest=>
-fetchContest(contest)
+n=>fetchContest(n)
 )
 );
 
-results.forEach(
-result=>{
-if(
-result.status==="fulfilled"
-)
-downloaded.push(
-result.value
-);
+for(const r of results){
+
+if(r.status==="fulfilled")
+downloaded.push(r.value);
+
 }
-);
 
 }
 
 if(!downloaded.length)
 throw new Error(
-"A fonte não retornou concursos."
+"Nenhum resultado recebido"
 );
 
 const map=new Map();
 
-history.forEach(
-item=>{
-if(
-item&&
-item.concurso&&
-Array.isArray(item.dezenas)
-)
-map.set(
-Number(item.concurso),
-item
-);
-}
-);
+history.forEach(x=>{
+if(x&&x.concurso)
+map.set(Number(x.concurso),x);
+});
 
-downloaded.forEach(
-item=>{
-map.set(
-Number(item.concurso),
-item
-);
-}
-);
+downloaded.forEach(x=>{
+map.set(Number(x.concurso),x);
+});
 
 history=
 [...map.values()]
 .sort(
 (a,b)=>
-Number(b.concurso)-
-Number(a.concurso)
+Number(b.concurso)-Number(a.concurso)
 )
 .slice(0,100);
 
@@ -1070,7 +862,7 @@ calculateAndRender();
 setDataStatus(
 "green",
 "Dados atualizados",
-`${downloaded.length} concursos carregados. Resultado do último concurso exibido abaixo.`
+`${downloaded.length} concursos carregados.`
 );
 
 button.innerText=
@@ -1078,19 +870,14 @@ button.innerText=
 
 }catch(error){
 
-console.error(
-"V21 erro:",
-error
-);
+console.error(error);
 
 if(history.length){
-
-renderLatestResult();
 
 setDataStatus(
 "orange",
 "Fonte automática indisponível",
-`Mantendo ${history.length} concursos salvos e exibindo o último resultado disponível.`
+`Mantendo ${history.length} concursos salvos.`
 );
 
 }else{
@@ -1098,13 +885,12 @@ setDataStatus(
 setDataStatus(
 "red",
 "Não foi possível atualizar",
-"A fonte automática não respondeu. O modo manual continua disponível."
+"A fonte automática não respondeu."
 );
 
 alert(
 "Não consegui carregar os resultados automaticamente.\n\n"+
-"A fonte da CAIXA pode bloquear requisições feitas diretamente pelo navegador.\n\n"+
-"Se isso acontecer novamente, podemos colocar o carregamento pelo servidor."
+"Você pode usar o histórico manual."
 );
 
 }
@@ -1121,88 +907,56 @@ button.disabled=false;
 function parseDraw(text){
 
 const nums=
-text
-.match(/\d+/g)
-?.map(Number)
-.filter(
-n=>n>=1&&n<=25
-)||[];
+(text.match(/\d+/g)||[])
+.map(Number)
+.filter(n=>n>=1&&n<=25);
 
 const unique=
 [...new Set(nums)];
 
-return unique.length===15
-?
-unique.sort((a,b)=>a-b)
-:
-null;
+if(unique.length!==15)
+return null;
+
+return unique.sort((a,b)=>a-b);
 
 }
 
 function addManualDraw(){
 
 const input=
-document.getElementById(
-"historyInput"
-);
-
-const text=
-input.value.trim();
-
-if(!text){
-alert("Digite as 15 dezenas.");
-return;
-}
-
-const parts=
-text.split(";");
-
-let added=0;
-
-for(const part of parts){
+document.getElementById("historyInput");
 
 const draw=
-parseDraw(part);
+parseDraw(input.value);
 
-if(draw){
+if(!draw){
 
-const nextNumber=
-latestContest?
-latestContest+1:
-(
-history.length?
-Number(history[0].concurso||0)+1:
-1
+alert(
+"Digite exatamente 15 dezenas diferentes entre 01 e 25."
 );
 
+return;
+
+}
+
+const next=
+latestContest ?
+latestContest+1 :
+(history.length ?
+Number(history[0].concurso)+1 :
+1);
+
 history.unshift({
-concurso:nextNumber,
+concurso:next,
 dezenas:draw,
 data:"Manual"
 });
-
-added++;
-
-}
-
-}
-
-if(!added){
-
-alert(
-"O concurso precisa conter exatamente 15 dezenas diferentes entre 01 e 25."
-);
-
-return;
-
-}
 
 history=
 history
 .sort(
 (a,b)=>
-Number(b.concurso)-
-Number(a.concurso)
+Number(b.concurso)-Number(a.concurso)
 )
 .slice(0,100);
 
@@ -1214,44 +968,30 @@ updateHistoryUI();
 renderLatestResult();
 calculateAndRender();
 
-alert(
-added===1?
-"Concurso adicionado.":
-`${added} concursos adicionados.`
-);
+alert("Concurso adicionado.");
 
 }
 
 function clearHistory(){
 
-if(
-!confirm(
+if(!confirm(
 "Deseja realmente apagar o histórico salvo?"
-)
-)
+))
 return;
 
 history=[];
 latestContest=null;
 
-localStorage.removeItem(
-STORAGE_V21
-);
+localStorage.removeItem(STORAGE_V21);
+localStorage.removeItem(STORAGE_V20);
+localStorage.removeItem(STORAGE_V19);
 
-localStorage.removeItem(
-STORAGE_V20
-);
-
-localStorage.removeItem(
-STORAGE_V19
-);
+updateHistoryUI();
+renderLatestResult();
 
 document.getElementById(
 "latestContest"
 ).innerText="—";
-
-updateHistoryUI();
-renderLatestResult();
 
 document.getElementById(
 "nucleusStatus"
@@ -1273,43 +1013,34 @@ document.getElementById(
 
 resetStrategies();
 
-setDataStatus(
-"",
-"Aguardando atualização",
-"O histórico foi limpo."
-);
-
 }
 
 function updateHistoryUI(){
 
-const count=
-history.length;
-
 document.getElementById(
 "historyCount"
-).innerText=count;
+).innerText=history.length;
 
 document.getElementById(
 "infoHistory"
-).innerText=count;
+).innerText=history.length;
 
 const el=
 document.getElementById(
 "recentHistoryList"
 );
 
-if(el){
+if(!history.length){
 
-const recent=
-history.slice(0,5);
+el.innerHTML="Aguardando dados...";
+return;
+
+}
 
 el.innerHTML=
-recent.length?
-
-recent
-.map(
-d=>`
+history
+.slice(0,5)
+.map(d=>`
 <div class="recent-draw">
 <strong>
 Concurso ${d.concurso}
@@ -1319,14 +1050,8 @@ ${d.data?"• "+d.data:""}
 ${d.dezenas.map(number).join(" • ")}
 </span>
 </div>
-`
-)
-.join("")
-
-:
-"Aguardando dados...";
-
-}
+`)
+.join("");
 
 }
 
@@ -1340,11 +1065,10 @@ function resetStrategies(){
 "rangeScore",
 "combinedScore"
 ]
-.forEach(
-id=>
+.forEach(id=>{
 document.getElementById(id).innerText=
-"Aguardando dados..."
-);
+"Aguardando dados...";
+});
 
 document.getElementById(
 "parityScore"
@@ -1405,23 +1129,20 @@ range:.10
 let adaptiveWeights=
 WEIGHT_PRESETS.equilibrada;
 
-let backtestInfo=null;
+function rawIndicators(draws){
 
-function rawIndicators(drawHistory){
-
-const nums=
+const numbers=
 Array.from(
-{length:TOTAL_NUMBERS},
+{length:25},
 (_,i)=>i+1
 );
 
-const out={};
+const result={};
 
-if(!drawHistory.length){
+if(!draws.length){
 
-nums.forEach(
-n=>{
-out[n]={
+numbers.forEach(n=>{
+result[n]={
 frequency:0,
 late:0,
 recent:0,
@@ -1429,20 +1150,19 @@ repeat:0,
 parity:.5,
 range:.5
 };
-}
-);
+});
 
-return out;
+return result;
 
 }
 
 const frequency={};
 
-nums.forEach(
+numbers.forEach(
 n=>frequency[n]=0
 );
 
-drawHistory.forEach(
+draws.forEach(
 draw=>
 draw.dezenas.forEach(
 n=>frequency[n]++
@@ -1457,21 +1177,13 @@ Math.max(
 
 const late={};
 
-nums.forEach(
-n=>{
+numbers.forEach(n=>{
 
-let distance=
-drawHistory.length;
+let distance=draws.length;
 
-for(
-let i=0;
-i<drawHistory.length;
-i++
-){
+for(let i=0;i<draws.length;i++){
 
-if(
-drawHistory[i].dezenas.includes(n)
-){
+if(draws[i].dezenas.includes(n)){
 
 distance=i;
 break;
@@ -1482,8 +1194,7 @@ break;
 
 late[n]=distance;
 
-}
-);
+});
 
 const maxLate=
 Math.max(
@@ -1493,34 +1204,26 @@ Math.max(
 
 const recent={};
 
-nums.forEach(
-n=>{
+numbers.forEach(n=>{
 
 let score=0;
 
 const window=
-drawHistory.slice(
+draws.slice(
 0,
-Math.min(
-20,
-drawHistory.length
-)
+Math.min(20,draws.length)
 );
 
-window.forEach(
-(draw,index)=>{
-if(
-draw.dezenas.includes(n)
-)
-score+=
-window.length-index;
-}
-);
+window.forEach((draw,index)=>{
+
+if(draw.dezenas.includes(n))
+score+=window.length-index;
+
+});
 
 recent[n]=score;
 
-}
-);
+});
 
 const maxRecent=
 Math.max(
@@ -1530,42 +1233,35 @@ Math.max(
 
 const repeat={};
 
-nums.forEach(
-n=>
+numbers.forEach(n=>{
 repeat[n]=
-drawHistory[0]?.dezenas.includes(n)?
-1:
-0
-);
+draws[0]?.dezenas.includes(n)?1:0;
+});
 
-const rangeCount=
-[0,1,2,3,4]
-.map(
-range=>
-drawHistory.reduce(
-(total,draw)=>
-total+
-draw.dezenas.filter(
-n=>
-Math.floor((n-1)/5)===range
-).length,
-0
-)
-);
+const ranges=[0,0,0,0,0];
 
-const maxRange=
-Math.max(
-...rangeCount,
-1
-);
+draws.forEach(draw=>{
 
-nums.forEach(
-n=>{
+draw.dezenas.forEach(n=>{
 
-const range=
+const r=
 Math.floor((n-1)/5);
 
-out[n]={
+ranges[r]++;
+
+});
+
+});
+
+const maxRange=
+Math.max(...ranges,1);
+
+numbers.forEach(n=>{
+
+const r=
+Math.floor((n-1)/5);
+
+result[n]={
 
 frequency:
 frequency[n]/maxFreq,
@@ -1582,13 +1278,13 @@ repeat[n],
 parity:.5,
 
 range:
-rangeCount[range]/maxRange
+ranges[r]/maxRange
 
 };
 
 });
 
-return out;
+return result;
 
 }
 
@@ -1599,14 +1295,12 @@ weights
 
 const scores={};
 
-Object.keys(indicators)
-.forEach(
-n=>{
+Object.keys(indicators).forEach(n=>{
 
-const x=
-indicators[n];
+const x=indicators[n];
 
 scores[n]={
+
 ...x,
 
 combined:
@@ -1623,19 +1317,9 @@ x.range*weights.range,
 
 };
 
-}
-);
+});
 
 return scores;
-
-}
-
-function calculateScores(){
-
-return scoreIndicators(
-rawIndicators(history),
-adaptiveWeights
-);
 
 }
 
@@ -1654,46 +1338,35 @@ scores[a].combined
 
 function runBacktest(){
 
-const candidates=
-Object.entries(
-WEIGHT_PRESETS
-);
-
-const results=[];
-
-const maxTests=
-Math.min(
-35,
-Math.max(
-0,
-history.length-1
-)
-);
-
-if(maxTests<8){
-
-backtestInfo=null;
+if(history.length<8){
 
 adaptiveWeights=
 WEIGHT_PRESETS.equilibrada;
+
+document.getElementById(
+"backtestScore"
+).innerText=
+"Histórico ainda pequeno; usando configuração equilibrada.";
 
 return;
 
 }
 
-for(
-const [name,weights]
-of candidates
-){
+const results=[];
 
-let totalHits=0;
+for(const [name,weights]
+of Object.entries(WEIGHT_PRESETS)){
+
+let hits=0;
 let tests=0;
 
-for(
-let i=0;
-i<maxTests;
-i++
-){
+const maxTests=
+Math.min(
+35,
+history.length-1
+);
+
+for(let i=0;i<maxTests;i++){
 
 const past=
 history.slice(i+1);
@@ -1701,10 +1374,7 @@ history.slice(i+1);
 const target=
 history[i]?.dezenas;
 
-if(
-past.length<5||
-!target
-)
+if(past.length<5||!target)
 continue;
 
 const scores=
@@ -1716,7 +1386,7 @@ weights
 const core=
 buildCore(scores);
 
-totalHits+=
+hits+=
 target.filter(
 n=>core.includes(n)
 ).length;
@@ -1727,52 +1397,43 @@ tests++;
 
 results.push({
 name,
-avg:
-tests?
-totalHits/tests:
-0,
+avg:tests?hits/tests:0,
 tests
 });
 
 }
 
 results.sort(
-(a,b)=>
-b.avg-a.avg
+(a,b)=>b.avg-a.avg
 );
 
 const chosen=
-results[0]||
-{
-name:"equilibrada",
-avg:0,
-tests:0
-};
+results[0];
 
 adaptiveWeights=
 WEIGHT_PRESETS[
 chosen.name
-]||
-WEIGHT_PRESETS.equilibrada;
+];
 
-backtestInfo={
-chosen,
-results
-};
-
-const el=
 document.getElementById(
 "backtestScore"
+).innerText=
+`Configuração adaptativa: ${chosen.name} • média do núcleo: ${chosen.avg.toFixed(2)} acertos em ${chosen.tests} testes`;
+
+}
+
+function calculateScores(){
+
+return scoreIndicators(
+rawIndicators(history),
+adaptiveWeights
 );
 
-if(el){
-
-el.innerText=
-`Configuração adaptativa: ${chosen.name} • média histórica do núcleo: ${chosen.avg.toFixed(2)} acertos em ${chosen.tests} testes`;
-
 }
 
-}
+/* =====================================================
+   GERADOR V21 CORRIGIDO
+   ===================================================== */
 
 function buildGame(
 core,
@@ -1780,239 +1441,226 @@ scores,
 gameIndex
 ){
 
-const selected=[];
-
 const ranked=
-[...core]
+Object.keys(scores)
+.map(Number)
 .sort(
 (a,b)=>
 scores[b].combined-
 scores[a].combined
 );
 
-const mode=
-gameIndex%5;
+let pool=[...ranked];
 
-for(
-const n of ranked
-){
+/* Estratégia específica de cada jogo */
 
-if(
-selected.length>=GAME_SIZE
-)
-break;
+if(gameIndex===1){
 
-let probability=
-.62+
-scores[n].combined*.32;
-
-if(mode===1)
-probability=
-.58+
-scores[n].late*.38;
-
-if(mode===2)
-probability=
-.58+
-scores[n].frequency*.38;
-
-if(mode===3)
-probability=
-.58+
-scores[n].recent*.38;
-
-if(mode===4)
-probability=
-.60+
-scores[n].range*.30;
-
-if(
-Math.random()<=probability
-)
-selected.push(n);
+pool.sort(
+(a,b)=>
+scores[b].late-
+scores[a].late
+);
 
 }
 
-for(
-const n of ranked
-){
+else if(gameIndex===2){
 
-if(
-selected.length>=GAME_SIZE
-)
-break;
-
-if(
-!selected.includes(n)
-)
-selected.push(n);
+pool.sort(
+(a,b)=>
+scores[b].frequency-
+scores[a].frequency
+);
 
 }
+
+else if(gameIndex===3){
+
+pool.sort(
+(a,b)=>
+scores[b].recent-
+scores[a].recent
+);
+
+}
+
+else if(gameIndex===4){
+
+pool.sort(
+(a,b)=>
+scores[b].range-
+scores[a].range
+);
+
+}
+
+/* Pequena variação entre os jogos */
 
 if(gameIndex>=2){
 
 const outside=
-Object.keys(scores)
-.map(Number)
-.filter(
+ranked.filter(
 n=>!core.includes(n)
 );
 
-if(
-Math.random()<.55
-){
-
-const replacement=
-shuffle(outside)[0];
-
-const index=
-Math.floor(
-Math.random()*selected.length
-);
-
-if(replacement)
-selected[index]=replacement;
+pool=[
+...core,
+...shuffle(outside)
+];
 
 }
 
-}
+/* Seleção */
 
-return repairGame(
-selected,
-scores
-);
+let selected=[];
 
-}
+for(const n of pool){
 
-function repairGame(
-game,
-scores
-){
-
-let selected=
-[...new Set(game)];
-
-const ranked=
-Object.keys(scores)
-.map(Number)
-.sort(
-(a,b)=>
-scores[b].combined-
-scores[a].combined
-);
-
-for(
-const n of ranked
-){
-
-if(
-selected.length>=GAME_SIZE
-)
+if(selected.length>=15)
 break;
 
-if(
-!selected.includes(n)
-)
+let chance=
+.60+
+(scores[n].combined*.35);
+
+if(gameIndex>=2)
+chance-=.05;
+
+if(Math.random()<chance)
 selected.push(n);
 
 }
 
-const targetEven=
-Math.random()<.5?
-7:
-8;
+/* Completa pelas melhores */
 
-let evens=
-selected.filter(
-n=>n%2===0
+for(const n of ranked){
+
+if(selected.length>=15)
+break;
+
+if(!selected.includes(n))
+selected.push(n);
+
+}
+
+/* Garantia absoluta */
+
+if(selected.length<15){
+
+const remaining=
+Array.from(
+{length:25},
+(_,i)=>i+1
+).filter(
+n=>!selected.includes(n)
 );
 
-while(
-evens.length>targetEven
-){
+for(const n of shuffle(remaining)){
 
-const old=
-evens
+if(selected.length>=15)
+break;
+
+selected.push(n);
+
+}
+
+}
+
+/* Paridade */
+
+let even=
+selected.filter(n=>n%2===0).length;
+
+const targetEven=
+gameIndex%2===0?8:7;
+
+/* Muito pares */
+
+while(even>targetEven){
+
+const remove=
+selected
+.filter(n=>n%2===0)
 .sort(
 (a,b)=>
 scores[a].combined-
 scores[b].combined
 )[0];
 
-const replacement=
+const add=
 ranked.find(
 n=>
 !selected.includes(n)&&
 n%2!==0
 );
 
-if(!old||!replacement)
+if(remove===undefined||add===undefined)
 break;
 
 selected=
-selected.filter(
-n=>n!==old
-);
+selected.filter(n=>n!==remove);
 
-selected.push(
-replacement
-);
+selected.push(add);
 
-evens=
-selected.filter(
-n=>n%2===0
-);
+even=
+selected.filter(n=>n%2===0).length;
 
 }
 
-while(
-evens.length<targetEven
-){
+/* Poucos pares */
 
-const old=
+while(even<targetEven){
+
+const remove=
 selected
-.filter(
-n=>n%2!==0
-)
+.filter(n=>n%2!==0)
 .sort(
 (a,b)=>
 scores[a].combined-
 scores[b].combined
 )[0];
 
-const replacement=
+const add=
 ranked.find(
 n=>
 !selected.includes(n)&&
 n%2===0
 );
 
-if(!old||!replacement)
+if(remove===undefined||add===undefined)
 break;
 
 selected=
-selected.filter(
-n=>n!==old
-);
+selected.filter(n=>n!==remove);
 
-selected.push(
-replacement
-);
+selected.push(add);
 
-evens=
-selected.filter(
-n=>n%2===0
-);
+even=
+selected.filter(n=>n%2===0).length;
 
 }
 
-return
+/* Última garantia */
+
+selected=
 [...new Set(selected)]
-.sort((a,b)=>a-b)
-.slice(
-0,
-GAME_SIZE
+.filter(
+n=>n>=1&&n<=25
 );
+
+for(let n=1;n<=25;n++){
+
+if(selected.length>=15)
+break;
+
+if(!selected.includes(n))
+selected.push(n);
+
+}
+
+return selected
+.slice(0,15)
+.sort((a,b)=>a-b);
 
 }
 
@@ -2030,75 +1678,122 @@ scores
 ){
 
 const games=[];
-let attempts=0;
 
-while(
-games.length<TOTAL_GAMES&&
-attempts<1500
-){
+for(let i=0;i<6;i++){
 
-attempts++;
+let best=null;
+let bestScore=-Infinity;
+
+for(let attempt=0;attempt<100;attempt++){
 
 const game=
 buildGame(
 core,
 scores,
-games.length
+i
 );
 
 if(
-game.length!==GAME_SIZE
+!Array.isArray(game)||
+game.length!==15
 )
 continue;
 
-if(
-games.every(
-existing=>
-similarity(
-game,
-existing
-)<14
-)
-)
-games.push(game);
+let diversity=0;
+
+for(const old of games){
+
+const common=
+similarity(game,old);
+
+diversity+=15-common;
 
 }
 
-while(
-games.length<TOTAL_GAMES
-)
-games.push(
+/* Qualidade estatística do jogo */
+
+const quality=
+game.reduce(
+(total,n)=>
+total+
+(scores[n]?.combined||0),
+0
+);
+
+const finalScore=
+diversity+
+quality*2+
+Math.random();
+
+if(finalScore>bestScore){
+
+bestScore=finalScore;
+best=game;
+
+}
+
+}
+
+/* Fallback */
+
+if(!best){
+
+best=
 buildGame(
 core,
 scores,
-games.length
-)
+i
 );
+
+}
+
+/* Garantia final */
+
+best=
+[...new Set(best)]
+.filter(
+n=>n>=1&&n<=25
+);
+
+for(let n=1;n<=25;n++){
+
+if(best.length>=15)
+break;
+
+if(!best.includes(n))
+best.push(n);
+
+}
+
+best=
+best
+.slice(0,15)
+.sort((a,b)=>a-b);
+
+games.push(best);
+
+}
 
 return games;
 
 }
+
+/* =====================================================
+   INTERFACE
+   ===================================================== */
 
 function updateNucleus(
 core,
 scores
 ){
 
-if(!history.length){
-
-document.getElementById(
-"nucleusStatus"
-).innerText=
-"Nenhum concurso foi carregado ainda.";
-
+if(!history.length)
 return;
-
-}
 
 document.getElementById(
 "nucleusStatus"
 ).innerHTML=
-`Núcleo calculado com <strong>${history.length}</strong> concursos reais armazenados. Foram selecionadas as 18 dezenas com maior pontuação combinada.`;
+`Núcleo calculado com <strong>${history.length}</strong> concursos. Foram selecionadas as 18 dezenas com maior pontuação combinada.`;
 
 const container=
 document.getElementById(
@@ -2107,26 +1802,20 @@ document.getElementById(
 
 container.innerHTML="";
 
-core.forEach(
-n=>{
+core.forEach(n=>{
 
-const element=
-document.createElement(
-"div"
-);
+const div=
+document.createElement("div");
 
-element.className=
+div.className=
 "selected-number";
 
-element.innerText=
+div.innerText=
 number(n);
 
-container.appendChild(
-element
-);
+container.appendChild(div);
 
-}
-);
+});
 
 const ranked=
 Object.keys(scores)
@@ -2145,105 +1834,82 @@ document.getElementById(
 
 list.innerHTML="";
 
-ranked.forEach(
-n=>{
+ranked.forEach(n=>{
 
 const row=
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 const pct=
 Math.round(
 scores[n].combined*100
 );
 
-row.className=
-"score-row";
+row.className="score-row";
 
-row.innerHTML=
-`
+row.innerHTML=`
 <div>${number(n)}</div>
 <div class="score-bar">
-<div class="score-fill"
-style="width:${pct}%">
-</div>
+<div class="score-fill" style="width:${pct}%"></div>
 </div>
 <div>${pct}%</div>
 `;
 
-list.appendChild(
-row
-);
+list.appendChild(row);
 
-}
-);
+});
 
 document.getElementById(
 "infoCore"
-).innerText=
-core.length;
+).innerText=18;
 
 }
 
-function updateStrategyUI(
-scores
-){
-
-if(
-!scores||
-!Object.keys(scores).length
-)
-return;
+function updateStrategyUI(scores){
 
 const values=
 Object.values(scores);
 
-const avgKey=
+const avg=
 key=>
 Math.round(
 average(
-values.map(
-x=>x[key]
-)
+values.map(x=>x[key])
 )*100
 );
 
 document.getElementById(
 "freqScore"
 ).innerText=
-`Indicador médio: ${avgKey("frequency")}%`;
+`Indicador médio: ${avg("frequency")}%`;
 
 document.getElementById(
 "lateScore"
 ).innerText=
-`Indicador médio: ${avgKey("late")}%`;
+`Indicador médio: ${avg("late")}%`;
 
 document.getElementById(
 "recentScore"
 ).innerText=
-`Indicador médio: ${avgKey("recent")}%`;
+`Indicador médio: ${avg("recent")}%`;
 
 document.getElementById(
 "repeatScore"
 ).innerText=
-`Indicador médio: ${avgKey("repeat")}%`;
+`Indicador médio: ${avg("repeat")}%`;
 
 document.getElementById(
 "rangeScore"
 ).innerText=
-`Indicador médio: ${avgKey("range")}%`;
+`Indicador médio: ${avg("range")}%`;
 
 document.getElementById(
 "combinedScore"
 ).innerText=
-"Pontuação calculada para 25 dezenas";
+"Pontuação calculada para as 25 dezenas";
 
 }
 
-function renderGames(
-games
-){
+function renderGames(games){
 
 const container=
 document.getElementById(
@@ -2255,34 +1921,35 @@ container.innerHTML="";
 games.forEach(
 (game,index)=>{
 
-let label=
-"🎲 Diversidade";
+let label="🎲 Diversidade";
 
 if(index===0)
 label="🧠 Núcleo V21";
 
-else if(index===1)
+if(index===1)
 label="❄️ Atrasados";
 
-else if(index===2)
+if(index===2)
 label="🔥 Frequência";
 
-else if(index===3)
+if(index===3)
 label="🕐 Recente";
 
-else if(index===4)
+if(index===4)
 label="⚖️ Equilíbrio";
 
+if(index===5)
+label="🎯 Diversidade 2";
+
 const card=
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 card.className="game";
 
-card.innerHTML=
-`
+card.innerHTML=`
+
 <div class="game-top">
+
 <div class="game-name">
 Jogo ${index+1}
 </div>
@@ -2290,32 +1957,27 @@ Jogo ${index+1}
 <div class="badge">
 ${label}
 </div>
+
 </div>
 
 <div class="balls">
-${game
-.map(
-n=>`
-<div class="ball">
-${number(n)}
+
+${game.map(
+n=>
+`<div class="ball">${number(n)}</div>`
+).join("")}
+
 </div>
-`
-)
-.join("")}
-</div>
+
 `;
 
-container.appendChild(
-card
-);
+container.appendChild(card);
 
-}
-);
+});
 
 document.getElementById(
 "infoGames"
-).innerText=
-games.length;
+).innerText=games.length;
 
 }
 
@@ -2324,7 +1986,6 @@ function calculateAndRender(){
 if(!history.length){
 
 resetStrategies();
-
 return;
 
 }
@@ -2355,7 +2016,7 @@ function generateGames(){
 if(!history.length){
 
 alert(
-"Primeiro clique em 'Atualizar resultados automaticamente' para carregar o histórico."
+"Primeiro atualize os resultados ou adicione um concurso manualmente."
 );
 
 return;
@@ -2370,10 +2031,9 @@ document.getElementById(
 button.disabled=true;
 
 button.innerText=
-"🧪 Testando histórico V21...";
+"🧪 Calculando V21...";
 
-setTimeout(
-()=>{
+setTimeout(()=>{
 
 try{
 
@@ -2390,6 +2050,25 @@ generateAllGames(
 core,
 scores
 );
+
+/* Verificação final */
+
+if(
+!games.length||
+games.length!==6||
+games.some(
+g=>
+!Array.isArray(g)||
+g.length!==15||
+new Set(g).size!==15
+)
+){
+
+throw new Error(
+"Falha na validação dos jogos."
+);
+
+}
 
 lastScores=scores;
 lastGames=games;
@@ -2412,10 +2091,15 @@ button.innerText=
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Erro V21:",
+error
+);
 
 alert(
-"Erro ao gerar os jogos."
+"Erro ao gerar os jogos.\n\n"+
+"Detalhe: "+
+(error.message||"erro desconhecido")
 );
 
 button.innerText=
@@ -2425,20 +2109,20 @@ button.innerText=
 
 button.disabled=false;
 
-},
-300
-);
+},250);
 
 }
+
+/* =====================================================
+   INICIALIZAÇÃO
+   ===================================================== */
 
 loadHistory();
 
 if(history.length){
 
 latestContest=
-Number(
-history[0].concurso||0
-);
+Number(history[0].concurso||0);
 
 document.getElementById(
 "latestContest"
