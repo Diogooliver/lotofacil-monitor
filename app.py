@@ -17,9 +17,12 @@ from typing import Any, Dict, List, Optional
 
 APP_VERSION = "V21.3"
 
-CAIXA_BASE = "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil"
+CAIXA_BASE = (
+    "https://servicebus2.caixa.gov.br/"
+    "portaldeloterias/api/lotofacil"
+)
 
-# API alternativa
+# APIs alternativas utilizadas caso a CAIXA retorne 403
 ALT_BASES = [
     "https://loteriascaixa-api.herokuapp.com/api/lotofacil",
     "https://loterias-gutotech.herokuapp.com/api/lotofacil",
@@ -38,13 +41,18 @@ _cache_history_time = 0
 
 
 # =========================================================
-# APP
+# FASTAPI
 # =========================================================
 
 app = FastAPI(
     title="Lotofácil Monitor",
     version=APP_VERSION
 )
+
+
+# =========================================================
+# CORS
+# =========================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,22 +64,17 @@ app.add_middleware(
 
 
 # =========================================================
-# HELPERS
+# FUNÇÕES AUXILIARES
 # =========================================================
 
 def now_ts() -> float:
     return datetime.now().timestamp()
 
 
-def normalize_number(value: Any) -> Optional[int]:
-    """
-    Converte valores como:
-    1
-    "01"
-    "1"
-    "Dezena 01"
-    para inteiro.
-    """
+def normalize_number(
+    value: Any
+) -> Optional[int]:
+
     if value is None:
         return None
 
@@ -83,18 +86,25 @@ def normalize_number(value: Any) -> Optional[int]:
 
     text = str(value).strip()
 
-    match = re.search(r"\d+", text)
+    match = re.search(
+        r"\d+",
+        text
+    )
 
     if not match:
         return None
 
     try:
-        return int(match.group(0))
+        return int(
+            match.group(0)
+        )
     except Exception:
         return None
 
 
-def extract_contest(data: Dict[str, Any]) -> Optional[int]:
+def extract_contest(
+    data: Dict[str, Any]
+) -> Optional[int]:
 
     possible_fields = [
         "numero",
@@ -108,7 +118,9 @@ def extract_contest(data: Dict[str, Any]) -> Optional[int]:
 
         if field in data:
 
-            value = normalize_number(data.get(field))
+            value = normalize_number(
+                data.get(field)
+            )
 
             if value is not None:
                 return value
@@ -116,7 +128,9 @@ def extract_contest(data: Dict[str, Any]) -> Optional[int]:
     return None
 
 
-def extract_date(data: Dict[str, Any]) -> Optional[str]:
+def extract_date(
+    data: Dict[str, Any]
+) -> Optional[str]:
 
     possible_fields = [
         "dataApuracao",
@@ -136,7 +150,9 @@ def extract_date(data: Dict[str, Any]) -> Optional[str]:
     return None
 
 
-def extract_numbers(data: Dict[str, Any]) -> List[int]:
+def extract_numbers(
+    data: Dict[str, Any]
+) -> List[int]:
 
     possible_fields = [
         "listaDezenas",
@@ -150,43 +166,75 @@ def extract_numbers(data: Dict[str, Any]) -> List[int]:
 
     for field in possible_fields:
 
-        if field in data and data[field] is not None:
+        if (
+            field in data
+            and data[field] is not None
+        ):
+
             raw = data[field]
             break
 
     if raw is None:
         return []
 
-    # Caso seja lista
+    # -----------------------------------------------------
+    # Lista
+    # -----------------------------------------------------
+
     if isinstance(raw, list):
 
         numbers = []
 
         for item in raw:
 
-            # Pode ser número simples
-            number = normalize_number(item)
+            number = normalize_number(
+                item
+            )
 
-            if number is not None and 1 <= number <= 25:
-                numbers.append(number)
+            if (
+                number is not None
+                and 1 <= number <= 25
+            ):
 
-        return sorted(set(numbers))
+                numbers.append(
+                    number
+                )
 
-    # Caso seja string
+        return sorted(
+            set(numbers)
+        )
+
+    # -----------------------------------------------------
+    # String
+    # -----------------------------------------------------
+
     if isinstance(raw, str):
 
-        found = re.findall(r"\d{1,2}", raw)
+        found = re.findall(
+            r"\d{1,2}",
+            raw
+        )
 
         numbers = []
 
         for item in found:
 
-            number = normalize_number(item)
+            number = normalize_number(
+                item
+            )
 
-            if number is not None and 1 <= number <= 25:
-                numbers.append(number)
+            if (
+                number is not None
+                and 1 <= number <= 25
+            ):
 
-        return sorted(set(numbers))
+                numbers.append(
+                    number
+                )
+
+        return sorted(
+            set(numbers)
+        )
 
     return []
 
@@ -196,16 +244,24 @@ def normalize_result(
     source: str
 ) -> Dict[str, Any]:
 
-    concurso = extract_contest(data)
+    concurso = extract_contest(
+        data
+    )
 
-    date = extract_date(data)
+    date = extract_date(
+        data
+    )
 
-    numbers = extract_numbers(data)
+    numbers = extract_numbers(
+        data
+    )
 
     if len(numbers) != 15:
 
         raise ValueError(
-            f"Resultado inválido: esperado 15 dezenas, recebido {len(numbers)}"
+            "Resultado inválido: "
+            f"esperado 15 dezenas, "
+            f"recebido {len(numbers)}"
         )
 
     return {
@@ -217,7 +273,7 @@ def normalize_result(
 
 
 # =========================================================
-# HTTP CLIENT
+# HTTP
 # =========================================================
 
 async def http_get_json(
@@ -249,7 +305,7 @@ async def http_get_json(
 
 
 # =========================================================
-# FONTE 1 — CAIXA
+# CAIXA — ÚLTIMO RESULTADO
 # =========================================================
 
 async def fetch_caixa_latest(
@@ -263,9 +319,17 @@ async def fetch_caixa_latest(
             "AppleWebKit/605.1.15 "
             "Version/17.0 Mobile/15E148 Safari/604.1"
         ),
-        "Accept": "application/json,text/plain,*/*",
-        "Referer": "https://loterias.caixa.gov.br/",
-        "Origin": "https://loterias.caixa.gov.br",
+        "Accept": (
+            "application/json,"
+            "text/plain,"
+            "*/*"
+        ),
+        "Referer": (
+            "https://loterias.caixa.gov.br/"
+        ),
+        "Origin": (
+            "https://loterias.caixa.gov.br"
+        ),
     }
 
     response = await client.get(
@@ -278,7 +342,8 @@ async def fetch_caixa_latest(
     if response.status_code != 200:
 
         raise RuntimeError(
-            f"CAIXA HTTP {response.status_code}"
+            f"CAIXA HTTP "
+            f"{response.status_code}"
         )
 
     data = response.json()
@@ -288,6 +353,10 @@ async def fetch_caixa_latest(
         "CAIXA"
     )
 
+
+# =========================================================
+# CAIXA — CONCURSO ESPECÍFICO
+# =========================================================
 
 async def fetch_caixa_contest(
     client: httpx.AsyncClient,
@@ -301,12 +370,23 @@ async def fetch_caixa_contest(
             "AppleWebKit/605.1.15 "
             "Version/17.0 Mobile/15E148 Safari/604.1"
         ),
-        "Accept": "application/json,text/plain,*/*",
-        "Referer": "https://loterias.caixa.gov.br/",
-        "Origin": "https://loterias.caixa.gov.br",
+        "Accept": (
+            "application/json,"
+            "text/plain,"
+            "*/*"
+        ),
+        "Referer": (
+            "https://loterias.caixa.gov.br/"
+        ),
+        "Origin": (
+            "https://loterias.caixa.gov.br"
+        ),
     }
 
-    url = f"{CAIXA_BASE}/{concurso}"
+    url = (
+        f"{CAIXA_BASE}/"
+        f"{concurso}"
+    )
 
     response = await client.get(
         url,
@@ -318,7 +398,8 @@ async def fetch_caixa_contest(
     if response.status_code != 200:
 
         raise RuntimeError(
-            f"CAIXA HTTP {response.status_code}"
+            f"CAIXA HTTP "
+            f"{response.status_code}"
         )
 
     data = response.json()
@@ -330,7 +411,7 @@ async def fetch_caixa_contest(
 
 
 # =========================================================
-# FONTE 2 — API ALTERNATIVA
+# API ALTERNATIVA — ÚLTIMO
 # =========================================================
 
 async def fetch_alt_latest(
@@ -343,7 +424,9 @@ async def fetch_alt_latest(
 
         try:
 
-            url = f"{base}/latest"
+            url = (
+                f"{base}/latest"
+            )
 
             data = await http_get_json(
                 client,
@@ -361,12 +444,23 @@ async def fetch_alt_latest(
 
             last_error = error
 
+            print(
+                "[AVISO] API alternativa:",
+                base,
+                error
+            )
+
             continue
 
     raise RuntimeError(
-        f"Nenhuma API alternativa respondeu: {last_error}"
+        "Nenhuma API alternativa "
+        f"respondeu: {last_error}"
     )
 
+
+# =========================================================
+# API ALTERNATIVA — CONCURSO
+# =========================================================
 
 async def fetch_alt_contest(
     client: httpx.AsyncClient,
@@ -379,7 +473,10 @@ async def fetch_alt_contest(
 
         try:
 
-            url = f"{base}/{concurso}"
+            url = (
+                f"{base}/"
+                f"{concurso}"
+            )
 
             data = await http_get_json(
                 client,
@@ -397,15 +494,24 @@ async def fetch_alt_contest(
 
             last_error = error
 
+            print(
+                "[AVISO] API alternativa:",
+                base,
+                concurso,
+                error
+            )
+
             continue
 
     raise RuntimeError(
-        f"Não foi possível consultar concurso {concurso}: {last_error}"
+        "Não foi possível consultar "
+        f"concurso {concurso}: "
+        f"{last_error}"
     )
 
 
 # =========================================================
-# BUSCA INTELIGENTE
+# BUSCA INTELIGENTE — ÚLTIMO
 # =========================================================
 
 async def fetch_latest_result() -> Dict[str, Any]:
@@ -413,17 +519,25 @@ async def fetch_latest_result() -> Dict[str, Any]:
     global _cache_latest
     global _cache_latest_time
 
-    # Cache
+    # -----------------------------------------------------
+    # CACHE
+    # -----------------------------------------------------
+
     if (
         _cache_latest is not None
-        and now_ts() - _cache_latest_time < CACHE_TTL_SECONDS
+        and (
+            now_ts()
+            - _cache_latest_time
+            < CACHE_TTL_SECONDS
+        )
     ):
+
         return _cache_latest
 
     async with httpx.AsyncClient() as client:
 
         # -------------------------------------------------
-        # 1. Tenta CAIXA
+        # 1. CAIXA
         # -------------------------------------------------
 
         try:
@@ -445,7 +559,7 @@ async def fetch_latest_result() -> Dict[str, Any]:
             )
 
         # -------------------------------------------------
-        # 2. Fallback
+        # 2. API ALTERNATIVA
         # -------------------------------------------------
 
         try:
@@ -469,11 +583,16 @@ async def fetch_latest_result() -> Dict[str, Any]:
             raise HTTPException(
                 status_code=502,
                 detail=(
-                    "Não foi possível consultar o último "
-                    "resultado nas fontes disponíveis."
+                    "Não foi possível consultar "
+                    "o último resultado nas "
+                    "fontes disponíveis."
                 )
             )
 
+
+# =========================================================
+# BUSCA INTELIGENTE — CONCURSO
+# =========================================================
 
 async def fetch_result_by_contest(
     concurso: int
@@ -495,12 +614,13 @@ async def fetch_result_by_contest(
         except Exception as caixa_error:
 
             print(
-                f"[AVISO] CAIXA concurso {concurso}:",
+                f"[AVISO] CAIXA concurso "
+                f"{concurso}:",
                 caixa_error
             )
 
         # -------------------------------------------------
-        # 2. FALLBACK
+        # 2. API ALTERNATIVA
         # -------------------------------------------------
 
         try:
@@ -513,7 +633,8 @@ async def fetch_result_by_contest(
         except Exception as alt_error:
 
             print(
-                f"[ERRO] Fallback concurso {concurso}:",
+                f"[ERRO] Fallback concurso "
+                f"{concurso}:",
                 alt_error
             )
 
@@ -537,6 +658,7 @@ async def build_history(
     global _cache_history
     global _cache_history_time
 
+    # Limita entre 1 e 100
     limit = max(
         1,
         min(
@@ -545,31 +667,50 @@ async def build_history(
         )
     )
 
-    # Cache
+    # -----------------------------------------------------
+    # CACHE
+    # -----------------------------------------------------
+
     if (
         _cache_history is not None
-        and now_ts() - _cache_history_time < CACHE_TTL_SECONDS
-        and len(_cache_history) >= min(limit, len(_cache_history))
+        and (
+            now_ts()
+            - _cache_history_time
+            < CACHE_TTL_SECONDS
+        )
     ):
+
         return _cache_history[:limit]
 
-    # Primeiro descobre o concurso atual
+    # -----------------------------------------------------
+    # ÚLTIMO CONCURSO
+    # -----------------------------------------------------
+
     latest = await fetch_latest_result()
 
-    latest_contest = latest.get("concurso")
+    latest_contest = (
+        latest.get("concurso")
+    )
 
     if latest_contest is None:
 
         raise HTTPException(
             status_code=502,
-            detail="Não foi possível identificar o número do concurso."
+            detail=(
+                "Não foi possível "
+                "identificar o número "
+                "do concurso."
+            )
         )
 
     history = [
         latest
     ]
 
-    # Busca anteriores
+    # -----------------------------------------------------
+    # BUSCA OS ANTERIORES
+    # -----------------------------------------------------
+
     async with httpx.AsyncClient() as client:
 
         for i in range(
@@ -577,91 +718,121 @@ async def build_history(
             limit
         ):
 
-            contest_number = latest_contest - i
+            contest_number = (
+                latest_contest - i
+            )
 
             if contest_number <= 0:
                 break
 
             result = None
 
-            # -------------------------------------------------
-            # Primeiro tenta CAIXA
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # CAIXA
+            # ---------------------------------------------
 
             try:
 
-                result = await fetch_caixa_contest(
-                    client,
-                    contest_number
+                result = (
+                    await fetch_caixa_contest(
+                        client,
+                        contest_number
+                    )
                 )
 
             except Exception as caixa_error:
 
                 print(
-                    f"[AVISO] CAIXA {contest_number}:",
+                    f"[AVISO] CAIXA "
+                    f"{contest_number}:",
                     caixa_error
                 )
 
-            # -------------------------------------------------
-            # Depois fallback
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # FALLBACK
+            # ---------------------------------------------
 
             if result is None:
 
                 try:
 
-                    result = await fetch_alt_contest(
-                        client,
-                        contest_number
+                    result = (
+                        await fetch_alt_contest(
+                            client,
+                            contest_number
+                        )
                     )
 
                 except Exception as alt_error:
 
                     print(
-                        f"[AVISO] Fallback {contest_number}:",
+                        f"[AVISO] Fallback "
+                        f"{contest_number}:",
                         alt_error
                     )
 
-                    # Não interrompe todo o histórico
                     continue
 
             history.append(
                 result
             )
 
-            # Pequena pausa para evitar excesso de requisições
+            # Pequena pausa entre consultas
             await asyncio.sleep(
                 0.12
             )
 
-    # Remove duplicados
+    # -----------------------------------------------------
+    # REMOVE DUPLICADOS
+    # -----------------------------------------------------
+
     unique = {}
 
     for item in history:
 
-        concurso = item.get("concurso")
+        concurso = item.get(
+            "concurso"
+        )
 
         if concurso is not None:
 
-            unique[concurso] = item
+            unique[
+                concurso
+            ] = item
 
     history = list(
         unique.values()
     )
 
+    # -----------------------------------------------------
+    # ORDEM DECRESCENTE
+    # -----------------------------------------------------
+
     history.sort(
-        key=lambda x: x.get("concurso", 0),
+        key=lambda x: (
+            x.get(
+                "concurso",
+                0
+            )
+        ),
         reverse=True
     )
 
+    # -----------------------------------------------------
+    # CACHE
+    # -----------------------------------------------------
+
     _cache_history = history
-    _cache_history_time = now_ts()
+
+    _cache_history_time = (
+        now_ts()
+    )
 
     return history[:limit]
 
 
 # =========================================================
-# ROTAS
+# ROTAS PRINCIPAIS
 # =========================================================
 
 @app.get("/")
@@ -671,6 +842,10 @@ async def root():
         "static/index.html"
     )
 
+
+# =========================================================
+# HEALTH
+# =========================================================
 
 @app.get("/health")
 async def health():
@@ -682,58 +857,65 @@ async def health():
     }
 
 
+# =========================================================
+# TESTE
+# =========================================================
+
 @app.get("/api/test")
 async def api_test():
 
     return {
         "ok": True,
-        "message": "API do Lotofácil Monitor funcionando.",
+        "message": (
+            "API do Lotofácil Monitor "
+            "funcionando."
+        ),
         "version": APP_VERSION
     }
 
 
-@app.get("/api/lotofacil/latest")
+# =========================================================
+# ÚLTIMO RESULTADO
+# =========================================================
+
+@app.get(
+    "/api/lotofacil/latest"
+)
 async def lotofacil_latest():
 
-    result = await fetch_latest_result()
-
-    return {
-        "ok": True,
-        "version": APP_VERSION,
-        "fonte": result.get("source"),
-        "concurso": result.get("concurso"),
-        "data": result.get("data"),
-        "dezenas": result.get("dezenas")
-    }
-
-
-@app.get("/api/lotofacil/{concurso}")
-async def lotofacil_contest(
-    concurso: int
-):
-
-    if concurso <= 0:
-
-        raise HTTPException(
-            status_code=400,
-            detail="Número de concurso inválido."
-        )
-
-    result = await fetch_result_by_contest(
-        concurso
+    result = (
+        await fetch_latest_result()
     )
 
     return {
         "ok": True,
         "version": APP_VERSION,
-        "fonte": result.get("source"),
-        "concurso": result.get("concurso"),
-        "data": result.get("data"),
-        "dezenas": result.get("dezenas")
+        "fonte": result.get(
+            "source"
+        ),
+        "concurso": result.get(
+            "concurso"
+        ),
+        "data": result.get(
+            "data"
+        ),
+        "dezenas": result.get(
+            "dezenas"
+        )
     }
 
 
-@app.get("/api/lotofacil/history")
+# =========================================================
+# HISTÓRICO
+#
+# IMPORTANTE:
+# ESTA ROTA PRECISA FICAR ANTES
+# DE /api/lotofacil/{concurso}
+# =========================================================
+
+@app.get(
+    "/api/lotofacil/history"
+)
 async def lotofacil_history(
     limit: int = HISTORY_LIMIT_DEFAULT
 ):
@@ -750,22 +932,78 @@ async def lotofacil_history(
     }
 
 
-# Rota de compatibilidade
-@app.get("/api/lotofacil")
+# =========================================================
+# CONCURSO ESPECÍFICO
+#
+# ROTA DINÂMICA FICA POR ÚLTIMO
+# =========================================================
+
+@app.get(
+    "/api/lotofacil/{concurso}"
+)
+async def lotofacil_contest(
+    concurso: int
+):
+
+    if concurso <= 0:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Número de concurso "
+                "inválido."
+            )
+        )
+
+    result = (
+        await fetch_result_by_contest(
+            concurso
+        )
+    )
+
+    return {
+        "ok": True,
+        "version": APP_VERSION,
+        "fonte": result.get(
+            "source"
+        ),
+        "concurso": result.get(
+            "concurso"
+        ),
+        "data": result.get(
+            "data"
+        ),
+        "dezenas": result.get(
+            "dezenas"
+        )
+    }
+
+
+# =========================================================
+# ROTA DE COMPATIBILIDADE
+# =========================================================
+
+@app.get(
+    "/api/lotofacil"
+)
 async def lotofacil_api():
 
     return await lotofacil_latest()
 
 
 # =========================================================
-# STATIC
+# ARQUIVOS ESTÁTICOS
 # =========================================================
 
-if os.path.isdir("static"):
+if os.path.isdir(
+    "static"
+):
 
     app.mount(
         "/static",
-        StaticFiles(directory="static"),
+        StaticFiles(
+            directory="static"
+        ),
         name="static"
     )
 
