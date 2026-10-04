@@ -1,563 +1,676 @@
-import os
-import time
-import asyncio
-from typing import Any
-
-import httpx
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+import httpx
+import asyncio
+import os
+import re
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 
 # =========================================================
-# LOTOFÁCIL MONITOR V21.3
-# BACKEND
+# CONFIGURAÇÃO
+# =========================================================
+
+APP_VERSION = "V21.3"
+
+CAIXA_BASE = "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil"
+
+# API alternativa
+ALT_BASES = [
+    "https://loteriascaixa-api.herokuapp.com/api/lotofacil",
+    "https://loterias-gutotech.herokuapp.com/api/lotofacil",
+    "https://loterias-caixa-gov.herokuapp.com/api/lotofacil",
+]
+
+HISTORY_LIMIT_DEFAULT = 30
+
+CACHE_TTL_SECONDS = 300
+
+_cache_latest = None
+_cache_latest_time = 0
+
+_cache_history = None
+_cache_history_time = 0
+
+
+# =========================================================
+# APP
 # =========================================================
 
 app = FastAPI(
-    title="Lotofácil Monitor V21.3",
-    version="21.3"
+    title="Lotofácil Monitor",
+    version=APP_VERSION
 )
-
-
-# =========================================================
-# CORS
-# =========================================================
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
 # =========================================================
-# CAMINHOS
+# HELPERS
 # =========================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-STATIC_DIR = os.path.join(
-    BASE_DIR,
-    "static"
-)
-
-INDEX_FILE = os.path.join(
-    STATIC_DIR,
-    "index.html"
-)
+def now_ts() -> float:
+    return datetime.now().timestamp()
 
 
-# =========================================================
-# CAIXA
-# =========================================================
-
-CAIXA_URL = (
-    "https://servicebus2.caixa.gov.br/"
-    "portaldeloterias/api/lotofacil"
-)
-
-
-# =========================================================
-# CACHE
-# =========================================================
-
-CACHE_TTL = 300
-
-CACHE = {
-    "latest": None,
-    "history": None,
-    "latest_time": 0,
-    "history_time": 0,
-}
-
-
-# =========================================================
-# HEADERS
-# =========================================================
-
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 "
-        "(iPhone; CPU iPhone OS 18_0 like Mac OS X) "
-        "AppleWebKit/605.1.15 "
-        "(KHTML, like Gecko) "
-        "Version/18.0 Mobile/15E148 Safari/604.1"
-    ),
-    "Accept": (
-        "application/json,"
-        "text/plain,"
-        "*/*"
-    ),
-    "Referer": (
-        "https://loterias.caixa.gov.br/"
-    ),
-}
-
-
-# =========================================================
-# FUNÇÕES DE CACHE
-# =========================================================
-
-def cache_valid(key: str) -> bool:
-
-    value = CACHE.get(key)
-
-    timestamp_key = f"{key}_time"
-
-    timestamp = CACHE.get(
-        timestamp_key,
-        0
-    )
-
+def normalize_number(value: Any) -> Optional[int]:
+    """
+    Converte valores como:
+    1
+    "01"
+    "1"
+    "Dezena 01"
+    para inteiro.
+    """
     if value is None:
-        return False
+        return None
 
-    return (
-        time.time() - timestamp
-        < CACHE_TTL
-    )
+    if isinstance(value, int):
+        return value
 
+    if isinstance(value, float):
+        return int(value)
 
-def cache_save(
-    key: str,
-    value: Any
-):
+    text = str(value).strip()
 
-    CACHE[key] = value
+    match = re.search(r"\d+", text)
 
-    CACHE[f"{key}_time"] = (
-        time.time()
-    )
-
-
-# =========================================================
-# CONVERSÃO DE NÚMERO
-# =========================================================
-
-def to_int(value):
+    if not match:
+        return None
 
     try:
-
-        if value is None:
-            return None
-
-        numero = int(
-            str(value).strip()
-        )
-
-        if numero > 0:
-            return numero
-
+        return int(match.group(0))
     except Exception:
-        pass
+        return None
+
+
+def extract_contest(data: Dict[str, Any]) -> Optional[int]:
+
+    possible_fields = [
+        "numero",
+        "numeroConcurso",
+        "concurso",
+        "Concurso",
+        "numero_concurso",
+    ]
+
+    for field in possible_fields:
+
+        if field in data:
+
+            value = normalize_number(data.get(field))
+
+            if value is not None:
+                return value
 
     return None
 
 
-# =========================================================
-# EXTRAIR CONCURSO
-# =========================================================
+def extract_date(data: Dict[str, Any]) -> Optional[str]:
 
-def extract_contest(
-    data,
-    fallback=None
-):
-
-    if not isinstance(
-        data,
-        dict
-    ):
-        return fallback
-
-
-    fields = [
-        "numero",
-        "numeroConcurso",
-        "concurso",
-        "numero_concurso",
-    ]
-
-
-    for field in fields:
-
-        value = data.get(field)
-
-        numero = to_int(value)
-
-        if numero:
-            return numero
-
-
-    resultado = data.get(
-        "resultado"
-    )
-
-
-    if isinstance(
-        resultado,
-        dict
-    ):
-
-        for field in fields:
-
-            value = resultado.get(
-                field
-            )
-
-            numero = to_int(value)
-
-            if numero:
-                return numero
-
-
-    return fallback
-
-
-# =========================================================
-# EXTRAIR DATA
-# =========================================================
-
-def extract_date(data):
-
-    if not isinstance(
-        data,
-        dict
-    ):
-        return ""
-
-
-    fields = [
+    possible_fields = [
         "dataApuracao",
-        "dataApuracaoStr",
+        "data_apuracao",
         "data",
-        "dataSorteio",
+        "Data",
+        "date",
     ]
 
-
-    for field in fields:
+    for field in possible_fields:
 
         value = data.get(field)
 
         if value:
-
             return str(value)
 
-
-    resultado = data.get(
-        "resultado"
-    )
+    return None
 
 
-    if isinstance(
-        resultado,
-        dict
-    ):
+def extract_numbers(data: Dict[str, Any]) -> List[int]:
 
-        for field in fields:
+    possible_fields = [
+        "listaDezenas",
+        "dezenas",
+        "Dezenas",
+        "dezenasOrdemSorteio",
+        "numbers",
+    ]
 
-            value = resultado.get(
-                field
-            )
+    raw = None
 
-            if value:
+    for field in possible_fields:
 
-                return str(value)
+        if field in data and data[field] is not None:
+            raw = data[field]
+            break
 
-
-    return ""
-
-
-# =========================================================
-# EXTRAIR DEZENAS
-# =========================================================
-
-def normalize_numbers(value):
-
-    if not isinstance(
-        value,
-        list
-    ):
+    if raw is None:
         return []
 
+    # Caso seja lista
+    if isinstance(raw, list):
 
-    numbers = []
+        numbers = []
 
+        for item in raw:
 
-    for item in value:
+            # Pode ser número simples
+            number = normalize_number(item)
 
-        try:
+            if number is not None and 1 <= number <= 25:
+                numbers.append(number)
 
-            numero = int(
-                str(item).strip()
-            )
+        return sorted(set(numbers))
 
-            if 1 <= numero <= 25:
+    # Caso seja string
+    if isinstance(raw, str):
 
-                numbers.append(
-                    numero
-                )
+        found = re.findall(r"\d{1,2}", raw)
 
-        except Exception:
-            pass
+        numbers = []
 
+        for item in found:
 
-    numbers = sorted(
-        set(numbers)
-    )
+            number = normalize_number(item)
 
+            if number is not None and 1 <= number <= 25:
+                numbers.append(number)
 
-    if len(numbers) == 15:
-
-        return numbers
-
+        return sorted(set(numbers))
 
     return []
 
 
-def extract_numbers(data):
-
-    if not isinstance(
-        data,
-        dict
-    ):
-        return []
-
-
-    fields = [
-        "listaDezenas",
-        "dezenas",
-        "listaDezenasSorteadas",
-        "dezenasSorteadas",
-    ]
-
-
-    # -----------------------------------------------------
-    # Primeiro nível
-    # -----------------------------------------------------
-
-    for field in fields:
-
-        numbers = normalize_numbers(
-            data.get(field)
-        )
-
-        if len(numbers) == 15:
-
-            return numbers
-
-
-    # -----------------------------------------------------
-    # Dentro de resultado
-    # -----------------------------------------------------
-
-    resultado = data.get(
-        "resultado"
-    )
-
-
-    if isinstance(
-        resultado,
-        dict
-    ):
-
-        for field in fields:
-
-            numbers = normalize_numbers(
-                resultado.get(field)
-            )
-
-            if len(numbers) == 15:
-
-                return numbers
-
-
-    # -----------------------------------------------------
-    # Procura recursivamente listas
-    # -----------------------------------------------------
-
-    def search(obj):
-
-        if isinstance(
-            obj,
-            dict
-        ):
-
-            for value in obj.values():
-
-                result = search(value)
-
-                if result:
-
-                    return result
-
-
-        elif isinstance(
-            obj,
-            list
-        ):
-
-            numbers = normalize_numbers(
-                obj
-            )
-
-            if len(numbers) == 15:
-
-                return numbers
-
-
-            for value in obj:
-
-                result = search(value)
-
-                if result:
-
-                    return result
-
-
-        return []
-
-
-    return search(data)
-
-
-# =========================================================
-# NORMALIZAR RESULTADO
-# =========================================================
-
 def normalize_result(
-    data,
-    fallback_contest=None
-):
+    data: Dict[str, Any],
+    source: str
+) -> Dict[str, Any]:
 
-    contest = extract_contest(
-        data,
-        fallback_contest
-    )
+    concurso = extract_contest(data)
 
-    date = extract_date(
-        data
-    )
+    date = extract_date(data)
 
-    numbers = extract_numbers(
-        data
-    )
-
-
-    if not numbers:
-
-        raise ValueError(
-            "As 15 dezenas não foram encontradas."
-        )
-
+    numbers = extract_numbers(data)
 
     if len(numbers) != 15:
 
         raise ValueError(
-            "O resultado não possui 15 dezenas."
+            f"Resultado inválido: esperado 15 dezenas, recebido {len(numbers)}"
         )
 
-
     return {
-        "concurso": contest,
+        "concurso": concurso,
         "data": date,
         "dezenas": numbers,
+        "source": source
     }
 
 
 # =========================================================
-# CONSULTAR CAIXA
+# HTTP CLIENT
 # =========================================================
 
-async def request_caixa(
+async def http_get_json(
+    client: httpx.AsyncClient,
     url: str
-):
+) -> Dict[str, Any]:
 
-    timeout = httpx.Timeout(
-        connect=20,
-        read=30,
-        write=20,
-        pool=20
-    )
-
-
-    async with httpx.AsyncClient(
-        timeout=timeout,
-        headers=HEADERS,
+    response = await client.get(
+        url,
+        timeout=20.0,
         follow_redirects=True
-    ) as client:
-
-        response = await client.get(
-            url
-        )
-
+    )
 
     if response.status_code != 200:
 
         raise RuntimeError(
-            "CAIXA retornou HTTP "
-            + str(response.status_code)
+            f"HTTP {response.status_code}"
         )
 
+    data = response.json()
 
-    content_type = (
-        response.headers
-        .get(
-            "content-type",
-            ""
-        )
-        .lower()
-    )
-
-
-    try:
-
-        data = response.json()
-
-        return data
-
-    except Exception:
-
-        text = response.text[:500]
+    if not isinstance(data, dict):
 
         raise RuntimeError(
-            "CAIXA não retornou JSON válido. "
-            + text
+            "Resposta não é um objeto JSON"
         )
+
+    return data
 
 
 # =========================================================
-# ROTA PRINCIPAL
+# FONTE 1 — CAIXA
+# =========================================================
+
+async def fetch_caixa_latest(
+    client: httpx.AsyncClient
+) -> Dict[str, Any]:
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 "
+            "(iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+            "AppleWebKit/605.1.15 "
+            "Version/17.0 Mobile/15E148 Safari/604.1"
+        ),
+        "Accept": "application/json,text/plain,*/*",
+        "Referer": "https://loterias.caixa.gov.br/",
+        "Origin": "https://loterias.caixa.gov.br",
+    }
+
+    response = await client.get(
+        CAIXA_BASE,
+        headers=headers,
+        timeout=20.0,
+        follow_redirects=True
+    )
+
+    if response.status_code != 200:
+
+        raise RuntimeError(
+            f"CAIXA HTTP {response.status_code}"
+        )
+
+    data = response.json()
+
+    return normalize_result(
+        data,
+        "CAIXA"
+    )
+
+
+async def fetch_caixa_contest(
+    client: httpx.AsyncClient,
+    concurso: int
+) -> Dict[str, Any]:
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 "
+            "(iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+            "AppleWebKit/605.1.15 "
+            "Version/17.0 Mobile/15E148 Safari/604.1"
+        ),
+        "Accept": "application/json,text/plain,*/*",
+        "Referer": "https://loterias.caixa.gov.br/",
+        "Origin": "https://loterias.caixa.gov.br",
+    }
+
+    url = f"{CAIXA_BASE}/{concurso}"
+
+    response = await client.get(
+        url,
+        headers=headers,
+        timeout=20.0,
+        follow_redirects=True
+    )
+
+    if response.status_code != 200:
+
+        raise RuntimeError(
+            f"CAIXA HTTP {response.status_code}"
+        )
+
+    data = response.json()
+
+    return normalize_result(
+        data,
+        "CAIXA"
+    )
+
+
+# =========================================================
+# FONTE 2 — API ALTERNATIVA
+# =========================================================
+
+async def fetch_alt_latest(
+    client: httpx.AsyncClient
+) -> Dict[str, Any]:
+
+    last_error = None
+
+    for base in ALT_BASES:
+
+        try:
+
+            url = f"{base}/latest"
+
+            data = await http_get_json(
+                client,
+                url
+            )
+
+            result = normalize_result(
+                data,
+                "API_ALTERNATIVA"
+            )
+
+            return result
+
+        except Exception as error:
+
+            last_error = error
+
+            continue
+
+    raise RuntimeError(
+        f"Nenhuma API alternativa respondeu: {last_error}"
+    )
+
+
+async def fetch_alt_contest(
+    client: httpx.AsyncClient,
+    concurso: int
+) -> Dict[str, Any]:
+
+    last_error = None
+
+    for base in ALT_BASES:
+
+        try:
+
+            url = f"{base}/{concurso}"
+
+            data = await http_get_json(
+                client,
+                url
+            )
+
+            result = normalize_result(
+                data,
+                "API_ALTERNATIVA"
+            )
+
+            return result
+
+        except Exception as error:
+
+            last_error = error
+
+            continue
+
+    raise RuntimeError(
+        f"Não foi possível consultar concurso {concurso}: {last_error}"
+    )
+
+
+# =========================================================
+# BUSCA INTELIGENTE
+# =========================================================
+
+async def fetch_latest_result() -> Dict[str, Any]:
+
+    global _cache_latest
+    global _cache_latest_time
+
+    # Cache
+    if (
+        _cache_latest is not None
+        and now_ts() - _cache_latest_time < CACHE_TTL_SECONDS
+    ):
+        return _cache_latest
+
+    async with httpx.AsyncClient() as client:
+
+        # -------------------------------------------------
+        # 1. Tenta CAIXA
+        # -------------------------------------------------
+
+        try:
+
+            result = await fetch_caixa_latest(
+                client
+            )
+
+            _cache_latest = result
+            _cache_latest_time = now_ts()
+
+            return result
+
+        except Exception as caixa_error:
+
+            print(
+                "[AVISO] CAIXA indisponível:",
+                caixa_error
+            )
+
+        # -------------------------------------------------
+        # 2. Fallback
+        # -------------------------------------------------
+
+        try:
+
+            result = await fetch_alt_latest(
+                client
+            )
+
+            _cache_latest = result
+            _cache_latest_time = now_ts()
+
+            return result
+
+        except Exception as alt_error:
+
+            print(
+                "[ERRO] API alternativa:",
+                alt_error
+            )
+
+            raise HTTPException(
+                status_code=502,
+                detail=(
+                    "Não foi possível consultar o último "
+                    "resultado nas fontes disponíveis."
+                )
+            )
+
+
+async def fetch_result_by_contest(
+    concurso: int
+) -> Dict[str, Any]:
+
+    async with httpx.AsyncClient() as client:
+
+        # -------------------------------------------------
+        # 1. CAIXA
+        # -------------------------------------------------
+
+        try:
+
+            return await fetch_caixa_contest(
+                client,
+                concurso
+            )
+
+        except Exception as caixa_error:
+
+            print(
+                f"[AVISO] CAIXA concurso {concurso}:",
+                caixa_error
+            )
+
+        # -------------------------------------------------
+        # 2. FALLBACK
+        # -------------------------------------------------
+
+        try:
+
+            return await fetch_alt_contest(
+                client,
+                concurso
+            )
+
+        except Exception as alt_error:
+
+            print(
+                f"[ERRO] Fallback concurso {concurso}:",
+                alt_error
+            )
+
+            raise HTTPException(
+                status_code=502,
+                detail=(
+                    f"Não foi possível consultar "
+                    f"o concurso {concurso}."
+                )
+            )
+
+
+# =========================================================
+# HISTÓRICO
+# =========================================================
+
+async def build_history(
+    limit: int = HISTORY_LIMIT_DEFAULT
+) -> List[Dict[str, Any]]:
+
+    global _cache_history
+    global _cache_history_time
+
+    limit = max(
+        1,
+        min(
+            int(limit),
+            100
+        )
+    )
+
+    # Cache
+    if (
+        _cache_history is not None
+        and now_ts() - _cache_history_time < CACHE_TTL_SECONDS
+        and len(_cache_history) >= min(limit, len(_cache_history))
+    ):
+        return _cache_history[:limit]
+
+    # Primeiro descobre o concurso atual
+    latest = await fetch_latest_result()
+
+    latest_contest = latest.get("concurso")
+
+    if latest_contest is None:
+
+        raise HTTPException(
+            status_code=502,
+            detail="Não foi possível identificar o número do concurso."
+        )
+
+    history = [
+        latest
+    ]
+
+    # Busca anteriores
+    async with httpx.AsyncClient() as client:
+
+        for i in range(
+            1,
+            limit
+        ):
+
+            contest_number = latest_contest - i
+
+            if contest_number <= 0:
+                break
+
+            result = None
+
+            # -------------------------------------------------
+            # Primeiro tenta CAIXA
+            # -------------------------------------------------
+
+            try:
+
+                result = await fetch_caixa_contest(
+                    client,
+                    contest_number
+                )
+
+            except Exception as caixa_error:
+
+                print(
+                    f"[AVISO] CAIXA {contest_number}:",
+                    caixa_error
+                )
+
+            # -------------------------------------------------
+            # Depois fallback
+            # -------------------------------------------------
+
+            if result is None:
+
+                try:
+
+                    result = await fetch_alt_contest(
+                        client,
+                        contest_number
+                    )
+
+                except Exception as alt_error:
+
+                    print(
+                        f"[AVISO] Fallback {contest_number}:",
+                        alt_error
+                    )
+
+                    # Não interrompe todo o histórico
+                    continue
+
+            history.append(
+                result
+            )
+
+            # Pequena pausa para evitar excesso de requisições
+            await asyncio.sleep(
+                0.12
+            )
+
+    # Remove duplicados
+    unique = {}
+
+    for item in history:
+
+        concurso = item.get("concurso")
+
+        if concurso is not None:
+
+            unique[concurso] = item
+
+    history = list(
+        unique.values()
+    )
+
+    history.sort(
+        key=lambda x: x.get("concurso", 0),
+        reverse=True
+    )
+
+    _cache_history = history
+    _cache_history_time = now_ts()
+
+    return history[:limit]
+
+
+# =========================================================
+# ROTAS
 # =========================================================
 
 @app.get("/")
-async def home():
-
-    if not os.path.exists(
-        INDEX_FILE
-    ):
-
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                "index.html não encontrado "
-                "dentro da pasta static."
-            )
-        )
-
+async def root():
 
     return FileResponse(
-        INDEX_FILE
+        "static/index.html"
     )
 
-
-# =========================================================
-# HEALTH
-# =========================================================
 
 @app.get("/health")
 async def health():
@@ -565,103 +678,37 @@ async def health():
     return {
         "ok": True,
         "status": "online",
-        "version": "V21.3",
+        "version": APP_VERSION
     }
 
-
-# =========================================================
-# TESTE DA API
-# =========================================================
 
 @app.get("/api/test")
 async def api_test():
 
     return {
         "ok": True,
-        "message": (
-            "API Lotofácil Monitor funcionando."
-        ),
-        "version": "V21.3",
+        "message": "API do Lotofácil Monitor funcionando.",
+        "version": APP_VERSION
     }
 
 
-# =========================================================
-# ÚLTIMO RESULTADO
-# =========================================================
+@app.get("/api/lotofacil/latest")
+async def lotofacil_latest():
 
-@app.get(
-    "/api/lotofacil/latest"
-)
-async def latest_result():
+    result = await fetch_latest_result()
 
-    if cache_valid("latest"):
-
-        return {
-            "ok": True,
-            "source": "cache",
-            "resultado": CACHE["latest"],
-        }
+    return {
+        "ok": True,
+        "version": APP_VERSION,
+        "fonte": result.get("source"),
+        "concurso": result.get("concurso"),
+        "data": result.get("data"),
+        "dezenas": result.get("dezenas")
+    }
 
 
-    try:
-
-        data = await request_caixa(
-            CAIXA_URL
-        )
-
-
-        resultado = normalize_result(
-            data
-        )
-
-
-        cache_save(
-            "latest",
-            resultado
-        )
-
-
-        return {
-            "ok": True,
-            "source": "caixa",
-            "resultado": resultado,
-        }
-
-
-    except Exception as error:
-
-        # -------------------------------------------------
-        # Se houver cache antigo, usa como fallback
-        # -------------------------------------------------
-
-        if CACHE["latest"]:
-
-            return {
-                "ok": True,
-                "source": "cache_fallback",
-                "resultado": CACHE["latest"],
-                "warning": str(error),
-            }
-
-
-        raise HTTPException(
-            status_code=502,
-            detail=(
-                "Não foi possível consultar "
-                "o último resultado: "
-                + str(error)
-            )
-        )
-
-
-# =========================================================
-# CONCURSO ESPECÍFICO
-# =========================================================
-
-@app.get(
-    "/api/lotofacil/{concurso}"
-)
-async def specific_contest(
+@app.get("/api/lotofacil/{concurso}")
+async def lotofacil_contest(
     concurso: int
 ):
 
@@ -669,300 +716,56 @@ async def specific_contest(
 
         raise HTTPException(
             status_code=400,
-            detail="Concurso inválido."
+            detail="Número de concurso inválido."
         )
 
-
-    url = (
-        CAIXA_URL
-        + "/"
-        + str(concurso)
+    result = await fetch_result_by_contest(
+        concurso
     )
 
-
-    try:
-
-        data = await request_caixa(
-            url
-        )
-
-
-        resultado = normalize_result(
-            data,
-            fallback_contest=concurso
-        )
+    return {
+        "ok": True,
+        "version": APP_VERSION,
+        "fonte": result.get("source"),
+        "concurso": result.get("concurso"),
+        "data": result.get("data"),
+        "dezenas": result.get("dezenas")
+    }
 
 
-        return {
-            "ok": True,
-            "source": "caixa",
-            "resultado": resultado,
-        }
-
-
-    except Exception as error:
-
-        raise HTTPException(
-            status_code=502,
-            detail=(
-                "Erro ao consultar o concurso "
-                + str(concurso)
-                + ": "
-                + str(error)
-            )
-        )
-
-
-# =========================================================
-# HISTÓRICO
-# =========================================================
-
-@app.get(
-    "/api/lotofacil/history"
-)
-async def history(
-    limit: int = 30
+@app.get("/api/lotofacil/history")
+async def lotofacil_history(
+    limit: int = HISTORY_LIMIT_DEFAULT
 ):
 
-    # Limite de segurança
-    limit = max(
-        1,
-        min(
-            int(limit),
-            50
-        )
+    history = await build_history(
+        limit
     )
 
-
-    # -----------------------------------------------------
-    # CACHE
-    # -----------------------------------------------------
-
-    if cache_valid("history"):
-
-        historico = CACHE[
-            "history"
-        ]
-
-        return {
-            "ok": True,
-            "source": "cache",
-            "historico": historico[:limit],
-        }
-
-
-    try:
-
-        # -------------------------------------------------
-        # Primeiro pega o último concurso
-        # -------------------------------------------------
-
-        latest_data = await request_caixa(
-            CAIXA_URL
-        )
-
-
-        latest = normalize_result(
-            latest_data
-        )
-
-
-        latest_contest = latest.get(
-            "concurso"
-        )
-
-
-        if not latest_contest:
-
-            raise RuntimeError(
-                "A CAIXA não informou "
-                "o número do concurso."
-            )
-
-
-        results = [
-            latest
-        ]
-
-
-        # -------------------------------------------------
-        # Busca concursos anteriores
-        # -------------------------------------------------
-
-        for offset in range(
-            1,
-            limit
-        ):
-
-            contest_number = (
-                latest_contest
-                - offset
-            )
-
-
-            if contest_number <= 0:
-
-                break
-
-
-            url = (
-                CAIXA_URL
-                + "/"
-                + str(contest_number)
-            )
-
-
-            try:
-
-                data = await request_caixa(
-                    url
-                )
-
-
-                result = normalize_result(
-                    data,
-                    fallback_contest=contest_number
-                )
-
-
-                results.append(
-                    result
-                )
-
-
-            except Exception:
-
-                # Se um concurso falhar,
-                # continua para o próximo.
-                pass
-
-
-            # Pequeno intervalo entre consultas.
-            await asyncio.sleep(
-                0.15
-            )
-
-
-        # -------------------------------------------------
-        # Remove duplicados
-        # -------------------------------------------------
-
-        unique = {}
-
-
-        for result in results:
-
-            contest = result.get(
-                "concurso"
-            )
-
-
-            if contest:
-
-                unique[
-                    int(contest)
-                ] = result
-
-
-        results = list(
-            unique.values()
-        )
-
-
-        # -------------------------------------------------
-        # Mais recente primeiro
-        # -------------------------------------------------
-
-        results.sort(
-            key=lambda item: int(
-                item["concurso"]
-            ),
-            reverse=True
-        )
-
-
-        results = results[
-            :limit
-        ]
-
-
-        # -------------------------------------------------
-        # Salva cache
-        # -------------------------------------------------
-
-        cache_save(
-            "history",
-            results
-        )
-
-
-        cache_save(
-            "latest",
-            results[0]
-            if results
-            else latest
-        )
-
-
-        return {
-            "ok": True,
-            "source": "caixa",
-            "historico": results,
-        }
-
-
-    except Exception as error:
-
-        # -------------------------------------------------
-        # Cache de emergência
-        # -------------------------------------------------
-
-        if CACHE["history"]:
-
-            return {
-                "ok": True,
-                "source": "cache_fallback",
-                "historico": CACHE[
-                    "history"
-                ][:limit],
-                "warning": str(error),
-            }
-
-
-        raise HTTPException(
-            status_code=502,
-            detail=(
-                "Erro ao carregar histórico: "
-                + str(error)
-            )
-        )
+    return {
+        "ok": True,
+        "version": APP_VERSION,
+        "total": len(history),
+        "historico": history
+    }
+
+
+# Rota de compatibilidade
+@app.get("/api/lotofacil")
+async def lotofacil_api():
+
+    return await lotofacil_latest()
 
 
 # =========================================================
-# ROTA COMPATÍVEL
+# STATIC
 # =========================================================
 
-@app.get(
-    "/api/lotofacil"
-)
-async def lotofacil_compat():
-
-    return await latest_result()
-
-
-# =========================================================
-# MONTAR ARQUIVOS ESTÁTICOS
-# =========================================================
-
-if os.path.isdir(
-    STATIC_DIR
-):
+if os.path.isdir("static"):
 
     app.mount(
         "/static",
-        StaticFiles(
-            directory=STATIC_DIR
-        ),
+        StaticFiles(directory="static"),
         name="static"
     )
 
@@ -981,7 +784,6 @@ if __name__ == "__main__":
             "8000"
         )
     )
-
 
     uvicorn.run(
         "app:app",
