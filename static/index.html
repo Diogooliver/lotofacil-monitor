@@ -1,579 +1,269 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#5b2df5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Lotofácil Monitor">
-  <title>Lotofácil Monitor V21.2</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f1ff;
-      color: #202124;
-    }
-
-    button,
-    select {
-      font: inherit;
-    }
-
-    .app {
-      max-width: 900px;
-      margin: 0 auto;
-      padding-bottom: 40px;
-    }
-
-    header {
-      background: linear-gradient(135deg, #5b2df5, #7a4cff);
-      color: white;
-      padding: 22px 18px 26px;
-      border-radius: 0 0 26px 26px;
-      box-shadow: 0 5px 18px rgba(91,45,245,.22);
-    }
-
-    .header-title {
-      font-size: 25px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .header-subtitle {
-      font-size: 14px;
-      opacity: .9;
-      line-height: 1.5;
-    }
-
-    .version {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 5px 10px;
-      background: rgba(255,255,255,.18);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    main {
-      padding: 14px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 17px;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 15px rgba(44,25,100,.08);
-    }
-
-    .card h2 {
-      font-size: 18px;
-      margin: 0 0 14px;
-      color: #38208f;
-    }
-
-    .status {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px;
-      background: #f7f5ff;
-      border-radius: 14px;
-      margin-bottom: 12px;
-    }
-
-    .status-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #18a558;
-      margin-top: 4px;
-      flex-shrink: 0;
-    }
-
-    .status-dot.loading {
-      background: #ffae00;
-      animation: pulse 1s infinite;
-    }
-
-    .status-dot.error {
-      background: #e53935;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50% { opacity: .35; }
-    }
-
-    .status-title {
-      font-weight: 800;
-      margin-bottom: 3px;
-    }
-
-    .status-text {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.45;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 13px;
-      padding: 13px 16px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .15s;
-    }
-
-    .btn:active {
-      transform: scale(.98);
-    }
-
-    .btn-primary {
-      background: #5b2df5;
-      color: white;
-    }
-
-    .btn-secondary {
-      background: #eee9ff;
-      color: #4c2bc7;
-    }
-
-    .btn-danger {
-      background: #ffe8e8;
-      color: #c62828;
-    }
-
-    .btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .button-row {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-    }
-
-    .button-row .btn {
-      flex: 1;
-      min-width: 145px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-      margin-top: 12px;
-    }
-
-    .stat {
-      background: #f7f5ff;
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 21px;
-      font-weight: 900;
-      color: #4c2bc7;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: #777;
-      margin-top: 3px;
-    }
-
-    .latest-result {
-      margin-top: 12px;
-    }
-
-    .result-title {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 8px;
-    }
-
-    .balls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .ball {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #5b2df5;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 800;
-      box-shadow: 0 2px 5px rgba(91,45,245,.18);
-    }
-
-    .ball.small {
-      width: 29px;
-      height: 29px;
-      font-size: 11px;
-    }
-
-    .field-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 800;
-      color: #555;
-      margin-bottom: 7px;
-    }
-
-    select {
-      width: 100%;
-      border: 2px solid #e4ddff;
-      border-radius: 13px;
-      padding: 12px;
-      background: white;
-      color: #333;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: #5b2df5;
-    }
-
-    .quantity-info {
-      margin-top: 8px;
-      color: #777;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .strategy-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 9px;
-    }
-
-    .strategy {
-      background: #f7f5ff;
-      border-radius: 13px;
-      padding: 11px;
-    }
-
-    .strategy-name {
-      font-size: 13px;
-      font-weight: 900;
-      color: #4c2bc7;
-      margin-bottom: 4px;
-    }
-
-    .strategy-text {
-      font-size: 11px;
-      color: #777;
-      line-height: 1.4;
-    }
-
-    .game-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .game {
-      border: 1px solid #e9e3ff;
-      border-radius: 15px;
-      padding: 12px;
-      background: #fff;
-    }
-
-    .game-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 9px;
-    }
-
-    .game-number {
-      font-weight: 900;
-      color: #4c2bc7;
-    }
-
-    .game-meta {
-      font-size: 11px;
-      color: #888;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 9px;
-    }
-
-    .summary-item {
-      background: #f7f5ff;
-      border-radius: 13px;
-      padding: 11px;
-    }
-
-    .summary-label {
-      font-size: 11px;
-      color: #777;
-    }
-
-    .summary-value {
-      font-size: 17px;
-      font-weight: 900;
-      color: #4c2bc7;
-      margin-top: 4px;
-    }
-
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .history-item {
-      border: 1px solid #eee;
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .history-head {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 7px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .history-date {
-      color: #888;
-      font-weight: 400;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 20px;
-      color: #888;
-      font-size: 13px;
-    }
-
-    .notice {
-      background: #fff9e6;
-      border-left: 4px solid #ffb300;
-      border-radius: 10px;
-      padding: 11px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #6c5a22;
-    }
-
-    .success-box {
-      background: #eaf8f0;
-      border-left: 4px solid #19a45b;
-      border-radius: 10px;
-      padding: 11px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #256b46;
-      margin-top: 10px;
-    }
-
-    .footer {
-      text-align: center;
-      color: #999;
-      font-size: 11px;
-      padding: 10px 20px 30px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 520px) {
-      .stats {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-
-      .strategy-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .button-row .btn {
-        min-width: 100%;
-      }
-
-      .ball {
-        width: 32px;
-        height: 32px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>Lotofácil Monitor V21.1 Calibrada</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#120b18;
+  color:#fff;
+  min-height:100vh;
+}
+
+header{
+  background:linear-gradient(135deg,#7b1fa2,#9c27b0);
+  padding:22px 16px;
+  text-align:center;
+  box-shadow:0 3px 15px rgba(0,0,0,.35);
+}
+
+header h1{
+  font-size:24px;
+  margin-bottom:5px;
+}
+
+header p{
+  font-size:13px;
+  opacity:.85;
+}
+
+.container{
+  width:100%;
+  max-width:1000px;
+  margin:auto;
+  padding:15px;
+}
+
+.card{
+  background:#201526;
+  border:1px solid #39243f;
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 5px 18px rgba(0,0,0,.22);
+}
+
+.card h2{
+  color:#e0a8ef;
+  font-size:18px;
+  margin-bottom:14px;
+}
+
+.status{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  background:#302035;
+  border-radius:20px;
+  padding:8px 12px;
+  font-size:13px;
+}
+
+.badge.ok{
+  background:#145c3a;
+}
+
+.badge.warn{
+  background:#72551b;
+}
+
+.badge.error{
+  background:#71242b;
+}
+
+button,select{
+  border:none;
+  border-radius:10px;
+  padding:12px 15px;
+  font-size:14px;
+}
+
+button{
+  cursor:pointer;
+  background:#9c27b0;
+  color:#fff;
+  font-weight:bold;
+}
+
+button:hover{
+  filter:brightness(1.1);
+}
+
+button.secondary{
+  background:#3a2940;
+}
+
+button.green{
+  background:#16834f;
+}
+
+button.red{
+  background:#9d3038;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+select{
+  background:#302035;
+  color:#fff;
+  border:1px solid #51375a;
+}
+
+.result-box{
+  background:#160e1c;
+  border-radius:12px;
+  padding:15px;
+}
+
+.numbers{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.ball{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  background:#9c27b0;
+}
+
+.ball.hit{
+  background:#16834f;
+}
+
+.ball.miss{
+  background:#5b3030;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;
+}
+
+.game{
+  background:#181019;
+  border:1px solid #39243f;
+  border-radius:13px;
+  padding:14px;
+}
+
+.game-title{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  color:#dca7eb;
+  font-weight:bold;
+}
+
+.game .ball{
+  width:34px;
+  height:34px;
+  font-size:13px;
+}
+
+.score{
+  margin-top:10px;
+  font-weight:bold;
+  color:#8ee5b9;
+}
+
+.metric{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #332438;
+}
+
+.metric:last-child{
+  border-bottom:none;
+}
+
+.small{
+  font-size:12px;
+  opacity:.7;
+}
+
+.log{
+  background:#100a14;
+  border-radius:10px;
+  padding:12px;
+  font-size:12px;
+  line-height:1.6;
+  max-height:220px;
+  overflow:auto;
+}
+
+.progress{
+  width:100%;
+  height:8px;
+  background:#342338;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress div{
+  height:100%;
+  width:0%;
+  background:#c45de0;
+  transition:.3s;
+}
+
+hr{
+  border:none;
+  border-top:1px solid #39243f;
+  margin:15px 0;
+}
+
+.footer{
+  text-align:center;
+  padding:25px;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<header>
+  <h1>🍀 Lotofácil Monitor V21.1</h1>
+  <p>Motor calibrado pós-concurso • Núcleo adaptativo • Geração inteligente</p>
+</header>
 
-  <header>
-    <div class="header-title">🍀 Lotofácil Monitor</div>
-    <div class="header-subtitle">
-      Análise estatística, histórico e geração inteligente de jogos.
-    </div>
-    <div class="version">V21.2 • Atualização automática corrigida</div>
-  </header>
+<div class="container">
 
-  <main>
+  <div class="card">
+    <h2>⚙️ Controle</h2>
 
-    <!-- DADOS -->
-    <section class="card">
+    <div class="controls">
 
-      <h2>📊 Dados da Lotofácil</h2>
-
-      <div class="status">
-        <div id="statusDot" class="status-dot"></div>
-
-        <div>
-          <div id="statusTitle" class="status-title">
-            Sistema pronto
-          </div>
-
-          <div id="statusText" class="status-text">
-            Clique em atualizar para buscar os resultados mais recentes.
-          </div>
-        </div>
-      </div>
-
-      <div class="button-row">
-        <button
-          id="updateBtn"
-          class="btn btn-primary"
-          onclick="updateAutomaticHistory()">
-          🔄 Atualizar resultados automaticamente
-        </button>
-
-        <button
-          class="btn btn-secondary"
-          onclick="loadSavedHistory()">
-          📱 Carregar histórico salvo
-        </button>
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <div id="latestContest" class="stat-value">—</div>
-          <div class="stat-label">Último concurso</div>
-        </div>
-
-        <div class="stat">
-          <div id="historyCount" class="stat-value">0</div>
-          <div class="stat-label">Concursos</div>
-        </div>
-
-        <div class="stat">
-          <div id="generatedCount" class="stat-value">0</div>
-          <div class="stat-label">Jogos</div>
-        </div>
-
-      </div>
-
-      <div id="latestResult" class="latest-result">
-        <div class="empty">
-          Nenhum resultado carregado ainda.
-        </div>
-      </div>
-
-      <div class="success-box">
-        <b>V21.2:</b> o sistema tenta automaticamente mais de uma fonte de resultados.
-        Se uma API estiver indisponível, ele tenta a próxima e preserva os concursos
-        já salvos no aparelho.
-      </div>
-
-    </section>
-
-
-    <!-- SELEÇÃO -->
-    <section class="card">
-
-      <h2>🎯 Seleção V21.2</h2>
-
-      <div class="strategy-grid">
-
-        <div class="strategy">
-          <div class="strategy-name">📈 Frequência</div>
-          <div class="strategy-text">
-            Considera a frequência histórica dos números.
-          </div>
-        </div>
-
-        <div class="strategy">
-          <div class="strategy-name">⏳ Atraso</div>
-          <div class="strategy-text">
-            Considera números que estão há mais concursos sem aparecer.
-          </div>
-        </div>
-
-        <div class="strategy">
-          <div class="strategy-name">🔥 Recência</div>
-          <div class="strategy-text">
-            Dá peso aos comportamentos dos concursos recentes.
-          </div>
-        </div>
-
-        <div class="strategy">
-          <div class="strategy-name">🔁 Repetição</div>
-          <div class="strategy-text">
-            Analisa a repetição entre concursos consecutivos.
-          </div>
-        </div>
-
-        <div class="strategy">
-          <div class="strategy-name">⚖️ Paridade</div>
-          <div class="strategy-text">
-            Procura equilíbrio entre pares e ímpares.
-          </div>
-        </div>
-
-        <div class="strategy">
-          <div class="strategy-name">📐 Faixas</div>
-          <div class="strategy-text">
-            Considera a distribuição dos números de 01 a 25.
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- GERADOR -->
-    <section class="card">
-
-      <h2>🎰 Gerador V21.2</h2>
-
-      <label class="field-label">
-        Quantidade de jogos
-      </label>
-
-      <select id="gameQuantity">
+      <select id="gameCount">
         <option value="6">6 jogos</option>
         <option value="10">10 jogos</option>
         <option value="15">15 jogos</option>
@@ -583,1940 +273,1411 @@
         <option value="100">100 jogos</option>
       </select>
 
-      <div class="quantity-info">
-        O sistema pode acumular até 100 jogos. Cada jogo possui
-        exatamente 15 números únicos entre 01 e 25.
-      </div>
+      <button onclick="updateResults()">
+        🔄 Atualizar resultados
+      </button>
 
-      <div style="height:12px"></div>
+      <button onclick="generateGames()">
+        🎯 Gerar jogos
+      </button>
 
-      <div class="button-row">
+      <button class="secondary" onclick="generateMore()">
+        ➕ Gerar mais
+      </button>
 
-        <button
-          class="btn btn-primary"
-          onclick="generateGames()">
-          🎯 Gerar jogos
-        </button>
+      <button class="secondary" onclick="clearGames()">
+        🗑 Limpar
+      </button>
 
-        <button
-          class="btn btn-secondary"
-          onclick="generateMoreGames()">
-          ➕ Gerar mais
-        </button>
+    </div>
 
-        <button
-          class="btn btn-danger"
-          onclick="clearGames()">
-          🗑️ Limpar
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- HISTÓRICO -->
-    <section class="card">
-
-      <h2>📚 Histórico automático</h2>
-
-      <div id="historyList" class="history-list">
-        <div class="empty">
-          Nenhum concurso carregado.
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ESTRATÉGIAS -->
-    <section class="card">
-
-      <h2>🧠 Estratégias V21.2</h2>
-
-      <div class="notice">
-        O robô não tenta descobrir o próximo resultado. Ele utiliza os concursos
-        disponíveis para montar uma seleção baseada em indicadores estatísticos
-        e diversificação dos jogos.
-      </div>
-
-      <div style="height:12px"></div>
-
-      <div class="summary-grid">
-
-        <div class="summary-item">
-          <div class="summary-label">Modelo principal</div>
-          <div id="modelName" class="summary-value">
-            Equilibrado
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Números-base</div>
-          <div id="coreCount" class="summary-value">
-            18
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Tamanho do jogo</div>
-          <div class="summary-value">
-            15
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Universo</div>
-          <div class="summary-value">
-            01–25
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- JOGOS -->
-    <section class="card">
-
-      <h2>🎟️ Jogos gerados</h2>
-
-      <div id="gameList" class="game-list">
-        <div class="empty">
-          Nenhum jogo gerado ainda.
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- RESUMO -->
-    <section class="card">
-
-      <h2>📌 Resumo V21.2</h2>
-
-      <div class="summary-grid">
-
-        <div class="summary-item">
-          <div class="summary-label">Histórico analisado</div>
-          <div id="summaryHistory" class="summary-value">0</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Jogos gerados</div>
-          <div id="summaryGames" class="summary-value">0</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Pares</div>
-          <div id="summaryEven" class="summary-value">—</div>
-        </div>
-
-        <div class="summary-item">
-          <div class="summary-label">Ímpares</div>
-          <div id="summaryOdd" class="summary-value">—</div>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <div class="footer">
-    Lotofácil Monitor V21.2<br>
-    Ferramenta estatística para organização e análise de jogos.
+    <div style="margin-top:12px" class="status">
+      <div id="status" class="badge">Aguardando atualização...</div>
+      <div id="contestStatus" class="badge">Concurso: --</div>
+      <div id="historyStatus" class="badge">Histórico: --</div>
+    </div>
   </div>
 
+
+  <div class="card">
+    <h2>🎲 Último resultado</h2>
+
+    <div id="latestResult" class="result-box">
+      Nenhum resultado carregado.
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>🧠 Núcleo V21.1 Calibrado</h2>
+
+    <div id="nucleus"></div>
+
+    <hr>
+
+    <div id="weights"></div>
+  </div>
+
+
+  <div class="card">
+    <h2>📊 Análise</h2>
+
+    <div id="analysis"></div>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>🎯 Jogos gerados</h2>
+
+    <div id="games" class="grid">
+      Nenhum jogo gerado.
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>🧪 Backtest</h2>
+
+    <div id="backtest">
+      Aguardando dados...
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>📋 Log</h2>
+
+    <div id="log" class="log"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Lotofácil Monitor V21.1 Calibrada
 </div>
 
 
 <script>
 
-"use strict";
-
-
 /* =========================================================
    CONFIGURAÇÃO
 ========================================================= */
 
-const VERSION = "V21.2";
+const VERSION = "V21.1 CALIBRADA";
 
 const TOTAL_NUMBERS = 25;
 const GAME_SIZE = 15;
+const MAX_GAMES = 100;
 
-const DEFAULT_GAME_QUANTITY = 6;
-const MAX_GENERATED_GAMES = 100;
+const HISTORY_LIMIT = 60;
 
-const STORAGE_V21 = "lotofacil_v21_history";
-const STORAGE_V20 = "lotofacil_v20_history";
-const STORAGE_V19 = "lotofacil_v19_history";
+const CAIXA_URL =
+"https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil";
 
-const GUIDI_API =
-  "https://api.guidi.dev.br/loteria/lotofacil";
 
-const GITHUB_API =
-  "https://raw.githubusercontent.com/maickon/free-apiloterias/master/database/lotofacil";
+/*
+  CALIBRAÇÃO PÓS-CONCURSO
 
-const CAIXA_API =
-  "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil";
+  A lógica não força o resultado anterior.
 
-let historyData = [];
+  Aumentamos:
+  - frequência
+  - recência
+  - repetição
+
+  Reduzimos:
+  - atraso isolado
+
+  Criamos proteção para números com
+  múltiplos indicadores positivos.
+*/
+
+const WEIGHTS = {
+
+  frequency: 0.24,
+
+  recent: 0.22,
+
+  repetition: 0.20,
+
+  delay: 0.08,
+
+  stability: 0.10,
+
+  range: 0.08,
+
+  diversity: 0.08
+
+};
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let history = [];
+
+let latest = null;
+
+let scores = {};
+
+let nucleus = [];
+
 let generatedGames = [];
-
-let isUpdating = false;
 
 
 /* =========================================================
    UTILIDADES
 ========================================================= */
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function log(message){
+
+  const box = document.getElementById("log");
+
+  const time =
+    new Date().toLocaleTimeString("pt-BR");
+
+  box.innerHTML =
+    `[${time}] ${message}<br>` +
+    box.innerHTML;
+
 }
 
 
-function timeoutSignal(ms) {
+function normalize(value,min,max){
 
-  const controller = new AbortController();
+  if(max === min) return 0.5;
 
-  setTimeout(() => {
-    try {
-      controller.abort();
-    } catch(e) {}
-  }, ms);
+  return (value-min)/(max-min);
 
-  return controller.signal;
 }
 
 
-async function fetchJSON(url, timeout = 12000) {
+function random(){
 
-  const response = await fetch(url, {
-    method: "GET",
-    cache: "no-store",
-    headers: {
-      "Accept": "application/json,text/plain,*/*"
-    },
-    signal: timeoutSignal(timeout)
-  });
+  return Math.random();
 
-  if (!response.ok) {
-    throw new Error(
-      "HTTP " + response.status
-    );
-  }
-
-  return await response.json();
 }
 
 
-function normalizeNumber(value) {
+function shuffle(array){
 
-  const n = Number(
-    String(value)
-      .replace(/[^\d]/g, "")
+  return [...array].sort(
+    ()=>Math.random()-0.5
   );
 
-  if (!Number.isInteger(n)) return null;
-
-  if (n < 1 || n > 25) return null;
-
-  return n;
 }
 
 
-function normalizeNumbers(values) {
+function unique(array){
 
-  if (!Array.isArray(values)) {
-    return [];
-  }
+  return [...new Set(array)];
 
-  const result = [];
+}
 
-  for (const value of values) {
 
-    const n = normalizeNumber(value);
+function intersection(a,b){
 
-    if (
-      n !== null &&
-      !result.includes(n)
-    ) {
-      result.push(n);
-    }
-  }
+  const set = new Set(b);
 
-  return result
-    .sort((a,b) => a-b);
+  return a.filter(x=>set.has(x));
+
+}
+
+
+function sortNumbers(array){
+
+  return [...array].sort((a,b)=>a-b);
+
 }
 
 
 /* =========================================================
-   EXTRAÇÃO DE DADOS
+   API / HISTÓRICO
 ========================================================= */
 
-function extractNumbers(data) {
+async function updateResults(){
 
-  if (!data) return [];
+  setStatus("Atualizando resultados...", "warn");
 
-  const possibleArrays = [
+  try{
 
-    data.listaDezenas,
+    log("Consultando resultado da CAIXA...");
 
-    data.dezenas,
+    const response =
+      await fetch(CAIXA_URL,{
+        cache:"no-store"
+      });
 
-    data.dezenasSorteadas,
+    if(!response.ok)
+      throw new Error("HTTP "+response.status);
 
-    data.dezenasSorteadasOrdemSorteio,
+    const data = await response.json();
 
-    data.numeros,
+    if(!data || !data.listaDezenas)
+      throw new Error("Resposta inválida");
 
-    data.numbers,
+    latest = parseContest(data);
 
-    data.resultado,
+    history = loadLocalHistory();
 
-    data.result
+    mergeHistory(latest);
 
-  ];
+    saveLocalHistory();
 
-  for (const arr of possibleArrays) {
-
-    const numbers = normalizeNumbers(arr);
-
-    if (numbers.length === 15) {
-      return numbers;
-    }
-  }
-
-  return [];
-}
-
-
-function extractContest(data) {
-
-  if (!data) return null;
-
-  const values = [
-
-    data.numero,
-
-    data.concurso,
-
-    data.numeroConcurso,
-
-    data.Concurso,
-
-    data.contest,
-
-    data.contestNumber
-
-  ];
-
-  for (const value of values) {
-
-    const n = Number(value);
-
-    if (
-      Number.isInteger(n) &&
-      n > 0
-    ) {
-      return n;
-    }
-  }
-
-  return null;
-}
-
-
-function extractDate(data) {
-
-  if (!data) return "";
-
-  return (
-    data.dataApuracao ||
-    data.data ||
-    data.Data ||
-    data.date ||
-    ""
-  );
-}
-
-
-function normalizeDraw(data, fallbackContest = null) {
-
-  const numbers = extractNumbers(data);
-
-  const contest =
-    extractContest(data) ||
-    fallbackContest;
-
-  if (
-    !contest ||
-    numbers.length !== 15
-  ) {
-    return null;
-  }
-
-  return {
-    contest: Number(contest),
-    numbers: numbers,
-    date: extractDate(data)
-  };
-}
-
-
-/* =========================================================
-   FONTES DE RESULTADOS
-========================================================= */
-
-async function fetchGuidiContest(contest = null) {
-
-  const url = contest
-    ? `${GUIDI_API}/${contest}`
-    : `${GUIDI_API}/ultimo`;
-
-  const data = await fetchJSON(url);
-
-  const draw = normalizeDraw(
-    data,
-    contest
-  );
-
-  if (!draw) {
-    throw new Error(
-      "Resposta Guidi sem 15 dezenas"
-    );
-  }
-
-  return draw;
-}
-
-
-async function fetchGithubContest(contest = null) {
-
-  let url;
-
-  if (contest) {
-
-    url =
-      `${GITHUB_API}/${contest}.json`;
-
-  } else {
-
-    url =
-      `${GITHUB_API}/_ultimo.json`;
-  }
-
-  const data = await fetchJSON(url);
-
-  const draw = normalizeDraw(
-    data,
-    contest
-  );
-
-  if (!draw) {
-    throw new Error(
-      "Resposta GitHub sem 15 dezenas"
-    );
-  }
-
-  return draw;
-}
-
-
-async function fetchCaixaContest(contest = null) {
-
-  const url = contest
-    ? `${CAIXA_API}/${contest}`
-    : CAIXA_API;
-
-  const data = await fetchJSON(url);
-
-  const draw = normalizeDraw(
-    data,
-    contest
-  );
-
-  if (!draw) {
-    throw new Error(
-      "Resposta Caixa sem 15 dezenas"
-    );
-  }
-
-  return draw;
-}
-
-
-/* =========================================================
-   BUSCA COM FALLBACK
-========================================================= */
-
-async function fetchLatestDraw() {
-
-  const sources = [
-
-    {
-      name: "API Guidi",
-      fn: () => fetchGuidiContest()
-    },
-
-    {
-      name: "Base pública GitHub",
-      fn: () => fetchGithubContest()
-    },
-
-    {
-      name: "CAIXA",
-      fn: () => fetchCaixaContest()
-    }
-
-  ];
-
-  let errors = [];
-
-  for (const source of sources) {
-
-    try {
-
-      setStatus(
-        "loading",
-        "Atualizando resultados",
-        "Consultando " + source.name + "..."
-      );
-
-      const draw =
-        await source.fn();
-
-      if (draw) {
-
-        return {
-          draw,
-          source: source.name
-        };
-      }
-
-    } catch(error) {
-
-      errors.push(
-        source.name + ": " + error.message
-      );
-
-      await sleep(250);
-    }
-  }
-
-  throw new Error(
-    "Nenhuma fonte respondeu. " +
-    errors.join(" | ")
-  );
-}
-
-
-async function fetchContestWithFallback(contest) {
-
-  const sources = [
-
-    () => fetchGuidiContest(contest),
-
-    () => fetchGithubContest(contest),
-
-    () => fetchCaixaContest(contest)
-
-  ];
-
-  for (const source of sources) {
-
-    try {
-
-      const draw =
-        await source();
-
-      if (draw) {
-        return draw;
-      }
-
-    } catch(error) {
-      // tenta próxima fonte
-    }
-  }
-
-  return null;
-}
-
-
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-function saveHistory() {
-
-  try {
-
-    localStorage.setItem(
-      STORAGE_V21,
-      JSON.stringify(historyData)
-    );
-
-  } catch(error) {
-
-    console.warn(
-      "Não foi possível salvar histórico",
-      error
-    );
-  }
-}
-
-
-function getSavedHistory() {
-
-  const keys = [
-
-    STORAGE_V21,
-    STORAGE_V20,
-    STORAGE_V19
-
-  ];
-
-  for (const key of keys) {
-
-    try {
-
-      const raw =
-        localStorage.getItem(key);
-
-      if (!raw) continue;
-
-      const parsed =
-        JSON.parse(raw);
-
-      if (!Array.isArray(parsed)) {
-        continue;
-      }
-
-      const normalized =
-        parsed
-          .map(item => {
-
-            if (
-              item &&
-              item.contest &&
-              Array.isArray(item.numbers)
-            ) {
-
-              const numbers =
-                normalizeNumbers(
-                  item.numbers
-                );
-
-              if (
-                numbers.length === 15
-              ) {
-
-                return {
-                  contest: Number(item.contest),
-                  numbers,
-                  date: item.date || ""
-                };
-              }
-            }
-
-            return null;
-          })
-          .filter(Boolean);
-
-      if (normalized.length) {
-        return normalized;
-      }
-
-    } catch(error) {}
-  }
-
-  return [];
-}
-
-
-function mergeHistory(draws) {
-
-  const map = new Map();
-
-  for (const draw of historyData) {
-
-    if (
-      draw &&
-      draw.contest &&
-      Array.isArray(draw.numbers)
-    ) {
-
-      map.set(
-        Number(draw.contest),
-        draw
-      );
-    }
-  }
-
-  for (const draw of draws) {
-
-    if (
-      draw &&
-      draw.contest &&
-      draw.numbers.length === 15
-    ) {
-
-      map.set(
-        Number(draw.contest),
-        draw
-      );
-    }
-  }
-
-  historyData =
-    Array.from(map.values())
-      .sort(
-        (a,b) =>
-          Number(b.contest) -
-          Number(a.contest)
-      )
-      .slice(0, 100);
-
-  saveHistory();
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function setStatus(type, title, text) {
-
-  const dot =
-    document.getElementById("statusDot");
-
-  const titleElement =
-    document.getElementById("statusTitle");
-
-  const textElement =
-    document.getElementById("statusText");
-
-  if (!dot) return;
-
-  dot.className =
-    "status-dot " +
-    (type || "");
-
-  titleElement.textContent =
-    title;
-
-  textElement.textContent =
-    text;
-}
-
-
-/* =========================================================
-   ATUALIZAÇÃO AUTOMÁTICA
-========================================================= */
-
-async function updateAutomaticHistory() {
-
-  if (isUpdating) {
-    return;
-  }
-
-  isUpdating = true;
-
-  const button =
-    document.getElementById("updateBtn");
-
-  if (button) {
-    button.disabled = true;
-    button.textContent =
-      "⏳ Atualizando...";
-  }
-
-  try {
-
-    setStatus(
-      "loading",
-      "Atualizando resultados",
-      "Buscando o concurso mais recente..."
-    );
-
-    const latest =
-      await fetchLatestDraw();
-
-    const latestContest =
-      latest.draw.contest;
-
-    const existingContests =
-      new Set(
-        historyData.map(
-          d => Number(d.contest)
-        )
-      );
-
-    const contestsToFetch = [];
-
-    /*
-      Primeiro garante o último concurso.
-    */
-
-    contestsToFetch.push(
-      latestContest
-    );
-
-    /*
-      Depois tenta completar aproximadamente
-      os últimos 60 concursos.
-    */
-
-    for (
-      let c = latestContest - 1;
-      c >= Math.max(1, latestContest - 59);
-      c--
-    ) {
-
-      if (
-        !existingContests.has(c)
-      ) {
-
-        contestsToFetch.push(c);
-      }
-    }
-
-    const newDraws = [
-      latest.draw
-    ];
-
-    /*
-      Evita fazer dezenas de chamadas ao mesmo tempo.
-      Processa em pequenos blocos.
-    */
-
-    const uniqueContests =
-      [...new Set(contestsToFetch)];
-
-    let processed = 0;
-
-    for (
-      let i = 1;
-      i < uniqueContests.length;
-      i += 5
-    ) {
-
-      const batch =
-        uniqueContests.slice(
-          i,
-          i + 5
-        );
-
-      setStatus(
-        "loading",
-        "Baixando histórico",
-        `Processando concursos ${processed + 1}–${Math.min(
-          processed + batch.length,
-          uniqueContests.length - 1
-        )}...`
-      );
-
-      const results =
-        await Promise.all(
-          batch.map(
-            contest =>
-              fetchContestWithFallback(
-                contest
-              )
-          )
-        );
-
-      for (const draw of results) {
-
-        if (
-          draw &&
-          draw.numbers.length === 15
-        ) {
-
-          newDraws.push(draw);
-        }
-      }
-
-      processed += batch.length;
-
-      await sleep(180);
-    }
-
-    mergeHistory(newDraws);
+    buildModel();
 
     renderAll();
 
     setStatus(
-      "success",
-      "Resultados atualizados",
-      `${historyData.length} concursos disponíveis. Fonte principal: ${latest.source}.`
+      "Resultado atualizado com sucesso",
+      "ok"
     );
 
-  } catch(error) {
+    log(
+      `Concurso ${latest.contest} atualizado.`
+    );
+
+  }catch(error){
 
     console.error(error);
 
+    setStatus(
+      "Não foi possível atualizar automaticamente",
+      "error"
+    );
+
+    log(
+      "Falha na atualização automática: "+
+      error.message
+    );
+
     /*
-      Mesmo se a internet/API falhar,
-      carrega o histórico que já está no aparelho.
+      Mesmo se a API falhar,
+      preservamos o histórico local.
     */
 
-    historyData =
-      getSavedHistory();
+    history = loadLocalHistory();
 
-    renderAll();
+    if(history.length){
 
-    if (historyData.length) {
+      latest = history[0];
 
-      setStatus(
-        "error",
-        "Atualização online indisponível",
-        `Os dados salvos no aparelho continuam disponíveis. ${error.message}`
+      buildModel();
+
+      renderAll();
+
+      log(
+        "Usando histórico local disponível."
       );
 
-    } else {
-
-      setStatus(
-        "error",
-        "Não foi possível atualizar",
-        error.message
-      );
     }
 
-  } finally {
-
-    isUpdating = false;
-
-    if (button) {
-
-      button.disabled = false;
-
-      button.textContent =
-        "🔄 Atualizar resultados automaticamente";
-    }
   }
+
 }
 
 
-/* =========================================================
-   CARREGAR HISTÓRICO
-========================================================= */
-
-function loadSavedHistory() {
-
-  historyData =
-    getSavedHistory();
-
-  renderAll();
-
-  if (historyData.length) {
-
-    setStatus(
-      "success",
-      "Histórico carregado",
-      `${historyData.length} concursos foram carregados do armazenamento do aparelho.`
-    );
-
-  } else {
-
-    setStatus(
-      "error",
-      "Histórico vazio",
-      "Nenhum concurso salvo foi encontrado."
-    );
-  }
-}
-
-
-/* =========================================================
-   INDICADORES
-========================================================= */
-
-function rawIndicators(draws) {
-
-  const frequency =
-    Array(TOTAL_NUMBERS + 1).fill(0);
-
-  const recent =
-    Array(TOTAL_NUMBERS + 1).fill(0);
-
-  const late =
-    Array(TOTAL_NUMBERS + 1).fill(0);
-
-  const repeat =
-    Array(TOTAL_NUMBERS + 1).fill(0);
-
-  const range =
-    Array(TOTAL_NUMBERS + 1).fill(0);
-
-  const total =
-    draws.length;
-
-  if (!total) {
-
-    return {
-      frequency,
-      recent,
-      late,
-      repeat,
-      range
-    };
-  }
-
-  /*
-    Frequência geral
-  */
-
-  for (const draw of draws) {
-
-    for (const n of draw.numbers) {
-
-      frequency[n]++;
-    }
-  }
-
-  /*
-    Recência
-  */
-
-  const recentDraws =
-    draws.slice(
-      0,
-      Math.min(20, total)
-    );
-
-  for (const draw of recentDraws) {
-
-    for (const n of draw.numbers) {
-
-      recent[n]++;
-    }
-  }
-
-  /*
-    Atraso
-  */
-
-  for (let n = 1; n <= 25; n++) {
-
-    let found = false;
-
-    for (
-      let i = 0;
-      i < draws.length;
-      i++
-    ) {
-
-      if (
-        draws[i].numbers.includes(n)
-      ) {
-
-        late[n] = i;
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      late[n] = draws.length;
-    }
-  }
-
-  /*
-    Repetição
-  */
-
-  for (let i = 0; i < draws.length - 1; i++) {
-
-    const current =
-      new Set(draws[i].numbers);
-
-    const previous =
-      new Set(draws[i + 1].numbers);
-
-    for (const n of current) {
-
-      if (previous.has(n)) {
-        repeat[n]++;
-      }
-    }
-  }
-
-  /*
-    Faixas:
-    01–05
-    06–10
-    11–15
-    16–20
-    21–25
-  */
-
-  for (const draw of draws) {
-
-    for (const n of draw.numbers) {
-
-      range[n]++;
-    }
-  }
-
-  return {
-    frequency,
-    recent,
-    late,
-    repeat,
-    range
-  };
-}
-
-
-/* =========================================================
-   NORMALIZAÇÃO
-========================================================= */
-
-function minMaxNormalize(values) {
-
-  const result =
-    Array(values.length).fill(0);
-
-  const valid =
-    values.slice(1);
-
-  const min =
-    Math.min(...valid);
-
-  const max =
-    Math.max(...valid);
-
-  if (
-    !Number.isFinite(min) ||
-    !Number.isFinite(max) ||
-    max === min
-  ) {
-
-    for (
-      let i = 1;
-      i < values.length;
-      i++
-    ) {
-      result[i] = .5;
-    }
-
-    return result;
-  }
-
-  for (
-    let i = 1;
-    i < values.length;
-    i++
-  ) {
-
-    result[i] =
-      (values[i] - min) /
-      (max - min);
-  }
-
-  return result;
-}
-
-
-/* =========================================================
-   SCORE
-========================================================= */
-
-function scoreIndicators(indicators, weights) {
-
-  const frequency =
-    minMaxNormalize(
-      indicators.frequency
-    );
-
-  const recent =
-    minMaxNormalize(
-      indicators.recent
-    );
-
-  const late =
-    minMaxNormalize(
-      indicators.late
-    );
-
-  const repeat =
-    minMaxNormalize(
-      indicators.repeat
-    );
-
-  const range =
-    minMaxNormalize(
-      indicators.range
-    );
-
-  const scores =
-    Array(TOTAL_NUMBERS + 1)
-      .fill(0);
-
-  for (
-    let n = 1;
-    n <= TOTAL_NUMBERS;
-    n++
-  ) {
-
-    scores[n] =
-
-      frequency[n] *
-      weights.frequency +
-
-      late[n] *
-      weights.late +
-
-      recent[n] *
-      weights.recent +
-
-      repeat[n] *
-      weights.repeat +
-
-      range[n] *
-      weights.range;
-  }
-
-  return scores;
-}
-
-
-/* =========================================================
-   BACKTEST
-========================================================= */
-
-function runBacktest(draws) {
-
-  const presets = [
-
-    {
-      name: "Equilibrada",
-
-      weights: {
-        frequency: .25,
-        late: .15,
-        recent: .20,
-        repeat: .15,
-        parity: .10,
-        range: .15
-      }
-    },
-
-    {
-      name: "Frequência",
-
-      weights: {
-        frequency: .40,
-        late: .10,
-        recent: .20,
-        repeat: .10,
-        parity: .05,
-        range: .15
-      }
-    },
-
-    {
-      name: "Recente",
-
-      weights: {
-        frequency: .20,
-        late: .10,
-        recent: .40,
-        repeat: .15,
-        parity: .05,
-        range: .10
-      }
-    },
-
-    {
-      name: "Atrasados",
-
-      weights: {
-        frequency: .15,
-        late: .40,
-        recent: .15,
-        repeat: .10,
-        parity: .10,
-        range: .10
-      }
-    },
-
-    {
-      name: "Repetição",
-
-      weights: {
-        frequency: .20,
-        late: .10,
-        recent: .20,
-        repeat: .35,
-        parity: .05,
-        range: .10
-      }
-    }
-
-  ];
-
-  /*
-    Para a V21.2 usamos a equilibrada
-    como modelo principal.
-  */
-
-  return presets[0];
-}
-
-
-/* =========================================================
-   CORE
-========================================================= */
-
-function buildCore(scores) {
+function parseContest(data){
 
   const numbers =
-    Array.from(
-      {length: TOTAL_NUMBERS},
-      (_, i) => i + 1
-    );
+    data.listaDezenas
+      .map(Number)
+      .filter(n=>n>=1 && n<=25);
 
-  numbers.sort(
-    (a,b) =>
-      scores[b] - scores[a]
+  return {
+
+    contest:
+      Number(
+        data.numeroConcurso ||
+        data.concurso ||
+        0
+      ),
+
+    date:
+      data.dataApuracao ||
+      data.data ||
+      "",
+
+    numbers:
+      sortNumbers(numbers)
+
+  };
+
+}
+
+
+function loadLocalHistory(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(
+        "lotofacil_history_v21"
+      );
+
+    if(!saved)
+      return [];
+
+    const parsed =
+      JSON.parse(saved);
+
+    if(!Array.isArray(parsed))
+      return [];
+
+    return parsed
+      .filter(x=>
+        x &&
+        Array.isArray(x.numbers) &&
+        x.numbers.length===15
+      );
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+function saveLocalHistory(){
+
+  localStorage.setItem(
+    "lotofacil_history_v21",
+    JSON.stringify(
+      history.slice(0,HISTORY_LIMIT)
+    )
   );
 
-  return numbers.slice(0,18);
 }
 
 
-/* =========================================================
-   RANDOMIZAÇÃO CONTROLADA
-========================================================= */
+function mergeHistory(result){
 
-function weightedPick(items, scores) {
+  if(!result)
+    return;
 
-  if (!items.length) {
-    return null;
-  }
+  history =
+    history.filter(
+      x=>x.contest !== result.contest
+    );
 
-  let total = 0;
+  history.unshift(result);
 
-  for (const n of items) {
-
-    total +=
-      Math.max(
-        .001,
-        scores[n] + .15
-      );
-  }
-
-  let random =
-    Math.random() * total;
-
-  for (const n of items) {
-
-    random -=
-      Math.max(
-        .001,
-        scores[n] + .15
-      );
-
-    if (random <= 0) {
-      return n;
-    }
-  }
-
-  return items[
-    items.length - 1
-  ];
-}
-
-
-function shuffle(array) {
-
-  const arr =
-    [...array];
-
-  for (
-    let i = arr.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
-
-    [
-      arr[i],
-      arr[j]
-    ] =
-    [
-      arr[j],
-      arr[i]
-    ];
-  }
-
-  return arr;
-}
-
-
-/* =========================================================
-   CONSTRUÇÃO DE JOGO
-========================================================= */
-
-function buildGame(core, scores, gameIndex) {
-
-  const selected =
-    new Set();
-
-  /*
-    Quantidade de pares.
-    Alternamos entre 7/8.
-  */
-
-  const targetEven =
-    gameIndex % 2 === 0
-      ? 8
-      : 7;
-
-  const targetOdd =
-    GAME_SIZE - targetEven;
-
-
-  /*
-    Primeira seleção ponderada
-  */
-
-  const shuffledCore =
-    shuffle(core);
-
-  for (const n of shuffledCore) {
-
-    if (
-      selected.size >= GAME_SIZE
-    ) {
-      break;
-    }
-
-    if (
-      Math.random() < .72 ||
-      selected.size < 5
-    ) {
-
-      selected.add(n);
-    }
-  }
-
-
-  /*
-    Completa com todos os números.
-  */
-
-  while (
-    selected.size < GAME_SIZE
-  ) {
-
-    const available =
-      Array.from(
-        {length: TOTAL_NUMBERS},
-        (_, i) => i + 1
+  history =
+    history
+      .sort(
+        (a,b)=>
+          Number(b.contest)-Number(a.contest)
       )
-      .filter(
-        n => !selected.has(n)
-      );
+      .slice(0,HISTORY_LIMIT);
 
-    const chosen =
-      weightedPick(
-        available,
-        scores
-      );
+}
 
-    if (chosen === null) {
-      break;
-    }
 
-    selected.add(chosen);
+/* =========================================================
+   MODELO
+========================================================= */
+
+function buildModel(){
+
+  if(!history.length)
+    return;
+
+  scores = {};
+
+  for(let n=1;n<=25;n++){
+
+    scores[n] =
+      calculateScore(n);
+
   }
+
+  nucleus =
+    Object.entries(scores)
+      .sort(
+        (a,b)=>b[1].score-a[1].score
+      )
+      .slice(0,18)
+      .map(x=>Number(x[0]));
+
+}
+
+
+/* =========================================================
+   ESTATÍSTICAS
+========================================================= */
+
+function frequencyOf(number, data){
+
+  let count=0;
+
+  data.forEach(draw=>{
+
+    if(draw.numbers.includes(number))
+      count++;
+
+  });
+
+  return count;
+
+}
+
+
+function recentFrequency(number,data){
+
+  const window =
+    data.slice(
+      0,
+      Math.min(10,data.length)
+    );
+
+  return frequencyOf(
+    number,
+    window
+  );
+
+}
+
+
+function calculateDelay(number,data){
+
+  for(let i=0;i<data.length;i++){
+
+    if(data[i].numbers.includes(number))
+      return i;
+
+  }
+
+  return data.length;
+
+}
+
+
+function repetition(number){
+
+  if(history.length<2)
+    return 0;
+
+  return history[1].numbers
+    .includes(number)
+    ? 1
+    : 0;
+
+}
+
+
+function stability(number,data){
+
+  if(data.length<15)
+    return 0.5;
+
+  const windows = [
+
+    data.slice(0,5),
+
+    data.slice(5,10),
+
+    data.slice(10,15)
+
+  ];
+
+  let values=[];
+
+  windows.forEach(w=>{
+
+    if(w.length)
+      values.push(
+        frequencyOf(number,w)/w.length
+      );
+
+  });
+
+  if(!values.length)
+    return 0.5;
+
+  const avg =
+    values.reduce((a,b)=>a+b,0) /
+    values.length;
+
+  const variance =
+    values.reduce(
+      (sum,v)=>
+        sum+Math.pow(v-avg,2),
+      0
+    ) / values.length;
+
+  return Math.max(
+    0,
+    1-Math.sqrt(variance)*4
+  );
+
+}
+
+
+function rangeSupport(number,data){
+
+  /*
+    Mantém leve preferência
+    por faixas equilibradas.
+  */
+
+  const faixa =
+    Math.ceil(number/5);
+
+  let count=0;
+
+  data
+    .slice(0,20)
+    .forEach(draw=>{
+
+      const qtd =
+        draw.numbers.filter(n=>
+          Math.ceil(n/5)===faixa
+        ).length;
+
+      count += qtd;
+
+    });
+
+  return count;
+
+}
+
+
+/* =========================================================
+   SCORE CALIBRADO
+========================================================= */
+
+function calculateScore(number){
+
+  const data =
+    history.slice(0,HISTORY_LIMIT);
+
+  if(!data.length){
+
+    return {
+      score:0,
+      frequency:0,
+      recent:0,
+      repetition:0,
+      delay:0,
+      stability:0,
+      range:0
+    };
+
+  }
+
+  const freq =
+    frequencyOf(number,data);
+
+  const recent =
+    recentFrequency(number,data);
+
+  const delayRaw =
+    calculateDelay(number,data);
+
+  const rep =
+    repetition(number);
+
+  const stab =
+    stability(number,data);
+
+  const range =
+    rangeSupport(number,data);
+
+
+  const allFreq =
+    Array.from(
+      {length:25},
+      (_,i)=>
+        frequencyOf(i+1,data)
+    );
+
+  const recentFreq =
+    Array.from(
+      {length:25},
+      (_,i)=>
+        recentFrequency(i+1,data)
+    );
+
+  const ranges =
+    Array.from(
+      {length:25},
+      (_,i)=>
+        rangeSupport(i+1,data)
+    );
+
+
+  const freqMin =
+    Math.min(...allFreq);
+
+  const freqMax =
+    Math.max(...allFreq);
+
+  const recentMin =
+    Math.min(...recentFreq);
+
+  const recentMax =
+    Math.max(...recentFreq);
+
+  const rangeMin =
+    Math.min(...ranges);
+
+  const rangeMax =
+    Math.max(...ranges);
+
+
+  const freqN =
+    normalize(
+      freq,
+      freqMin,
+      freqMax
+    );
+
+  const recentN =
+    normalize(
+      recent,
+      recentMin,
+      recentMax
+    );
+
+  const rangeN =
+    normalize(
+      range,
+      rangeMin,
+      rangeMax
+    );
 
 
   /*
-    Ajuste de paridade.
+    ATRASO:
+
+    Não queremos mais que
+    atraso isolado domine o score.
+
+    Um atraso moderado recebe algum valor,
+    mas atraso extremo não vira
+    automaticamente "obrigatório".
   */
 
-  let game =
-    Array.from(selected);
+  const delayN =
+    Math.min(
+      delayRaw/12,
+      1
+    );
 
-  let evenCount =
-    game.filter(
-      n => n % 2 === 0
+
+  /*
+    PROTEÇÃO DE SINAL:
+
+    Quando frequência + recência +
+    repetição estão fortes, criamos
+    um bônus de estabilidade.
+  */
+
+  let protection = 0;
+
+  if(
+    freqN >= 0.60 &&
+    recentN >= 0.60
+  ){
+
+    protection += 0.06;
+
+  }
+
+  if(
+    rep === 1 &&
+    freqN >= 0.50
+  ){
+
+    protection += 0.04;
+
+  }
+
+
+  const score =
+
+    WEIGHTS.frequency *
+      freqN +
+
+    WEIGHTS.recent *
+      recentN +
+
+    WEIGHTS.repetition *
+      rep +
+
+    WEIGHTS.delay *
+      delayN +
+
+    WEIGHTS.stability *
+      stab +
+
+    WEIGHTS.range *
+      rangeN +
+
+    protection;
+
+
+  return {
+
+    score,
+
+    frequency:freqN,
+
+    recent:recentN,
+
+    repetition:rep,
+
+    delay:delayN,
+
+    stability:stab,
+
+    range:rangeN
+
+  };
+
+}
+
+
+/* =========================================================
+   NÚCLEO
+========================================================= */
+
+function renderNucleus(){
+
+  const box =
+    document.getElementById("nucleus");
+
+  if(!nucleus.length){
+
+    box.innerHTML =
+      "Sem dados suficientes.";
+
+    return;
+
+  }
+
+  let html =
+    `<div class="numbers">`;
+
+  nucleus.forEach(n=>{
+
+    html +=
+      `<div class="ball">${String(n).padStart(2,"0")}</div>`;
+
+  });
+
+  html += `</div>`;
+
+  html +=
+    `<p class="small" style="margin-top:10px">
+      Núcleo adaptativo: 18 dezenas.
+      A V21.1 protege sinais fortes e mantém rotação controlada.
+    </p>`;
+
+  box.innerHTML=html;
+
+
+  let whtml="";
+
+  Object.entries(WEIGHTS)
+    .forEach(([name,value])=>{
+
+      const labels={
+
+        frequency:"Frequência",
+
+        recent:"Recência",
+
+        repetition:"Repetição",
+
+        delay:"Atraso",
+
+        stability:"Estabilidade",
+
+        range:"Faixas",
+
+        diversity:"Diversidade"
+
+      };
+
+      whtml +=
+        `<div class="metric">
+          <span>${labels[name]}</span>
+          <b>${(value*100).toFixed(0)}%</b>
+        </div>`;
+
+    });
+
+  document.getElementById("weights")
+    .innerHTML=whtml;
+
+}
+
+
+/* =========================================================
+   ANÁLISE
+========================================================= */
+
+function renderAnalysis(){
+
+  if(!latest){
+
+    document.getElementById("analysis")
+      .innerHTML="Sem dados.";
+
+    return;
+
+  }
+
+  const result =
+    latest.numbers;
+
+  const strong =
+    intersection(
+      result,
+      nucleus
+    );
+
+  const missing =
+    nucleus.filter(
+      n=>!result.includes(n)
+    );
+
+  document.getElementById("analysis")
+    .innerHTML=`
+
+      <div class="metric">
+        <span>Dezenas do resultado</span>
+        <b>${result.length}</b>
+      </div>
+
+      <div class="metric">
+        <span>Resultado dentro do núcleo</span>
+        <b>${strong.length}/15</b>
+      </div>
+
+      <div class="metric">
+        <span>Núcleo que não saiu</span>
+        <b>${missing.length}</b>
+      </div>
+
+      <div class="metric">
+        <span>Concursos analisados</span>
+        <b>${history.length}</b>
+      </div>
+
+      <p class="small" style="margin-top:12px">
+        A calibração não força o último resultado.
+        Ela ajusta os pesos para proteger sinais
+        que aparecem de forma consistente.
+      </p>
+
+    `;
+
+}
+
+
+/* =========================================================
+   GERAÇÃO DE JOGOS
+========================================================= */
+
+function weightedChoice(items){
+
+  if(!items.length)
+    return null;
+
+  let total =
+    items.reduce(
+      (sum,n)=>
+        sum+
+        Math.max(
+          0.01,
+          scores[n]?.score || 0.01
+        ),
+      0
+    );
+
+  let r =
+    Math.random()*total;
+
+  for(const n of items){
+
+    r -=
+      Math.max(
+        0.01,
+        scores[n]?.score || 0.01
+      );
+
+    if(r<=0)
+      return n;
+
+  }
+
+  return items[items.length-1];
+
+}
+
+
+/*
+  Seleciona quantidade de dezenas do núcleo.
+
+  Mais proteção para o núcleo do que
+  nas versões anteriores, mas mantém
+  3-5 posições de rotação.
+*/
+
+function createCandidate(){
+
+  const target =
+    11 +
+    Math.floor(Math.random()*3);
+
+  const chosen=[];
+
+  const pool =
+    shuffle(nucleus);
+
+  while(
+    chosen.length < target &&
+    pool.length
+  ){
+
+    const n =
+      weightedChoice(
+        pool.filter(
+          x=>!chosen.includes(x)
+        )
+      );
+
+    if(n===null)
+      break;
+
+    chosen.push(n);
+
+    pool.splice(
+      pool.indexOf(n),
+      1
+    );
+
+  }
+
+
+  const outside =
+    Array.from(
+      {length:25},
+      (_,i)=>i+1
+    ).filter(
+      n=>!chosen.includes(n)
+    );
+
+
+  const remaining =
+    GAME_SIZE-chosen.length;
+
+
+  while(
+    chosen.length < GAME_SIZE
+  ){
+
+    const n =
+      weightedChoice(
+        outside.filter(
+          x=>!chosen.includes(x)
+        )
+      );
+
+    if(n===null)
+      break;
+
+    chosen.push(n);
+
+  }
+
+
+  return repairGame(
+    sortNumbers(chosen)
+  );
+
+}
+
+
+/* =========================================================
+   REGRAS ESTRUTURAIS
+========================================================= */
+
+function countOdd(game){
+
+  return game.filter(
+    n=>n%2!==0
+  ).length;
+
+}
+
+
+function countLow(game){
+
+  return game.filter(
+    n=>n<=13
+  ).length;
+
+}
+
+
+function countRange(game,range){
+
+  return game.filter(
+    n=>
+      n>=range[0] &&
+      n<=range[1]
+  ).length;
+
+}
+
+
+function gameQuality(game){
+
+  let q=0;
+
+  const odd =
+    countOdd(game);
+
+  const low =
+    countLow(game);
+
+  /*
+    Lotofácil costuma ficar próxima
+    de 7/8 ou 8/7 em pares/ímpares.
+  */
+
+  if(odd>=6 && odd<=9)
+    q+=2;
+
+  if(low>=6 && low<=9)
+    q+=2;
+
+
+  const f1 =
+    countRange(game,[1,5]);
+
+  const f2 =
+    countRange(game,[6,10]);
+
+  const f3 =
+    countRange(game,[11,15]);
+
+  const f4 =
+    countRange(game,[16,20]);
+
+  const f5 =
+    countRange(game,[21,25]);
+
+
+  const ranges =
+    [f1,f2,f3,f4,f5];
+
+
+  if(
+    ranges.every(
+      x=>x>=1
+    )
+  )
+    q+=2;
+
+
+  const nucleusHits =
+    intersection(
+      game,
+      nucleus
     ).length;
 
-  let oddCount =
-    game.length - evenCount;
+  q +=
+    nucleusHits*0.35;
 
 
-  if (
-    evenCount !== targetEven
-  ) {
+  return q;
 
-    if (evenCount < targetEven) {
-
-      const oddNumbers =
-        game.filter(
-          n => n % 2 !== 0
-        );
-
-      const evenAvailable =
-        Array.from(
-          {length: TOTAL_NUMBERS},
-          (_, i) => i + 1
-        )
-        .filter(
-          n =>
-            n % 2 === 0 &&
-            !game.includes(n)
-        );
-
-      const changes =
-        Math.min(
-          targetEven - evenCount,
-          oddNumbers.length,
-          evenAvailable.length
-        );
-
-      for (
-        let i = 0;
-        i < changes;
-        i++
-      ) {
-
-        const remove =
-          oddNumbers[i];
-
-        const add =
-          weightedPick(
-            evenAvailable,
-            scores
-          );
-
-        if (add !== null) {
-
-          const index =
-            game.indexOf(remove);
-
-          if (index >= 0) {
-            game[index] = add;
-          }
-
-          const ai =
-            evenAvailable.indexOf(add);
-
-          if (ai >= 0) {
-            evenAvailable.splice(ai,1);
-          }
-        }
-      }
-
-    } else {
-
-      const evenNumbers =
-        game.filter(
-          n => n % 2 === 0
-        );
-
-      const oddAvailable =
-        Array.from(
-          {length: TOTAL_NUMBERS},
-          (_, i) => i + 1
-        )
-        .filter(
-          n =>
-            n % 2 !== 0 &&
-            !game.includes(n)
-        );
-
-      const changes =
-        Math.min(
-          evenCount - targetEven,
-          evenNumbers.length,
-          oddAvailable.length
-        );
-
-      for (
-        let i = 0;
-        i < changes;
-        i++
-      ) {
-
-        const remove =
-          evenNumbers[i];
-
-        const add =
-          weightedPick(
-            oddAvailable,
-            scores
-          );
-
-        if (add !== null) {
-
-          const index =
-            game.indexOf(remove);
-
-          if (index >= 0) {
-            game[index] = add;
-          }
-
-          const ai =
-            oddAvailable.indexOf(add);
-
-          if (ai >= 0) {
-            oddAvailable.splice(ai,1);
-          }
-        }
-      }
-    }
-  }
+}
 
 
-  /*
-    Garantia final.
-  */
+function repairGame(game){
 
-  game =
-    Array.from(
-      new Set(game)
-    )
-    .filter(
-      n =>
-        Number.isInteger(n) &&
-        n >= 1 &&
-        n <= 25
-    )
-    .slice(0,GAME_SIZE);
+  let g =
+    unique(game);
 
-
-  /*
-    Se por algum motivo ficar incompleto,
-    completa aleatoriamente.
-  */
-
-  while (
-    game.length < GAME_SIZE
-  ) {
+  while(g.length < 15){
 
     const available =
       Array.from(
-        {length: TOTAL_NUMBERS},
-        (_, i) => i + 1
-      )
-      .filter(
-        n => !game.includes(n)
+        {length:25},
+        (_,i)=>i+1
+      ).filter(
+        n=>!g.includes(n)
       );
 
     const n =
-      available[
+      weightedChoice(
+        available
+      );
+
+    if(n===null)
+      break;
+
+    g.push(n);
+
+  }
+
+
+  /*
+    Pequena correção estrutural.
+
+    Não destruímos o jogo se ele
+    estiver muito bom pelo score.
+  */
+
+  let guard=0;
+
+  while(
+    guard<20
+  ){
+
+    guard++;
+
+    const odd =
+      countOdd(g);
+
+    if(
+      odd>=6 &&
+      odd<=9
+    )
+      break;
+
+    const needOdd =
+      odd<6;
+
+    const candidates =
+      g.filter(
+        n=>
+          needOdd
+          ? n%2===0
+          : n%2!==0
+      );
+
+    const replacements =
+      Array.from(
+        {length:25},
+        (_,i)=>i+1
+      ).filter(
+        n=>
+          !g.includes(n) &&
+          (
+            needOdd
+            ? n%2!==0
+            : n%2===0
+          )
+      );
+
+    if(
+      !candidates.length ||
+      !replacements.length
+    )
+      break;
+
+    const remove =
+      candidates[
         Math.floor(
-          Math.random() *
-          available.length
+          Math.random()*
+          candidates.length
         )
       ];
 
-    game.push(n);
+    const add =
+      weightedChoice(
+        replacements
+      );
+
+    g[
+      g.indexOf(remove)
+    ] = add;
+
   }
 
-  return game.sort(
-    (a,b) => a-b
-  );
+
+  return sortNumbers(
+    unique(g)
+  ).slice(0,15);
+
 }
 
 
 /* =========================================================
-   DISTÂNCIA ENTRE JOGOS
+   SIMILARIDADE
 ========================================================= */
 
-function similarity(gameA, gameB) {
+function similarity(a,b){
 
-  const setB =
-    new Set(gameB);
+  const common =
+    intersection(a,b).length;
 
-  let common = 0;
-
-  for (const n of gameA) {
-
-    if (setB.has(n)) {
-      common++;
-    }
-  }
-
-  return common;
-}
-
-
-/* =========================================================
-   GERAÇÃO EM LOTE
-========================================================= */
-
-function generateGamesBatch(
-  quantity,
-  core,
-  scores
-) {
-
-  const result = [];
-
-  let attempts = 0;
-
-  const maxAttempts =
+  return common/
     Math.max(
-      500,
-      quantity * 120
+      a.length,
+      b.length
     );
 
-  while (
-    result.length < quantity &&
-    attempts < maxAttempts
-  ) {
+}
 
-    attempts++;
 
-    const game =
-      buildGame(
-        core,
-        scores,
-        result.length + attempts
-      );
+function tooSimilar(game,list){
 
-    const duplicate =
-      result.some(
-        existing =>
-          existing.join(",") ===
-          game.join(",")
-      );
+  return list.some(
+    old=>
+      similarity(game,old)>=0.87
+  );
 
-    if (duplicate) {
-      continue;
-    }
-
-    /*
-      Evita jogos excessivamente
-      parecidos.
-
-      Não bloqueia totalmente para
-      permitir geração de 100 jogos.
-    */
-
-    const tooSimilar =
-      result.some(
-        existing =>
-          similarity(existing, game) >= 14
-      );
-
-    if (
-      tooSimilar &&
-      attempts < maxAttempts * .75
-    ) {
-      continue;
-    }
-
-    result.push(game);
-  }
-
-  /*
-    Fallback: completa se necessário.
-  */
-
-  while (
-    result.length < quantity
-  ) {
-
-    const game =
-      buildGame(
-        core,
-        scores,
-        result.length + 1000
-      );
-
-    const exists =
-      result.some(
-        existing =>
-          existing.join(",") ===
-          game.join(",")
-      );
-
-    if (!exists) {
-      result.push(game);
-    }
-  }
-
-  return result;
 }
 
 
 /* =========================================================
-   GERAR JOGOS
+   GERAÇÃO PRINCIPAL
 ========================================================= */
 
-function prepareModel() {
+function generateGames(){
 
-  const draws =
-    historyData;
+  if(!history.length){
 
-  /*
-    Se ainda não há histórico,
-    usa uma base neutra.
-  */
-
-  const indicators =
-    rawIndicators(draws);
-
-  const preset =
-    runBacktest(draws);
-
-  const scores =
-    scoreIndicators(
-      indicators,
-      preset.weights
-    );
-
-  const core =
-    buildCore(scores);
-
-  return {
-    indicators,
-    preset,
-    scores,
-    core
-  };
-}
-
-
-function generateGames() {
-
-  const select =
-    document.getElementById(
-      "gameQuantity"
-    );
-
-  const quantity =
-    Math.min(
-      MAX_GENERATED_GAMES,
-      Math.max(
-        1,
-        Number(
-          select.value
-        ) || DEFAULT_GAME_QUANTITY
-      )
-    );
-
-  const model =
-    prepareModel();
-
-  generatedGames =
-    generateGamesBatch(
-      quantity,
-      model.core,
-      model.scores
-    );
-
-  renderGames();
-
-  setStatus(
-    "success",
-    "Jogos gerados",
-    `${generatedGames.length} jogos foram criados pelo modelo V21.2.`
-  );
-}
-
-
-function generateMoreGames() {
-
-  if (
-    generatedGames.length >=
-    MAX_GENERATED_GAMES
-  ) {
-
-    setStatus(
-      "error",
-      "Limite atingido",
-      "O sistema permite no máximo 100 jogos acumulados."
+    alert(
+      "Atualize os resultados primeiro."
     );
 
     return;
+
   }
 
-  const select =
-    document.getElementById(
-      "gameQuantity"
+  const amount =
+    Number(
+      document.getElementById(
+        "gameCount"
+      ).value
     );
 
-  let quantity =
-    Number(select.value) ||
-    DEFAULT_GAME_QUANTITY;
+  generatedGames=[];
 
-  quantity =
-    Math.min(
-      quantity,
-      MAX_GENERATED_GAMES -
-      generatedGames.length
-    );
+  createGames(amount);
 
-  const model =
-    prepareModel();
-
-  const newGames =
-    generateGamesBatch(
-      quantity,
-      model.core,
-      model.scores
-    );
-
-  /*
-    Remove duplicados em relação
-    aos jogos já existentes.
-  */
-
-  for (const game of newGames) {
-
-    const duplicate =
-      generatedGames.some(
-        existing =>
-          existing.join(",") ===
-          game.join(",")
-      );
-
-    if (
-      !duplicate &&
-      generatedGames.length <
-      MAX_GENERATED_GAMES
-    ) {
-
-      generatedGames.push(game);
-    }
-  }
-
-  renderGames();
-
-  setStatus(
-    "success",
-    "Mais jogos gerados",
-    `${generatedGames.length} jogos acumulados.`
-  );
 }
 
 
-function clearGames() {
+function generateMore(){
 
-  generatedGames = [];
+  if(!history.length){
+
+    alert(
+      "Atualize os resultados primeiro."
+    );
+
+    return;
+
+  }
+
+  if(
+    generatedGames.length>=MAX_GAMES
+  ){
+
+    alert(
+      "Limite máximo de 100 jogos atingido."
+    );
+
+    return;
+
+  }
+
+  const amount =
+    Number(
+      document.getElementById(
+        "gameCount"
+      ).value
+    );
+
+  const target =
+    Math.min(
+      amount,
+      MAX_GAMES-
+      generatedGames.length
+    );
+
+  createGames(
+    target
+  );
+
+}
+
+
+function createGames(amount){
+
+  let attempts=0;
+
+  while(
+    generatedGames.length <
+      Math.min(
+        MAX_GAMES,
+        generatedGames.length+
+        amount
+      ) &&
+    attempts<10000
+  ){
+
+    attempts++;
+
+    let game =
+      createCandidate();
+
+    if(
+      game.length!==15
+    )
+      continue;
+
+    if(
+      tooSimilar(
+        game,
+        generatedGames
+      )
+    )
+      continue;
+
+
+    /*
+      Pequeno filtro de qualidade.
+
+      Não exigimos qualidade máxima
+      para permitir diversidade.
+    */
+
+    if(
+      gameQuality(game)<6 &&
+      Math.random()<0.65
+    )
+      continue;
+
+
+    generatedGames.push(game);
+
+  }
+
 
   renderGames();
 
-  setStatus(
-    "success",
-    "Jogos limpos",
-    "Todos os jogos gerados foram removidos."
+  log(
+    `${amount} novo(s) jogo(s) gerado(s). Total: ${generatedGames.length}.`
   );
+
 }
 
 
@@ -2524,300 +1685,319 @@ function clearGames() {
    RENDER DOS JOGOS
 ========================================================= */
 
-function renderGames() {
+function renderGames(){
 
-  const container =
-    document.getElementById(
-      "gameList"
-    );
+  const box =
+    document.getElementById("games");
 
-  const count =
-    document.getElementById(
-      "generatedCount"
-    );
+  if(!generatedGames.length){
 
-  const summary =
-    document.getElementById(
-      "summaryGames"
-    );
-
-  count.textContent =
-    generatedGames.length;
-
-  summary.textContent =
-    generatedGames.length;
-
-  if (!generatedGames.length) {
-
-    container.innerHTML =
-      `<div class="empty">
-        Nenhum jogo gerado ainda.
-      </div>`;
+    box.innerHTML =
+      "Nenhum jogo gerado.";
 
     return;
+
   }
 
-  container.innerHTML = "";
 
-  generatedGames.forEach(
-    (game,index) => {
+  box.innerHTML =
+    generatedGames
+      .map(
+        (game,index)=>{
 
-      const even =
-        game.filter(
-          n => n % 2 === 0
-        ).length;
+          let score="";
 
-      const odd =
-        GAME_SIZE - even;
+          if(latest){
 
-      const div =
-        document.createElement(
-          "div"
+            const hits =
+              intersection(
+                game,
+                latest.numbers
+              ).length;
+
+            score =
+              `<div class="score">
+                🎯 ${hits} acertos no último resultado
+              </div>`;
+
+          }
+
+
+          return `
+
+            <div class="game">
+
+              <div class="game-title">
+                <span>Jogo ${index+1}</span>
+                <span>#${index+1}</span>
+              </div>
+
+              <div class="numbers">
+
+                ${
+                  game.map(n=>{
+
+                    const hit =
+                      latest &&
+                      latest.numbers
+                        .includes(n);
+
+                    return `
+                      <div class="ball ${
+                        hit ? "hit" : ""
+                      }">
+                        ${String(n).padStart(2,"0")}
+                      </div>
+                    `;
+
+                  }).join("")
+                }
+
+              </div>
+
+              ${score}
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   BACKTEST
+========================================================= */
+
+function runBacktest(){
+
+  if(history.length<8){
+
+    document.getElementById(
+      "backtest"
+    ).innerHTML =
+      "Histórico insuficiente.";
+
+    return;
+
+  }
+
+
+  let total=0;
+
+  let count10=0;
+  let count11=0;
+  let count12=0;
+  let count13=0;
+  let count14=0;
+  let count15=0;
+
+
+  /*
+    Walk-forward simplificado.
+
+    O concurso futuro nunca participa
+    do cálculo do modelo daquele ponto.
+  */
+
+  for(
+    let i=1;
+    i<
+      Math.min(
+        history.length-1,
+        25
+      );
+    i++
+  ){
+
+    const future =
+      history[i-1];
+
+    const training =
+      history.slice(i);
+
+    if(
+      training.length<5
+    )
+      continue;
+
+
+    const tempScores={};
+
+
+    for(let n=1;n<=25;n++){
+
+      const f =
+        frequencyOf(
+          n,
+          training
         );
 
-      div.className =
-        "game";
+      const r =
+        recentFrequency(
+          n,
+          training
+        );
 
-      div.innerHTML = `
+      const rep =
+        training.length>1 &&
+        training[0].numbers.includes(n)
+        ? 1
+        : 0;
 
-        <div class="game-head">
+      tempScores[n] =
+        f*0.45+
+        r*0.35+
+        rep*2;
 
-          <div class="game-number">
-            Jogo ${index + 1}
-          </div>
-
-          <div class="game-meta">
-            ${even} pares • ${odd} ímpares
-          </div>
-
-        </div>
-
-        <div class="balls">
-
-          ${game.map(
-            n =>
-              `<div class="ball">
-                ${String(n).padStart(2,"0")}
-              </div>`
-          ).join("")}
-
-        </div>
-      `;
-
-      container.appendChild(div);
     }
-  );
-
-  updateParitySummary();
-}
 
 
-/* =========================================================
-   HISTÓRICO
-========================================================= */
+    const testGame =
+      Object.entries(tempScores)
+        .sort(
+          (a,b)=>b[1]-a[1]
+        )
+        .slice(0,15)
+        .map(x=>Number(x[0]));
 
-function renderHistory() {
 
-  const container =
-    document.getElementById(
-      "historyList"
-    );
+    const hits =
+      intersection(
+        testGame,
+        future.numbers
+      ).length;
 
-  const count =
-    document.getElementById(
-      "historyCount"
-    );
 
-  const summary =
-    document.getElementById(
-      "summaryHistory"
-    );
+    total++;
 
-  count.textContent =
-    historyData.length;
 
-  summary.textContent =
-    historyData.length;
+    if(hits===10) count10++;
+    if(hits===11) count11++;
+    if(hits===12) count12++;
+    if(hits===13) count13++;
+    if(hits===14) count14++;
+    if(hits===15) count15++;
 
-  if (!historyData.length) {
-
-    container.innerHTML =
-      `<div class="empty">
-        Nenhum concurso carregado.
-      </div>`;
-
-    return;
   }
 
-  container.innerHTML = "";
 
-  historyData
-    .slice(0,60)
-    .forEach(draw => {
+  document.getElementById(
+    "backtest"
+  ).innerHTML=`
 
-      const div =
-        document.createElement(
-          "div"
-        );
+    <div class="metric">
+      <span>Concursos testados</span>
+      <b>${total}</b>
+    </div>
 
-      div.className =
-        "history-item";
+    <div class="metric">
+      <span>10 acertos</span>
+      <b>${count10}</b>
+    </div>
 
-      const date =
-        draw.date
-          ? draw.date
-          : "";
+    <div class="metric">
+      <span>11 acertos</span>
+      <b>${count11}</b>
+    </div>
 
-      div.innerHTML = `
+    <div class="metric">
+      <span>12 acertos</span>
+      <b>${count12}</b>
+    </div>
 
-        <div class="history-head">
+    <div class="metric">
+      <span>13 acertos</span>
+      <b>${count13}</b>
+    </div>
 
-          <span>
-            Concurso ${draw.contest}
-          </span>
+    <div class="metric">
+      <span>14 acertos</span>
+      <b>${count14}</b>
+    </div>
 
-          <span class="history-date">
-            ${date}
-          </span>
+    <div class="metric">
+      <span>15 acertos</span>
+      <b>${count15}</b>
+    </div>
 
-        </div>
+  `;
 
-        <div class="balls">
-
-          ${draw.numbers.map(
-            n =>
-              `<div class="ball small">
-                ${String(n).padStart(2,"0")}
-              </div>`
-          ).join("")}
-
-        </div>
-      `;
-
-      container.appendChild(div);
-    });
 }
 
 
 /* =========================================================
-   ÚLTIMO RESULTADO
+   RESULTADO
 ========================================================= */
 
-function renderLatest() {
+function renderLatest(){
 
-  const container =
+  const box =
     document.getElementById(
       "latestResult"
     );
 
-  const contestElement =
-    document.getElementById(
-      "latestContest"
-    );
+  if(!latest){
 
-  if (!historyData.length) {
-
-    contestElement.textContent =
-      "—";
-
-    container.innerHTML =
-      `<div class="empty">
-        Nenhum resultado carregado ainda.
-      </div>`;
+    box.innerHTML =
+      "Nenhum resultado.";
 
     return;
+
   }
 
-  const latest =
-    historyData[0];
 
-  contestElement.textContent =
-    latest.contest;
+  box.innerHTML=`
 
-  container.innerHTML = `
-
-    <div class="result-title">
-      Último resultado — concurso ${latest.contest}
-      ${latest.date ? " • " + latest.date : ""}
+    <div class="metric">
+      <span>Concurso</span>
+      <b>${latest.contest}</b>
     </div>
 
-    <div class="balls">
+    <div class="metric">
+      <span>Data</span>
+      <b>${latest.date || "--"}</b>
+    </div>
 
-      ${latest.numbers.map(
-        n =>
-          `<div class="ball">
-            ${String(n).padStart(2,"0")}
-          </div>`
-      ).join("")}
+    <div style="margin-top:12px"
+         class="numbers">
+
+      ${
+        latest.numbers
+          .map(n=>
+            `<div class="ball hit">
+              ${String(n).padStart(2,"0")}
+            </div>`
+          )
+          .join("")
+      }
 
     </div>
+
   `;
+
 }
 
 
 /* =========================================================
-   RESUMO DE PARIDADE
+   STATUS
 ========================================================= */
 
-function updateParitySummary() {
+function setStatus(text,type){
 
-  const evenElement =
+  const el =
     document.getElementById(
-      "summaryEven"
+      "status"
     );
 
-  const oddElement =
-    document.getElementById(
-      "summaryOdd"
-    );
+  el.textContent=text;
 
-  if (!generatedGames.length) {
+  el.className =
+    "badge "+(type||"");
 
-    evenElement.textContent =
-      "—";
-
-    oddElement.textContent =
-      "—";
-
-    return;
-  }
-
-  const evenValues =
-    generatedGames.map(
-      game =>
-        game.filter(
-          n => n % 2 === 0
-        ).length
-    );
-
-  const oddValues =
-    generatedGames.map(
-      game =>
-        GAME_SIZE -
-        game.filter(
-          n => n % 2 === 0
-        ).length
-    );
-
-  const averageEven =
-    evenValues.reduce(
-      (a,b) => a+b,
-      0
-    ) /
-    evenValues.length;
-
-  const averageOdd =
-    oddValues.reduce(
-      (a,b) => a+b,
-      0
-    ) /
-    oddValues.length;
-
-  evenElement.textContent =
-    averageEven.toFixed(1);
-
-  oddElement.textContent =
-    averageOdd.toFixed(1);
 }
 
 
@@ -2825,36 +2005,43 @@ function updateParitySummary() {
    RENDER GERAL
 ========================================================= */
 
-function renderAll() {
-
-  renderHistory();
+function renderAll(){
 
   renderLatest();
 
+  renderNucleus();
+
+  renderAnalysis();
+
   renderGames();
 
-  updateParitySummary();
-}
+  runBacktest();
 
-
-/* =========================================================
-   INFORMAÇÕES DO MODELO
-========================================================= */
-
-function renderModelInfo() {
-
-  const model =
-    prepareModel();
 
   document.getElementById(
-    "modelName"
+    "contestStatus"
   ).textContent =
-    model.preset.name;
+    latest
+      ? `Concurso: ${latest.contest}`
+      : "Concurso: --";
+
 
   document.getElementById(
-    "coreCount"
+    "historyStatus"
   ).textContent =
-    model.core.length;
+    `Histórico: ${history.length}`;
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    Math.min(
+      100,
+      history.length/
+      HISTORY_LIMIT*
+      100
+    )+"%";
+
 }
 
 
@@ -2862,82 +2049,58 @@ function renderModelInfo() {
    INICIALIZAÇÃO
 ========================================================= */
 
-function initialize() {
+function init(){
 
-  /*
-    Primeiro tenta carregar o que
-    já está salvo no aparelho.
-  */
+  history =
+    loadLocalHistory();
 
-  historyData =
-    getSavedHistory();
 
-  renderAll();
+  if(history.length){
 
-  renderModelInfo();
+    latest =
+      history[0];
 
-  if (historyData.length) {
+    buildModel();
 
-    setStatus(
-      "success",
-      "Histórico disponível",
-      `${historyData.length} concursos carregados do aparelho.`
-    );
-
-  } else {
+    renderAll();
 
     setStatus(
-      "",
-      "Sistema pronto",
-      "Clique em “Atualizar resultados automaticamente” para buscar os concursos."
+      "Histórico local carregado",
+      "ok"
     );
+
+    log(
+      `Histórico local: ${history.length} concursos.`
+    );
+
+  }else{
+
+    renderAll();
+
+    log(
+      "Nenhum histórico local encontrado."
+    );
+
   }
+
 }
 
 
-document.addEventListener(
-  "DOMContentLoaded",
-  initialize
+init();
+
+
+/*
+  Atualização automática leve.
+
+  Não bloqueia a interface.
+*/
+
+setInterval(
+  ()=>{
+    updateResults();
+  },
+  15*60*1000
 );
-
-
-/* =========================================================
-   PROTEÇÃO CONTRA ERROS
-========================================================= */
-
-window.addEventListener(
-  "error",
-  function(event) {
-
-    console.error(
-      "Erro global:",
-      event.error
-    );
-  }
-);
-
-
-/* =========================================================
-   SERVICE WORKER OPCIONAL
-========================================================= */
-
-if (
-  "serviceWorker" in navigator
-) {
-
-  window.addEventListener(
-    "load",
-    function() {
-
-      /*
-        Não registramos um SW externo aqui.
-        Isso evita conflito com o deploy atual
-        do Render.
-      */
-
-    }
-  );
-}
 
 </script>
 
