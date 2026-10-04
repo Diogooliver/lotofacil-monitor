@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Lotofácil Monitor V21.1 Calibrada</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<title>Lotofácil Monitor V21.2</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -15,402 +21,878 @@
 }
 
 body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#120b18;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  background:#100914;
   color:#fff;
   min-height:100vh;
 }
 
 header{
-  background:linear-gradient(135deg,#7b1fa2,#9c27b0);
-  padding:22px 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #64157d,
+      #9c27b0
+    );
+
+  padding:24px 16px;
+
   text-align:center;
-  box-shadow:0 3px 15px rgba(0,0,0,.35);
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,.35);
 }
 
 header h1{
-  font-size:24px;
-  margin-bottom:5px;
+  font-size:25px;
+  font-weight:800;
 }
 
 header p{
+  margin-top:6px;
   font-size:13px;
   opacity:.85;
 }
 
 .container{
   width:100%;
-  max-width:1000px;
+  max-width:1050px;
   margin:auto;
-  padding:15px;
+  padding:16px;
 }
 
 .card{
-  background:#201526;
-  border:1px solid #39243f;
-  border-radius:15px;
+  background:#1d1522;
+
+  border:
+    1px solid #38253f;
+
+  border-radius:18px;
+
   padding:18px;
-  margin-bottom:15px;
-  box-shadow:0 5px 18px rgba(0,0,0,.22);
+
+  margin-bottom:16px;
+
+  box-shadow:
+    0 6px 22px rgba(0,0,0,.22);
 }
 
 .card h2{
-  color:#e0a8ef;
-  font-size:18px;
-  margin-bottom:14px;
+  color:#dda7ed;
+
+  font-size:20px;
+
+  margin-bottom:16px;
 }
 
-.status{
+.controls{
   display:flex;
-  gap:10px;
   flex-wrap:wrap;
+  gap:10px;
 }
 
-.badge{
-  background:#302035;
-  border-radius:20px;
-  padding:8px 12px;
-  font-size:13px;
-}
+button,
+select{
 
-.badge.ok{
-  background:#145c3a;
-}
+  min-height:46px;
 
-.badge.warn{
-  background:#72551b;
-}
-
-.badge.error{
-  background:#71242b;
-}
-
-button,select{
   border:none;
-  border-radius:10px;
-  padding:12px 15px;
-  font-size:14px;
+
+  border-radius:12px;
+
+  padding:
+    11px
+    16px;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  font-family:inherit;
+}
+
+select{
+
+  background:#302039;
+
+  color:#fff;
+
+  border:
+    1px solid #563c60;
+
+  min-width:150px;
 }
 
 button{
-  cursor:pointer;
+
   background:#9c27b0;
+
   color:#fff;
-  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:.15s;
 }
 
 button:hover{
   filter:brightness(1.1);
 }
 
+button:active{
+  transform:scale(.98);
+}
+
 button.secondary{
-  background:#3a2940;
+  background:#38283f;
 }
 
 button.green{
-  background:#16834f;
+  background:#19794d;
 }
 
 button.red{
-  background:#9d3038;
+  background:#963541;
 }
 
-.controls{
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.status-row{
+
   display:flex;
-  gap:10px;
+
   flex-wrap:wrap;
-  align-items:center;
+
+  gap:9px;
+
+  margin-top:14px;
 }
 
-select{
-  background:#302035;
-  color:#fff;
-  border:1px solid #51375a;
-}
+.badge{
 
-.result-box{
-  background:#160e1c;
-  border-radius:12px;
-  padding:15px;
-}
+  background:#302039;
 
-.numbers{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
+  padding:
+    9px
+    13px;
 
-.ball{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:bold;
-  background:#9c27b0;
-}
+  border-radius:20px;
 
-.ball.hit{
-  background:#16834f;
-}
-
-.ball.miss{
-  background:#5b3030;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:12px;
-}
-
-.game{
-  background:#181019;
-  border:1px solid #39243f;
-  border-radius:13px;
-  padding:14px;
-}
-
-.game-title{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:10px;
-  color:#dca7eb;
-  font-weight:bold;
-}
-
-.game .ball{
-  width:34px;
-  height:34px;
   font-size:13px;
 }
 
-.score{
-  margin-top:10px;
-  font-weight:bold;
-  color:#8ee5b9;
+.badge.ok{
+  background:#175d3d;
+}
+
+.badge.warn{
+  background:#73571c;
+}
+
+.badge.error{
+  background:#702b35;
+}
+
+.result-box{
+
+  background:#120c16;
+
+  border-radius:14px;
+
+  padding:16px;
+}
+
+.info-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(160px,1fr)
+    );
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.info-item{
+
+  background:#211827;
+
+  padding:12px;
+
+  border-radius:10px;
+}
+
+.info-item span{
+
+  display:block;
+
+  color:#aaa;
+
+  font-size:12px;
+
+  margin-bottom:5px;
+}
+
+.info-item strong{
+
+  font-size:16px;
+}
+
+.numbers{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+}
+
+.ball{
+
+  width:39px;
+  height:39px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:#9224aa;
+
+  font-size:14px;
+
+  font-weight:800;
+}
+
+.ball.hit{
+  background:#238653;
+}
+
+.ball.warning{
+  background:#a06d20;
+}
+
+.ball.gray{
+  background:#443747;
+}
+
+.nucleus-grid{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+}
+
+.nucleus-ball{
+
+  width:43px;
+  height:43px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #9d2ab6,
+      #76208d
+    );
+
+  font-weight:800;
+}
+
+.nucleus-ball.strong{
+  box-shadow:
+    0 0 0 2px #e1a7ee;
 }
 
 .metric{
+
   display:flex;
+
   justify-content:space-between;
-  padding:8px 0;
-  border-bottom:1px solid #332438;
+
+  align-items:center;
+
+  padding:
+    10px
+    0;
+
+  border-bottom:
+    1px solid #34253a;
+
+  gap:10px;
 }
 
 .metric:last-child{
   border-bottom:none;
 }
 
+.metric span{
+  color:#ddd;
+}
+
+.metric strong{
+  color:#fff;
+}
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(270px,1fr)
+    );
+
+  gap:12px;
+}
+
+.game{
+
+  background:#140d18;
+
+  border:
+    1px solid #38263e;
+
+  border-radius:15px;
+
+  padding:14px;
+}
+
+.game-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:12px;
+
+  color:#e0a9ee;
+
+  font-weight:800;
+}
+
+.game-score{
+
+  margin-top:11px;
+
+  color:#8ce3b7;
+
+  font-weight:800;
+}
+
+.game-score.low{
+  color:#d5a15d;
+}
+
 .small{
-  font-size:12px;
-  opacity:.7;
-}
 
-.log{
-  background:#100a14;
-  border-radius:10px;
-  padding:12px;
-  font-size:12px;
-  line-height:1.6;
-  max-height:220px;
-  overflow:auto;
-}
+  color:#aaa;
 
-.progress{
-  width:100%;
-  height:8px;
-  background:#342338;
-  border-radius:10px;
-  overflow:hidden;
+  font-size:12px;
+
+  line-height:1.5;
+
   margin-top:10px;
 }
 
+.progress{
+
+  width:100%;
+
+  height:9px;
+
+  background:#35243b;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  margin-top:12px;
+}
+
 .progress div{
+
   height:100%;
+
   width:0%;
-  background:#c45de0;
+
+  background:#c25bdc;
+
   transition:.3s;
 }
 
+.two-cols{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(250px,1fr)
+    );
+
+  gap:14px;
+}
+
+.subcard{
+
+  background:#130c17;
+
+  border-radius:12px;
+
+  padding:14px;
+}
+
+.subcard h3{
+
+  color:#dda8ed;
+
+  font-size:15px;
+
+  margin-bottom:10px;
+}
+
+.log{
+
+  background:#0d080f;
+
+  border-radius:12px;
+
+  padding:13px;
+
+  max-height:300px;
+
+  overflow:auto;
+
+  font-size:12px;
+
+  line-height:1.65;
+}
+
+.log-line{
+  border-bottom:
+    1px solid #241a28;
+
+  padding:2px 0;
+}
+
+.log-line:last-child{
+  border-bottom:none;
+}
+
 hr{
+
   border:none;
-  border-top:1px solid #39243f;
-  margin:15px 0;
+
+  border-top:
+    1px solid #38263e;
+
+  margin:
+    17px 0;
+}
+
+.empty{
+
+  color:#aaa;
+
+  padding:10px 0;
 }
 
 .footer{
+
   text-align:center;
-  padding:25px;
+
+  color:#777;
+
   font-size:12px;
-  opacity:.6;
+
+  padding:25px 10px 40px;
 }
+
+.loading{
+
+  opacity:.75;
+}
+
+@media(max-width:600px){
+
+  header h1{
+    font-size:22px;
+  }
+
+  .container{
+    padding:11px;
+  }
+
+  .card{
+    padding:15px;
+  }
+
+  button,
+  select{
+    width:100%;
+  }
+
+  .ball{
+    width:36px;
+    height:36px;
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
-  <h1>🍀 Lotofácil Monitor V21.1</h1>
-  <p>Motor calibrado pós-concurso • Núcleo adaptativo • Geração inteligente</p>
+
+  <h1>🍀 Lotofácil Monitor V21.2</h1>
+
+  <p>
+    Motor calibrado • Walk-forward • Núcleo adaptativo
+  </p>
+
 </header>
+
 
 <div class="container">
 
-  <div class="card">
-    <h2>⚙️ Controle</h2>
 
-    <div class="controls">
+<!-- CONTROLE -->
 
-      <select id="gameCount">
-        <option value="6">6 jogos</option>
-        <option value="10">10 jogos</option>
-        <option value="15">15 jogos</option>
-        <option value="20">20 jogos</option>
-        <option value="30">30 jogos</option>
-        <option value="50">50 jogos</option>
-        <option value="100">100 jogos</option>
-      </select>
+<div class="card">
 
-      <button onclick="updateResults()">
-        🔄 Atualizar resultados
-      </button>
+  <h2>⚙️ Controle</h2>
 
-      <button onclick="generateGames()">
-        🎯 Gerar jogos
-      </button>
+  <div class="controls">
 
-      <button class="secondary" onclick="generateMore()">
-        ➕ Gerar mais
-      </button>
+    <select id="gameCount">
 
-      <button class="secondary" onclick="clearGames()">
-        🗑 Limpar
-      </button>
+      <option value="6">6 jogos</option>
 
-    </div>
+      <option value="10">10 jogos</option>
 
-    <div style="margin-top:12px" class="status">
-      <div id="status" class="badge">Aguardando atualização...</div>
-      <div id="contestStatus" class="badge">Concurso: --</div>
-      <div id="historyStatus" class="badge">Histórico: --</div>
-    </div>
+      <option value="15">15 jogos</option>
+
+      <option value="20">20 jogos</option>
+
+      <option value="30">30 jogos</option>
+
+      <option value="50">50 jogos</option>
+
+      <option value="100">100 jogos</option>
+
+    </select>
+
+
+    <button
+      id="updateButton"
+      onclick="updateResults()"
+    >
+      🔄 Atualizar resultados
+    </button>
+
+
+    <button
+      onclick="generateGames()"
+    >
+      🎯 Gerar jogos
+    </button>
+
+
+    <button
+      class="secondary"
+      onclick="generateMore()"
+    >
+      ➕ Gerar mais
+    </button>
+
+
+    <button
+      class="secondary"
+      onclick="clearGames()"
+    >
+      🗑 Limpar
+    </button>
+
   </div>
 
 
-  <div class="card">
-    <h2>🎲 Último resultado</h2>
+  <div class="status-row">
 
-    <div id="latestResult" class="result-box">
+    <div
+      id="status"
+      class="badge"
+    >
+      Inicializando...
+    </div>
+
+
+    <div
+      id="contestStatus"
+      class="badge"
+    >
+      Concurso: --
+    </div>
+
+
+    <div
+      id="historyStatus"
+      class="badge"
+    >
+      Histórico: --
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ÚLTIMO RESULTADO -->
+
+<div class="card">
+
+  <h2>🎲 Último resultado oficial</h2>
+
+  <div
+    id="latestResult"
+    class="result-box"
+  >
+
+    <div class="empty">
       Nenhum resultado carregado.
     </div>
+
   </div>
 
-
-  <div class="card">
-    <h2>🧠 Núcleo V21.1 Calibrado</h2>
-
-    <div id="nucleus"></div>
-
-    <hr>
-
-    <div id="weights"></div>
-  </div>
+</div>
 
 
-  <div class="card">
-    <h2>📊 Análise</h2>
 
-    <div id="analysis"></div>
+<!-- NÚCLEO -->
 
-    <div class="progress">
-      <div id="progressBar"></div>
+<div class="card">
+
+  <h2>🧠 Núcleo V21.2</h2>
+
+  <div id="nucleus">
+
+    <div class="empty">
+      Aguardando histórico...
     </div>
+
   </div>
 
+  <hr>
 
-  <div class="card">
-    <h2>🎯 Jogos gerados</h2>
+  <div
+    id="weights"
+  ></div>
 
-    <div id="games" class="grid">
-      Nenhum jogo gerado.
-    </div>
-  </div>
+</div>
 
 
-  <div class="card">
-    <h2>🧪 Backtest</h2>
 
-    <div id="backtest">
+<!-- ANÁLISE -->
+
+<div class="card">
+
+  <h2>📊 Análise do modelo</h2>
+
+  <div id="analysis">
+
+    <div class="empty">
       Aguardando dados...
     </div>
+
   </div>
 
+  <div class="progress">
 
-  <div class="card">
-    <h2>📋 Log</h2>
+    <div id="progressBar"></div>
 
-    <div id="log" class="log"></div>
   </div>
 
 </div>
+
+
+
+<!-- JOGOS -->
+
+<div class="card">
+
+  <h2>🎯 Jogos gerados</h2>
+
+  <div
+    id="games"
+    class="grid"
+  >
+
+    <div class="empty">
+      Nenhum jogo gerado.
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- BACKTEST -->
+
+<div class="card">
+
+  <h2>🧪 Backtest Walk-Forward</h2>
+
+  <div
+    id="backtest"
+  >
+
+    <div class="empty">
+      Aguardando histórico...
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- CALIBRAÇÃO -->
+
+<div class="card">
+
+  <h2>🔬 Diagnóstico da calibração</h2>
+
+  <div
+    id="calibration"
+  >
+
+    <div class="empty">
+      Aguardando dados...
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- LOG -->
+
+<div class="card">
+
+  <h2>📋 Log do sistema</h2>
+
+  <div
+    id="log"
+    class="log"
+  ></div>
+
+</div>
+
+
+</div>
+
 
 <div class="footer">
-  Lotofácil Monitor V21.1 Calibrada
+
+  Lotofácil Monitor V21.2<br>
+  Modelo estatístico experimental — não existe garantia de premiação.
+
 </div>
+
 
 
 <script>
+
 
 /* =========================================================
    CONFIGURAÇÃO
 ========================================================= */
 
-const VERSION = "V21.1 CALIBRADA";
+const VERSION =
+  "V21.2";
 
-const TOTAL_NUMBERS = 25;
-const GAME_SIZE = 15;
-const MAX_GAMES = 100;
+const TOTAL_NUMBERS =
+  25;
 
-const HISTORY_LIMIT = 60;
+const GAME_SIZE =
+  15;
 
-const CAIXA_URL =
-"https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil";
+const MAX_GAMES =
+  100;
+
+const HISTORY_LIMIT =
+  60;
+
+const AUTO_HISTORY =
+  30;
 
 
 /*
-  CALIBRAÇÃO PÓS-CONCURSO
+  Endpoint principal da CAIXA.
+*/
 
-  A lógica não força o resultado anterior.
+const CAIXA_BASE =
+  "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil";
 
-  Aumentamos:
-  - frequência
-  - recência
-  - repetição
 
-  Reduzimos:
-  - atraso isolado
+/*
+  Pesos calibrados após o concurso
+  em que tivemos um jogo de 12 acertos.
 
-  Criamos proteção para números com
-  múltiplos indicadores positivos.
+  O atraso continua presente,
+  mas não domina o modelo.
 */
 
 const WEIGHTS = {
 
-  frequency: 0.24,
+  frequency:0.23,
 
-  recent: 0.22,
+  recent:0.23,
 
-  repetition: 0.20,
+  repetition:0.19,
 
-  delay: 0.08,
+  delay:0.07,
 
-  stability: 0.10,
+  stability:0.11,
 
-  range: 0.08,
+  range:0.09,
 
-  diversity: 0.08
+  parity:0.08
 
 };
 
@@ -423,6 +905,8 @@ let history = [];
 
 let latest = null;
 
+let predictionHistory = [];
+
 let scores = {};
 
 let nucleus = [];
@@ -431,1553 +915,115 @@ let generatedGames = [];
 
 
 /* =========================================================
-   UTILIDADES
+   LOG
 ========================================================= */
 
 function log(message){
 
-  const box = document.getElementById("log");
+  const box =
+    document.getElementById("log");
+
+  if(!box)
+    return;
 
   const time =
-    new Date().toLocaleTimeString("pt-BR");
+    new Date()
+      .toLocaleTimeString(
+        "pt-BR"
+      );
 
   box.innerHTML =
-    `[${time}] ${message}<br>` +
+    `<div class="log-line">
+      [${time}] ${escapeHTML(message)}
+    </div>` +
     box.innerHTML;
 
 }
 
 
-function normalize(value,min,max){
+function escapeHTML(value){
 
-  if(max === min) return 0.5;
-
-  return (value-min)/(max-min);
-
-}
-
-
-function random(){
-
-  return Math.random();
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
-function shuffle(array){
+/* =========================================================
+   UTILIDADES
+========================================================= */
 
-  return [...array].sort(
-    ()=>Math.random()-0.5
-  );
+function sortNumbers(array){
+
+  return [...array]
+    .map(Number)
+    .filter(
+      n=>n>=1 && n<=25
+    )
+    .sort(
+      (a,b)=>a-b
+    );
 
 }
 
 
 function unique(array){
 
-  return [...new Set(array)];
+  return [
+    ...new Set(array)
+  ];
 
 }
 
 
 function intersection(a,b){
 
-  const set = new Set(b);
+  const set =
+    new Set(b);
 
-  return a.filter(x=>set.has(x));
-
-}
-
-
-function sortNumbers(array){
-
-  return [...array].sort((a,b)=>a-b);
-
-}
-
-
-/* =========================================================
-   API / HISTÓRICO
-========================================================= */
-
-async function updateResults(){
-
-  setStatus("Atualizando resultados...", "warn");
-
-  try{
-
-    log("Consultando resultado da CAIXA...");
-
-    const response =
-      await fetch(CAIXA_URL,{
-        cache:"no-store"
-      });
-
-    if(!response.ok)
-      throw new Error("HTTP "+response.status);
-
-    const data = await response.json();
-
-    if(!data || !data.listaDezenas)
-      throw new Error("Resposta inválida");
-
-    latest = parseContest(data);
-
-    history = loadLocalHistory();
-
-    mergeHistory(latest);
-
-    saveLocalHistory();
-
-    buildModel();
-
-    renderAll();
-
-    setStatus(
-      "Resultado atualizado com sucesso",
-      "ok"
-    );
-
-    log(
-      `Concurso ${latest.contest} atualizado.`
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      "Não foi possível atualizar automaticamente",
-      "error"
-    );
-
-    log(
-      "Falha na atualização automática: "+
-      error.message
-    );
-
-    /*
-      Mesmo se a API falhar,
-      preservamos o histórico local.
-    */
-
-    history = loadLocalHistory();
-
-    if(history.length){
-
-      latest = history[0];
-
-      buildModel();
-
-      renderAll();
-
-      log(
-        "Usando histórico local disponível."
-      );
-
-    }
-
-  }
-
-}
-
-
-function parseContest(data){
-
-  const numbers =
-    data.listaDezenas
-      .map(Number)
-      .filter(n=>n>=1 && n<=25);
-
-  return {
-
-    contest:
-      Number(
-        data.numeroConcurso ||
-        data.concurso ||
-        0
-      ),
-
-    date:
-      data.dataApuracao ||
-      data.data ||
-      "",
-
-    numbers:
-      sortNumbers(numbers)
-
-  };
-
-}
-
-
-function loadLocalHistory(){
-
-  try{
-
-    const saved =
-      localStorage.getItem(
-        "lotofacil_history_v21"
-      );
-
-    if(!saved)
-      return [];
-
-    const parsed =
-      JSON.parse(saved);
-
-    if(!Array.isArray(parsed))
-      return [];
-
-    return parsed
-      .filter(x=>
-        x &&
-        Array.isArray(x.numbers) &&
-        x.numbers.length===15
-      );
-
-  }catch(e){
-
-    return [];
-
-  }
-
-}
-
-
-function saveLocalHistory(){
-
-  localStorage.setItem(
-    "lotofacil_history_v21",
-    JSON.stringify(
-      history.slice(0,HISTORY_LIMIT)
-    )
+  return a.filter(
+    x=>set.has(x)
   );
 
 }
 
 
-function mergeHistory(result){
+function shuffle(array){
 
-  if(!result)
-    return;
-
-  history =
-    history.filter(
-      x=>x.contest !== result.contest
+  return [...array]
+    .sort(
+      ()=>Math.random()-.5
     );
 
-  history.unshift(result);
-
-  history =
-    history
-      .sort(
-        (a,b)=>
-          Number(b.contest)-Number(a.contest)
-      )
-      .slice(0,HISTORY_LIMIT);
-
 }
 
 
-/* =========================================================
-   MODELO
-========================================================= */
+function normalize(value,min,max){
 
-function buildModel(){
+  if(max===min)
+    return .5;
 
-  if(!history.length)
-    return;
-
-  scores = {};
-
-  for(let n=1;n<=25;n++){
-
-    scores[n] =
-      calculateScore(n);
-
-  }
-
-  nucleus =
-    Object.entries(scores)
-      .sort(
-        (a,b)=>b[1].score-a[1].score
-      )
-      .slice(0,18)
-      .map(x=>Number(x[0]));
-
-}
-
-
-/* =========================================================
-   ESTATÍSTICAS
-========================================================= */
-
-function frequencyOf(number, data){
-
-  let count=0;
-
-  data.forEach(draw=>{
-
-    if(draw.numbers.includes(number))
-      count++;
-
-  });
-
-  return count;
-
-}
-
-
-function recentFrequency(number,data){
-
-  const window =
-    data.slice(
-      0,
-      Math.min(10,data.length)
-    );
-
-  return frequencyOf(
-    number,
-    window
+  return (
+    value-min
+  )/(
+    max-min
   );
 
 }
 
 
-function calculateDelay(number,data){
+function sleep(ms){
 
-  for(let i=0;i<data.length;i++){
-
-    if(data[i].numbers.includes(number))
-      return i;
-
-  }
-
-  return data.length;
-
-}
-
-
-function repetition(number){
-
-  if(history.length<2)
-    return 0;
-
-  return history[1].numbers
-    .includes(number)
-    ? 1
-    : 0;
-
-}
-
-
-function stability(number,data){
-
-  if(data.length<15)
-    return 0.5;
-
-  const windows = [
-
-    data.slice(0,5),
-
-    data.slice(5,10),
-
-    data.slice(10,15)
-
-  ];
-
-  let values=[];
-
-  windows.forEach(w=>{
-
-    if(w.length)
-      values.push(
-        frequencyOf(number,w)/w.length
-      );
-
-  });
-
-  if(!values.length)
-    return 0.5;
-
-  const avg =
-    values.reduce((a,b)=>a+b,0) /
-    values.length;
-
-  const variance =
-    values.reduce(
-      (sum,v)=>
-        sum+Math.pow(v-avg,2),
-      0
-    ) / values.length;
-
-  return Math.max(
-    0,
-    1-Math.sqrt(variance)*4
+  return new Promise(
+    resolve=>setTimeout(
+      resolve,
+      ms
+    )
   );
-
-}
-
-
-function rangeSupport(number,data){
-
-  /*
-    Mantém leve preferência
-    por faixas equilibradas.
-  */
-
-  const faixa =
-    Math.ceil(number/5);
-
-  let count=0;
-
-  data
-    .slice(0,20)
-    .forEach(draw=>{
-
-      const qtd =
-        draw.numbers.filter(n=>
-          Math.ceil(n/5)===faixa
-        ).length;
-
-      count += qtd;
-
-    });
-
-  return count;
-
-}
-
-
-/* =========================================================
-   SCORE CALIBRADO
-========================================================= */
-
-function calculateScore(number){
-
-  const data =
-    history.slice(0,HISTORY_LIMIT);
-
-  if(!data.length){
-
-    return {
-      score:0,
-      frequency:0,
-      recent:0,
-      repetition:0,
-      delay:0,
-      stability:0,
-      range:0
-    };
-
-  }
-
-  const freq =
-    frequencyOf(number,data);
-
-  const recent =
-    recentFrequency(number,data);
-
-  const delayRaw =
-    calculateDelay(number,data);
-
-  const rep =
-    repetition(number);
-
-  const stab =
-    stability(number,data);
-
-  const range =
-    rangeSupport(number,data);
-
-
-  const allFreq =
-    Array.from(
-      {length:25},
-      (_,i)=>
-        frequencyOf(i+1,data)
-    );
-
-  const recentFreq =
-    Array.from(
-      {length:25},
-      (_,i)=>
-        recentFrequency(i+1,data)
-    );
-
-  const ranges =
-    Array.from(
-      {length:25},
-      (_,i)=>
-        rangeSupport(i+1,data)
-    );
-
-
-  const freqMin =
-    Math.min(...allFreq);
-
-  const freqMax =
-    Math.max(...allFreq);
-
-  const recentMin =
-    Math.min(...recentFreq);
-
-  const recentMax =
-    Math.max(...recentFreq);
-
-  const rangeMin =
-    Math.min(...ranges);
-
-  const rangeMax =
-    Math.max(...ranges);
-
-
-  const freqN =
-    normalize(
-      freq,
-      freqMin,
-      freqMax
-    );
-
-  const recentN =
-    normalize(
-      recent,
-      recentMin,
-      recentMax
-    );
-
-  const rangeN =
-    normalize(
-      range,
-      rangeMin,
-      rangeMax
-    );
-
-
-  /*
-    ATRASO:
-
-    Não queremos mais que
-    atraso isolado domine o score.
-
-    Um atraso moderado recebe algum valor,
-    mas atraso extremo não vira
-    automaticamente "obrigatório".
-  */
-
-  const delayN =
-    Math.min(
-      delayRaw/12,
-      1
-    );
-
-
-  /*
-    PROTEÇÃO DE SINAL:
-
-    Quando frequência + recência +
-    repetição estão fortes, criamos
-    um bônus de estabilidade.
-  */
-
-  let protection = 0;
-
-  if(
-    freqN >= 0.60 &&
-    recentN >= 0.60
-  ){
-
-    protection += 0.06;
-
-  }
-
-  if(
-    rep === 1 &&
-    freqN >= 0.50
-  ){
-
-    protection += 0.04;
-
-  }
-
-
-  const score =
-
-    WEIGHTS.frequency *
-      freqN +
-
-    WEIGHTS.recent *
-      recentN +
-
-    WEIGHTS.repetition *
-      rep +
-
-    WEIGHTS.delay *
-      delayN +
-
-    WEIGHTS.stability *
-      stab +
-
-    WEIGHTS.range *
-      rangeN +
-
-    protection;
-
-
-  return {
-
-    score,
-
-    frequency:freqN,
-
-    recent:recentN,
-
-    repetition:rep,
-
-    delay:delayN,
-
-    stability:stab,
-
-    range:rangeN
-
-  };
-
-}
-
-
-/* =========================================================
-   NÚCLEO
-========================================================= */
-
-function renderNucleus(){
-
-  const box =
-    document.getElementById("nucleus");
-
-  if(!nucleus.length){
-
-    box.innerHTML =
-      "Sem dados suficientes.";
-
-    return;
-
-  }
-
-  let html =
-    `<div class="numbers">`;
-
-  nucleus.forEach(n=>{
-
-    html +=
-      `<div class="ball">${String(n).padStart(2,"0")}</div>`;
-
-  });
-
-  html += `</div>`;
-
-  html +=
-    `<p class="small" style="margin-top:10px">
-      Núcleo adaptativo: 18 dezenas.
-      A V21.1 protege sinais fortes e mantém rotação controlada.
-    </p>`;
-
-  box.innerHTML=html;
-
-
-  let whtml="";
-
-  Object.entries(WEIGHTS)
-    .forEach(([name,value])=>{
-
-      const labels={
-
-        frequency:"Frequência",
-
-        recent:"Recência",
-
-        repetition:"Repetição",
-
-        delay:"Atraso",
-
-        stability:"Estabilidade",
-
-        range:"Faixas",
-
-        diversity:"Diversidade"
-
-      };
-
-      whtml +=
-        `<div class="metric">
-          <span>${labels[name]}</span>
-          <b>${(value*100).toFixed(0)}%</b>
-        </div>`;
-
-    });
-
-  document.getElementById("weights")
-    .innerHTML=whtml;
-
-}
-
-
-/* =========================================================
-   ANÁLISE
-========================================================= */
-
-function renderAnalysis(){
-
-  if(!latest){
-
-    document.getElementById("analysis")
-      .innerHTML="Sem dados.";
-
-    return;
-
-  }
-
-  const result =
-    latest.numbers;
-
-  const strong =
-    intersection(
-      result,
-      nucleus
-    );
-
-  const missing =
-    nucleus.filter(
-      n=>!result.includes(n)
-    );
-
-  document.getElementById("analysis")
-    .innerHTML=`
-
-      <div class="metric">
-        <span>Dezenas do resultado</span>
-        <b>${result.length}</b>
-      </div>
-
-      <div class="metric">
-        <span>Resultado dentro do núcleo</span>
-        <b>${strong.length}/15</b>
-      </div>
-
-      <div class="metric">
-        <span>Núcleo que não saiu</span>
-        <b>${missing.length}</b>
-      </div>
-
-      <div class="metric">
-        <span>Concursos analisados</span>
-        <b>${history.length}</b>
-      </div>
-
-      <p class="small" style="margin-top:12px">
-        A calibração não força o último resultado.
-        Ela ajusta os pesos para proteger sinais
-        que aparecem de forma consistente.
-      </p>
-
-    `;
-
-}
-
-
-/* =========================================================
-   GERAÇÃO DE JOGOS
-========================================================= */
-
-function weightedChoice(items){
-
-  if(!items.length)
-    return null;
-
-  let total =
-    items.reduce(
-      (sum,n)=>
-        sum+
-        Math.max(
-          0.01,
-          scores[n]?.score || 0.01
-        ),
-      0
-    );
-
-  let r =
-    Math.random()*total;
-
-  for(const n of items){
-
-    r -=
-      Math.max(
-        0.01,
-        scores[n]?.score || 0.01
-      );
-
-    if(r<=0)
-      return n;
-
-  }
-
-  return items[items.length-1];
-
-}
-
-
-/*
-  Seleciona quantidade de dezenas do núcleo.
-
-  Mais proteção para o núcleo do que
-  nas versões anteriores, mas mantém
-  3-5 posições de rotação.
-*/
-
-function createCandidate(){
-
-  const target =
-    11 +
-    Math.floor(Math.random()*3);
-
-  const chosen=[];
-
-  const pool =
-    shuffle(nucleus);
-
-  while(
-    chosen.length < target &&
-    pool.length
-  ){
-
-    const n =
-      weightedChoice(
-        pool.filter(
-          x=>!chosen.includes(x)
-        )
-      );
-
-    if(n===null)
-      break;
-
-    chosen.push(n);
-
-    pool.splice(
-      pool.indexOf(n),
-      1
-    );
-
-  }
-
-
-  const outside =
-    Array.from(
-      {length:25},
-      (_,i)=>i+1
-    ).filter(
-      n=>!chosen.includes(n)
-    );
-
-
-  const remaining =
-    GAME_SIZE-chosen.length;
-
-
-  while(
-    chosen.length < GAME_SIZE
-  ){
-
-    const n =
-      weightedChoice(
-        outside.filter(
-          x=>!chosen.includes(x)
-        )
-      );
-
-    if(n===null)
-      break;
-
-    chosen.push(n);
-
-  }
-
-
-  return repairGame(
-    sortNumbers(chosen)
-  );
-
-}
-
-
-/* =========================================================
-   REGRAS ESTRUTURAIS
-========================================================= */
-
-function countOdd(game){
-
-  return game.filter(
-    n=>n%2!==0
-  ).length;
-
-}
-
-
-function countLow(game){
-
-  return game.filter(
-    n=>n<=13
-  ).length;
-
-}
-
-
-function countRange(game,range){
-
-  return game.filter(
-    n=>
-      n>=range[0] &&
-      n<=range[1]
-  ).length;
-
-}
-
-
-function gameQuality(game){
-
-  let q=0;
-
-  const odd =
-    countOdd(game);
-
-  const low =
-    countLow(game);
-
-  /*
-    Lotofácil costuma ficar próxima
-    de 7/8 ou 8/7 em pares/ímpares.
-  */
-
-  if(odd>=6 && odd<=9)
-    q+=2;
-
-  if(low>=6 && low<=9)
-    q+=2;
-
-
-  const f1 =
-    countRange(game,[1,5]);
-
-  const f2 =
-    countRange(game,[6,10]);
-
-  const f3 =
-    countRange(game,[11,15]);
-
-  const f4 =
-    countRange(game,[16,20]);
-
-  const f5 =
-    countRange(game,[21,25]);
-
-
-  const ranges =
-    [f1,f2,f3,f4,f5];
-
-
-  if(
-    ranges.every(
-      x=>x>=1
-    )
-  )
-    q+=2;
-
-
-  const nucleusHits =
-    intersection(
-      game,
-      nucleus
-    ).length;
-
-  q +=
-    nucleusHits*0.35;
-
-
-  return q;
-
-}
-
-
-function repairGame(game){
-
-  let g =
-    unique(game);
-
-  while(g.length < 15){
-
-    const available =
-      Array.from(
-        {length:25},
-        (_,i)=>i+1
-      ).filter(
-        n=>!g.includes(n)
-      );
-
-    const n =
-      weightedChoice(
-        available
-      );
-
-    if(n===null)
-      break;
-
-    g.push(n);
-
-  }
-
-
-  /*
-    Pequena correção estrutural.
-
-    Não destruímos o jogo se ele
-    estiver muito bom pelo score.
-  */
-
-  let guard=0;
-
-  while(
-    guard<20
-  ){
-
-    guard++;
-
-    const odd =
-      countOdd(g);
-
-    if(
-      odd>=6 &&
-      odd<=9
-    )
-      break;
-
-    const needOdd =
-      odd<6;
-
-    const candidates =
-      g.filter(
-        n=>
-          needOdd
-          ? n%2===0
-          : n%2!==0
-      );
-
-    const replacements =
-      Array.from(
-        {length:25},
-        (_,i)=>i+1
-      ).filter(
-        n=>
-          !g.includes(n) &&
-          (
-            needOdd
-            ? n%2!==0
-            : n%2===0
-          )
-      );
-
-    if(
-      !candidates.length ||
-      !replacements.length
-    )
-      break;
-
-    const remove =
-      candidates[
-        Math.floor(
-          Math.random()*
-          candidates.length
-        )
-      ];
-
-    const add =
-      weightedChoice(
-        replacements
-      );
-
-    g[
-      g.indexOf(remove)
-    ] = add;
-
-  }
-
-
-  return sortNumbers(
-    unique(g)
-  ).slice(0,15);
-
-}
-
-
-/* =========================================================
-   SIMILARIDADE
-========================================================= */
-
-function similarity(a,b){
-
-  const common =
-    intersection(a,b).length;
-
-  return common/
-    Math.max(
-      a.length,
-      b.length
-    );
-
-}
-
-
-function tooSimilar(game,list){
-
-  return list.some(
-    old=>
-      similarity(game,old)>=0.87
-  );
-
-}
-
-
-/* =========================================================
-   GERAÇÃO PRINCIPAL
-========================================================= */
-
-function generateGames(){
-
-  if(!history.length){
-
-    alert(
-      "Atualize os resultados primeiro."
-    );
-
-    return;
-
-  }
-
-  const amount =
-    Number(
-      document.getElementById(
-        "gameCount"
-      ).value
-    );
-
-  generatedGames=[];
-
-  createGames(amount);
-
-}
-
-
-function generateMore(){
-
-  if(!history.length){
-
-    alert(
-      "Atualize os resultados primeiro."
-    );
-
-    return;
-
-  }
-
-  if(
-    generatedGames.length>=MAX_GAMES
-  ){
-
-    alert(
-      "Limite máximo de 100 jogos atingido."
-    );
-
-    return;
-
-  }
-
-  const amount =
-    Number(
-      document.getElementById(
-        "gameCount"
-      ).value
-    );
-
-  const target =
-    Math.min(
-      amount,
-      MAX_GAMES-
-      generatedGames.length
-    );
-
-  createGames(
-    target
-  );
-
-}
-
-
-function createGames(amount){
-
-  let attempts=0;
-
-  while(
-    generatedGames.length <
-      Math.min(
-        MAX_GAMES,
-        generatedGames.length+
-        amount
-      ) &&
-    attempts<10000
-  ){
-
-    attempts++;
-
-    let game =
-      createCandidate();
-
-    if(
-      game.length!==15
-    )
-      continue;
-
-    if(
-      tooSimilar(
-        game,
-        generatedGames
-      )
-    )
-      continue;
-
-
-    /*
-      Pequeno filtro de qualidade.
-
-      Não exigimos qualidade máxima
-      para permitir diversidade.
-    */
-
-    if(
-      gameQuality(game)<6 &&
-      Math.random()<0.65
-    )
-      continue;
-
-
-    generatedGames.push(game);
-
-  }
-
-
-  renderGames();
-
-  log(
-    `${amount} novo(s) jogo(s) gerado(s). Total: ${generatedGames.length}.`
-  );
-
-}
-
-
-/* =========================================================
-   RENDER DOS JOGOS
-========================================================= */
-
-function renderGames(){
-
-  const box =
-    document.getElementById("games");
-
-  if(!generatedGames.length){
-
-    box.innerHTML =
-      "Nenhum jogo gerado.";
-
-    return;
-
-  }
-
-
-  box.innerHTML =
-    generatedGames
-      .map(
-        (game,index)=>{
-
-          let score="";
-
-          if(latest){
-
-            const hits =
-              intersection(
-                game,
-                latest.numbers
-              ).length;
-
-            score =
-              `<div class="score">
-                🎯 ${hits} acertos no último resultado
-              </div>`;
-
-          }
-
-
-          return `
-
-            <div class="game">
-
-              <div class="game-title">
-                <span>Jogo ${index+1}</span>
-                <span>#${index+1}</span>
-              </div>
-
-              <div class="numbers">
-
-                ${
-                  game.map(n=>{
-
-                    const hit =
-                      latest &&
-                      latest.numbers
-                        .includes(n);
-
-                    return `
-                      <div class="ball ${
-                        hit ? "hit" : ""
-                      }">
-                        ${String(n).padStart(2,"0")}
-                      </div>
-                    `;
-
-                  }).join("")
-                }
-
-              </div>
-
-              ${score}
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   BACKTEST
-========================================================= */
-
-function runBacktest(){
-
-  if(history.length<8){
-
-    document.getElementById(
-      "backtest"
-    ).innerHTML =
-      "Histórico insuficiente.";
-
-    return;
-
-  }
-
-
-  let total=0;
-
-  let count10=0;
-  let count11=0;
-  let count12=0;
-  let count13=0;
-  let count14=0;
-  let count15=0;
-
-
-  /*
-    Walk-forward simplificado.
-
-    O concurso futuro nunca participa
-    do cálculo do modelo daquele ponto.
-  */
-
-  for(
-    let i=1;
-    i<
-      Math.min(
-        history.length-1,
-        25
-      );
-    i++
-  ){
-
-    const future =
-      history[i-1];
-
-    const training =
-      history.slice(i);
-
-    if(
-      training.length<5
-    )
-      continue;
-
-
-    const tempScores={};
-
-
-    for(let n=1;n<=25;n++){
-
-      const f =
-        frequencyOf(
-          n,
-          training
-        );
-
-      const r =
-        recentFrequency(
-          n,
-          training
-        );
-
-      const rep =
-        training.length>1 &&
-        training[0].numbers.includes(n)
-        ? 1
-        : 0;
-
-      tempScores[n] =
-        f*0.45+
-        r*0.35+
-        rep*2;
-
-    }
-
-
-    const testGame =
-      Object.entries(tempScores)
-        .sort(
-          (a,b)=>b[1]-a[1]
-        )
-        .slice(0,15)
-        .map(x=>Number(x[0]));
-
-
-    const hits =
-      intersection(
-        testGame,
-        future.numbers
-      ).length;
-
-
-    total++;
-
-
-    if(hits===10) count10++;
-    if(hits===11) count11++;
-    if(hits===12) count12++;
-    if(hits===13) count13++;
-    if(hits===14) count14++;
-    if(hits===15) count15++;
-
-  }
-
-
-  document.getElementById(
-    "backtest"
-  ).innerHTML=`
-
-    <div class="metric">
-      <span>Concursos testados</span>
-      <b>${total}</b>
-    </div>
-
-    <div class="metric">
-      <span>10 acertos</span>
-      <b>${count10}</b>
-    </div>
-
-    <div class="metric">
-      <span>11 acertos</span>
-      <b>${count11}</b>
-    </div>
-
-    <div class="metric">
-      <span>12 acertos</span>
-      <b>${count12}</b>
-    </div>
-
-    <div class="metric">
-      <span>13 acertos</span>
-      <b>${count13}</b>
-    </div>
-
-    <div class="metric">
-      <span>14 acertos</span>
-      <b>${count14}</b>
-    </div>
-
-    <div class="metric">
-      <span>15 acertos</span>
-      <b>${count15}</b>
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   RESULTADO
-========================================================= */
-
-function renderLatest(){
-
-  const box =
-    document.getElementById(
-      "latestResult"
-    );
-
-  if(!latest){
-
-    box.innerHTML =
-      "Nenhum resultado.";
-
-    return;
-
-  }
-
-
-  box.innerHTML=`
-
-    <div class="metric">
-      <span>Concurso</span>
-      <b>${latest.contest}</b>
-    </div>
-
-    <div class="metric">
-      <span>Data</span>
-      <b>${latest.date || "--"}</b>
-    </div>
-
-    <div style="margin-top:12px"
-         class="numbers">
-
-      ${
-        latest.numbers
-          .map(n=>
-            `<div class="ball hit">
-              ${String(n).padStart(2,"0")}
-            </div>`
-          )
-          .join("")
-      }
-
-    </div>
-
-  `;
 
 }
 
@@ -1986,123 +1032,144 @@ function renderLatest(){
    STATUS
 ========================================================= */
 
-function setStatus(text,type){
+function setStatus(
+  message,
+  type=""
+){
 
   const el =
     document.getElementById(
       "status"
     );
 
-  el.textContent=text;
+  el.textContent =
+    message;
 
   el.className =
-    "badge "+(type||"");
+    "badge "+type;
 
 }
 
 
 /* =========================================================
-   RENDER GERAL
+   API
 ========================================================= */
 
-function renderAll(){
+async function fetchContest(
+  contestNumber=null
+){
 
-  renderLatest();
+  let url =
+    CAIXA_BASE;
 
-  renderNucleus();
+  if(
+    contestNumber !== null &&
+    contestNumber !== undefined &&
+    contestNumber !== ""
+  ){
 
-  renderAnalysis();
+    url +=
+      "/" +
+      encodeURIComponent(
+        contestNumber
+      );
 
-  renderGames();
-
-  runBacktest();
-
-
-  document.getElementById(
-    "contestStatus"
-  ).textContent =
-    latest
-      ? `Concurso: ${latest.contest}`
-      : "Concurso: --";
-
-
-  document.getElementById(
-    "historyStatus"
-  ).textContent =
-    `Histórico: ${history.length}`;
+  }
 
 
-  document.getElementById(
-    "progressBar"
-  ).style.width =
-    Math.min(
-      100,
-      history.length/
-      HISTORY_LIMIT*
-      100
-    )+"%";
-
-}
-
-
-/* =========================================================
-   INICIALIZAÇÃO
-========================================================= */
-
-function init(){
-
-  history =
-    loadLocalHistory();
-
-
-  if(history.length){
-
-    latest =
-      history[0];
-
-    buildModel();
-
-    renderAll();
-
-    setStatus(
-      "Histórico local carregado",
-      "ok"
+  const response =
+    await fetch(
+      url,
+      {
+        cache:"no-store"
+      }
     );
 
-    log(
-      `Histórico local: ${history.length} concursos.`
-    );
 
-  }else{
+  if(!response.ok){
 
-    renderAll();
-
-    log(
-      "Nenhum histórico local encontrado."
+    throw new Error(
+      `HTTP ${response.status}`
     );
 
   }
 
+
+  const data =
+    await response.json();
+
+
+  return parseContest(
+    data
+  );
+
 }
 
 
-init();
+/* =========================================================
+   PARSER ROBUSTO
+========================================================= */
+
+function parseContest(data){
+
+  if(
+    !data ||
+    !Array.isArray(
+      data.listaDezenas
+    )
+  ){
+
+    throw new Error(
+      "Resposta da CAIXA sem listaDezenas."
+    );
+
+  }
 
 
-/*
-  Atualização automática leve.
+  const numbers =
+    sortNumbers(
+      data.listaDezenas
+        .map(Number)
+    );
 
-  Não bloqueia a interface.
-*/
 
-setInterval(
-  ()=>{
-    updateResults();
-  },
-  15*60*1000
-);
+  if(
+    numbers.length !== 15
+  ){
 
-</script>
+    throw new Error(
+      "Resultado com quantidade inválida de dezenas."
+    );
 
-</body>
-</html>
+  }
+
+
+  /*
+    A API normalmente usa
+    numeroConcurso.
+
+    Mantemos várias alternativas
+    para evitar o problema que apareceu
+    na V21.1.
+  */
+
+  const contestRaw =
+
+    data.numeroConcurso ??
+    data.numero_concurso ??
+    data.concurso ??
+    data.numero ??
+    data.numeroDoConcurso ??
+    data.numeroConcursoAnterior ??
+    null;
+
+
+  const contest =
+    Number(contestRaw);
+
+
+  const date =
+
+    data.dataApuracao ??
+    data.data_apuracao ??
+   
