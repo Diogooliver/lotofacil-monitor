@@ -25,7 +25,7 @@ content="default">
 name="apple-mobile-web-app-title"
 content="Lotofácil Monitor">
 
-<title>Lotofácil Monitor V23.1</title>
+<title>Lotofácil Monitor V23.2</title>
 
 <style>
 
@@ -40,7 +40,8 @@ scroll-behavior:smooth
 
 body{
 margin:0;
-background:linear-gradient(
+background:
+linear-gradient(
 180deg,
 #f7f5ff 0%,
 #eeeaff 100%
@@ -115,7 +116,8 @@ letter-spacing:-1px
 margin:5px 0 0;
 color:#777483;
 font-size:14px;
-font-weight:650
+font-weight:650;
+line-height:1.45
 }
 
 .card{
@@ -164,7 +166,8 @@ margin-bottom:7px
 width:12px;
 height:12px;
 border-radius:50%;
-background:#8f8a98
+background:#8f8a98;
+flex:none
 }
 
 .status-dot.green{
@@ -395,6 +398,24 @@ font-weight:900;
 font-size:15px
 }
 
+.protection-number{
+background:
+linear-gradient(
+145deg,
+#e99d20,
+#d57c00
+)
+}
+
+.edge-number{
+background:
+linear-gradient(
+145deg,
+#28ad72,
+#168b58
+)
+}
+
 .score-list{
 margin-top:19px;
 display:grid;
@@ -486,7 +507,8 @@ font-weight:600
 margin-top:12px;
 color:#5730d8;
 font-size:14px;
-font-weight:900
+font-weight:900;
+line-height:1.5
 }
 
 .game{
@@ -564,6 +586,63 @@ margin-top:5px;
 line-height:1.5
 }
 
+.validation-table{
+width:100%;
+border-collapse:collapse;
+margin-top:12px;
+font-size:13px
+}
+
+.validation-table th,
+.validation-table td{
+padding:9px 5px;
+border-bottom:1px solid #e4e0f0;
+text-align:center
+}
+
+.validation-table th{
+font-weight:900;
+color:#5730d8
+}
+
+.validation-table td:first-child,
+.validation-table th:first-child{
+text-align:left
+}
+
+.hit-highlight{
+font-weight:900
+}
+
+.performance-grid{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:7px;
+margin-top:14px
+}
+
+.performance-box{
+background:#f8f7fd;
+border:2px solid #e0daf5;
+border-radius:17px;
+padding:11px 5px;
+text-align:center
+}
+
+.performance-box strong{
+display:block;
+font-size:19px;
+font-weight:900
+}
+
+.performance-box span{
+display:block;
+font-size:10px;
+color:#777483;
+font-weight:800;
+margin-top:3px
+}
+
 .footer{
 text-align:center;
 color:#888493;
@@ -619,6 +698,18 @@ width:38px;
 height:38px
 }
 
+.performance-grid{
+gap:5px
+}
+
+.performance-box{
+padding:9px 3px
+}
+
+.performance-box strong{
+font-size:17px
+}
+
 }
 
 </style>
@@ -642,11 +733,11 @@ height:38px
 <div>
 
 <h1>
-Lotofácil Monitor V23.1
+Lotofácil Monitor V23.2
 </h1>
 
 <p>
-Servidor Render + histórico automático + núcleo adaptativo + cobertura de borda
+Render + histórico automático + núcleo adaptativo + walk-forward + cobertura inteligente
 </p>
 
 </div>
@@ -657,7 +748,6 @@ Servidor Render + histórico automático + núcleo adaptativo + cobertura de bor
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -715,7 +805,6 @@ onclick="updateAutomaticHistory()">
 
 <div class="data-grid">
 
-
 <div class="data-card">
 
 <strong id="latestContest">
@@ -741,7 +830,6 @@ Concursos analisados
 
 </div>
 
-
 </div>
 
 
@@ -749,15 +837,11 @@ Concursos analisados
 id="latestResult"
 class="latest-result">
 
-
 <div class="latest-head">
 
 <div class="latest-title">
-
 🎯 Resultado do último concurso
-
 </div>
-
 
 <div
 id="latestResultContest"
@@ -793,12 +877,10 @@ Atualize os resultados para visualizar as 15 dezenas.
 
 </div>
 
-
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -807,14 +889,13 @@ Atualize os resultados para visualizar as 15 dezenas.
 </span>
 
 <h2>
-Seleção V23
+Seleção V23.2
 </h2>
 
 </div>
 
 
 <div class="nucleus">
-
 
 <div class="nucleus-title">
 
@@ -823,7 +904,7 @@ Seleção V23
 </span>
 
 <h3>
-Núcleo Adaptativo V23
+Núcleo Adaptativo V23.2
 </h3>
 
 </div>
@@ -849,14 +930,12 @@ id="scoreList"
 class="score-list">
 </div>
 
-
 </div>
 
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -865,7 +944,7 @@ class="score-list">
 </span>
 
 <h2>
-Gerador V23
+Gerador V23.2
 </h2>
 
 </div>
@@ -873,9 +952,9 @@ Gerador V23
 
 <div class="nucleus-description">
 
-A V23 usa validação walk-forward sem vazamento, núcleo de 18 dezenas,
-3 dezenas de proteção, 2 dezenas de cobertura de borda e 6 jogos com
-funções diferentes.
+A V23.2 utiliza 18 dezenas de núcleo, 3 de proteção e 2 de cobertura
+de borda. Os pesos são calibrados por walk-forward e os 6 jogos recebem
+funções diferentes para reduzir concentração excessiva.
 
 </div>
 
@@ -889,14 +968,12 @@ onclick="generateGames()">
 
 </button>
 
-
 </section>
 
 
 <section
 class="card"
 id="historySection">
-
 
 <div class="card-title">
 
@@ -921,8 +998,8 @@ placeholder="01 02 04 05 07 08 10 12 14 16 18 19 21 23 25">
 
 <div class="help">
 
-Caso a atualização automática esteja indisponível,
-você pode inserir um concurso manualmente.
+Para adicionar vários concursos manualmente, separe cada concurso com
+ponto e vírgula.
 
 </div>
 
@@ -944,12 +1021,10 @@ onclick="clearHistory()">
 
 </button>
 
-
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -972,12 +1047,10 @@ Aguardando dados...
 
 </div>
 
-
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -986,7 +1059,7 @@ Aguardando dados...
 </span>
 
 <h2>
-Estratégias V23
+Estratégias V23.2
 </h2>
 
 </div>
@@ -1008,8 +1081,9 @@ Backtest adaptativo
 
 <p>
 
-Testa configurações de pesos usando somente concursos anteriores ao alvo
-e escolhe a configuração com melhor cobertura histórica.
+Testa configurações usando somente os concursos anteriores ao alvo.
+A escolha considera a cobertura das 23 candidatas e a frequência
+com que o conjunto alcançou faixas de acerto relevantes.
 
 </p>
 
@@ -1033,14 +1107,15 @@ Aguardando dados...
 </span>
 
 <h3>
-Frequência
+Frequência multicamadas
 </h3>
 
 </div>
 
 <p>
 
-Mede quantas vezes cada dezena apareceu no histórico carregado.
+Combina frequência histórica geral, janela de 30 concursos e janela
+de 10 concursos para evitar depender de apenas uma amostra.
 
 </p>
 
@@ -1065,14 +1140,15 @@ Aguardando dados...
 
 <h3>
 Atrasados
+
 </h3>
 
 </div>
 
 <p>
 
-Mede há quantos concursos cada dezena não aparece.
-Na V23 este indicador possui peso reduzido.
+Considera o tempo desde a última aparição, mas com peso limitado para
+evitar assumir que uma dezena "precisa" sair.
 
 </p>
 
@@ -1097,13 +1173,15 @@ Aguardando dados...
 
 <h3>
 Recente
+
 </h3>
 
 </div>
 
 <p>
 
-Dá mais peso aos concursos mais recentes.
+Aplica decaimento temporal para dar mais importância aos concursos
+recentes.
 
 </p>
 
@@ -1128,13 +1206,15 @@ Aguardando dados...
 
 <h3>
 Repetição
+
 </h3>
 
 </div>
 
 <p>
 
-Analisa a repetição das dezenas do concurso anterior.
+Avalia a presença da dezena no concurso anterior e sua contribuição
+para o equilíbrio do conjunto.
 
 </p>
 
@@ -1159,13 +1239,14 @@ Aguardando dados...
 
 <h3>
 Paridade
+
 </h3>
 
 </div>
 
 <p>
 
-Ajuda a manter equilíbrio entre pares e ímpares nos jogos.
+Controla a proporção de pares e ímpares durante a construção dos jogos.
 
 </p>
 
@@ -1173,7 +1254,7 @@ Ajuda a manter equilíbrio entre pares e ímpares nos jogos.
 id="parityScore"
 class="strategy-score">
 
-Estrutura do jogo
+Aguardando dados...
 
 </div>
 
@@ -1190,6 +1271,7 @@ Estrutura do jogo
 
 <h3>
 Faixas
+
 </h3>
 
 </div>
@@ -1221,13 +1303,14 @@ Aguardando dados...
 
 <h3>
 Combinada
+
 </h3>
 
 </div>
 
 <p>
 
-Junta os indicadores em uma pontuação final para cada dezena.
+Une os indicadores e produz a pontuação adaptativa de cada dezena.
 
 </p>
 
@@ -1241,12 +1324,10 @@ Aguardando dados...
 
 </div>
 
-
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -1272,12 +1353,10 @@ Atualize os resultados e depois clique em gerar jogos.
 
 </div>
 
-
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -1286,14 +1365,13 @@ Atualize os resultados e depois clique em gerar jogos.
 </span>
 
 <h2>
-Validação pós-sorteio V23
+Validação pós-sorteio V23.2
 </h2>
 
 </div>
 
 
 <div class="status-box">
-
 
 <div class="status-line">
 
@@ -1317,11 +1395,76 @@ Aguardando próximo resultado
 id="validationText"
 class="status-text">
 
-Depois de gerar os jogos, o V23 compara automaticamente o conjunto salvo
-com o concurso-alvo assim que esse resultado estiver no histórico.
+Depois de gerar os jogos, a V23.2 compara automaticamente os jogos
+salvos com o concurso-alvo quando o resultado estiver disponível.
 
 </div>
 
+</div>
+
+
+<div
+class="performance-grid">
+
+<div class="performance-box">
+
+<strong id="count11">
+0
+</strong>
+
+<span>
+11 acertos
+</span>
+
+</div>
+
+<div class="performance-box">
+
+<strong id="count12">
+0
+</strong>
+
+<span>
+12 acertos
+</span>
+
+</div>
+
+<div class="performance-box">
+
+<strong id="count13">
+0
+</strong>
+
+<span>
+13 acertos
+</span>
+
+</div>
+
+<div class="performance-box">
+
+<strong id="count14">
+0
+</strong>
+
+<span>
+14 acertos
+</span>
+
+</div>
+
+<div class="performance-box">
+
+<strong id="count15">
+0
+</strong>
+
+<span>
+15 acertos
+</span>
+
+</div>
 
 </div>
 
@@ -1329,7 +1472,6 @@ com o concurso-alvo assim que esse resultado estiver no histórico.
 <div
 class="data-grid"
 style="margin-top:15px">
-
 
 <div class="data-card">
 
@@ -1356,7 +1498,6 @@ Melhor acerto registrado
 
 </div>
 
-
 </div>
 
 
@@ -1370,11 +1511,19 @@ Nenhuma validação pós-sorteio registrada.
 </div>
 
 
+<div
+id="validationHistory"
+class="recent-draw"
+style="margin-top:15px">
+
+Nenhum histórico de validação.
+
+</div>
+
 </section>
 
 
 <section class="card">
-
 
 <div class="card-title">
 
@@ -1383,14 +1532,13 @@ Nenhuma validação pós-sorteio registrada.
 </span>
 
 <h2>
-Resumo V23
+Resumo V23.2
 </h2>
 
 </div>
 
 
 <div class="info-grid">
-
 
 <div class="info">
 
@@ -1434,7 +1582,7 @@ Dezenas no núcleo
 <div class="info">
 
 <strong>
-V23.1
+V23.2
 </strong>
 
 <span>
@@ -1443,7 +1591,6 @@ Motor
 
 </div>
 
-
 </div>
 
 </section>
@@ -1451,10 +1598,10 @@ Motor
 
 <div class="footer">
 
-Lotofácil Monitor V23.1<br>
+Lotofácil Monitor V23.2<br>
 
-V23.1: servidor Render + walk-forward sem vazamento +
-núcleo adaptativo + proteção + cobertura de borda.<br>
+V23.2: walk-forward sem vazamento + núcleo adaptativo +
+proteção + cobertura de borda + validação por faixas de acerto.<br>
 
 Estatística não garante o resultado do sorteio.
 
@@ -1468,10 +1615,10 @@ Estatística não garante o resultado do sorteio.
 
 
 // =========================================================
-// CONFIGURAÇÃO V23.1
+// CONFIGURAÇÃO V23.2
 // =========================================================
 
-const VERSION="V23.1";
+const VERSION="V23.2";
 
 const TOTAL_NUMBERS=25;
 
@@ -1479,14 +1626,21 @@ const GAME_SIZE=15;
 
 const TOTAL_GAMES=6;
 
+const CORE_SIZE=18;
+
+const PROTECTION_SIZE=3;
+
+const COVERAGE_SIZE=2;
+
+const CANDIDATE_SIZE=
+CORE_SIZE+
+PROTECTION_SIZE+
+COVERAGE_SIZE;
+
 
 // =========================================================
 // API DO RENDER
 // =========================================================
-//
-// O HTML agora conversa com o próprio servidor.
-// Não fazemos mais consulta direta à CAIXA pelo navegador.
-//
 
 const API_BASE="";
 
@@ -1501,10 +1655,13 @@ const API_LATEST=
 // STORAGE
 // =========================================================
 
-const STORAGE_V23=
+const STORAGE_V23_2=
+"lotofacil_v23_2_history";
+
+const STORAGE_V23_1=
 "lotofacil_v23_history";
 
-const STORAGE_V22_OLD=
+const STORAGE_V22=
 "lotofacil_v22_history";
 
 const STORAGE_V21=
@@ -1516,11 +1673,16 @@ const STORAGE_V20=
 const STORAGE_V19=
 "lotofacil_v19_history";
 
-
 const STORAGE_GAMES=
+"lotofacil_v23_2_games";
+
+const STORAGE_OLD_GAMES=
 "lotofacil_v23_games";
 
 const STORAGE_CALIBRATION=
+"lotofacil_v23_2_calibration";
+
+const STORAGE_OLD_CALIBRATION=
 "lotofacil_v23_calibration";
 
 
@@ -1536,6 +1698,10 @@ let lastGames=[];
 
 let latestContest=null;
 
+let adaptiveWeights=null;
+
+let backtestInfo=null;
+
 
 // =========================================================
 // UTILITÁRIOS
@@ -1544,6 +1710,36 @@ let latestContest=null;
 function number(n){
 
 return String(n).padStart(2,"0");
+
+}
+
+
+function clamp(
+value,
+min,
+max
+){
+
+return Math.max(
+min,
+Math.min(
+max,
+Number(value)||0
+)
+);
+
+}
+
+
+function average(arr){
+
+return arr.length
+?
+arr.reduce(
+(a,b)=>a+b,
+0
+)/arr.length
+:0;
 
 }
 
@@ -1573,31 +1769,54 @@ return a;
 }
 
 
-function clamp(
-value,
-min,
-max
-){
+function safeNum(v){
 
-return Math.max(
-min,
-Math.min(
-max,
-value
+return Number.isFinite(
+Number(v)
 )
+?
+Number(v)
+:
+0;
+
+}
+
+
+function uniqueSorted(arr){
+
+return[
+...new Set(
+arr
+.map(Number)
+.filter(
+n=>n>=1&&n<=25
+)
+)
+].sort(
+(a,b)=>a-b
 );
 
 }
 
 
-function average(arr){
+function weightedAverage(values){
 
-return arr.length
+if(!values.length)
+return 0;
+
+let sum=0;
+let weight=0;
+
+values.forEach(
+item=>{
+sum+=item.value*item.weight;
+weight+=item.weight;
+}
+);
+
+return weight
 ?
-arr.reduce(
-(a,b)=>a+b,
-0
-)/arr.length
+sum/weight
 :0;
 
 }
@@ -1610,102 +1829,98 @@ arr.reduce(
 function saveHistory(){
 
 localStorage.setItem(
-STORAGE_V23,
+STORAGE_V23_2,
 JSON.stringify(history)
 );
 
 }
 
 
-function loadHistory(){
+function getStoredArray(key){
 
 try{
 
-let saved=
+const data=
 JSON.parse(
-localStorage.getItem(
-STORAGE_V23
-)
+localStorage.getItem(key)
 );
 
-
-if(
-!Array.isArray(saved)||
-!saved.length
-){
-
-saved=
-JSON.parse(
-localStorage.getItem(
-STORAGE_V22_OLD
-)
-);
-
-}
-
-
-if(
-!Array.isArray(saved)||
-!saved.length
-){
-
-saved=
-JSON.parse(
-localStorage.getItem(
-STORAGE_V21
-)
-);
-
-}
-
-
-if(
-!Array.isArray(saved)||
-!saved.length
-){
-
-saved=
-JSON.parse(
-localStorage.getItem(
-STORAGE_V20
-)
-);
-
-}
-
-
-if(
-!Array.isArray(saved)||
-!saved.length
-){
-
-saved=
-JSON.parse(
-localStorage.getItem(
-STORAGE_V19
-)
-);
-
-}
-
-
-if(
-Array.isArray(saved)
-){
-
-history=saved;
-
-}
-
+return Array.isArray(data)
+?
+data
+:
+null;
 
 }catch(e){
 
-console.error(
-"Erro ao carregar histórico:",
-e
+return null;
+
+}
+
+}
+
+
+function loadHistory(){
+
+let saved=
+getStoredArray(
+STORAGE_V23_2
 );
 
-history=[];
+
+if(!saved||!saved.length){
+
+saved=
+getStoredArray(
+STORAGE_V23_1
+);
+
+}
+
+
+if(!saved||!saved.length){
+
+saved=
+getStoredArray(
+STORAGE_V22
+);
+
+}
+
+
+if(!saved||!saved.length){
+
+saved=
+getStoredArray(
+STORAGE_V21
+);
+
+}
+
+
+if(!saved||!saved.length){
+
+saved=
+getStoredArray(
+STORAGE_V20
+);
+
+}
+
+
+if(!saved||!saved.length){
+
+saved=
+getStoredArray(
+STORAGE_V19
+);
+
+}
+
+
+if(Array.isArray(saved)){
+
+history=saved;
 
 }
 
@@ -1717,7 +1932,25 @@ x=>
 x&&
 x.concurso&&
 Array.isArray(x.dezenas)&&
-x.dezenas.length===15
+uniqueSorted(x.dezenas).length===15
+)
+.map(
+x=>({
+
+concurso:Number(x.concurso),
+
+dezenas:
+uniqueSorted(x.dezenas),
+
+data:
+x.data||
+"",
+
+source:
+x.source||
+"LOCAL"
+
+})
 )
 .sort(
 (a,b)=>
@@ -1729,6 +1962,8 @@ Number(a.concurso)
 100
 );
 
+
+saveHistory();
 
 updateHistoryUI();
 
@@ -1792,12 +2027,10 @@ document.getElementById(
 "latestResultContest"
 );
 
-
 const dateEl=
 document.getElementById(
 "latestResultDate"
 );
-
 
 const numbersEl=
 document.getElementById(
@@ -1807,23 +2040,18 @@ document.getElementById(
 
 if(
 !latest||
-!Array.isArray(latest.dezenas)||
-latest.dezenas.length!==15
+!Array.isArray(latest.dezenas)
 ){
 
-contestEl.innerText=
-"—";
-
+contestEl.innerText="—";
 
 dateEl.innerText=
 "Nenhum resultado carregado.";
-
 
 numbersEl.innerHTML=
 '<span class="nucleus-description">'+
 'Atualize os resultados para visualizar as 15 dezenas.'+
 '</span>';
-
 
 return;
 
@@ -1831,17 +2059,13 @@ return;
 
 
 latestContest=
-Number(
-latest.concurso
-)||
-null;
+Number(latest.concurso)||null;
 
 
 document.getElementById(
 "latestContest"
 ).innerText=
-latestContest||
-"—";
+latestContest||"—";
 
 
 contestEl.innerText=
@@ -1853,8 +2077,7 @@ dateEl.innerText=
 latest.data&&
 latest.data!=="Manual"
 ?
-"Data do sorteio: "+
-latest.data
+"Data do sorteio: "+latest.data
 :
 "Resultado salvo no histórico";
 
@@ -1872,8 +2095,6 @@ n=>
 
 // =========================================================
 // ATUALIZAÇÃO AUTOMÁTICA
-//
-// AGORA USA O SERVIDOR DO RENDER.
 // =========================================================
 
 async function updateAutomaticHistory(){
@@ -1883,9 +2104,7 @@ document.getElementById(
 "updateBtn"
 );
 
-
 button.disabled=true;
-
 
 button.innerText=
 "📡 Buscando resultados...";
@@ -1900,11 +2119,10 @@ setDataStatus(
 
 try{
 
-
 const response=
 await fetch(
 API_HISTORY+
-"?limit=60",
+"?limit=100",
 {
 method:"GET",
 cache:"no-store",
@@ -1916,9 +2134,7 @@ headers:{
 );
 
 
-if(
-!response.ok
-){
+if(!response.ok){
 
 throw new Error(
 "HTTP "+
@@ -1953,21 +2169,17 @@ item=>
 item&&
 item.concurso&&
 Array.isArray(item.dezenas)&&
-item.dezenas.length===15
+uniqueSorted(item.dezenas).length===15
 )
 .map(
 item=>({
 
 concurso:
-Number(
-item.concurso
-),
+Number(item.concurso),
 
 dezenas:
+uniqueSorted(
 item.dezenas
-.map(Number)
-.sort(
-(a,b)=>a-b
 ),
 
 data:
@@ -1982,9 +2194,7 @@ item.source||
 );
 
 
-if(
-!downloaded.length
-){
+if(!downloaded.length){
 
 throw new Error(
 "O servidor não retornou concursos válidos."
@@ -1999,18 +2209,10 @@ const map=new Map();
 history.forEach(
 item=>{
 
-if(
-item&&
-item.concurso&&
-Array.isArray(item.dezenas)
-){
-
 map.set(
 Number(item.concurso),
 item
 );
-
-}
 
 }
 );
@@ -2043,8 +2245,7 @@ Number(a.concurso)
 
 latestContest=
 Number(
-history[0]?.concurso||
-0
+history[0]?.concurso||0
 );
 
 
@@ -2068,23 +2269,18 @@ button.innerText=
 "🔄 Atualizar resultados novamente";
 
 
-console.log(
-"V23.1 histórico recebido:",
-downloaded
-);
+validateSavedGamesAgainstHistory();
 
 
 }catch(error){
 
 console.error(
-"V23.1 erro:",
+"V23.2 atualização:",
 error
 );
 
 
-if(
-history.length
-){
+if(history.length){
 
 renderLatestResult();
 
@@ -2097,7 +2293,6 @@ setDataStatus(
 
 
 }else{
-
 
 setDataStatus(
 "red",
@@ -2168,7 +2363,6 @@ document.getElementById(
 "historyInput"
 );
 
-
 const text=
 input.value.trim();
 
@@ -2187,7 +2381,6 @@ return;
 const parts=
 text.split(";");
 
-
 let added=0;
 
 
@@ -2199,34 +2392,37 @@ const draw=
 parseDraw(part);
 
 
-if(draw){
+if(!draw)
+continue;
 
-const nextNumber=
-latestContest
-?
-latestContest+1
-:
-(
+
+const maxContest=
 history.length
 ?
-Number(
-history[0].concurso||0
-)+1
+Math.max(
+...history.map(
+x=>Number(x.concurso)||0
+)
+)
 :
-1
-);
+0;
 
 
 history.unshift({
 
 concurso:
-nextNumber,
+maxContest+
+added+
+1,
 
 dezenas:
 draw,
 
 data:
-"Manual"
+"Manual",
+
+source:
+"MANUAL"
 
 });
 
@@ -2235,13 +2431,11 @@ added++;
 
 }
 
-}
-
 
 if(!added){
 
 alert(
-"O concurso precisa conter exatamente 15 dezenas diferentes entre 01 e 25."
+"Cada concurso precisa conter exatamente 15 dezenas diferentes entre 01 e 25."
 );
 
 return;
@@ -2285,7 +2479,7 @@ added===1
 
 
 // =========================================================
-// LIMPAR HISTÓRICO
+// LIMPAR
 // =========================================================
 
 function clearHistory(){
@@ -2303,61 +2497,40 @@ history=[];
 latestContest=null;
 
 
-localStorage.removeItem(
-STORAGE_V23
+[
+STORAGE_V23_2,
+STORAGE_V23_1,
+STORAGE_V22,
+STORAGE_V21,
+STORAGE_V20,
+STORAGE_V19,
+STORAGE_GAMES,
+STORAGE_OLD_GAMES,
+STORAGE_CALIBRATION,
+STORAGE_OLD_CALIBRATION
+]
+.forEach(
+key=>
+localStorage.removeItem(key)
 );
-
-localStorage.removeItem(
-STORAGE_V22_OLD
-);
-
-localStorage.removeItem(
-STORAGE_V21
-);
-
-localStorage.removeItem(
-STORAGE_V20
-);
-
-localStorage.removeItem(
-STORAGE_V19
-);
-
-localStorage.removeItem(
-STORAGE_GAMES
-);
-
-localStorage.removeItem(
-STORAGE_CALIBRATION
-);
-
-
-document.getElementById(
-"latestContest"
-).innerText=
-"—";
 
 
 updateHistoryUI();
 
 renderLatestResult();
 
-
 document.getElementById(
 "nucleusStatus"
 ).innerText=
 "Nenhuma seleção calculada ainda.";
 
-
 document.getElementById(
 "selectedNumbers"
 ).innerHTML="";
 
-
 document.getElementById(
 "scoreList"
 ).innerHTML="";
-
 
 document.getElementById(
 "gamesContainer"
@@ -2368,6 +2541,8 @@ document.getElementById(
 
 
 resetStrategies();
+
+resetValidation();
 
 
 setDataStatus(
@@ -2407,10 +2582,6 @@ document.getElementById(
 );
 
 
-if(!el)
-return;
-
-
 const recent=
 history.slice(
 0,
@@ -2437,73 +2608,19 @@ d=>
 
 
 // =========================================================
-// ESTRATÉGIAS
-// =========================================================
-
-function resetStrategies(){
-
-[
-"freqScore",
-"lateScore",
-"recentScore",
-"repeatScore",
-"rangeScore",
-"combinedScore"
-]
-.forEach(
-id=>
-document.getElementById(
-id
-).innerText=
-"Aguardando dados..."
-);
-
-
-document.getElementById(
-"parityScore"
-).innerText=
-"Estrutura do jogo";
-
-}
-
-
-// =========================================================
-// V23 — NÚCLEO
-// =========================================================
-
-const CORE_SIZE=18;
-
-const PROTECTION_SIZE=3;
-
-const COVERAGE_SIZE=2;
-
-const CANDIDATE_SIZE=
-CORE_SIZE+
-PROTECTION_SIZE+
-COVERAGE_SIZE;
-
-
-let adaptiveWeights=
-null;
-
-
-let backtestInfo=null;
-
-
-// =========================================================
 // PESOS
 // =========================================================
 
 const WEIGHT_PRESETS={
 
 equilibrada:{
-frequency:.24,
+frequency:.22,
 late:.06,
-recent:.22,
-repeat:.20,
+recent:.23,
+repeat:.18,
 stability:.12,
-range:.08,
-diversity:.08
+range:.10,
+diversity:.09
 },
 
 frequencia:{
@@ -2512,48 +2629,48 @@ late:.04,
 recent:.20,
 repeat:.14,
 stability:.10,
-range:.06,
-diversity:.08
+range:.07,
+diversity:.07
 },
 
 recente:{
 frequency:.18,
 late:.04,
-recent:.38,
-repeat:.18,
-stability:.10,
+recent:.40,
+repeat:.17,
+stability:.09,
 range:.06,
 diversity:.06
 },
 
 atrasados:{
 frequency:.18,
-late:.18,
-recent:.16,
+late:.19,
+recent:.15,
 repeat:.12,
-stability:.12,
+stability:.11,
 range:.10,
-diversity:.14
+diversity:.15
 },
 
 repeticao:{
 frequency:.18,
 late:.04,
-recent:.20,
-repeat:.34,
-stability:.10,
+recent:.21,
+repeat:.35,
+stability:.09,
 range:.06,
-diversity:.08
+diversity:.07
 },
 
 estabilidade:{
 frequency:.20,
 late:.06,
 recent:.18,
-repeat:.16,
-stability:.28,
+repeat:.15,
+stability:.30,
 range:.06,
-diversity:.06
+diversity:.05
 }
 
 };
@@ -2561,23 +2678,6 @@ diversity:.06
 
 adaptiveWeights=
 WEIGHT_PRESETS.equilibrada;
-
-
-// =========================================================
-// SEGURANÇA NUMÉRICA
-// =========================================================
-
-function safeNum(v){
-
-return Number.isFinite(
-Number(v)
-)
-?
-Number(v)
-:
-0;
-
-}
 
 
 // =========================================================
@@ -2607,7 +2707,6 @@ windowSize
 ){
 
 const f={};
-
 
 for(
 let n=1;
@@ -2640,7 +2739,7 @@ return f;
 
 
 // =========================================================
-// INDICADORES
+// INDICADORES V23.2
 // =========================================================
 
 function rawIndicators(
@@ -2672,7 +2771,6 @@ diversity:.5
 }
 );
 
-
 return out;
 
 }
@@ -2686,14 +2784,12 @@ const recent={};
 
 const repeat={};
 
-
 nums.forEach(
 n=>{
 
 frequency[n]=0;
 
-late[n]=
-drawHistory.length;
+late[n]=drawHistory.length;
 
 recent[n]=0;
 
@@ -2703,6 +2799,8 @@ repeat[n]=0;
 );
 
 
+// frequência total
+
 drawHistory.forEach(
 d=>
 d.dezenas.forEach(
@@ -2711,6 +2809,8 @@ frequency[n]++
 )
 );
 
+
+// atraso
 
 for(
 let i=0;
@@ -2726,8 +2826,11 @@ n=>{
 if(
 late[n]===
 drawHistory.length
-)
+){
+
 late[n]=i;
+
+}
 
 }
 );
@@ -2735,9 +2838,38 @@ late[n]=i;
 }
 
 
+// janelas
+
+const f10=
+windowFrequency(
+drawHistory,
+10
+);
+
+const f20=
+windowFrequency(
+drawHistory,
+20
+);
+
+const f30=
+windowFrequency(
+drawHistory,
+30
+);
+
+const f60=
+windowFrequency(
+drawHistory,
+60
+);
+
+
+// recência com decaimento
+
 const recentWindow=
 Math.min(
-20,
+30,
 drawHistory.length
 );
 
@@ -2752,35 +2884,29 @@ recentWindow
 d.dezenas.forEach(
 n=>
 recent[n]+=
-recentWindow-i
+Math.pow(
+.93,
+i
+)
 )
 );
 
 
+// repetição
+
+if(drawHistory[0]){
+
 drawHistory[0]
-?.dezenas
+.dezenas
 .forEach(
 n=>
 repeat[n]=1
 );
 
-
-const f10=
-windowFrequency(
-drawHistory,
-10
-);
+}
 
 
-const f30=
-windowFrequency(
-drawHistory,
-Math.min(
-30,
-drawHistory.length
-)
-);
-
+// distribuição das faixas
 
 const ranges=[
 0,
@@ -2804,65 +2930,129 @@ Math.floor(
 );
 
 
+// médias de frequência
+
+const totalDraws=
+drawHistory.length;
+
+
 const maxF=
 Math.max(
-...Object.values(frequency),
+...Object.values(
+frequency
+),
 1
 );
-
-
-const maxLate=
-Math.max(
-...Object.values(late),
-1
-);
-
 
 const maxRecent=
 Math.max(
-...Object.values(recent),
+...Object.values(
+recent
+),
+1
+);
+
+const maxLate=
+Math.max(
+...Object.values(
+late
+),
 1
 );
 
 
-const rangeAvg=
-drawHistory.length
-?
-drawHistory.length*3
-:
-1;
+const normalized10={};
+const normalized20={};
+const normalized30={};
+const normalized60={};
 
 
 nums.forEach(
 n=>{
 
-const range=
+normalized10[n]=
+f10[n]/
+Math.max(
+1,
+Math.min(
+10,
+totalDraws
+)
+);
+
+normalized20[n]=
+f20[n]/
+Math.max(
+1,
+Math.min(
+20,
+totalDraws
+)
+);
+
+normalized30[n]=
+f30[n]/
+Math.max(
+1,
+Math.min(
+30,
+totalDraws
+)
+);
+
+normalized60[n]=
+f60[n]/
+Math.max(
+1,
+Math.min(
+60,
+totalDraws
+)
+);
+
+}
+);
+
+
+// distribuição esperada por faixa
+
+const expected=
+totalDraws*3;
+
+
+nums.forEach(
+n=>{
+
+const r=
 Math.floor(
 (n-1)/5
 );
 
 
 const short=
-f10[n]/
-Math.max(
-10,
-Math.min(
-10,
-drawHistory.length
-)
-);
+normalized10[n];
 
+const medium=
+normalized30[n];
 
 const long=
-f30[n]/
-Math.max(
-30,
-Math.min(
-30,
-drawHistory.length
-)
+normalized60[n];
+
+
+// frequência multicamadas
+
+const frequencyScore=
+clamp(
+short*.30+
+normalized20[n]*.25+
+medium*.25+
+long*.20,
+0,
+1
 );
 
+
+// estabilidade
 
 const stability=
 clamp(
@@ -2873,18 +3063,62 @@ short-long
 Math.max(
 short,
 long,
-.01
+.05
 ),
 0,
 1
 );
 
 
+// atraso moderado
+
+const lateScore=
+clamp(
+Math.sqrt(
+late[n]/
+Math.max(
+maxLate,
+1
+)
+),
+0,
+1
+);
+
+
+// recente
+
+const recentScore=
+recent[n]/
+Math.max(
+maxRecent,
+1
+);
+
+
+// equilíbrio da faixa
+
+const rangeScore=
+clamp(
+ranges[r]/
+Math.max(
+expected,
+1
+),
+0,
+1
+);
+
+
+// diversidade
+
 const diversity=
 clamp(
-1-
-(recent[n]/maxRecent)*.55+
-(late[n]/maxLate)*.25,
+(
+frequencyScore*.55+
+lateScore*.20+
+stability*.25
+),
 0,
 1
 );
@@ -2893,13 +3127,13 @@ clamp(
 out[n]={
 
 frequency:
-frequency[n]/maxF,
+frequencyScore,
 
 late:
-late[n]/maxLate,
+lateScore,
 
 recent:
-recent[n]/maxRecent,
+recentScore,
 
 repeat:
 repeat[n],
@@ -2907,11 +3141,7 @@ repeat[n],
 stability,
 
 range:
-clamp(
-ranges[range]/rangeAvg,
-0,
-1
-),
+rangeScore,
 
 diversity
 
@@ -2946,13 +3176,7 @@ const x=
 indicators[n];
 
 
-scores[n]={
-
-...x,
-
-combined:
-clamp(
-
+const combined=
 x.frequency*
 weights.frequency+
 
@@ -2972,11 +3196,18 @@ x.range*
 weights.range+
 
 x.diversity*
-weights.diversity,
+weights.diversity;
 
+
+scores[n]={
+
+...x,
+
+combined:
+clamp(
+combined,
 0,
 1
-
 )
 
 };
@@ -3054,7 +3285,7 @@ PROTECTION_SIZE
 
 
 // =========================================================
-// BORDA
+// COBERTURA DE BORDA
 // =========================================================
 
 function edgeScore(
@@ -3066,37 +3297,20 @@ const x=
 scores[n];
 
 
-const indicators=[
-
-x.frequency,
-x.recent,
-x.late,
-x.repeat,
-x.stability,
-x.range,
-x.diversity
-
-]
-.sort(
-(a,b)=>b-a
-);
-
-
 return(
 
-indicators[0]*.45+
-indicators[1]*.30+
-indicators[2]*.15+
-indicators[3]*.10
+x.late*.18+
+x.frequency*.22+
+x.recent*.20+
+x.repeat*.12+
+x.stability*.12+
+x.range*.08+
+x.diversity*.08
 
 );
 
 }
 
-
-// =========================================================
-// COBERTURA
-// =========================================================
 
 function buildCoverage(
 scores,
@@ -3143,13 +3357,11 @@ scores
 const core=
 buildCore(scores);
 
-
 const protection=
 buildProtection(
 scores,
 core
 );
-
 
 const coverage=
 buildCoverage(
@@ -3179,12 +3391,12 @@ candidates:[
 
 
 // =========================================================
-// BACKTEST
+// BACKTEST WALK-FORWARD V23.2
 // =========================================================
 
 function runBacktest(){
 
-const candidates=
+const presets=
 Object.entries(
 WEIGHT_PRESETS
 );
@@ -3195,22 +3407,20 @@ const results=[];
 
 const maxTests=
 Math.min(
-45,
+50,
 Math.max(
 0,
-history.length-8
+history.length-10
 )
 );
 
 
-if(
-maxTests<8
-){
-
-backtestInfo=null;
+if(maxTests<8){
 
 adaptiveWeights=
 WEIGHT_PRESETS.equilibrada;
+
+backtestInfo=null;
 
 
 const el=
@@ -3218,11 +3428,12 @@ document.getElementById(
 "backtestScore"
 );
 
+if(el){
 
-if(el)
 el.innerText=
-"Histórico ainda curto: usando configuração equilibrada.";
+"Histórico curto: configuração equilibrada utilizada.";
 
+}
 
 return;
 
@@ -3231,16 +3442,20 @@ return;
 
 for(
 const [name,weights]
-of candidates
+of presets
 ){
+
+let tests=0;
 
 let totalCore=0;
 
-let total21=0;
+let totalCandidates=0;
 
-let total23=0;
+let totalAtLeast11=0;
 
-let tests=0;
+let totalAtLeast12=0;
+
+let totalAtLeast13=0;
 
 
 for(
@@ -3254,14 +3469,14 @@ history.slice(
 i+1
 );
 
-
 const target=
 history[i]?.dezenas;
 
 
 if(
 past.length<8||
-!target
+!target||
+target.length!==15
 )
 continue;
 
@@ -3279,59 +3494,128 @@ scores
 );
 
 
-totalCore+=
+const candidates=
+pool.candidates;
+
+
+const coreHits=
 target.filter(
 n=>pool.core.includes(n)
 ).length;
 
 
-total21+=
+const candidateHits=
 target.filter(
-n=>
-[
-...pool.core,
-...pool.protection
-]
-.includes(n)
+n=>candidates.includes(n)
 ).length;
 
 
-total23+=
-target.filter(
-n=>
-pool.candidates.includes(n)
-).length;
+const hit11=
+Math.max(
+...buildBacktestGames(
+pool,
+scores
+).map(
+game=>
+game.filter(
+n=>target.includes(n)
+).length
+),
+0
+);
 
+
+totalCore+=coreHits;
+
+totalCandidates+=candidateHits;
+
+totalAtLeast11+=
+hit11>=11
+?
+1
+:
+0;
+
+totalAtLeast12+=
+hit11>=12
+?
+1
+:
+0;
+
+totalAtLeast13+=
+hit11>=13
+?
+1
+:
+0;
 
 tests++;
 
 }
 
 
-results.push({
-
-name,
-
-avgCore:
+const avgCore=
 tests
 ?
 totalCore/tests
 :
-0,
+0;
 
-avg21:
+const avgCandidates=
 tests
 ?
-total21/tests
+totalCandidates/tests
 :
-0,
+0;
 
-avg23:
+const rate11=
 tests
 ?
-total23/tests
+totalAtLeast11/tests
 :
-0,
+0;
+
+const rate12=
+tests
+?
+totalAtLeast12/tests
+:
+0;
+
+const rate13=
+tests
+?
+totalAtLeast13/tests
+:
+0;
+
+
+// pontuação de escolha
+
+const objective=
+avgCandidates*.40+
+avgCore*.20+
+rate11*4+
+rate12*7+
+rate13*10;
+
+
+results.push({
+
+name,
+
+avgCore,
+
+avgCandidates,
+
+rate11,
+
+rate12,
+
+rate13,
+
+objective,
 
 tests
 
@@ -3342,36 +3626,16 @@ tests
 
 results.sort(
 (a,b)=>
-(
-b.avg23*.45+
-b.avg21*.30+
-b.avgCore*.25
-)
--
-(
-a.avg23*.45+
-a.avg21*.30+
-a.avgCore*.25
-)
+b.objective-
+a.objective
 );
 
 
 const chosen=
 results[0]||
-{
-
-name:
-"equilibrada",
-
-avgCore:0,
-
-avg21:0,
-
-avg23:0,
-
-tests:0
-
-};
+results.find(
+x=>x.name==="equilibrada"
+);
 
 
 adaptiveWeights=
@@ -3393,16 +3657,123 @@ document.getElementById(
 );
 
 
-if(el)
+if(el){
+
 el.innerText=
 
-`Configuração: ${chosen.name} • núcleo ${chosen.avgCore.toFixed(2)} • 21 candidatas ${chosen.avg21.toFixed(2)} • 23 candidatas ${chosen.avg23.toFixed(2)} em ${chosen.tests} testes`;
+`Configuração: ${chosen.name} • 23 candidatas: ${chosen.avgCandidates.toFixed(2)} • ≥11: ${(chosen.rate11*100).toFixed(1)}% • ≥12: ${(chosen.rate12*100).toFixed(1)}% • ≥13: ${(chosen.rate13*100).toFixed(1)}% • ${chosen.tests} testes`;
+
+}
 
 }
 
 
 // =========================================================
-// CALCULAR SCORES
+// JOGOS PARA BACKTEST
+// =========================================================
+
+function buildBacktestGames(
+pool,
+scores
+){
+
+const modes=[
+"balanced",
+"protection",
+"freq",
+"recent",
+"late",
+"coverage"
+];
+
+
+const games=[];
+
+
+for(
+const mode of modes
+){
+
+let best=null;
+
+let bestValue=-Infinity;
+
+
+for(
+let t=0;
+t<30;
+t++
+){
+
+const game=
+makeBaseGame(
+pool,
+scores,
+mode
+);
+
+
+if(
+game.length!==15
+)
+continue;
+
+
+const overlap=
+games.length
+?
+Math.max(
+...games.map(
+g=>similarity(
+game,
+g
+)
+)
+)
+:
+0;
+
+
+const value=
+scoreGame(
+game,
+scores
+)
+-
+Math.max(
+0,
+overlap-11
+)*1.5+
+Math.random()*.5;
+
+
+if(
+overlap<14&&
+value>bestValue
+){
+
+best=game;
+
+bestValue=value;
+
+}
+
+}
+
+
+if(best)
+games.push(best);
+
+}
+
+
+return games;
+
+}
+
+
+// =========================================================
+// SCORE ATUAL
 // =========================================================
 
 function calculateScores(){
@@ -3412,33 +3783,13 @@ rawIndicators(history),
 adaptiveWeights
 );
 
-}
-
 
 // =========================================================
-// PESOS DAS CANDIDATAS
+// CONSTRUÇÃO DE JOGOS
 // =========================================================
-
-function candidateWeights(
-scores
-){
-
-return Object
-.keys(scores)
-.map(Number)
-.sort(
-(a,b)=>
-scores[b].combined-
-scores[a].combined||
-a-b
-);
 
 }
 
-
-// =========================================================
-// FAIXAS
-// =========================================================
 
 function rangeCount(
 game
@@ -3468,9 +3819,57 @@ return c;
 }
 
 
-// =========================================================
-// VALIDAÇÃO DE JOGO
-// =========================================================
+function parityScore(
+game
+){
+
+const even=
+game.filter(
+n=>n%2===0
+).length;
+
+
+return 1-
+Math.abs(
+7.5-even
+)/7.5;
+
+}
+
+
+function structureScore(
+game
+){
+
+const ranges=
+rangeCount(game);
+
+
+const rangePenalty=
+ranges.reduce(
+(sum,x)=>
+sum+
+Math.abs(
+x-3
+),
+0
+);
+
+
+const parity=
+parityScore(game);
+
+
+return clamp(
+1-
+rangePenalty/15+
+parity*.25,
+0,
+1
+);
+
+}
+
 
 function validGame(
 game
@@ -3478,6 +3877,16 @@ game
 
 if(
 game.length!==15
+)
+return false;
+
+
+const unique=
+new Set(game);
+
+
+if(
+unique.size!==15
 )
 return false;
 
@@ -3495,14 +3904,12 @@ even>9
 return false;
 
 
-const r=
-rangeCount(
-game
-);
+const ranges=
+rangeCount(game);
 
 
 if(
-r.some(
+ranges.some(
 x=>x<1||x>5
 )
 )
@@ -3513,10 +3920,6 @@ return true;
 
 }
 
-
-// =========================================================
-// SCORE DE JOGO
-// =========================================================
 
 function scoreGame(
 game,
@@ -3534,7 +3937,7 @@ sum+
 
 
 // =========================================================
-// CONSTRUÇÃO DE JOGO
+// CONSTRUÇÃO BASE
 // =========================================================
 
 function makeBaseGame(
@@ -3545,10 +3948,6 @@ mode
 
 const pool=
 poolInfo.candidates;
-
-
-const core=
-poolInfo.core;
 
 
 const protection=
@@ -3567,35 +3966,19 @@ const ranked=
 let sa=
 scores[a].combined;
 
-
 let sb=
 scores[b].combined;
-
-
-if(mode==="late"){
-
-sa=
-scores[a].late*.25+
-scores[a].combined*.75;
-
-
-sb=
-scores[b].late*.25+
-scores[b].combined*.75;
-
-}
 
 
 if(mode==="freq"){
 
 sa=
-scores[a].frequency*.60+
-scores[a].combined*.40;
-
+scores[a].frequency*.65+
+scores[a].combined*.35;
 
 sb=
-scores[b].frequency*.60+
-scores[b].combined*.40;
+scores[b].frequency*.65+
+scores[b].combined*.35;
 
 }
 
@@ -3603,13 +3986,25 @@ scores[b].combined*.40;
 if(mode==="recent"){
 
 sa=
-scores[a].recent*.60+
-scores[a].combined*.40;
-
+scores[a].recent*.65+
+scores[a].combined*.35;
 
 sb=
-scores[b].recent*.60+
-scores[b].combined*.40;
+scores[b].recent*.65+
+scores[b].combined*.35;
+
+}
+
+
+if(mode==="late"){
+
+sa=
+scores[a].late*.35+
+scores[a].combined*.65;
+
+sb=
+scores[b].late*.35+
+scores[b].combined*.65;
 
 }
 
@@ -3617,13 +4012,12 @@ scores[b].combined*.40;
 if(mode==="stability"){
 
 sa=
-scores[a].stability*.60+
-scores[a].combined*.40;
-
+scores[a].stability*.65+
+scores[a].combined*.35;
 
 sb=
-scores[b].stability*.60+
-scores[b].combined*.40;
+scores[b].stability*.65+
+scores[b].combined*.35;
 
 }
 
@@ -3634,10 +4028,22 @@ sa=
 edgeScore(scores,a)*.70+
 scores[a].combined*.30;
 
-
 sb=
 edgeScore(scores,b)*.70+
 scores[b].combined*.30;
+
+}
+
+
+if(mode==="protection"){
+
+sa=
+scores[a].combined+
+(scores[a].repeat*.12);
+
+sb=
+scores[b].combined+
+(scores[b].repeat*.12);
 
 }
 
@@ -3651,31 +4057,33 @@ return sb-sa||a-b;
 let game=[];
 
 
-if(mode==="protection")
+if(mode==="protection"){
+
 game.push(
-...protection
+...shuffle(protection)
 );
 
+}
 
-if(mode==="coverage")
+
+if(mode==="coverage"){
+
 game.push(
-...coverage
+...shuffle(coverage)
 );
+
+}
 
 
 for(
 const n of ranked
 ){
 
-if(
-game.length>=15
-)
+if(game.length>=15)
 break;
 
 
-if(
-!game.includes(n)
-)
+if(!game.includes(n))
 game.push(n);
 
 }
@@ -3686,7 +4094,7 @@ let tries=0;
 
 while(
 !validGame(game)&&
-tries<120
+tries<200
 ){
 
 tries++;
@@ -3702,9 +4110,7 @@ n=>!current.includes(n)
 );
 
 
-if(
-!outside.length
-)
+if(!outside.length)
 break;
 
 
@@ -3721,7 +4127,8 @@ tries%outside.length
 ];
 
 
-game=[
+game=
+[
 ...new Set(current)
 ]
 .slice(
@@ -3756,19 +4163,12 @@ scores
 ){
 
 const modes=[
-
 "balanced",
-
 "protection",
-
 "freq",
-
 "recent",
-
 "late",
-
 "coverage"
-
 ];
 
 
@@ -3783,16 +4183,16 @@ i++
 
 let best=null;
 
-let bestScore=-Infinity;
+let bestObjective=-Infinity;
 
 
 for(
 let t=0;
-t<180;
+t<220;
 t++
 ){
 
-const g=
+const game=
 makeBaseGame(
 poolInfo,
 scores,
@@ -3801,19 +4201,20 @@ modes[i]
 
 
 if(
-g.length!==15
+game.length!==15||
+!validGame(game)
 )
 continue;
 
 
-const overlap=
+const maxOverlap=
 games.length
 ?
 Math.max(
 ...games.map(
-x=>similarity(
-g,
-x
+g=>similarity(
+game,
+g
 )
 )
 )
@@ -3821,40 +4222,52 @@ x
 0;
 
 
-const special=
-poolInfo
-.protection
-.concat(
-poolInfo.coverage
+const minOverlap=
+games.length
+?
+Math.min(
+...games.map(
+g=>similarity(
+game,
+g
 )
+)
+)
+:
+0;
+
+
+const candidateCoverage=
+poolInfo.candidates
 .filter(
-n=>g.includes(n)
+n=>game.includes(n)
 )
 .length;
 
 
 const objective=
 scoreGame(
-g,
+game,
 scores
-)
--
+)*2+
+structureScore(game)*5+
+candidateCoverage*.5+
+minOverlap*.2-
 Math.max(
 0,
-overlap-12
-)*2.0+
-special*.35+
-Math.random()*1.5;
+maxOverlap-11
+)*2+
+Math.random()*1.2;
 
 
 if(
-overlap<14&&
-objective>bestScore
+maxOverlap<14&&
+objective>bestObjective
 ){
 
-best=g;
+best=game;
 
-bestScore=
+bestObjective=
 objective;
 
 }
@@ -3868,20 +4281,11 @@ games.push(best);
 }
 
 
-/*
-Cobertura obrigatória:
-cada dezena de proteção e cada
-dezena de borda aparece em pelo
-menos um dos 6 jogos.
-*/
-
+// cobertura obrigatória
 
 const mandatory=[
-
 ...poolInfo.protection,
-
 ...poolInfo.coverage
-
 ];
 
 
@@ -3889,19 +4293,18 @@ mandatory.forEach(
 (n,idx)=>{
 
 if(
-!games.some(
+!games.length||
+games.some(
 g=>g.includes(n)
 )
-){
+)
+return;
+
 
 const target=
 games[
 idx%games.length
 ];
-
-
-if(!target)
-return;
 
 
 const replace=
@@ -3919,18 +4322,16 @@ x=>!mandatory.includes(x)
 
 if(replace){
 
-target[
+const pos=
 target.indexOf(
 replace
-)
-]=n;
+);
 
+target[pos]=n;
 
 target.sort(
 (a,b)=>a-b
 );
-
-}
 
 }
 
@@ -3960,7 +4361,7 @@ n=>b.includes(n)
 
 
 // =========================================================
-// ATUALIZAR NÚCLEO
+// NÚCLEO UI
 // =========================================================
 
 function updateNucleus(
@@ -3991,7 +4392,8 @@ document.getElementById(
 "nucleusStatus"
 ).innerHTML=
 
-`<strong>18 núcleo + 3 proteção + 2 borda = 23 candidatas</strong>. A camada de borda procura sinais fortes que ficaram fora do ranking principal, sem usar o próximo resultado.`;
+`<strong>18 núcleo + 3 proteção + 2 borda = 23 candidatas.</strong>
+A seleção combina os indicadores e usa o backtest somente com concursos anteriores ao alvo.`;
 
 
 document.getElementById(
@@ -4070,18 +4472,38 @@ info.className="help";
 info.innerHTML=
 
 `<strong>Proteção:</strong> ${protection.map(number).join(" • ")}<br>
-<strong>Cobertura de borda:</strong> ${coverage.map(number).join(" • ")}`;
+<strong>Borda:</strong> ${coverage.map(number).join(" • ")}<br>
+<strong>Total de candidatas:</strong> ${poolInfo.candidates.length}`;
 
 
-list.appendChild(
-info
-);
+list.appendChild(info);
 
 
 document.getElementById(
 "infoCore"
 ).innerText=
 core.length;
+
+}
+
+
+// =========================================================
+// PESOS DAS CANDIDATAS
+// =========================================================
+
+function candidateWeights(
+scores
+){
+
+return Object
+.keys(scores)
+.map(Number)
+.sort(
+(a,b)=>
+scores[b].combined-
+scores[a].combined||
+a-b
+);
 
 }
 
@@ -4097,14 +4519,15 @@ scores
 if(
 !scores||
 !Object.keys(scores).length
-)
+){
+
 return;
+
+}
 
 
 const values=
-Object.values(
-scores
-);
+Object.values(scores);
 
 
 const avgKey=
@@ -4121,51 +4544,49 @@ x=>x[key]
 document.getElementById(
 "freqScore"
 ).innerText=
-`Indicador médio: ${avgKey("frequency")}%`;
+`Indicador médio: ${avgKey("frequency")}% • multicamadas 10/20/30/60`;
 
 
 document.getElementById(
 "lateScore"
 ).innerText=
-`Indicador médio: ${avgKey("late")}%`;
+`Indicador médio: ${avgKey("late")}% • peso controlado`;
 
 
 document.getElementById(
 "recentScore"
 ).innerText=
-`Indicador médio: ${avgKey("recent")}%`;
+`Indicador médio: ${avgKey("recent")}% • decaimento temporal`;
 
 
 document.getElementById(
 "repeatScore"
 ).innerText=
-`Indicador médio: ${avgKey("repeat")}%`;
+`Indicador médio: ${avgKey("repeat")}% • concurso anterior`;
 
 
 document.getElementById(
 "rangeScore"
 ).innerText=
-`Indicador médio: ${avgKey("range")}%`;
+`Indicador médio: ${avgKey("range")}% • equilíbrio das 5 faixas`;
 
 
 document.getElementById(
 "combinedScore"
 ).innerText=
-
 `7 indicadores combinados • estabilidade ${avgKey("stability")}% • diversidade ${avgKey("diversity")}%`;
 
 
 document.getElementById(
 "parityScore"
 ).innerText=
-
-"Cada jogo é reparado para 6–9 pares, 1–5 dezenas por faixa e rotação entre as 23 candidatas.";
+"Cada jogo é reparado para 6–9 pares e 1–5 dezenas em cada faixa.";
 
 }
 
 
 // =========================================================
-// MOSTRAR JOGOS
+// RENDER JOGOS
 // =========================================================
 
 function renderGames(
@@ -4173,19 +4594,12 @@ games
 ){
 
 const labels=[
-
 "🧠 Núcleo",
-
 "🛡️ Proteção",
-
 "🔥 Frequência",
-
 "🕐 Recência",
-
 "❄️ Atrasados",
-
-"🛡️ Cobertura de borda"
-
+"🟢 Cobertura"
 ];
 
 
@@ -4207,8 +4621,7 @@ document.createElement(
 );
 
 
-card.className=
-"game";
+card.className="game";
 
 
 card.innerHTML=
@@ -4256,6 +4669,13 @@ game,
 lastScores
 ).toFixed(2)}
 
+•
+
+Estrutura:
+${Math.round(
+structureScore(game)*100
+)}%
+
 </div>`;
 
 
@@ -4285,7 +4705,7 @@ games
 
 const payload={
 
-version:"V23.1",
+version:VERSION,
 
 targetContest:
 latestContest
@@ -4296,6 +4716,16 @@ null,
 
 generatedAt:
 new Date().toISOString(),
+
+candidates:
+lastScores
+?
+candidateWeights(lastScores).slice(
+0,
+CANDIDATE_SIZE
+)
+:
+[],
 
 games
 
@@ -4321,12 +4751,44 @@ return payload;
 
 function loadGeneratedGames(){
 
+let data=
+getStoredArrayPayload(
+STORAGE_GAMES
+);
+
+
+if(!data){
+
+try{
+
+data=
+JSON.parse(
+localStorage.getItem(
+STORAGE_OLD_GAMES
+)||
+"null"
+);
+
+}catch(e){
+
+data=null;
+
+}
+
+}
+
+
+return data;
+
+}
+
+
+function getStoredArrayPayload(key){
+
 try{
 
 return JSON.parse(
-localStorage.getItem(
-STORAGE_GAMES
-)||
+localStorage.getItem(key)||
 "null"
 );
 
@@ -4343,28 +4805,64 @@ return null;
 // CALIBRAÇÃO
 // =========================================================
 
-function saveCalibration(
-record
+function loadCalibration(){
+
+let data=
+getStoredArrayPayload(
+STORAGE_CALIBRATION
+);
+
+
+if(
+!Array.isArray(data)
 ){
-
-let all=[];
-
 
 try{
 
-all=
+data=
 JSON.parse(
 localStorage.getItem(
-STORAGE_CALIBRATION
+STORAGE_OLD_CALIBRATION
 )||
 "[]"
 );
 
 }catch(e){
 
-all=[];
+data=[];
 
 }
+
+}
+
+
+return Array.isArray(data)
+?
+data
+:
+[];
+
+}
+
+
+function saveCalibration(
+record
+){
+
+let all=
+loadCalibration();
+
+
+const exists=
+all.some(
+x=>
+Number(x.targetContest)===
+Number(record.targetContest)
+);
+
+
+if(exists)
+return;
 
 
 all.unshift(
@@ -4375,7 +4873,7 @@ record
 all=
 all.slice(
 0,
-30
+50
 );
 
 
@@ -4386,36 +4884,13 @@ all
 )
 );
 
-}
-
-
-// =========================================================
-// CARREGAR CALIBRAÇÃO
-// =========================================================
-
-function loadCalibration(){
-
-try{
-
-return JSON.parse(
-localStorage.getItem(
-STORAGE_CALIBRATION
-)||
-"[]"
-);
-
-}catch(e){
-
-return [];
-
-}
-
-}
-
 
 // =========================================================
 // VALIDAR JOGOS SALVOS
 // =========================================================
+
+}
+
 
 function validateSavedGamesAgainstHistory(){
 
@@ -4451,37 +4926,50 @@ Number(saved.targetContest)
 );
 
 
-if(already)
+if(already){
+
+renderCalibration();
+
 return;
+
+}
 
 
 const hits=
 saved.games.map(
-(game,i)=>
-({
+(game,i)=>{
+
+const matched=
+game.filter(
+n=>target.dezenas.includes(n)
+);
+
+
+return{
 
 gameIndex:i+1,
 
 hits:
-game.filter(
-n=>target.dezenas.includes(n)
-).length,
+matched.length,
 
-matched:
-game.filter(
-n=>target.dezenas.includes(n)
-)
+matched
 
-})
+};
+
+}
 );
 
 
 const best=
+hits.length
+?
 Math.max(
 ...hits.map(
 x=>x.hits
 )
-);
+)
+:
+0;
 
 
 const coverage=
@@ -4493,7 +4981,7 @@ saved.games.flat()
 const record={
 
 targetContest:
-saved.targetContest,
+Number(saved.targetContest),
 
 date:
 target.data||"",
@@ -4505,7 +4993,7 @@ coverage,
 hits,
 
 generatedAt:
-saved.generatedAt
+saved.generatedAt||""
 
 };
 
@@ -4521,6 +5009,69 @@ renderCalibration();
 
 
 // =========================================================
+// RESET VALIDAÇÃO
+// =========================================================
+
+function resetValidation(){
+
+[
+"count11",
+"count12",
+"count13",
+"count14",
+"count15"
+]
+.forEach(
+id=>
+document.getElementById(
+id
+).innerText="0"
+);
+
+
+document.getElementById(
+"bestHitMetric"
+).innerText="—";
+
+
+document.getElementById(
+"coverageMetric"
+).innerText="—";
+
+
+document.getElementById(
+"validationTitle"
+).innerText=
+"Aguardando próximo resultado";
+
+
+document.getElementById(
+"validationText"
+).innerText=
+"Depois de gerar os jogos, a V23.2 compara automaticamente os jogos salvos com o concurso-alvo.";
+
+
+document.getElementById(
+"calibrationBox"
+).innerText=
+"Nenhuma validação pós-sorteio registrada.";
+
+
+document.getElementById(
+"validationHistory"
+).innerText=
+"Nenhum histórico de validação.";
+
+
+document.getElementById(
+"validationDot"
+).className=
+"status-dot";
+
+}
+
+
+// =========================================================
 // RENDER CALIBRAÇÃO
 // =========================================================
 
@@ -4530,67 +5081,109 @@ const records=
 loadCalibration();
 
 
+if(!records.length){
+
+resetValidation();
+
+return;
+
+}
+
+
 const best=
-records.length
-?
 Math.max(
 ...records.map(
-x=>x.best
+x=>safeNum(x.best)
 )
-)
-:
-null;
+);
 
 
 document.getElementById(
 "bestHitMetric"
 ).innerText=
-
-best===null
-?
-"—"
-:
 best+" acertos";
 
 
-const saved=
+const latestSaved=
 loadGeneratedGames();
+
+
+const currentRecord=
+records.find(
+r=>
+latestSaved&&
+Number(r.targetContest)===
+Number(latestSaved.targetContest)
+);
 
 
 document.getElementById(
 "coverageMetric"
 ).innerText=
-
-saved&&saved.games
+currentRecord
 ?
-new Set(
-saved.games.flat()
-).size+"/23"
+currentRecord.coverage+"/23"
 :
-"—";
+records[0].coverage+"/23";
 
 
-const box=
-document.getElementById(
-"calibrationBox"
+let count11=0;
+let count12=0;
+let count13=0;
+let count14=0;
+let count15=0;
+
+
+records.forEach(
+record=>
+(record.hits||[])
+.forEach(
+item=>{
+
+if(item.hits>=11)
+count11++;
+
+if(item.hits>=12)
+count12++;
+
+if(item.hits>=13)
+count13++;
+
+if(item.hits>=14)
+count14++;
+
+if(item.hits>=15)
+count15++;
+
+}
+)
 );
 
 
-if(!records.length){
-
-box.innerText=
-"Nenhuma validação pós-sorteio registrada.";
-
+document.getElementById(
+"count11"
+).innerText=
+count11;
 
 document.getElementById(
-"validationTitle"
+"count12"
 ).innerText=
-"Aguardando próximo resultado";
+count12;
 
+document.getElementById(
+"count13"
+).innerText=
+count13;
 
-return;
+document.getElementById(
+"count14"
+).innerText=
+count14;
 
-}
+document.getElementById(
+"count15"
+).innerText=
+count15;
 
 
 const r=
@@ -4606,13 +5199,14 @@ document.getElementById(
 document.getElementById(
 "validationText"
 ).innerText=
+`Melhor jogo: ${r.best}/15 • cobertura utilizada: ${r.coverage} dezenas únicas.`;
 
-`Melhor jogo: ${r.best}/15 • cobertura usada: ${r.coverage} dezenas únicas.`;
 
+document.getElementById(
+"calibrationBox"
+).innerHTML=
 
-box.innerHTML=
-
-r.hits
+(r.hits||[])
 .map(
 x=>
 `<div style="margin:6px 0">
@@ -4621,10 +5215,12 @@ x=>
 Jogo ${x.gameIndex}:
 </strong>
 
+<span class="hit-highlight">
 ${x.hits} acertos
+</span>
 
 <span style="color:#777">
-(${x.matched.map(number).join(", ")})
+(${(x.matched||[]).map(number).join(", ")})
 </span>
 
 </div>`
@@ -4641,16 +5237,102 @@ document.getElementById(
 dot.className=
 "status-dot "+
 (
-r.best>=11
+r.best>=13
 ?
 "green"
 :
-r.best>=9
+r.best>=11
 ?
 "orange"
 :
 "red"
 );
+
+
+renderValidationHistory(
+records
+);
+
+}
+
+
+// =========================================================
+// HISTÓRICO DE VALIDAÇÃO
+// =========================================================
+
+function renderValidationHistory(
+records
+){
+
+const box=
+document.getElementById(
+"validationHistory"
+);
+
+
+if(!records.length){
+
+box.innerText=
+"Nenhum histórico de validação.";
+
+return;
+
+}
+
+
+const rows=
+records
+.slice(
+0,
+10
+)
+.map(
+r=>
+`<tr>
+
+<td>
+${r.targetContest}
+</td>
+
+<td>
+${r.best}/15
+</td>
+
+<td>
+${r.coverage}/23
+</td>
+
+<td>
+${(r.hits||[]).filter(x=>x.hits>=11).length}
+</td>
+
+</tr>`
+)
+.join("");
+
+
+box.innerHTML=
+
+`<strong>Últimas validações</strong>
+
+<table class="validation-table">
+
+<thead>
+
+<tr>
+<th>Concurso</th>
+<th>Melhor</th>
+<th>Cobertura</th>
+<th>≥11</th>
+</tr>
+
+</thead>
+
+<tbody>
+${rows}
+</tbody>
+
+</table>`;
 
 }
 
@@ -4707,6 +5389,38 @@ renderCalibration();
 
 
 // =========================================================
+// RESET ESTRATÉGIAS
+// =========================================================
+
+function resetStrategies(){
+
+[
+"backtestScore",
+"freqScore",
+"lateScore",
+"recentScore",
+"repeatScore",
+"rangeScore",
+"combinedScore"
+]
+.forEach(
+id=>
+document.getElementById(
+id
+).innerText=
+"Aguardando dados..."
+);
+
+
+document.getElementById(
+"parityScore"
+).innerText=
+"Aguardando dados...";
+
+}
+
+
+// =========================================================
 // GERAR JOGOS
 // =========================================================
 
@@ -4731,9 +5445,8 @@ document.getElementById(
 
 button.disabled=true;
 
-
 button.innerText=
-"🧪 Walk-forward + núcleo adaptativo...";
+"🧪 Walk-forward + núcleo V23.2...";
 
 
 setTimeout(
@@ -4761,9 +5474,19 @@ scores
 );
 
 
+if(
+games.length!==TOTAL_GAMES
+){
+
+throw new Error(
+"Não foi possível gerar os 6 jogos."
+);
+
+}
+
+
 lastScores=
 scores;
-
 
 lastGames=
 games;
@@ -4774,39 +5497,35 @@ pool,
 scores
 );
 
-
 updateStrategyUI(
 scores
 );
-
 
 renderGames(
 games
 );
 
-
 saveGeneratedGames(
 games
 );
-
 
 renderCalibration();
 
 
 button.innerText=
-"🔄 Gerar novamente";
-
+"🔄 Gerar novos jogos";
 
 }catch(e){
 
 console.error(
-"Erro V23.1:",
+"Erro V23.2:",
 e
 );
 
 
 alert(
-"Erro ao gerar os jogos."
+"Erro ao gerar os jogos.\n\n"+
+e.message
 );
 
 
@@ -4819,7 +5538,7 @@ button.innerText=
 button.disabled=false;
 
 },
-250
+300
 );
 
 }
@@ -4856,7 +5575,6 @@ setDataStatus(
 
 renderLatestResult();
 
-
 calculateAndRender();
 
 }
@@ -4866,7 +5584,7 @@ renderCalibration();
 
 
 // =========================================================
-// LOG DE INICIALIZAÇÃO
+// LOG
 // =========================================================
 
 console.log(
@@ -4876,6 +5594,15 @@ console.log(
 console.log(
 "API:",
 API_HISTORY
+);
+
+console.log(
+"Core:",
+CORE_SIZE,
+"Protection:",
+PROTECTION_SIZE,
+"Coverage:",
+COVERAGE_SIZE
 );
 
 </script>
