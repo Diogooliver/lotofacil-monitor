@@ -25,7 +25,7 @@ content="default">
 name="apple-mobile-web-app-title"
 content="Lotofácil Monitor">
 
-<title>Lotofácil Monitor V23.4</title>
+<title>Lotofácil Monitor V23.5</title>
 
 <style>
 
@@ -629,7 +629,7 @@ height:38px
 
 <div>
 
-<h1>Lotofácil Monitor V23.4</h1>
+<h1>Lotofácil Monitor V23.5</h1>
 
 <p>
 Render + histórico automático + núcleo adaptativo + walk-forward + diversificação inteligente
@@ -736,7 +736,7 @@ Atualize os resultados para visualizar as 15 dezenas.
 
 <span class="emoji">🧠</span>
 
-<h2>Seleção V23.4</h2>
+<h2>Seleção V23.5</h2>
 
 </div>
 
@@ -746,7 +746,7 @@ Atualize os resultados para visualizar as 15 dezenas.
 
 <span style="font-size:28px">🎯</span>
 
-<h3>Núcleo Adaptativo V23.4</h3>
+<h3>Núcleo Adaptativo V23.5</h3>
 
 </div>
 
@@ -769,15 +769,15 @@ Nenhuma seleção calculada ainda.
 
 <span class="emoji">🎲</span>
 
-<h2>Gerador V23.4</h2>
+<h2>Gerador V23.5</h2>
 
 </div>
 
 <div class="nucleus-description">
 
-A V23.4 mantém 18 dezenas de núcleo,
+A V23.5 mantém 18 dezenas de núcleo,
 3 de proteção e 2 de cobertura de borda.
-O motor agora aplica <strong>diversificação forçada</strong>
+O motor aplica <strong>diversificação forçada</strong>
 para impedir que os seis jogos fiquem excessivamente parecidos.
 
 <br><br>
@@ -866,7 +866,7 @@ Aguardando dados...
 
 <span class="emoji">📚</span>
 
-<h2>Estratégias V23.4</h2>
+<h2>Estratégias V23.5</h2>
 
 </div>
 
@@ -1069,7 +1069,7 @@ Atualize os resultados e depois gere os jogos.
 
 <span class="emoji">🧪</span>
 
-<h2>Validação pós-sorteio V23.4</h2>
+<h2>Validação pós-sorteio V23.5</h2>
 
 </div>
 
@@ -1086,7 +1086,7 @@ Aguardando próximo resultado
 </div>
 
 <div id="validationText" class="status-text">
-Depois de gerar os jogos, o V23.4 compara automaticamente os jogos salvos com o concurso-alvo.
+Depois de gerar os jogos, o V23.5 compara automaticamente os jogos salvos com o concurso-alvo.
 </div>
 
 </div>
@@ -1126,7 +1126,7 @@ Nenhuma validação pós-sorteio registrada.
 
 <span class="emoji">📋</span>
 
-<h2>Resumo V23.4</h2>
+<h2>Resumo V23.5</h2>
 
 </div>
 
@@ -1158,7 +1158,7 @@ Nenhuma validação pós-sorteio registrada.
 
 <div class="info">
 
-<strong>V23.4</strong>
+<strong>V23.5</strong>
 
 <span>Motor</span>
 
@@ -1171,7 +1171,7 @@ Nenhuma validação pós-sorteio registrada.
 
 <div class="footer">
 
-Lotofácil Monitor V23.4<br>
+Lotofácil Monitor V23.5<br>
 
 Núcleo adaptativo + walk-forward + proteção + cobertura de borda +
 diversificação entre jogos.<br>
@@ -1186,10 +1186,11 @@ Estatística não garante o resultado do sorteio.
 <script>
 
 /* =========================================================
-   LOTOFÁCIL MONITOR V23.4
+   LOTOFÁCIL MONITOR V23.5
+   CORREÇÃO DO ERRO ranges.filter
    ========================================================= */
 
-const VERSION="V23.4";
+const VERSION="V23.5";
 
 const TOTAL_NUMBERS=25;
 const GAME_SIZE=15;
@@ -1227,8 +1228,11 @@ let backtestInfo=null;
    ========================================================= */
 
 function number(n){
+
 return String(n).padStart(2,"0");
+
 }
+
 
 function shuffle(array){
 
@@ -1246,6 +1250,7 @@ return a;
 
 }
 
+
 function clamp(value,min,max){
 
 return Math.max(
@@ -1255,6 +1260,7 @@ Math.min(max,value)
 
 }
 
+
 function average(arr){
 
 return arr.length
@@ -1263,6 +1269,7 @@ arr.reduce((a,b)=>a+b,0)/arr.length
 :0;
 
 }
+
 
 function safeNum(v){
 
@@ -1287,6 +1294,7 @@ JSON.stringify(history)
 );
 
 }
+
 
 function loadHistory(){
 
@@ -1651,6 +1659,7 @@ null;
 
 }
 
+
 function addManualDraw(){
 
 const input=
@@ -1740,6 +1749,7 @@ added===1
 );
 
 }
+
 
 function clearHistory(){
 
@@ -1939,6 +1949,7 @@ n=>f[n]++
 return f;
 
 }
+
 
 function rawIndicators(drawHistory){
 
@@ -2168,6 +2179,7 @@ return scores;
 
 }
 
+
 function rankNumbers(scores,metric="combined"){
 
 return Object
@@ -2198,6 +2210,7 @@ CORE_SIZE
 
 }
 
+
 function buildProtection(scores,core){
 
 return rankNumbers(scores)
@@ -2210,6 +2223,7 @@ PROTECTION_SIZE
 );
 
 }
+
 
 function edgeScore(scores,n){
 
@@ -2234,6 +2248,7 @@ indicators[3]*.10
 );
 
 }
+
 
 function buildCoverage(scores,core,protection){
 
@@ -2262,6 +2277,7 @@ COVERAGE_SIZE
 );
 
 }
+
 
 function buildCandidatePool(scores){
 
@@ -2476,6 +2492,7 @@ c[Math.floor((n-1)/5)]++
 return c;
 
 }
+
 
 function validGame(game){
 
@@ -2705,11 +2722,6 @@ return sb-sa||a-b;
 });
 
 
-/*
-Em cada novo jogo damos preferência
-a dezenas ainda pouco utilizadas.
-*/
-
 let game=[];
 
 
@@ -2797,11 +2809,6 @@ diversityOk
 break;
 
 
-/*
-Escolhe uma posição que possa
-ser trocada.
-*/
-
 const replaceCandidates=
 game
 .slice()
@@ -2877,12 +2884,6 @@ break;
 
 }
 
-
-/*
-Se não conseguiu trocar respeitando
-todas as regras, tenta uma troca
-aleatória válida.
-*/
 
 if(!replaced){
 
@@ -2972,16 +2973,6 @@ const targetUsage={};
 
 for(const n of poolInfo.candidates)
 targetUsage[n]=4;
-
-
-/*
-6 jogos x 15 = 90 posições.
-23 candidatas:
-90 / 23 ≈ 3.91.
-
-Portanto tentamos deixar cada dezena
-entre 3 e 5 aparições.
-*/
 
 let current=games.map(g=>[...g]);
 
@@ -3224,14 +3215,6 @@ const modes=[
 let bestSet=null;
 let bestObjective=-Infinity;
 
-
-/*
-Tentamos vários conjuntos completos.
-Isso é importante porque apenas gerar
-um jogo por vez pode deixar a sequência
-concentrada.
-*/
-
 for(let attempt=0;attempt<180;attempt++){
 
 let games=[];
@@ -3313,11 +3296,6 @@ games.push(bestGame);
 if(games.length!==6)
 continue;
 
-
-/*
-Melhora a distribuição das 23 dezenas.
-*/
-
 games=
 improveGameSet(
 games,
@@ -3325,23 +3303,12 @@ poolInfo,
 scores
 );
 
-
-/*
-Garante que proteção e borda
-tenham presença.
-*/
-
 games=
 enforceSpecialCoverage(
 games,
 poolInfo,
 scores
 );
-
-
-/*
-Validação final.
-*/
 
 if(
 games.length!==6||
@@ -3352,11 +3319,6 @@ g.length!==15||
 )
 )
 continue;
-
-
-/*
-Calcula maior sobreposição.
-*/
 
 let maxOverlap=0;
 
@@ -3381,11 +3343,6 @@ games[j]
 
 }
 
-
-/*
-Distribuição das candidatas.
-*/
-
 const usage=
 candidateUsage(games);
 
@@ -3401,14 +3358,6 @@ const maxUsage=
 Math.max(...candidateUsageValues);
 
 const spread=maxUsage-minUsage;
-
-
-/*
-Objetivo global:
-- maior score estatístico
-- menor sobreposição
-- melhor distribuição
-*/
 
 const totalScore=
 games.reduce(
@@ -3426,23 +3375,12 @@ spread*1.5
 +
 minUsage*2;
 
-
-/*
-Aceita somente o melhor conjunto.
-*/
-
 if(objective>bestObjective){
 
 bestObjective=objective;
 bestSet=games.map(g=>[...g]);
 
 }
-
-
-/*
-Se conseguiu um conjunto muito bom,
-pode encerrar cedo.
-*/
 
 if(
 maxOverlap<=11&&
@@ -3581,7 +3519,7 @@ Distribuição das candidatas:
 
 <br>
 
-Regra V23.4:
+Regra V23.5:
 <strong>máximo recomendado de 11 dezenas em comum</strong>
 
 </div>
@@ -3609,6 +3547,7 @@ a-b
 
 }
 
+
 function updateNucleus(poolInfo,scores){
 
 if(!history.length){
@@ -3633,7 +3572,7 @@ document.getElementById(
 ).innerHTML=
 
 `<strong>18 núcleo + 3 proteção + 2 borda = 23 candidatas.</strong>
-A V23.4 usa essas candidatas como base e distribui os seis jogos com controle de sobreposição.`;
+A V23.5 usa essas candidatas como base e distribui os seis jogos com controle de sobreposição.`;
 
 document.getElementById(
 "selectedNumbers"
@@ -3795,8 +3734,32 @@ card.className="game";
 const even=
 game.filter(n=>n%2===0).length;
 
+
+/*
+=========================================================
+CORREÇÃO V23.5
+
+Antes:
+
+const ranges=rangeCount(game).join("-");
+
+e depois:
+
+ranges.filter(...)
+
+Isso transformava o array em string.
+
+Agora mantemos o array em rangeValues
+e usamos ranges apenas para exibição.
+=========================================================
+*/
+
+const rangeValues=
+rangeCount(game);
+
 const ranges=
-rangeCount(game).join("-");
+rangeValues.join("-");
+
 
 const structure=
 Math.round(
@@ -3805,11 +3768,12 @@ Math.min(
 even,
 10-even
 )/5*.5+
-ranges.filter(
+rangeValues.filter(
 x=>x>=1&&x<=5
 ).length/5*.5
 )*100
 );
+
 
 card.innerHTML=
 
@@ -3905,6 +3869,7 @@ return payload;
 
 }
 
+
 function loadGeneratedGames(){
 
 try{
@@ -3959,6 +3924,7 @@ JSON.stringify(all)
 );
 
 }
+
 
 function loadCalibration(){
 
@@ -4213,6 +4179,7 @@ document.getElementById(
 
 }
 
+
 function calculateAndRender(){
 
 if(!history.length){
@@ -4324,12 +4291,12 @@ saveGeneratedGames(games);
 renderCalibration();
 
 button.innerText=
-"🔄 Gerar nova combinação V23.4";
+"🔄 Gerar nova combinação V23.5";
 
 }catch(e){
 
 console.error(
-"Erro V23.4:",
+"Erro V23.5:",
 e
 );
 
@@ -4339,7 +4306,7 @@ e.message
 );
 
 button.innerText=
-"🎲 Gerar jogos V23.4";
+"🎲 Gerar jogos V23.5";
 
 }
 
