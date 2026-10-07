@@ -1,3072 +1,4983 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#5b2df5">
-<title>Lotofácil Monitor V24.2</title>
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<meta name="theme-color"
+content="#5b2df5">
+
+<title>Lotofácil Monitor V25</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box
+}
 
 body{
-  margin:0;
-  background:linear-gradient(180deg,#f7f5ff,#eeeaff);
-  color:#17151f;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif
+margin:0;
+background:
+linear-gradient(
+180deg,
+#f7f5ff,
+#eeeaff
+);
+color:#17151f;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif
 }
 
 .app{
-  max-width:900px;
-  margin:auto;
-  padding:12px 10px 60px
+max-width:900px;
+margin:auto;
+padding:12px 10px 70px
 }
 
-.card,.head{
-  background:#fff;
-  border-radius:26px;
-  padding:20px;
-  margin-bottom:15px;
-  box-shadow:0 8px 28px #3e277812
+.card,
+.head{
+background:#fff;
+border-radius:26px;
+padding:20px;
+margin-bottom:15px;
+box-shadow:
+0 8px 28px #3e277812
 }
 
 .head{
-  display:flex;
-  gap:13px;
-  align-items:center
+display:flex;
+gap:13px;
+align-items:center
 }
 
 .logo{
-  width:55px;
-  height:55px;
-  border-radius:17px;
-  background:#6337ed;
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-size:29px
+width:58px;
+height:58px;
+border-radius:18px;
+background:#6337ed;
+color:#fff;
+display:grid;
+place-items:center;
+font-size:30px;
+flex:none
 }
 
 .head h1{
-  margin:0;
-  font-size:25px
+margin:0;
+font-size:25px
 }
 
-.head p,.muted,.help{
-  color:#777483;
-  font-size:13px
+.head p{
+margin:4px 0 0;
+color:#777483;
+font-size:13px
 }
 
 .title{
-  font-size:23px;
-  font-weight:900;
-  margin-bottom:15px
+font-size:23px;
+font-weight:900;
+margin-bottom:15px
+}
+
+.subtitle{
+font-size:15px;
+font-weight:800;
+margin-bottom:8px
+}
+
+.muted{
+color:#777483;
+font-size:13px;
+line-height:1.55
 }
 
 .box{
-  border:2px solid #ddd6ff;
-  background:#f8f6ff;
-  border-radius:20px;
-  padding:15px
+border:2px solid #ddd6ff;
+background:#f8f6ff;
+border-radius:20px;
+padding:15px
 }
 
 .dot{
-  display:inline-block;
-  width:11px;
-  height:11px;
-  border-radius:50%;
-  background:#999;
-  margin-right:8px
+display:inline-block;
+width:11px;
+height:11px;
+border-radius:50%;
+background:#999;
+margin-right:8px
 }
 
-.green{background:#24b36b}
-.orange{background:#e9a400}
-.red{background:#e44a4a}
+.green{
+background:#24b36b
+}
+
+.orange{
+background:#e9a400
+}
+
+.red{
+background:#e44a4a
+}
 
 button{
-  width:100%;
-  border:0;
-  border-radius:17px;
-  padding:15px;
-  margin-top:12px;
-  background:#6035e9;
-  color:#fff;
-  font-weight:900;
-  font-size:16px
+width:100%;
+border:0;
+border-radius:17px;
+padding:15px;
+margin-top:12px;
+background:#6035e9;
+color:#fff;
+font-weight:900;
+font-size:16px
 }
 
 button:disabled{
-  opacity:.6
+opacity:.6
 }
 
 .secondary{
-  background:#faf9ff;
-  color:#5130d5;
-  border:2px solid #ddd6ff
+background:#faf9ff;
+color:#5130d5;
+border:2px solid #ddd6ff
 }
 
 .danger{
-  background:#fff6f6;
-  color:#bd3838;
-  border:2px solid #ffd7d7
+background:#fff6f6;
+color:#bd3838;
+border:2px solid #ffd7d7
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:12px
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:12px
 }
 
 .stat{
-  background:#f8f7fd;
-  border:2px solid #e0daf5;
-  border-radius:18px;
-  padding:13px
+background:#f8f7fd;
+border:2px solid #e0daf5;
+border-radius:18px;
+padding:13px
 }
 
 .stat b{
-  display:block;
-  font-size:21px
+display:block;
+font-size:21px
+}
+
+.stat span{
+font-size:12px
 }
 
 .balls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:12px
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-top:12px
 }
 
-.ball,.core{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:#6337ed;
-  color:#fff;
-  font-weight:900
+.ball,
+.core{
+width:40px;
+height:40px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:#6337ed;
+color:#fff;
+font-weight:900
 }
 
 .core{
-  background:#fff;
-  color:#6337ed;
-  border:2px solid #6337ed
+background:#fff;
+color:#6337ed;
+border:2px solid #6337ed
+}
+
+.smallBall{
+width:32px;
+height:32px;
+font-size:12px
 }
 
 .scores{
-  display:grid;
-  gap:7px;
-  margin-top:14px
+display:grid;
+gap:7px;
+margin-top:14px
 }
 
 .row{
-  display:grid;
-  grid-template-columns:35px 1fr 45px;
-  gap:7px;
-  align-items:center;
-  font-size:12px;
-  font-weight:900
+display:grid;
+grid-template-columns:35px 1fr 45px;
+gap:7px;
+align-items:center;
+font-size:12px;
+font-weight:900
 }
 
 .bar{
-  height:7px;
-  background:#e8e4f8;
-  border-radius:9px;
-  overflow:hidden
+height:7px;
+background:#e8e4f8;
+border-radius:9px;
+overflow:hidden
 }
 
 .fill{
-  height:100%;
-  background:#6337ed
-}
-
-.game{
-  border:2px solid #ddd8f2;
-  background:#faf9ff;
-  border-radius:21px;
-  padding:16px;
-  margin-top:12px
-}
-
-.game h3{
-  margin:0 0 10px
-}
-
-.badge{
-  float:right;
-  background:#eae5ff;
-  color:#5730d8;
-  border-radius:20px;
-  padding:6px 9px;
-  font-size:11px
+height:100%;
+background:#6337ed
 }
 
 .strategy{
-  padding:12px 0;
-  border-bottom:1px solid #eee
+padding:12px 0;
+border-bottom:1px solid #eee
+}
+
+.strategy:last-child{
+border-bottom:0
+}
+
+.game{
+border:2px solid #ddd8f2;
+background:#faf9ff;
+border-radius:21px;
+padding:16px;
+margin-top:12px
+}
+
+.game h3{
+margin:0 0 10px
+}
+
+.badge{
+float:right;
+background:#eae5ff;
+color:#5730d8;
+border-radius:20px;
+padding:6px 9px;
+font-size:11px
 }
 
 .input{
-  width:100%;
-  padding:14px;
-  border:2px solid #ded9ef;
-  border-radius:16px;
-  background:#fbfaff;
-  font-size:16px
+width:100%;
+padding:14px;
+border:2px solid #ded9ef;
+border-radius:16px;
+background:#fbfaff;
+font-size:16px
 }
 
 .footer{
-  text-align:center;
-  color:#888;
-  font-size:11px
+text-align:center;
+color:#888;
+font-size:11px;
+line-height:1.5
 }
 
-.small{
-  font-size:11px;
-  color:#85818f;
-  margin-top:8px
+.signal{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:10px 0;
+border-bottom:1px solid #eee
 }
+
+.signal:last-child{
+border-bottom:0
+}
+
+.signal b{
+font-size:15px
+}
+
+.tag{
+padding:5px 9px;
+border-radius:20px;
+font-size:10px;
+font-weight:900;
+background:#eeeaff;
+color:#5631d9;
+white-space:nowrap
+}
+
+.tag.good{
+background:#e4f8ed;
+color:#16854d
+}
+
+.tag.warn{
+background:#fff4d9;
+color:#a66b00
+}
+
+.alert{
+padding:13px;
+border-radius:17px;
+background:#f6f3ff;
+border:2px solid #e1d9ff;
+margin-top:10px;
+font-size:13px;
+line-height:1.5
+}
+
+.numberGrid{
+display:grid;
+grid-template-columns:
+repeat(5,1fr);
+gap:7px;
+margin-top:12px
+}
+
+.numberCell{
+background:#f7f5ff;
+border:2px solid #e2ddf4;
+border-radius:12px;
+padding:9px 4px;
+text-align:center;
+font-weight:900
+}
+
+.numberCell small{
+display:block;
+font-size:9px;
+color:#8a8695;
+margin-top:3px
+}
+
+@media(max-width:520px){
+
+.card,
+.head{
+padding:17px
+}
+
+.title{
+font-size:21px
+}
+
+.head h1{
+font-size:22px
+}
+
+.grid{
+grid-template-columns:1fr 1fr
+}
+
+.numberGrid{
+gap:5px
+}
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <main class="app">
 
-<header class="head">
-  <div class="logo">🍀</div>
 
-  <div>
-    <h1>Lotofácil Monitor V24.2</h1>
-    <p>Núcleo adaptativo + cobertura coletiva + 6 jogos</p>
-  </div>
+<header class="head">
+
+<div class="logo">
+🧠
+</div>
+
+<div>
+
+<h1>
+Lotofácil Monitor V25
+</h1>
+
+<p>
+Intelligence Engine • análise estatística pública
+</p>
+
+</div>
+
 </header>
 
 
+<!-- =========================
+     DADOS
+========================= -->
+
 <section class="card">
 
-  <div class="title">📡 Dados da Lotofácil</div>
+<div class="title">
+📡 Dados da Lotofácil
+</div>
 
-  <div class="box">
+<div class="box">
 
-    <b>
-      <span id="dot" class="dot"></span>
-      <span id="status">Aguardando atualização</span>
-    </b>
+<b>
 
-    <div id="statusText" class="muted">
-      Clique para carregar o histórico.
-    </div>
+<span
+id="dot"
+class="dot">
+</span>
 
-  </div>
+<span id="status">
+Aguardando atualização
+</span>
 
-  <button id="update" onclick="updateData()">
-    📡 Atualizar resultados automaticamente
-  </button>
+</b>
 
-  <div class="grid">
+<div
+id="statusText"
+class="muted">
 
-    <div class="stat">
-      <b id="latest">—</b>
-      <span class="muted">Último concurso</span>
-    </div>
+Carregue o histórico público
+da CAIXA para iniciar o modelo.
 
-    <div class="stat">
-      <b id="count">0</b>
-      <span class="muted">Concursos analisados</span>
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <div class="box" style="margin-top:12px">
 
-    <b>🎯 Último resultado</b>
+<button
+id="update"
+onclick="updateData()">
 
-    <div id="lastResult" class="balls">—</div>
+📡 Atualizar histórico público
 
-  </div>
+</button>
+
+
+<div class="grid">
+
+<div class="stat">
+
+<b id="latest">
+—
+</b>
+
+<span class="muted">
+Último concurso
+</span>
+
+</div>
+
+
+<div class="stat">
+
+<b id="count">
+0
+</b>
+
+<span class="muted">
+Concursos analisados
+</span>
+
+</div>
+
+</div>
+
+
+<div
+class="box"
+style="margin-top:12px">
+
+<b>
+🎯 Último resultado
+</b>
+
+<div
+id="lastResult"
+class="balls">
+
+—
+
+</div>
+
+</div>
 
 </section>
 
 
+<!-- =========================
+     INTELLIGENCE ENGINE
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    🧠 Núcleo Adaptativo V24.2
-  </div>
+<div class="title">
+🧠 Intelligence Engine V25
+</div>
 
-  <div id="nucleus" class="muted">
-    Nenhuma seleção calculada.
-  </div>
+<div
+class="muted">
 
-  <div id="core" class="balls"></div>
+O motor combina múltiplos sinais
+estatísticos do histórico público.
+Nenhum sinal representa garantia
+de resultado.
 
-  <div id="score" class="scores"></div>
+</div>
+
+
+<div
+id="engineStatus"
+class="alert">
+
+Aguardando histórico.
+
+</div>
+
+
+<div class="grid">
+
+<div class="stat">
+
+<b id="engineScore">
+—
+</b>
+
+<span class="muted">
+Confiança estatística relativa
+</span>
+
+</div>
+
+
+<div class="stat">
+
+<b id="engineCoverage">
+—
+</b>
+
+<span class="muted">
+Candidatas selecionadas
+</span>
+
+</div>
+
+</div>
 
 </section>
 
 
+<!-- =========================
+     NÚCLEO
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    🎲 Gerador V24.2
-  </div>
+<div class="title">
+🎯 Núcleo Adaptativo V25
+</div>
 
-  <div class="muted">
+<div
+id="nucleus"
+class="muted">
 
-    18 núcleo + 3 proteção + 2 cobertura = 23 candidatas.
+Nenhuma seleção calculada.
 
-    <br><br>
+</div>
 
-    A V24.2 trata os 6 jogos como um portfólio:
-    mantém as dezenas fortes, aumenta a cobertura das 23 candidatas
-    e reduz a repetição excessiva entre os jogos.
+<div
+id="core"
+class="balls">
+</div>
 
-  </div>
 
-  <button id="generate" onclick="generate()">
-    🎲 Gerar 6 jogos
-  </button>
+<div
+class="subtitle"
+style="margin-top:18px">
 
-  <div id="generatorInfo" class="small"></div>
+Ranking das dezenas
+
+</div>
+
+<div
+id="score"
+class="scores">
+</div>
 
 </section>
 
 
+<!-- =========================
+     SINAIS
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    📊 Estratégias
-  </div>
+<div class="title">
+🔎 Sinais encontrados
+</div>
 
-  <div class="strategy">
-    🔥 Frequência <b id="freq"></b>
-  </div>
 
-  <div class="strategy">
-    ❄️ Atrasados <b id="late"></b>
-  </div>
+<div
+class="signal">
 
-  <div class="strategy">
-    🕐 Recente <b id="recent"></b>
-  </div>
+<div>
+🔥 Frequência
+</div>
 
-  <div class="strategy">
-    🔄 Repetição <b id="repeat"></b>
-  </div>
+<b id="sigFreq">
+—
+</b>
 
-  <div class="strategy">
-    ⚖️ Estrutura <b id="structure"></b>
-  </div>
+</div>
 
-  <div class="strategy">
-    🧪 Backtest <b id="backtest"></b>
-  </div>
+
+<div
+class="signal">
+
+<div>
+🕐 Recência
+</div>
+
+<b id="sigRecent">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+❄️ Atraso
+</div>
+
+<b id="sigLate">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+🔄 Repetição
+</div>
+
+<b id="sigRepeat">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+🔗 Coocorrência
+</div>
+
+<b id="sigPair">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+➡️ Transição
+</div>
+
+<b id="sigTransition">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+🔁 Ciclo
+</div>
+
+<b id="sigCycle">
+—
+</b>
+
+</div>
+
+
+<div
+class="signal">
+
+<div>
+🧪 Walk-forward
+</div>
+
+<b id="sigWalk">
+—
+</b>
+
+</div>
 
 </section>
 
 
+<!-- =========================
+     DETECTOR
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    🎯 Jogos gerados
-  </div>
+<div class="title">
+🕵️ Detector de Sinais
+</div>
 
-  <div id="games" class="muted">
-    Atualize o histórico e gere os jogos.
-  </div>
+<div
+id="signals"
+class="muted">
+
+Nenhum sinal calculado.
+
+</div>
 
 </section>
 
 
+<!-- =========================
+     ESTRATÉGIAS
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    🧪 Validação pós-sorteio
-  </div>
+<div class="title">
+📊 Estratégias
+</div>
 
-  <div class="grid">
 
-    <div class="stat">
-      <b id="best">—</b>
-      <span class="muted">Melhor acerto</span>
-    </div>
+<div class="strategy">
 
-    <div class="stat">
-      <b id="coverage">—</b>
-      <span class="muted">Cobertura das 23</span>
-    </div>
+🔥 Frequência
+<b id="freq">
+—
+</b>
 
-  </div>
+</div>
 
-  <div id="validation" class="box" style="margin-top:12px">
-    Nenhuma validação registrada.
-  </div>
+
+<div class="strategy">
+
+❄️ Atrasados
+<b id="late">
+—
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+🕐 Recente
+<b id="recent">
+—
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+🔄 Repetição
+<b id="repeat">
+—
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+🔗 Coocorrência
+<b id="pairStrategy">
+—
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+➡️ Transição
+<b id="transitionStrategy">
+—
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+⚖️ Estrutura
+<b>
+6–9 pares + 1–5 por faixa
+</b>
+
+</div>
+
+
+<div class="strategy">
+
+🧪 Walk-forward
+<b id="backtest">
+—
+</b>
+
+</div>
 
 </section>
 
 
+<!-- =========================
+     GERADOR
+========================= -->
+
 <section class="card">
 
-  <div class="title">
-    📊 Histórico manual
-  </div>
+<div class="title">
+🎲 Gerador V25
+</div>
 
-  <input
-    id="manual"
-    class="input"
-    placeholder="01 02 03 ... 25"
-  >
+<div class="muted">
 
-  <button class="secondary" onclick="addManual()">
-    ➕ Adicionar concurso
-  </button>
+18 núcleo + 3 proteção + 2 cobertura
+= 23 candidatas.
 
-  <button class="danger" onclick="clearAll()">
-    🗑️ Limpar histórico
-  </button>
+<br><br>
+
+O portfólio tenta combinar força
+individual, coocorrência, transição,
+ciclos, cobertura e menor
+sobreposição entre os jogos.
+
+</div>
+
+
+<button
+id="generate"
+onclick="generate()">
+
+🎲 Gerar 6 jogos V25
+
+</button>
+
+
+<div
+id="generatorInfo"
+class="small">
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     JOGOS
+========================= -->
+
+<section class="card">
+
+<div class="title">
+🎯 Jogos gerados
+</div>
+
+
+<div
+id="games"
+class="muted">
+
+Atualize o histórico e gere
+os jogos.
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     VALIDAÇÃO
+========================= -->
+
+<section class="card">
+
+<div class="title">
+🧪 Validação pós-sorteio
+</div>
+
+
+<div class="grid">
+
+<div class="stat">
+
+<b id="best">
+—
+</b>
+
+<span class="muted">
+Melhor acerto
+</span>
+
+</div>
+
+
+<div class="stat">
+
+<b id="coverage">
+—
+</b>
+
+<span class="muted">
+Cobertura das 23
+</span>
+
+</div>
+
+</div>
+
+
+<div
+id="validation"
+class="box"
+style="margin-top:12px">
+
+Nenhuma validação registrada.
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     HISTÓRICO MANUAL
+========================= -->
+
+<section class="card">
+
+<div class="title">
+📊 Histórico manual
+</div>
+
+
+<input
+id="manual"
+class="input"
+placeholder="01 02 03 ... 25"
+>
+
+
+<button
+class="secondary"
+onclick="addManual()">
+
+➕ Adicionar concurso
+
+</button>
+
+
+<button
+class="danger"
+onclick="clearAll()">
+
+🗑️ Limpar histórico
+
+</button>
 
 </section>
 
 
 <footer class="footer">
-  Lotofácil Monitor V24.2 • Estatística não garante o resultado do sorteio.
+
+Lotofácil Monitor V25 • Intelligence Engine
+
+<br>
+
+O modelo usa somente dados públicos
+e não acessa informações privadas da CAIXA.
+
+<br>
+
+Estatística não garante o resultado do sorteio.
+
 </footer>
+
 
 </main>
 
 
 <script>
 
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
 const API =
 'https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil';
 
-const N=25;
+const TOTAL_NUMBERS=25;
+
 const GAME_SIZE=15;
+
 const TOTAL_GAMES=6;
 
-const KEY='lotofacil_v24_history';
-const GKEY='lotofacil_v24_games';
-const VKEY='lotofacil_v24_validation';
+const HISTORY_LIMIT=100;
+
+const KEY='lotofacil_v25_history';
+
+const GKEY='lotofacil_v25_games';
+
+const VKEY='lotofacil_v25_validation';
+
+const MODELKEY='lotofacil_v25_model';
+
 
 let H=[];
+
 let S={};
+
 let P=null;
+
 let GAMES=[];
 
+let MODEL=null;
 
-/* =========================
+
+/* =========================================================
    UTILIDADES
-========================= */
+========================================================= */
 
 const pad=n=>
 String(n).padStart(2,'0');
 
+
 const clamp=(x,a=0,b=1)=>
 Math.max(a,Math.min(b,x));
 
-const avg=a=>
-a.length
-?a.reduce((x,y)=>x+y,0)/a.length
-:0;
 
-function unique(a){
-  return [...new Set(a)];
+function unique(arr){
+
+return [...new Set(arr)];
+
 }
 
-function sortNums(a){
-  return [...a].sort((x,y)=>x-y);
+
+function sortNums(arr){
+
+return [...arr].sort(
+(a,b)=>a-b
+);
+
 }
+
+
+function average(arr){
+
+return arr.length
+?
+arr.reduce(
+(a,b)=>a+b,
+0
+)/arr.length
+:
+0;
+
+}
+
 
 function overlap(a,b){
-  return a.filter(n=>b.includes(n)).length;
+
+return a.filter(
+n=>b.includes(n)
+).length;
+
 }
+
+
+function evenCount(game){
+
+return game.filter(
+n=>n%2===0
+).length;
+
+}
+
 
 function rangeCounts(game){
 
-  const r=[0,0,0,0,0];
+const r=[
+0,0,0,0,0
+];
 
-  game.forEach(n=>{
-    r[Math.floor((n-1)/5)]++;
-  });
+game.forEach(n=>{
 
-  return r;
+r[
+Math.floor(
+(n-1)/5
+)
+]++;
+
+});
+
+return r;
+
 }
 
-function evenCount(game){
-  return game.filter(n=>n%2===0).length;
+
+function consecutiveCount(game){
+
+const s=sortNums(game);
+
+let count=0;
+
+for(
+let i=1;
+i<s.length;
+i++
+){
+
+if(
+s[i]===s[i-1]+1
+)
+count++;
+
 }
+
+return count;
+
+}
+
+
+function sumGame(game){
+
+return game.reduce(
+(a,b)=>a+b,
+0
+);
+
+}
+
 
 function gameScore(game){
 
-  if(!S || !Object.keys(S).length)
-    return 0;
+if(
+!S||
+!Object.keys(S).length
+)
+return 0;
 
-  return game.reduce(
-    (sum,n)=>
-      sum+(S[n]?.combined||0),
-    0
-  );
+return game.reduce(
+(sum,n)=>
+sum+
+(S[n]?.combined||0),
+0
+);
+
 }
 
 
-/* =========================
+/* =========================================================
    API
-========================= */
+========================================================= */
 
-async function json(url){
+async function fetchJSON(url){
 
-  const response=
-    await fetch(
-      url,
-      {cache:'no-store'}
-    );
+const response=
+await fetch(
+url,
+{
+cache:'no-store'
+}
+);
 
-  if(!response.ok)
-    throw new Error(
-      'HTTP '+response.status
-    );
+if(!response.ok)
+throw new Error(
+'HTTP '+response.status
+);
 
-  return response.json();
+return response.json();
+
 }
 
 
 function extractNumbers(data){
 
-  const arrays=[
-    data?.listaDezenas,
-    data?.dezenas,
-    data?.dezenasSorteadas,
-    data?.dezenasSorteadasOrdemSorteio
-  ];
+const arrays=[
 
-  for(const arr of arrays){
+data?.listaDezenas,
 
-    if(!Array.isArray(arr))
-      continue;
+data?.dezenas,
 
-    const nums=
-      unique(
-        arr
-        .map(v=>
-          Number(
-            String(v).replace(/\D/g,'')
-          )
-        )
-        .filter(n=>n>=1&&n<=25)
-      );
+data?.dezenasSorteadas,
 
-    if(nums.length===15)
-      return sortNums(nums);
-  }
+data?.dezenasSorteadasOrdemSorteio
 
-  return null;
+];
+
+
+for(
+const arr of arrays
+){
+
+if(!Array.isArray(arr))
+continue;
+
+
+const nums=
+unique(
+arr
+.map(
+v=>
+Number(
+String(v)
+.replace(/\D/g,'')
+)
+)
+.filter(
+n=>
+n>=1&&
+n<=25
+)
+);
+
+
+if(nums.length===15)
+return sortNums(nums);
+
+}
+
+
+return null;
+
 }
 
 
 function contestNumber(data){
 
-  return Number(
-    data?.numero ||
-    data?.concurso ||
-    data?.numeroConcurso ||
-    0
-  );
+return Number(
+
+data?.numero||
+
+data?.concurso||
+
+data?.numeroConcurso||
+
+0
+
+);
+
 }
 
 
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 function setStatus(
-  title,
-  message,
-  color=''
+title,
+message,
+color=''
 ){
 
-  const s=
-    document.getElementById('status');
+const s=
+document.getElementById(
+'status'
+);
 
-  const m=
-    document.getElementById('statusText');
+const m=
+document.getElementById(
+'statusText'
+);
 
-  const d=
-    document.getElementById('dot');
+const d=
+document.getElementById(
+'dot'
+);
 
-  if(s) s.textContent=title;
-  if(m) m.textContent=message;
 
-  if(d)
-    d.className='dot '+color;
+if(s)
+s.textContent=title;
+
+
+if(m)
+m.textContent=message;
+
+
+if(d)
+d.className=
+'dot '+color;
+
 }
 
 
-/* =========================
+/* =========================================================
    STORAGE
-========================= */
+========================================================= */
 
 function saveHistory(){
 
-  localStorage.setItem(
-    KEY,
-    JSON.stringify(H)
-  );
+localStorage.setItem(
+KEY,
+JSON.stringify(H)
+);
+
 }
 
 
 function loadHistory(){
 
-  try{
+try{
 
-    H=
-      JSON.parse(
-        localStorage.getItem(KEY)||'[]'
-      );
+H=
+JSON.parse(
+localStorage.getItem(KEY)||'[]'
+);
 
-  }catch(e){
+}catch(e){
 
-    H=[];
+H=[];
 
-  }
-
-  H=
-    H
-    .filter(
-      item=>
-        item &&
-        item.concurso &&
-        Array.isArray(item.dezenas) &&
-        item.dezenas.length===15
-    )
-    .sort(
-      (a,b)=>
-        Number(b.concurso)-
-        Number(a.concurso)
-    )
-    .slice(0,100);
-
-  draw();
 }
 
 
-/* =========================
-   DESENHO DO HISTÓRICO
-========================= */
+H=
+H
+.filter(
+x=>
+x&&
+x.concurso&&
+Array.isArray(x.dezenas)&&
+x.dezenas.length===15
+)
+.sort(
+(a,b)=>
+Number(b.concurso)-
+Number(a.concurso)
+)
+.slice(
+0,
+HISTORY_LIMIT
+);
+
+
+draw();
+
+}
+
+
+/* =========================================================
+   DESENHO
+========================================================= */
 
 function draw(){
 
-  document.getElementById('count')
-    .textContent=H.length;
+document.getElementById(
+'count'
+).textContent=
+H.length;
 
-  document.getElementById('latest')
-    .textContent=
-      H[0]?.concurso||'—';
 
-  document.getElementById('lastResult')
-    .innerHTML=
-      H[0]
-      ?
-      H[0].dezenas
-        .map(
-          n=>
-          `<span class="ball">${pad(n)}</span>`
-        )
-        .join('')
-      :
-      '—';
+document.getElementById(
+'latest'
+).textContent=
+H[0]?.concurso||'—';
 
-  if(H.length)
-    calculateModel();
+
+document.getElementById(
+'lastResult'
+).innerHTML=
+
+H[0]
+
+?
+
+H[0].dezenas
+.map(
+n=>
+`<span class="ball">${pad(n)}</span>`
+)
+.join('')
+
+:
+
+'—';
+
+
+if(H.length>=5){
+
+calculateModel();
+
+}
+
 }
 
 
-/* =========================
-   ATUALIZAÇÃO CAIXA
-========================= */
+/* =========================================================
+   ATUALIZAÇÃO
+========================================================= */
 
 async function updateData(){
 
-  const button=
-    document.getElementById('update');
+const button=
+document.getElementById(
+'update'
+);
 
-  button.disabled=true;
-  button.textContent=
-    '📡 Carregando...';
+button.disabled=true;
 
-  setStatus(
-    'Atualizando',
-    'Consultando os resultados da CAIXA...',
-    'orange'
-  );
+button.textContent=
+'📡 Carregando...';
 
-  try{
 
-    const latestData=
-      await json(API);
+setStatus(
+'Atualizando',
+'Consultando dados públicos da CAIXA...',
+'orange'
+);
 
-    const latest=
-      contestNumber(latestData);
 
-    if(!latest)
-      throw new Error(
-        'Concurso não encontrado.'
-      );
+try{
 
-    const contests=[];
+const latestData=
+await fetchJSON(API);
 
-    for(
-      let i=0;
-      i<80;
-      i++
-    ){
 
-      const c=latest-i;
+const latest=
+contestNumber(
+latestData
+);
 
-      if(c<1)
-        break;
 
-      contests.push(c);
-    }
+if(!latest)
+throw new Error(
+'Último concurso não encontrado'
+);
 
-    const results=[];
 
-    /*
-      Faz blocos pequenos para evitar
-      excesso de requisições simultâneas.
-    */
+const contests=[];
 
-    for(
-      let i=0;
-      i<contests.length;
-      i+=5
-    ){
 
-      const block=
-        contests.slice(i,i+5);
+for(
+let i=0;
+i<80;
+i++
+){
 
-      const response=
-        await Promise.allSettled(
-          block.map(
-            async c=>{
+const c=
+latest-i;
 
-              const data=
-                await json(
-                  API+'/'+c
-                );
 
-              const dezenas=
-                extractNumbers(data);
+if(c<1)
+break;
 
-              if(!dezenas)
-                return null;
 
-              return {
-                concurso:c,
-                dezenas,
-                data:
-                  data.dataApuracao||
-                  data.data||
-                  ''
-              };
+contests.push(c);
 
-            }
-          )
-        );
-
-      response.forEach(r=>{
-
-        if(
-          r.status==='fulfilled' &&
-          r.value
-        ){
-
-          results.push(
-            r.value
-          );
-
-        }
-
-      });
-
-    }
-
-    H=
-      results
-      .sort(
-        (a,b)=>
-          b.concurso-a.concurso
-      )
-      .slice(0,100);
-
-    saveHistory();
-    draw();
-
-    setStatus(
-      'Dados atualizados',
-      `${H.length} concursos analisados.`,
-      'green'
-    );
-
-    button.textContent=
-      '🔄 Atualizar novamente';
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      'Erro na atualização',
-      'Não foi possível atualizar automaticamente.',
-      'red'
-    );
-
-    button.textContent=
-      '📡 Tentar novamente';
-
-  }
-
-  button.disabled=false;
 }
 
 
-/* =========================
-   INDICADORES
-========================= */
-
-function calculateIndicators(history){
-
-  const frequency={};
-  const delay={};
-  const recent={};
-  const repetition={};
-
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
-
-    frequency[n]=0;
-    delay[n]=history.length;
-    recent[n]=0;
-    repetition[n]=0;
-
-  }
+const results=[];
 
 
-  history.forEach(draw=>{
+/*
+  Blocos pequenos para não
+  sobrecarregar a API.
+*/
 
-    draw.dezenas.forEach(n=>{
-      frequency[n]++;
-    });
+for(
+let i=0;
+i<contests.length;
+i+=5
+){
 
-  });
-
-
-  for(
-    let i=0;
-    i<history.length;
-    i++
-  ){
-
-    history[i].dezenas.forEach(n=>{
-
-      if(
-        delay[n]===history.length
-      ){
-
-        delay[n]=i;
-
-      }
-
-    });
-
-  }
+const block=
+contests.slice(
+i,
+i+5
+);
 
 
-  history
-    .slice(0,20)
-    .forEach(
-      (draw,index)=>{
+const response=
+await Promise.allSettled(
 
-        draw.dezenas.forEach(n=>{
+block.map(
+async c=>{
 
-          recent[n]+=20-index;
-
-        });
-
-      }
-    );
+const data=
+await fetchJSON(
+API+'/'+c
+);
 
 
-  if(history[0]){
-
-    history[0].dezenas.forEach(n=>{
-      repetition[n]=1;
-    });
-
-  }
+const dezenas=
+extractNumbers(
+data
+);
 
 
-  const maxFrequency=
-    Math.max(
-      ...Object.values(frequency),
-      1
-    );
-
-  const maxDelay=
-    Math.max(
-      ...Object.values(delay),
-      1
-    );
-
-  const maxRecent=
-    Math.max(
-      ...Object.values(recent),
-      1
-    );
+if(!dezenas)
+return null;
 
 
-  const output={};
+return{
+
+concurso:c,
+
+dezenas,
+
+data:
+data.dataApuracao||
+data.data||
+''
+
+};
+
+}
+)
+
+);
 
 
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
+response.forEach(r=>{
 
-    const faixa=
-      Math.floor((n-1)/5);
+if(
+r.status==='fulfilled'&&
+r.value
+){
 
-    const totalFaixa=
-      history.reduce(
-        (sum,draw)=>
-          sum+
-          draw.dezenas.filter(
-            x=>
-              Math.floor((x-1)/5)===faixa
-          ).length,
-        0
-      );
+results.push(
+r.value
+);
 
-    const divisor=
-      Math.max(
-        1,
-        history.length*3
-      );
+}
 
+});
 
-    output[n]={
-
-      f:
-        frequency[n]/maxFrequency,
-
-      l:
-        delay[n]/maxDelay,
-
-      r:
-        recent[n]/maxRecent,
-
-      p:
-        repetition[n],
-
-      range:
-        clamp(
-          totalFaixa/divisor
-        ),
-
-      stability:.5
-
-    };
-
-  }
-
-  return output;
 }
 
 
-/* =========================
+H=
+results
+.sort(
+(a,b)=>
+b.concurso-a.concurso
+)
+.slice(
+0,
+HISTORY_LIMIT
+);
+
+
+saveHistory();
+
+draw();
+
+
+setStatus(
+'Dados atualizados',
+`${H.length} concursos analisados.`,
+'green'
+);
+
+
+button.textContent=
+'🔄 Atualizar novamente';
+
+
+}catch(error){
+
+console.error(error);
+
+
+setStatus(
+'Falha na atualização',
+'Não foi possível consultar os dados públicos.',
+'red'
+);
+
+
+button.textContent=
+'📡 Tentar novamente';
+
+}
+
+
+button.disabled=false;
+
+}
+
+
+/* =========================================================
+   FREQUÊNCIA / ATRASO / RECENTE
+========================================================= */
+
+function basicIndicators(history){
+
+const frequency={};
+
+const delay={};
+
+const recent={};
+
+const repetition={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+frequency[n]=0;
+
+delay[n]=history.length;
+
+recent[n]=0;
+
+repetition[n]=0;
+
+}
+
+
+history.forEach(
+draw=>{
+
+draw.dezenas.forEach(
+n=>{
+frequency[n]++;
+}
+);
+
+});
+
+
+for(
+let i=0;
+i<history.length;
+i++
+){
+
+history[i].dezenas.forEach(
+n=>{
+
+if(
+delay[n]===history.length
+){
+
+delay[n]=i;
+
+}
+
+}
+);
+
+}
+
+
+history
+.slice(0,20)
+.forEach(
+(draw,i)=>{
+
+draw.dezenas.forEach(
+n=>{
+
+recent[n]+=
+20-i;
+
+}
+
+);
+
+}
+);
+
+
+if(history[0]){
+
+history[0].dezenas.forEach(
+n=>{
+repetition[n]=1;
+}
+);
+
+}
+
+
+const maxF=
+Math.max(
+...Object.values(frequency),
+1
+);
+
+
+const maxD=
+Math.max(
+...Object.values(delay),
+1
+);
+
+
+const maxR=
+Math.max(
+...Object.values(recent),
+1
+);
+
+
+const output={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+const faixa=
+Math.floor(
+(n-1)/5
+);
+
+
+const faixaCount=
+history.reduce(
+(total,draw)=>
+total+
+draw.dezenas.filter(
+x=>
+Math.floor(
+(x-1)/5
+)===faixa
+).length,
+0
+);
+
+
+const faixaBase=
+Math.max(
+1,
+history.length*3
+);
+
+
+output[n]={
+
+frequency:
+frequency[n]/maxF,
+
+delay:
+delay[n]/maxD,
+
+recent:
+recent[n]/maxR,
+
+repeat:
+repetition[n],
+
+range:
+clamp(
+faixaCount/faixaBase
+),
+
+rawFrequency:
+frequency[n],
+
+rawDelay:
+delay[n],
+
+rawRecent:
+recent[n]
+
+};
+
+}
+
+
+return output;
+
+}
+
+
+/* =========================================================
+   COOCORRÊNCIA
+========================================================= */
+
+function buildCooccurrence(history){
+
+const pair={};
+
+for(
+let a=1;
+a<=25;
+a++
+){
+
+pair[a]={};
+
+for(
+let b=1;
+b<=25;
+b++
+){
+
+pair[a][b]=0;
+
+}
+
+}
+
+
+history.forEach(
+draw=>{
+
+const nums=
+draw.dezenas;
+
+for(
+let i=0;
+i<nums.length;
+i++
+){
+
+for(
+let j=i+1;
+j<nums.length;
+j++
+){
+
+const a=nums[i];
+
+const b=nums[j];
+
+pair[a][b]++;
+
+pair[b][a]++;
+
+}
+
+}
+
+});
+
+
+const score={};
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+const values=
+Object.entries(
+pair[n]
+)
+.filter(
+([x])=>
+Number(x)!==n
+)
+.map(
+([,v])=>v
+)
+.sort(
+(a,b)=>b-a
+);
+
+
+score[n]=
+values.length
+?
+average(
+values.slice(0,5)
+)
+:
+0;
+
+}
+
+
+const max=
+Math.max(
+...Object.values(score),
+1
+);
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+score[n]=
+score[n]/max;
+
+}
+
+
+return{
+pair,
+score
+};
+
+}
+
+
+/* =========================================================
+   TRANSIÇÃO
+========================================================= */
+
+function buildTransitions(history){
+
+const transition={};
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+transition[n]={};
+
+for(
+let m=1;
+m<=25;
+m++
+){
+
+transition[n][m]=0;
+
+}
+
+}
+
+
+for(
+let i=0;
+i<history.length-1;
+i++
+){
+
+const current=
+history[i].dezenas;
+
+const next=
+history[i+1].dezenas;
+
+
+current.forEach(
+a=>{
+
+next.forEach(
+b=>{
+
+transition[a][b]++;
+
+});
+
+});
+
+}
+
+
+const score={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+let values=
+Object.values(
+transition[n]
+)
+.sort(
+(a,b)=>b-a
+);
+
+
+score[n]=
+values.length
+?
+average(
+values.slice(0,5)
+)
+:
+0;
+
+}
+
+
+const max=
+Math.max(
+...Object.values(score),
+1
+);
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+score[n]=
+score[n]/max;
+
+}
+
+
+return{
+transition,
+score
+};
+
+}
+
+
+/* =========================================================
+   CICLOS
+========================================================= */
+
+function buildCycleSignals(history){
+
+const appearances={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+appearances[n]=[];
+
+}
+
+
+history.forEach(
+(draw,index)=>{
+
+draw.dezenas.forEach(
+n=>{
+
+appearances[n].push(
+index
+);
+
+});
+
+});
+
+
+const score={};
+
+const cycle={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+const arr=
+appearances[n];
+
+
+if(arr.length<2){
+
+cycle[n]=0;
+
+score[n]=.5;
+
+continue;
+
+}
+
+
+const gaps=[];
+
+
+for(
+let i=1;
+i<arr.length;
+i++
+){
+
+gaps.push(
+arr[i]-arr[i-1]
+);
+
+}
+
+
+const avgGap=
+average(gaps);
+
+
+const currentGap=
+arr[0];
+
+
+const difference=
+Math.abs(
+currentGap-avgGap
+);
+
+
+cycle[n]=
+currentGap;
+
+
+score[n]=
+clamp(
+1-
+difference/
+Math.max(
+avgGap,
+1
+)
+);
+
+}
+
+
+return{
+cycle,
+score
+};
+
+}
+
+
+/* =========================================================
+   ESTRUTURA DOS CONCURSOS
+========================================================= */
+
+function buildStructureSignals(history){
+
+if(!history.length){
+
+return{
+
+pairs:.5,
+
+sum:.5,
+
+consecutive:.5,
+
+ranges:[.5,.5,.5,.5,.5]
+
+};
+
+}
+
+
+const pairValues=
+history.map(
+draw=>
+evenCount(draw.dezenas)
+);
+
+
+const sumValues=
+history.map(
+draw=>
+sumGame(draw.dezenas)
+);
+
+
+const consecutiveValues=
+history.map(
+draw=>
+consecutiveCount(draw.dezenas)
+);
+
+
+const pairAvg=
+average(pairValues);
+
+
+const sumAvg=
+average(sumValues);
+
+
+const consecutiveAvg=
+average(consecutiveValues);
+
+
+const ranges=[
+[],[],[],[],[]
+];
+
+
+history.forEach(
+draw=>{
+
+const r=
+rangeCounts(
+draw.dezenas
+);
+
+
+r.forEach(
+(value,i)=>
+ranges[i].push(value)
+);
+
+});
+
+
+return{
+
+pairs:
+clamp(
+pairAvg/15
+),
+
+sum:
+clamp(
+sumAvg/300
+),
+
+consecutive:
+clamp(
+consecutiveAvg/10
+),
+
+ranges:
+ranges.map(
+arr=>
+clamp(
+average(arr)/4
+)
+)
+
+};
+
+}
+
+
+/* =========================================================
+   WALK-FORWARD
+========================================================= */
+
+function walkForward(history){
+
+/*
+  Usa no máximo 18 testes para manter
+  o processamento leve no celular.
+*/
+
+if(history.length<20){
+
+return{
+
+score:.5,
+
+tested:0,
+
+message:
+'histórico curto'
+
+};
+
+}
+
+
+const tests=
+Math.min(
+18,
+history.length-8
+);
+
+
+let total=0;
+
+let hits=0;
+
+
+for(
+let i=0;
+i<tests;
+i++
+){
+
+const past=
+history.slice(
+i+1
+);
+
+
+const target=
+history[i].dezenas;
+
+
+const ind=
+basicIndicators(
+past
+);
+
+
+const pair=
+buildCooccurrence(
+past
+);
+
+
+const trans=
+buildTransitions(
+past
+);
+
+
+const cyc=
+buildCycleSignals(
+past
+);
+
+
+const candidateScores={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+candidateScores[n]=
+
+ind[n].frequency*.28+
+
+ind[n].recent*.16+
+
+ind[n].delay*.06+
+
+ind[n].repeat*.08+
+
+pair.score[n]*.16+
+
+trans.score[n]*.14+
+
+cyc.score[n]*.12;
+
+}
+
+
+const ranking=
+Object.keys(
+candidateScores
+)
+.map(Number)
+.sort(
+(a,b)=>
+candidateScores[b]-
+candidateScores[a]
+);
+
+
+const top=
+ranking.slice(
+0,
+23
+);
+
+
+hits+=
+target.filter(
+n=>
+top.includes(n)
+).length;
+
+
+total+=15;
+
+}
+
+
+const rate=
+total
+?
+hits/total
+:
+0;
+
+
+return{
+
+score:
+clamp(
+rate*1.8
+),
+
+tested:tests,
+
+message:
+`${tests} testes • média ${(
+hits/tests
+).toFixed(2)
+}/15`
+
+};
+
+}
+
+
+/* =========================================================
    PESOS
-========================= */
+========================================================= */
 
 const WEIGHTS={
 
-  balanced:{
-    f:.24,
-    l:.06,
-    r:.22,
-    p:.20,
-    range:.08,
-    stability:.12,
-    div:.08
-  },
+frequency:{
+frequency:.25,
+delay:.04,
+recent:.16,
+repeat:.10,
+pair:.14,
+transition:.10,
+cycle:.07,
+structure:.14
+},
 
-  frequency:{
-    f:.38,
-    l:.04,
-    r:.20,
-    p:.14,
-    range:.06,
-    stability:.10,
-    div:.08
-  },
+recent:{
+frequency:.16,
+delay:.04,
+recent:.28,
+repeat:.12,
+pair:.13,
+transition:.12,
+cycle:.05,
+structure:.10
+},
 
-  recent:{
-    f:.18,
-    l:.04,
-    r:.38,
-    p:.18,
-    range:.06,
-    stability:.10,
-    div:.06
-  },
+balanced:{
+frequency:.20,
+delay:.06,
+recent:.18,
+repeat:.12,
+pair:.14,
+transition:.11,
+cycle:.07,
+structure:.12
+},
 
-  delayed:{
-    f:.18,
-    l:.18,
-    r:.16,
-    p:.12,
-    range:.10,
-    stability:.12,
-    div:.14
-  },
+pair:{
+frequency:.15,
+delay:.04,
+recent:.15,
+repeat:.10,
+pair:.27,
+transition:.12,
+cycle:.05,
+structure:.12
+},
 
-  repetition:{
-    f:.18,
-    l:.04,
-    r:.20,
-    p:.34,
-    range:.06,
-    stability:.10,
-    div:.08
-  }
+transition:{
+frequency:.16,
+delay:.04,
+recent:.16,
+repeat:.10,
+pair:.12,
+transition:.28,
+cycle:.05,
+structure:.09
+}
 
 };
 
 
-/* =========================
-   SCORE
-========================= */
+/* =========================================================
+   SCORE V25
+========================================================= */
 
-function calculateScores(
-  indicators,
-  weights
+function calculateScoresV25(){
+
+const basic=
+basicIndicators(H);
+
+
+const co=
+buildCooccurrence(H);
+
+
+const tr=
+buildTransitions(H);
+
+
+const cy=
+buildCycleSignals(H);
+
+
+const structure=
+buildStructureSignals(H);
+
+
+const walk=
+walkForward(H);
+
+
+let bestName=
+'balanced';
+
+
+let bestValue=
+-1;
+
+
+const candidates=
+Object.entries(
+WEIGHTS
+);
+
+
+for(
+const [name,w]
+of candidates
 ){
 
-  const result={};
+let total=0;
 
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
 
-    const x=
-      indicators[n];
+for(
+let n=1;
+n<=25;
+n++
+){
 
-    const combined=
-      clamp(
+total+=
 
-        x.f*weights.f+
-        x.l*weights.l+
-        x.r*weights.r+
-        x.p*weights.p+
-        x.range*weights.range+
-        x.stability*weights.stability+
-        (1-x.r)*weights.div
+basic[n].frequency*w.frequency+
 
-      );
+basic[n].delay*w.delay+
 
-    result[n]={
-      ...x,
-      combined
-    };
+basic[n].recent*w.recent+
 
-  }
+basic[n].repeat*w.repeat+
 
-  return result;
+co.score[n]*w.pair+
+
+tr.score[n]*w.transition+
+
+cy.score[n]*w.cycle+
+
+(
+structure.ranges[
+Math.floor((n-1)/5)
+]||.5
+)*w.structure;
+
 }
 
 
-/* =========================
+if(total>bestValue){
+
+bestValue=total;
+
+bestName=name;
+
+}
+
+}
+
+
+const W=
+WEIGHTS[
+bestName
+];
+
+
+const result={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+const faixa=
+Math.floor(
+(n-1)/5
+);
+
+
+const combined=
+
+basic[n].frequency*
+W.frequency+
+
+basic[n].delay*
+W.delay+
+
+basic[n].recent*
+W.recent+
+
+basic[n].repeat*
+W.repeat+
+
+co.score[n]*
+W.pair+
+
+tr.score[n]*
+W.transition+
+
+cy.score[n]*
+W.cycle+
+
+(
+structure.ranges[faixa]||.5
+)*
+W.structure;
+
+
+result[n]={
+
+frequency:
+basic[n].frequency,
+
+delay:
+basic[n].delay,
+
+recent:
+basic[n].recent,
+
+repeat:
+basic[n].repeat,
+
+pair:
+co.score[n],
+
+transition:
+tr.score[n],
+
+cycle:
+cy.score[n],
+
+combined:
+clamp(combined),
+
+rawFrequency:
+basic[n].rawFrequency,
+
+rawDelay:
+basic[n].rawDelay,
+
+rawRecent:
+basic[n].rawRecent
+
+};
+
+}
+
+
+return{
+
+scores:result,
+
+cooccurrence:co,
+
+transition:tr,
+
+cycle:cy,
+
+structure,
+
+walk,
+
+strategy:bestName,
+
+strategyValue:
+bestValue
+
+};
+
+}
+
+
+/* =========================================================
    NÚCLEO
-========================= */
+========================================================= */
 
-function buildPool(scores){
+function buildPoolV25(scores){
 
-  const ranking=
-    Object.keys(scores)
-      .map(Number)
-      .sort(
-        (a,b)=>
-          scores[b].combined-
-          scores[a].combined||
-          a-b
-      );
-
-
-  const core=
-    ranking.slice(0,18);
+const ranking=
+Object.keys(scores)
+.map(Number)
+.sort(
+(a,b)=>
+scores[b].combined-
+scores[a].combined||
+a-b
+);
 
 
-  const protection=
-    ranking
-      .filter(
-        n=>!core.includes(n)
-      )
-      .slice(0,3);
+const core=
+ranking.slice(
+0,
+18
+);
 
 
-  const remaining=
-    ranking
-      .filter(
-        n=>
-          !core.includes(n)&&
-          !protection.includes(n)
-      );
+const protection=
+ranking
+.filter(
+n=>!core.includes(n)
+)
+.sort(
+(a,b)=>
+(
+scores[b].delay+
+scores[b].transition
+)-
+(
+scores[a].delay+
+scores[a].transition
+)
+)
+.slice(
+0,
+3
+);
 
 
-  /*
-    Cobertura usa as melhores dezenas
-    restantes que tenham características
-    diferentes do núcleo.
-  */
-
-  remaining.sort(
-    (a,b)=>{
-
-      const A=
-        scores[a].f+
-        scores[a].r+
-        scores[a].l;
-
-      const B=
-        scores[b].f+
-        scores[b].r+
-        scores[b].l;
-
-      return B-A;
-
-    }
-  );
+const remaining=
+ranking
+.filter(
+n=>
+!core.includes(n)&&
+!protection.includes(n)
+);
 
 
-  const coverage=
-    remaining.slice(0,2);
+const coverage=
+remaining
+.sort(
+(a,b)=>
+(
+scores[b].pair+
+scores[b].cycle
+)-
+(
+scores[a].pair+
+scores[a].cycle
+)
+)
+.slice(
+0,
+2
+);
 
 
-  return {
+return{
 
-    core,
+core,
 
-    protection,
+protection,
 
-    coverage,
+coverage,
 
-    candidates:[
-      ...core,
-      ...protection,
-      ...coverage
-    ]
+candidates:
+unique([
+...core,
+...protection,
+...coverage
+])
 
-  };
+};
+
 }
 
 
-/* =========================
-   BACKTEST
-========================= */
+/* =========================================================
+   RENDER MODEL
+========================================================= */
 
-function runBacktest(){
+function renderModel(){
 
-  if(H.length<12)
-    return 'histórico curto: equilibrada';
-
-
-  const tests=
-    Math.min(
-      25,
-      H.length-8
-    );
+if(!MODEL)
+return;
 
 
-  let bestName=
-    'balanced';
-
-  let bestScore=
-    -Infinity;
+S=
+MODEL.scores;
 
 
-  for(
-    const [name,weights]
-    of Object.entries(WEIGHTS)
-  ){
-
-    let total=0;
+P=
+buildPoolV25(S);
 
 
-    for(
-      let i=0;
-      i<tests;
-      i++
-    ){
+document.getElementById(
+'core'
+).innerHTML=
 
-      const past=
-        H.slice(i+1);
-
-      const target=
-        H[i].dezenas;
-
-      const indicators=
-        calculateIndicators(
-          past
-        );
-
-      const scores=
-        calculateScores(
-          indicators,
-          weights
-        );
-
-      const pool=
-        buildPool(scores);
+P.core
+.map(
+n=>
+`<span class="core">${pad(n)}</span>`
+)
+.join('');
 
 
-      total+=
-        target.filter(
-          n=>
-            pool.candidates.includes(n)
-        ).length;
+document.getElementById(
+'nucleus'
+).innerHTML=
 
-    }
+`
+<b>
+18 núcleo + 3 proteção + 2 cobertura = 23 candidatas
+</b>
+
+<br>
+
+🛡️ Proteção:
+${P.protection.map(pad).join(' • ')}
+
+<br>
+
+🎯 Cobertura:
+${P.coverage.map(pad).join(' • ')}
+
+<br>
+
+🧠 Estratégia:
+<b>${MODEL.strategy}</b>
+`;
 
 
-    const average=
-      total/tests;
+const ranking=
+Object.keys(S)
+.map(Number)
+.sort(
+(a,b)=>
+S[b].combined-
+S[a].combined
+)
+.slice(
+0,
+12
+);
 
 
-    if(average>bestScore){
+document.getElementById(
+'score'
+).innerHTML=
 
-      bestScore=average;
-      bestName=name;
+ranking
+.map(
+n=>
 
-    }
+`
+<div class="row">
 
-  }
+<b>${pad(n)}</b>
+
+<div class="bar">
+
+<div
+class="fill"
+style="
+width:${Math.round(
+S[n].combined*100
+)}%
+">
+</div>
+
+</div>
+
+<span>
+${Math.round(
+S[n].combined*100
+)}%
+</span>
+
+</div>
+`
+
+)
+.join('');
 
 
-  return bestName;
+/*
+  Estratégias.
+*/
+
+const values=
+Object.values(S);
+
+
+document.getElementById(
+'freq'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.frequency
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'late'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.delay
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'recent'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.recent
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'repeat'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.repeat
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'pairStrategy'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.pair
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'transitionStrategy'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.transition
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'backtest'
+).textContent=
+MODEL.walk.message;
+
+
+/*
+  Sinais.
+*/
+
+document.getElementById(
+'sigFreq'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.frequency
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigRecent'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.recent
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigLate'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.delay
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigRepeat'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.repeat
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigPair'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.pair
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigTransition'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.transition
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigCycle'
+).textContent=
+Math.round(
+average(
+values.map(
+x=>x.cycle
+)
+)*100
+)+'%';
+
+
+document.getElementById(
+'sigWalk'
+).textContent=
+Math.round(
+MODEL.walk.score*100
+)+'%';
+
+
+/*
+  Engine.
+*/
+
+const confidence=
+Math.round(
+clamp(
+(
+MODEL.walk.score*.55+
+MODEL.strategyValue*.45
+)
+)*100
+);
+
+
+document.getElementById(
+'engineScore'
+).textContent=
+confidence+'%';
+
+
+document.getElementById(
+'engineCoverage'
+).textContent=
+P.candidates.length+'/23';
+
+
+document.getElementById(
+'engineStatus'
+).innerHTML=
+
+`
+<b>🧠 Modelo ativo:</b>
+${MODEL.strategy}
+
+<br>
+
+O motor encontrou sinais de
+frequência, recência, atraso,
+coocorrência, transição e ciclo.
+
+<br><br>
+
+<b>Importante:</b>
+isso é uma pontuação estatística,
+não uma previsão garantida do próximo
+sorteio.
+`;
+
+
+/*
+  Detector textual.
+*/
+
+const top=
+ranking.slice(0,5);
+
+
+const strongest=
+top
+.map(
+n=>
+`${pad(n)} (${Math.round(
+S[n].combined*100
+)}%)`
+)
+.join(' • ');
+
+
+document.getElementById(
+'signals'
+).innerHTML=
+
+`
+<div class="alert">
+
+🎯 <b>Top 5 sinais combinados:</b>
+
+<br><br>
+
+${strongest}
+
+<br><br>
+
+🔗 O motor está usando
+coocorrência e transição como
+sinais adicionais.
+
+<br><br>
+
+🧪 Walk-forward:
+${MODEL.walk.message}
+
+</div>
+`;
+
+
 }
 
 
-/* =========================
-   MODELO PRINCIPAL
-========================= */
+/* =========================================================
+   CALCULAR MODELO
+========================================================= */
 
 function calculateModel(){
 
-  const indicators=
-    calculateIndicators(H);
+if(H.length<5)
+return;
 
 
-  const best=
-    runBacktest();
+try{
+
+MODEL=
+calculateScoresV25();
 
 
-  S=
-    calculateScores(
-      indicators,
-      WEIGHTS[best]||
-      WEIGHTS.balanced
-    );
+renderModel();
 
 
-  P=
-    buildPool(S);
+localStorage.setItem(
+MODELKEY,
+JSON.stringify({
+strategy:MODEL.strategy,
+createdAt:Date.now()
+})
+);
 
 
-  /*
-    Núcleo
-  */
+}catch(error){
 
-  document.getElementById('core')
-    .innerHTML=
-      P.core
-        .map(
-          n=>
-          `<span class="core">${pad(n)}</span>`
-        )
-        .join('');
+console.error(
+'Erro no modelo V25:',
+error
+);
 
-
-  document.getElementById('nucleus')
-    .innerHTML=
-
-      `<b>
-      18 núcleo + 3 proteção + 2 cobertura = 23 candidatas
-      </b>
-      <br>
-      🛡️ Proteção:
-      ${P.protection.map(pad).join(' • ')}
-      <br>
-      🎯 Cobertura:
-      ${P.coverage.map(pad).join(' • ')}`;
-
-
-  /*
-    Ranking visual
-  */
-
-  const ranking=
-    Object.keys(S)
-      .map(Number)
-      .sort(
-        (a,b)=>
-          S[b].combined-
-          S[a].combined
-      )
-      .slice(0,12);
-
-
-  document.getElementById('score')
-    .innerHTML=
-
-      ranking
-        .map(
-          n=>
-
-          `<div class="row">
-
-            <b>${pad(n)}</b>
-
-            <div class="bar">
-              <div
-                class="fill"
-                style="width:${Math.round(
-                  S[n].combined*100
-                )}%"
-              ></div>
-            </div>
-
-            <span>
-              ${Math.round(
-                S[n].combined*100
-              )}%
-            </span>
-
-          </div>`
-
-        )
-        .join('');
-
-
-  const values=
-    Object.values(S);
-
-
-  document.getElementById('freq')
-    .textContent=
-      Math.round(
-        avg(
-          values.map(x=>x.f)
-        )*100
-      )+'%';
-
-
-  document.getElementById('late')
-    .textContent=
-      Math.round(
-        avg(
-          values.map(x=>x.l)
-        )*100
-      )+'%';
-
-
-  document.getElementById('recent')
-    .textContent=
-      Math.round(
-        avg(
-          values.map(x=>x.r)
-        )*100
-      )+'%';
-
-
-  document.getElementById('repeat')
-    .textContent=
-      Math.round(
-        avg(
-          values.map(x=>x.p)
-        )*100
-      )+'%';
-
-
-  document.getElementById('structure')
-    .textContent=
-      '6–9 pares + 1–5 por faixa';
-
-
-  document.getElementById('backtest')
-    .textContent=
-      `melhor configuração: ${best}`;
+}
 
 }
 
 
-/* =========================
-   VALIDAÇÃO ESTRUTURAL
-========================= */
+/* =========================================================
+   ESTRUTURA DO JOGO
+========================================================= */
 
-function structuralQuality(game){
+function structuralScore(game){
 
-  if(!Array.isArray(game))
-    return -999;
-
-
-  if(game.length!==15)
-    return -999;
-
-
-  if(unique(game).length!==15)
-    return -999;
+if(
+!game||
+game.length!==15
+)
+return -999;
 
 
-  if(
-    game.some(
-      n=>n<1||n>25
-    )
-  )
-    return -999;
+if(
+unique(game).length!==15
+)
+return -999;
 
 
-  const pairs=
-    evenCount(game);
+const pairs=
+evenCount(game);
 
 
-  const ranges=
-    rangeCounts(game);
+const ranges=
+rangeCounts(game);
 
 
-  let score=0;
+let score=0;
 
 
-  /*
-    Pares
-  */
+/*
+  Pares.
+*/
 
-  if(pairs>=6&&pairs<=9)
-    score+=30;
-  else
-    score-=
-      Math.abs(
-        pairs-7.5
-      )*4;
-
-
-  /*
-    Faixas
-  */
-
-  ranges.forEach(x=>{
-
-    if(x>=1&&x<=5)
-      score+=10;
-
-    else
-      score-=8;
-
-  });
-
-
-  return score;
-}
-
-
-/* =========================
-   CONSTRUÇÃO DE UM JOGO
-========================= */
-
-function createGame(
-  mode,
-  usage
+if(
+pairs>=6&&
+pairs<=9
 ){
 
-  /*
-    Ranking base
-  */
+score+=30;
 
-  let ranking=
-    [...P.candidates];
+}else{
 
-
-  ranking.sort(
-    (a,b)=>{
-
-      let A=
-        S[a].combined;
-
-      let B=
-        S[b].combined;
-
-
-      if(mode==='frequency'){
-
-        A=
-          S[a].f*.65+
-          S[a].combined*.35;
-
-        B=
-          S[b].f*.65+
-          S[b].combined*.35;
-
-      }
-
-
-      if(mode==='recent'){
-
-        A=
-          S[a].r*.65+
-          S[a].combined*.35;
-
-        B=
-          S[b].r*.65+
-          S[b].combined*.35;
-
-      }
-
-
-      if(mode==='delayed'){
-
-        A=
-          S[a].l*.60+
-          S[a].combined*.40;
-
-        B=
-          S[b].l*.60+
-          S[b].combined*.40;
-
-      }
-
-
-      if(mode==='protection'){
-
-        A=
-          (
-            P.protection.includes(a)
-            ? .25
-            : 0
-          )+
-          S[a].combined;
-
-        B=
-          (
-            P.protection.includes(b)
-            ? .25
-            : 0
-          )+
-          S[b].combined;
-
-      }
-
-
-      if(mode==='coverage'){
-
-        A=
-          (
-            P.coverage.includes(a)
-            ? .30
-            : 0
-          )+
-          S[a].combined;
-
-        B=
-          (
-            P.coverage.includes(b)
-            ? .30
-            : 0
-          )+
-          S[b].combined;
-
-      }
-
-
-      /*
-        Penaliza dezenas que já apareceram
-        muitas vezes nos jogos anteriores.
-      */
-
-      A-=
-        (usage[a]||0)*.12;
-
-      B-=
-        (usage[b]||0)*.12;
-
-
-      return B-A||a-b;
-
-    }
-  );
-
-
-  const game=[];
-
-
-  /*
-    PRIMEIRO:
-    uma dezena de cada faixa.
-  */
-
-  for(
-    let faixa=0;
-    faixa<5;
-    faixa++
-  ){
-
-    const options=
-      ranking.filter(
-        n=>
-          Math.floor((n-1)/5)===faixa&&
-          !game.includes(n)
-      );
-
-
-    if(options.length){
-
-      /*
-        Pega uma das melhores,
-        com pequena rotação.
-      */
-
-      const pick=
-        options[
-          Math.min(
-            Math.floor(
-              usage[options[0]]||0
-            ),
-            options.length-1
-          )
-        ];
-
-
-      game.push(pick);
-
-    }
-
-  }
-
-
-  /*
-    SEGUNDO:
-    adiciona proteção/cobertura
-    dependendo do modo.
-  */
-
-  let special=[];
-
-
-  if(mode==='protection')
-    special=P.protection;
-
-
-  if(mode==='coverage')
-    special=P.coverage;
-
-
-  for(const n of special){
-
-    if(
-      game.length<15&&
-      !game.includes(n)
-    ){
-
-      game.push(n);
-
-    }
-
-  }
-
-
-  /*
-    TERCEIRO:
-    completa pelo ranking.
-  */
-
-  for(const n of ranking){
-
-    if(game.length>=15)
-      break;
-
-    if(!game.includes(n))
-      game.push(n);
-
-  }
-
-
-  /*
-    QUARTO:
-    tenta ajustar quantidade de pares.
-  */
-
-  let guard=0;
-
-
-  while(
-    guard<20
-  ){
-
-    guard++;
-
-
-    const pairs=
-      evenCount(game);
-
-
-    if(pairs>=6&&pairs<=9)
-      break;
-
-
-    if(pairs<6){
-
-      const add=
-        ranking.find(
-          n=>
-            !game.includes(n)&&
-            n%2===0
-        );
-
-
-      const remove=
-        [...game]
-          .filter(n=>n%2!==0)
-          .sort(
-            (a,b)=>
-              S[a].combined-
-              S[b].combined
-          )[0];
-
-
-      if(
-        add===undefined||
-        remove===undefined
-      )
-        break;
-
-
-      game[
-        game.indexOf(remove)
-      ]=add;
-
-    }
-
-
-    else if(pairs>9){
-
-      const add=
-        ranking.find(
-          n=>
-            !game.includes(n)&&
-            n%2!==0
-        );
-
-
-      const remove=
-        [...game]
-          .filter(n=>n%2===0)
-          .sort(
-            (a,b)=>
-              S[a].combined-
-              S[b].combined
-          )[0];
-
-
-      if(
-        add===undefined||
-        remove===undefined
-      )
-        break;
-
-
-      game[
-        game.indexOf(remove)
-      ]=add;
-
-    }
-
-  }
-
-
-  return sortNums(
-    unique(game)
-  ).slice(0,15);
+score-=
+Math.abs(
+pairs-7.5
+)*5;
 
 }
 
 
-/* =========================
-   DIVERSIDADE
-========================= */
+/*
+  Faixas.
+*/
+
+ranges.forEach(
+x=>{
+
+if(
+x>=1&&
+x<=5
+){
+
+score+=10;
+
+}else{
+
+score-=10;
+
+}
+
+});
+
+
+/*
+  Soma.
+  A faixa 180–210 recebe
+  leve preferência, sem
+  obrigatoriedade.
+*/
+
+const sum=
+sumGame(game);
+
+
+if(
+sum>=175&&
+sum<=215
+){
+
+score+=10;
+
+}else{
+
+score-=2;
+
+}
+
+
+/*
+  Consecutivas.
+*/
+
+const consecutive=
+consecutiveCount(game);
+
+
+if(
+consecutive>=3&&
+consecutive<=8
+){
+
+score+=8;
+
+}
+
+
+return score;
+
+}
+
+
+/* =========================================================
+   CRIAR JOGO
+========================================================= */
+
+function createGameV25(
+mode,
+usage,
+offset=0
+){
+
+if(
+!P||
+!P.candidates||
+P.candidates.length<15
+){
+
+return[];
+
+}
+
+
+let ranking=
+[...P.candidates];
+
+
+ranking.sort(
+(a,b)=>{
+
+let A=
+S[a].combined;
+
+let B=
+S[b].combined;
+
+
+if(mode==='frequency'){
+
+A=
+S[a].frequency*.6+
+S[a].combined*.4;
+
+B=
+S[b].frequency*.6+
+S[b].combined*.4;
+
+}
+
+
+if(mode==='recent'){
+
+A=
+S[a].recent*.65+
+S[a].combined*.35;
+
+B=
+S[b].recent*.65+
+S[b].combined*.35;
+
+}
+
+
+if(mode==='pair'){
+
+A=
+S[a].pair*.65+
+S[a].combined*.35;
+
+B=
+S[b].pair*.65+
+S[b].combined*.35;
+
+}
+
+
+if(mode==='transition'){
+
+A=
+S[a].transition*.65+
+S[a].combined*.35;
+
+B=
+S[b].transition*.65+
+S[b].combined*.35;
+
+}
+
+
+if(mode==='cycle'){
+
+A=
+S[a].cycle*.55+
+S[a].combined*.45;
+
+B=
+S[b].cycle*.55+
+S[b].combined*.45;
+
+}
+
+
+if(mode==='protection'){
+
+A=
+S[a].combined+
+(
+P.protection.includes(a)
+?
+.25
+:
+0
+);
+
+B=
+S[b].combined+
+(
+P.protection.includes(b)
+?
+.25
+:
+0
+);
+
+}
+
+
+if(mode==='coverage'){
+
+A=
+S[a].combined+
+(
+P.coverage.includes(a)
+?
+.30
+:
+0
+);
+
+B=
+S[b].combined+
+(
+P.coverage.includes(b)
+?
+.30
+:
+0
+);
+
+}
+
+
+/*
+  Penaliza uso excessivo.
+*/
+
+A-=
+(usage[a]||0)*.12;
+
+B-=
+(usage[b]||0)*.12;
+
+
+return B-A||a-b;
+
+});
+
+
+const game=[];
+
+
+/*
+  Primeiro:
+  1 por faixa.
+*/
+
+for(
+let faixa=0;
+faixa<5;
+faixa++
+){
+
+const options=
+ranking.filter(
+n=>
+Math.floor(
+(n-1)/5
+)===faixa&&
+!game.includes(n)
+);
+
+
+if(options.length){
+
+const index=
+(
+offset+
+faixa
+)%options.length;
+
+
+game.push(
+options[index]
+);
+
+}
+
+}
+
+
+/*
+  Depois tenta colocar
+  dezenas especiais.
+*/
+
+let specials=[];
+
+
+if(mode==='protection')
+specials=P.protection;
+
+
+if(mode==='coverage')
+specials=P.coverage;
+
+
+if(mode==='pair'){
+
+specials=
+P.candidates
+.filter(
+n=>
+S[n].pair>.6
+);
+
+}
+
+
+if(mode==='transition'){
+
+specials=
+P.candidates
+.filter(
+n=>
+S[n].transition>.6
+);
+
+}
+
+
+if(mode==='cycle'){
+
+specials=
+P.candidates
+.filter(
+n=>
+S[n].cycle>.6
+);
+
+}
+
+
+for(
+const n of specials
+){
+
+if(
+game.length>=15
+)
+break;
+
+
+if(
+!game.includes(n)
+){
+
+game.push(n);
+
+}
+
+}
+
+
+/*
+  Completa pelo ranking.
+*/
+
+for(
+const n of ranking
+){
+
+if(
+game.length>=15
+)
+break;
+
+
+if(
+!game.includes(n)
+){
+
+game.push(n);
+
+}
+
+}
+
+
+/*
+  Ajuste de pares.
+*/
+
+for(
+let guard=0;
+guard<12;
+guard++
+){
+
+const pairs=
+evenCount(game);
+
+
+if(
+pairs>=6&&
+pairs<=9
+)
+break;
+
+
+if(pairs<6){
+
+const add=
+ranking.find(
+n=>
+!game.includes(n)&&
+n%2===0
+);
+
+
+const remove=
+game
+.filter(
+n=>
+n%2!==0
+)
+.sort(
+(a,b)=>
+S[a].combined-
+S[b].combined
+)[0];
+
+
+if(
+add===undefined||
+remove===undefined
+)
+break;
+
+
+game[
+game.indexOf(remove)
+]=
+add;
+
+}
+
+
+if(pairs>9){
+
+const add=
+ranking.find(
+n=>
+!game.includes(n)&&
+n%2!==0
+);
+
+
+const remove=
+game
+.filter(
+n=>
+n%2===0
+)
+.sort(
+(a,b)=>
+S[a].combined-
+S[b].combined
+)[0];
+
+
+if(
+add===undefined||
+remove===undefined
+)
+break;
+
+
+game[
+game.indexOf(remove)
+]=
+add;
+
+}
+
+}
+
+
+/*
+  Normalização.
+*/
+
+return sortNums(
+unique(game)
+).slice(
+0,
+15
+);
+
+}
+
+
+/* =========================================================
+   SCORE DE PORTFÓLIO
+========================================================= */
 
 function portfolioScore(
-  game,
-  games,
-  usage
+game,
+games,
+usage
 ){
 
-  let value=
-    gameScore(game);
+let score=
+gameScore(game);
 
 
-  /*
-    Recompensa cobertura
-  */
+/*
+  Cobertura.
+*/
 
-  game.forEach(n=>{
+game.forEach(
+n=>{
 
-    if(!usage[n])
-      value+=2.5;
+if(
+!usage[n]
+){
 
-    else if(
-      usage[n]===1
-    )
-      value+=.7;
+score+=2.5;
 
-  });
+}else if(
+usage[n]===1
+){
 
+score+=.8;
 
-  /*
-    Penaliza jogos muito parecidos
-  */
+}
 
-  games.forEach(existing=>{
-
-    const ov=
-      overlap(
-        game,
-        existing
-      );
+});
 
 
-    if(ov>11)
-      value-=
-        (ov-11)*3;
+/*
+  Sobreposição.
+*/
 
-    else if(ov>9)
-      value-=
-        (ov-9)*.8;
+games.forEach(
+existing=>{
 
-  });
-
-
-  /*
-    Recompensa estrutura
-  */
-
-  value+=
-    structuralQuality(game);
+const ov=
+overlap(
+game,
+existing
+);
 
 
-  return value;
+if(ov>11){
+
+score-=
+(ov-11)*4;
+
+}else if(ov>9){
+
+score-=
+(ov-9)*1.2;
+
+}
+
+});
+
+
+/*
+  Estrutura.
+*/
+
+score+=
+structuralScore(game);
+
+
+return score;
+
 }
 
 
-/* =========================
-   GERADOR V24.2
-========================= */
+/* =========================================================
+   GERADOR V25
+========================================================= */
 
 function generate(){
 
-  if(!H.length){
+if(H.length<5){
 
-    alert(
-      'Primeiro atualize o histórico.'
-    );
+alert(
+'Atualize pelo menos alguns concursos antes de gerar.'
+);
 
-    return;
-  }
-
-
-  if(!P)
-    calculateModel();
-
-
-  if(
-    !P||
-    !P.candidates||
-    P.candidates.length<23
-  ){
-
-    alert(
-      'Não foi possível montar as 23 candidatas. Atualize o histórico novamente.'
-    );
-
-    return;
-  }
-
-
-  const button=
-    document.getElementById('generate');
-
-  const info=
-    document.getElementById('generatorInfo');
-
-
-  button.disabled=true;
-
-  button.textContent=
-    '🧪 Montando portfólio V24.2...';
-
-  info.textContent=
-    'Calculando cobertura e diversidade...';
-
-
-  /*
-    IMPORTANTE:
-    Não usamos setTimeout + loops infinitos.
-    Todo o cálculo abaixo possui limites fixos.
-  */
-
-  try{
-
-    const modes=[
-      'balanced',
-      'protection',
-      'frequency',
-      'recent',
-      'delayed',
-      'coverage'
-    ];
-
-
-    const games=[];
-
-
-    const usage={};
-
-    for(
-      let n=1;
-      n<=25;
-      n++
-    ){
-
-      usage[n]=0;
-
-    }
-
-
-    /*
-      Cada jogo testa uma quantidade
-      pequena e FIXA de candidatos.
-    */
-
-    for(
-      let index=0;
-      index<TOTAL_GAMES;
-      index++
-    ){
-
-      let bestGame=null;
-      let bestValue=-Infinity;
-
-
-      /*
-        35 tentativas por jogo.
-        Isso é suficiente para variar
-        sem risco de travamento.
-      */
-
-      for(
-        let attempt=0;
-        attempt<35;
-        attempt++
-      ){
-
-        const game=
-          createGame(
-            modes[index],
-            usage
-          );
-
-
-        if(game.length!==15)
-          continue;
-
-
-        /*
-          Rotação determinística:
-          algumas tentativas trocam
-          posições dentro das candidatas.
-        */
-
-        if(attempt>0){
-
-          const candidates=
-            P.candidates
-              .filter(
-                n=>!game.includes(n)
-              )
-              .sort(
-                (a,b)=>
-                  S[b].combined-
-                  S[a].combined
-              );
-
-
-          const replaceCount=
-            Math.min(
-              1+(attempt%3),
-              3
-            );
-
-
-          for(
-            let k=0;
-            k<replaceCount;
-            k++
-          ){
-
-            if(
-              !candidates[k]
-            )
-              break;
-
-
-            /*
-              Só substitui quando
-              mantém 15 dezenas.
-            */
-
-            const removeCandidates=
-              game
-                .filter(
-                  n=>
-                    !P.protection.includes(n)
-                )
-                .sort(
-                  (a,b)=>
-                    S[a].combined-
-                    S[b].combined
-                );
-
-
-            const remove=
-              removeCandidates[
-                k%removeCandidates.length
-              ];
-
-
-            if(
-              remove!==undefined
-            ){
-
-              game[
-                game.indexOf(remove)
-              ]=
-                candidates[k];
-
-            }
-
-          }
-
-        }
-
-
-        const normalized=
-          sortNums(
-            unique(game)
-          );
-
-
-        if(
-          normalized.length!==15
-        )
-          continue;
-
-
-        const value=
-          portfolioScore(
-            normalized,
-            games,
-            usage
-          );
-
-
-        if(value>bestValue){
-
-          bestValue=value;
-          bestGame=normalized;
-
-        }
-
-      }
-
-
-      /*
-        Fallback imediato.
-      */
-
-      if(!bestGame){
-
-        bestGame=
-          createGame(
-            modes[index],
-            usage
-          );
-
-      }
-
-
-      /*
-        Último fallback absoluto.
-        Nunca permite que o jogo fique
-        sem 15 dezenas.
-      */
-
-      if(
-        !bestGame||
-        bestGame.length!==15
-      ){
-
-        bestGame=
-          P.candidates
-            .slice(
-              index%5,
-              (index%5)+15
-            );
-
-
-        /*
-          Caso o slice não tenha 15,
-          usa as melhores candidatas.
-        */
-
-        if(bestGame.length!==15){
-
-          bestGame=
-            [...P.candidates]
-              .sort(
-                (a,b)=>
-                  S[b].combined-
-                  S[a].combined
-              )
-              .slice(0,15);
-
-        }
-
-      }
-
-
-      bestGame=
-        sortNums(
-          unique(bestGame)
-        );
-
-
-      /*
-        Garantia final de 15.
-      */
-
-      if(bestGame.length<15){
-
-        for(
-          const n of P.candidates
-        ){
-
-          if(
-            bestGame.length>=15
-          )
-            break;
-
-
-          if(
-            !bestGame.includes(n)
-          )
-            bestGame.push(n);
-
-        }
-
-      }
-
-
-      bestGame=
-        sortNums(
-          unique(bestGame)
-        ).slice(0,15);
-
-
-      games.push(bestGame);
-
-
-      bestGame.forEach(
-        n=>{
-          usage[n]++;
-        }
-      );
-
-    }
-
-
-    /*
-      ==================================================
-      FASE 2 — COBERTURA DAS 23 CANDIDATAS
-      ==================================================
-    */
-
-    let missing=
-      P.candidates.filter(
-        n=>
-          !games.some(
-            g=>g.includes(n)
-          )
-      );
-
-
-    /*
-      Tenta inserir cada dezena ausente
-      substituindo a menor pontuada.
-    */
-
-    for(
-      const missingNumber of missing
-    ){
-
-      let bestIndex=-1;
-      let bestRemove=null;
-      let bestLoss=Infinity;
-
-
-      for(
-        let i=0;
-        i<games.length;
-        i++
-      ){
-
-        const game=
-          games[i];
-
-
-        const removable=
-          game
-            .filter(
-              n=>
-                !P.protection.includes(n)
-            )
-            .sort(
-              (a,b)=>
-                S[a].combined-
-                S[b].combined
-            );
-
-
-        for(
-          const remove of removable
-        ){
-
-          const test=
-            game.map(
-              n=>
-                n===remove
-                ?missingNumber
-                :n
-            );
-
-
-          const normalized=
-            sortNums(
-              unique(test)
-            );
-
-
-          if(
-            normalized.length!==15
-          )
-            continue;
-
-
-          /*
-            Não deixa a substituição
-            criar uma concentração absurda.
-          */
-
-          const loss=
-            S[remove].combined-
-            S[missingNumber].combined;
-
-
-          if(loss<bestLoss){
-
-            bestLoss=loss;
-            bestIndex=i;
-            bestRemove=remove;
-
-          }
-
-        }
-
-      }
-
-
-      if(
-        bestIndex>=0&&
-        bestRemove!==null
-      ){
-
-        games[bestIndex]=
-          sortNums(
-            games[bestIndex].map(
-              n=>
-                n===bestRemove
-                ?missingNumber
-                :n
-            )
-          );
-
-      }
-
-    }
-
-
-    /*
-      ==================================================
-      FASE 3 — GARANTE 6 JOGOS
-      ==================================================
-    */
-
-    while(
-      games.length<TOTAL_GAMES
-    ){
-
-      const extra=
-        createGame(
-          'coverage',
-          usage
-        );
-
-
-      if(
-        extra.length===15
-      ){
-
-        games.push(extra);
-
-        extra.forEach(
-          n=>usage[n]++
-        );
-
-      }else{
-
-        /*
-          Fallback sem loop infinito.
-        */
-
-        break;
-
-      }
-
-    }
-
-
-    /*
-      ==================================================
-      NORMALIZAÇÃO FINAL
-      ==================================================
-    */
-
-    GAMES=
-      games
-        .slice(0,TOTAL_GAMES)
-        .map(
-          game=>
-            sortNums(
-              unique(game)
-            ).slice(0,15)
-        );
-
-
-    /*
-      Se por alguma razão extrema
-      algum jogo ficou com menos de 15,
-      completa imediatamente.
-    */
-
-    GAMES=
-      GAMES.map(game=>{
-
-        if(game.length<15){
-
-          const candidates=
-            P.candidates
-              .filter(
-                n=>!game.includes(n)
-              );
-
-
-          for(
-            const n of candidates
-          ){
-
-            if(game.length>=15)
-              break;
-
-            game.push(n);
-
-          }
-
-        }
-
-        return sortNums(
-          unique(game)
-        ).slice(0,15);
-
-      });
-
-
-    /*
-      Salva.
-    */
-
-    localStorage.setItem(
-      GKEY,
-      JSON.stringify({
-
-        target:
-          Number(
-            H[0]?.concurso||0
-          )+1,
-
-        games:GAMES,
-
-        version:'V24.2'
-
-      })
-    );
-
-
-    /*
-      Renderiza.
-    */
-
-    renderGames();
-
-
-    /*
-      Informações do portfólio.
-    */
-
-    const totalCoverage=
-      unique(
-        GAMES.flat()
-      ).length;
-
-
-    const overlaps=[];
-
-
-    for(
-      let i=0;
-      i<GAMES.length;
-      i++
-    ){
-
-      for(
-        let j=i+1;
-        j<GAMES.length;
-        j++
-      ){
-
-        overlaps.push(
-          overlap(
-            GAMES[i],
-            GAMES[j]
-          )
-        );
-
-      }
-
-    }
-
-
-    const averageOverlap=
-      overlaps.length
-      ?avg(overlaps)
-      :0;
-
-
-    info.innerHTML=
-      `✅ ${GAMES.length} jogos gerados • `+
-      `🎯 ${totalCoverage}/23 candidatas cobertas • `+
-      `🔄 sobreposição média ${averageOverlap.toFixed(1)}`;
-
-
-    button.disabled=false;
-
-    button.textContent=
-      '🔄 Gerar novamente';
-
-
-  }catch(error){
-
-    console.error(
-      'Erro V24.2:',
-      error
-    );
-
-
-    /*
-      Mesmo em erro, tenta uma
-      geração simples e segura.
-    */
-
-    try{
-
-      GAMES=[];
-
-
-      const ranking=
-        [...P.candidates]
-          .sort(
-            (a,b)=>
-              S[b].combined-
-              S[a].combined
-          );
-
-
-      for(
-        let i=0;
-        i<6;
-        i++
-      ){
-
-        const game=[];
-
-
-        for(
-          let k=0;
-          k<15;
-          k++
-        ){
-
-          const n=
-            ranking[
-              (k+i*2)%
-              ranking.length
-            ];
-
-
-          if(
-            n!==undefined&&
-            !game.includes(n)
-          ){
-
-            game.push(n);
-
-          }
-
-        }
-
-
-        /*
-          Completa se necessário.
-        */
-
-        for(
-          const n of ranking
-        ){
-
-          if(game.length>=15)
-            break;
-
-
-          if(!game.includes(n))
-            game.push(n);
-
-        }
-
-
-        GAMES.push(
-          sortNums(game)
-        );
-
-      }
-
-
-      localStorage.setItem(
-        GKEY,
-        JSON.stringify({
-
-          target:
-            Number(
-              H[0]?.concurso||0
-            )+1,
-
-          games:GAMES,
-
-          version:'V24.2'
-
-        })
-      );
-
-
-      renderGames();
-
-
-      info.textContent=
-        '✅ Jogos gerados pelo modo de segurança.';
-
-
-    }catch(fatal){
-
-      console.error(
-        'Falha total:',
-        fatal
-      );
-
-
-      document.getElementById('games')
-        .innerHTML=
-          `<div class="box">
-            Não foi possível gerar os jogos.
-            Atualize os resultados e tente novamente.
-          </div>`;
-
-    }
-
-
-    button.disabled=false;
-
-    button.textContent=
-      '🔄 Gerar novamente';
-
-  }
+return;
 
 }
 
 
-/* =========================
-   EXIBIÇÃO DOS JOGOS
-========================= */
+if(!MODEL){
+
+calculateModel();
+
+}
+
+
+if(
+!P||
+P.candidates.length<23
+){
+
+alert(
+'O núcleo ainda não foi calculado. Atualize o histórico novamente.'
+);
+
+return;
+
+}
+
+
+const button=
+document.getElementById(
+'generate'
+);
+
+
+const info=
+document.getElementById(
+'generatorInfo'
+);
+
+
+button.disabled=true;
+
+button.textContent=
+'🧠 Analisando sinais V25...';
+
+
+info.textContent=
+'Construindo o portfólio...';
+
+
+try{
+
+const modes=[
+'balanced',
+'frequency',
+'recent',
+'pair',
+'transition',
+'coverage'
+];
+
+
+const games=[];
+
+const usage={};
+
+
+for(
+let n=1;
+n<=25;
+n++
+){
+
+usage[n]=0;
+
+}
+
+
+/*
+  6 jogos.
+  Cada jogo faz somente
+  40 tentativas.
+*/
+
+for(
+let index=0;
+index<6;
+index++
+){
+
+let best=null;
+
+let bestScore=-Infinity;
+
+
+for(
+let attempt=0;
+attempt<40;
+attempt++
+){
+
+const mode=
+modes[index];
+
+
+const game=
+createGameV25(
+mode,
+usage,
+attempt
+);
+
+
+if(
+game.length!==15
+)
+continue;
+
+
+const score=
+portfolioScore(
+game,
+games,
+usage
+);
+
+
+if(
+score>bestScore
+){
+
+bestScore=score;
+
+best=game;
+
+}
+
+}
+
+
+if(!best){
+
+best=
+createGameV25(
+modes[index],
+usage,
+index
+);
+
+}
+
+
+/*
+  Fallback simples.
+*/
+
+if(
+!best||
+best.length!==15
+){
+
+best=
+P.candidates
+.slice(
+0,
+15
+);
+
+}
+
+
+/*
+  Garantia de 15.
+*/
+
+if(
+best.length<15
+){
+
+for(
+const n of P.candidates
+){
+
+if(
+best.length>=15
+)
+break;
+
+
+if(
+!best.includes(n)
+){
+
+best.push(n);
+
+}
+
+}
+
+}
+
+
+best=
+sortNums(
+unique(best)
+).slice(
+0,
+15
+);
+
+
+games.push(best);
+
+
+best.forEach(
+n=>{
+usage[n]++;
+}
+);
+
+}
+
+
+/*
+  Cobertura.
+*/
+
+const missing=
+P.candidates.filter(
+n=>
+!games.some(
+g=>g.includes(n)
+)
+);
+
+
+for(
+const missingNumber of missing
+){
+
+let bestGame=-1;
+
+let bestRemove=null;
+
+let bestLoss=Infinity;
+
+
+for(
+let i=0;
+i<games.length;
+i++
+){
+
+const game=
+games[i];
+
+
+const removable=
+game
+.filter(
+n=>
+!P.protection.includes(n)
+)
+.sort(
+(a,b)=>
+S[a].combined-
+S[b].combined
+);
+
+
+for(
+const remove of removable
+){
+
+const test=
+game.map(
+n=>
+n===remove
+?
+missingNumber
+:
+n
+);
+
+
+if(
+test.length!==15||
+unique(test).length!==15
+)
+continue;
+
+
+const loss=
+S[remove].combined-
+S[missingNumber].combined;
+
+
+if(loss<bestLoss){
+
+bestLoss=loss;
+
+bestGame=i;
+
+bestRemove=remove;
+
+}
+
+}
+
+}
+
+
+if(
+bestGame>=0&&
+bestRemove!==null
+){
+
+games[bestGame]=
+sortNums(
+games[bestGame].map(
+n=>
+n===bestRemove
+?
+missingNumber
+:
+n
+)
+);
+
+}
+
+}
+
+
+/*
+  Resultado final.
+*/
+
+GAMES=
+games
+.slice(
+0,
+6
+)
+.map(
+game=>
+sortNums(
+unique(game)
+).slice(
+0,
+15
+)
+);
+
+
+/*
+  Segurança.
+*/
+
+while(
+GAMES.length<6
+){
+
+const fallback=
+sortNums(
+P.candidates.slice(
+0,
+15
+)
+);
+
+
+GAMES.push(
+fallback
+);
+
+}
+
+
+GAMES=
+GAMES.slice(
+0,
+6
+);
+
+
+/*
+  Salva.
+*/
+
+localStorage.setItem(
+GKEY,
+JSON.stringify({
+
+version:'V25',
+
+target:
+Number(
+H[0]?.concurso||0
+)+1,
+
+games:GAMES,
+
+createdAt:
+Date.now()
+
+})
+);
+
+
+/*
+  Renderiza.
+*/
+
+renderGames();
+
+
+const covered=
+unique(
+GAMES.flat()
+).length;
+
+
+const overlaps=[];
+
+
+for(
+let i=0;
+i<GAMES.length;
+i++
+){
+
+for(
+let j=i+1;
+j<GAMES.length;
+j++
+){
+
+overlaps.push(
+overlap(
+GAMES[i],
+GAMES[j]
+)
+);
+
+}
+
+}
+
+
+const averageOverlap=
+overlaps.length
+?
+average(overlaps)
+:
+0;
+
+
+info.innerHTML=
+
+`✅ 6 jogos gerados • `+
+`🎯 ${covered}/23 candidatas cobertas • `+
+`🔄 sobreposição média ${averageOverlap.toFixed(1)}`;
+
+
+button.disabled=false;
+
+button.textContent=
+'🔄 Gerar novamente';
+
+
+}catch(error){
+
+console.error(
+'Erro no gerador V25:',
+error
+);
+
+
+/*
+  FALLBACK ABSOLUTO.
+*/
+
+try{
+
+const ranking=
+Object.keys(S)
+.map(Number)
+.sort(
+(a,b)=>
+S[b].combined-
+S[a].combined
+);
+
+
+GAMES=[];
+
+
+for(
+let i=0;
+i<6;
+i++
+){
+
+let game=[];
+
+
+for(
+let k=0;
+k<15;
+k++
+){
+
+const n=
+ranking[
+(k+
+i*2)%
+ranking.length
+];
+
+
+if(
+n!==undefined&&
+!game.includes(n)
+){
+
+game.push(n);
+
+}
+
+}
+
+
+GAMES.push(
+sortNums(game)
+);
+
+}
+
+
+renderGames();
+
+
+info.textContent=
+'✅ Jogos gerados pelo modo de segurança.';
+
+
+}catch(fatal){
+
+console.error(
+fatal
+);
+
+document.getElementById(
+'games'
+).innerHTML=
+
+`
+<div class="box">
+
+Não foi possível montar
+o portfólio.
+
+Atualize o histórico
+e tente novamente.
+
+</div>
+`;
+
+}
+
+
+button.disabled=false;
+
+button.textContent=
+'🔄 Gerar novamente';
+
+}
+
+}
+
+
+/* =========================================================
+   RENDER JOGOS
+========================================================= */
 
 function renderGames(){
 
-  const container=
-    document.getElementById('games');
+const container=
+document.getElementById(
+'games'
+);
 
 
-  if(
-    !GAMES||
-    !GAMES.length
-  ){
+if(
+!GAMES||
+!GAMES.length
+){
 
-    container.innerHTML=
-      `<div class="box">
-        Nenhum jogo foi gerado.
-      </div>`;
+container.innerHTML=
+`
+<div class="box">
+Nenhum jogo gerado.
+</div>
+`;
 
-    return;
-
-  }
-
-
-  const labels=[
-    '🧠 Núcleo',
-    '🛡️ Proteção',
-    '🔥 Frequência',
-    '🕐 Recente',
-    '❄️ Atrasados',
-    '🎯 Cobertura'
-  ];
-
-
-  container.innerHTML=
-    GAMES.map(
-      (game,index)=>{
-
-        const pairs=
-          evenCount(game);
-
-        const ranges=
-          rangeCounts(game);
-
-        const score=
-          gameScore(game);
-
-
-        return `
-
-        <div class="game">
-
-          <span class="badge">
-            ${labels[index]||'🎯 Portfólio'}
-          </span>
-
-          <h3>
-            Jogo ${index+1}
-          </h3>
-
-          <div class="balls">
-
-            ${game.map(
-              n=>
-              `<span class="ball">
-                ${pad(n)}
-              </span>`
-            ).join('')}
-
-          </div>
-
-          <div class="help">
-
-            Pares:
-            <b>${pairs}</b>
-
-            •
-
-            Faixas:
-            <b>${ranges.join('-')}</b>
-
-            •
-
-            Score:
-            <b>${score.toFixed(2)}</b>
-
-          </div>
-
-        </div>
-
-        `;
-
-      }
-    ).join('');
+return;
 
 }
 
 
-/* =========================
-   VALIDAÇÃO PÓS-SORTEIO
-========================= */
+const labels=[
+'🧠 Núcleo',
+'🔥 Frequência',
+'🕐 Recente',
+'🔗 Coocorrência',
+'➡️ Transição',
+'🎯 Cobertura'
+];
+
+
+container.innerHTML=
+
+GAMES.map(
+(game,index)=>{
+
+const pairs=
+evenCount(game);
+
+const ranges=
+rangeCounts(game);
+
+const sum=
+sumGame(game);
+
+const consecutive=
+consecutiveCount(game);
+
+const score=
+gameScore(game);
+
+
+return`
+
+<div class="game">
+
+<span class="badge">
+
+${labels[index]||
+'🎯 Portfólio'}
+
+</span>
+
+
+<h3>
+
+Jogo ${index+1}
+
+</h3>
+
+
+<div class="balls">
+
+${game.map(
+n=>
+`
+<span class="ball">
+${pad(n)}
+</span>
+`
+).join('')}
+
+</div>
+
+
+<div class="help">
+
+Pares:
+<b>${pairs}</b>
+
+•
+
+Soma:
+<b>${sum}</b>
+
+•
+
+Consecutivas:
+<b>${consecutive}</b>
+
+<br>
+
+Faixas:
+<b>${ranges.join('-')}</b>
+
+•
+
+Score:
+<b>${score.toFixed(2)}</b>
+
+</div>
+
+</div>
+
+`;
+
+}
+).join('');
+
+}
+
+
+/* =========================================================
+   VALIDAÇÃO
+========================================================= */
 
 function validateSavedGames(){
 
-  let saved=null;
+let saved=null;
 
 
-  try{
+try{
 
-    saved=
-      JSON.parse(
-        localStorage.getItem(
-          GKEY
-        )||'null'
-      );
+saved=
+JSON.parse(
+localStorage.getItem(
+GKEY
+)||'null'
+);
 
-  }catch(e){
+}catch(e){
 
-    return;
-
-  }
-
-
-  if(
-    !saved||
-    !Array.isArray(saved.games)||
-    !saved.games.length
-  )
-    return;
-
-
-  const target=
-    H.find(
-      item=>
-        Number(item.concurso)===
-        Number(saved.target)
-    );
-
-
-  if(!target)
-    return;
-
-
-  const hits=
-    saved.games.map(
-      game=>
-        game.filter(
-          n=>
-            target.dezenas.includes(n)
-        ).length
-    );
-
-
-  const best=
-    Math.max(...hits);
-
-
-  const coverage=
-    unique(
-      saved.games.flat()
-    ).length;
-
-
-  const tenPlus=
-    hits.filter(
-      n=>n>=10
-    ).length;
-
-
-  document.getElementById('best')
-    .textContent=
-      best+'/15';
-
-
-  document.getElementById('coverage')
-    .textContent=
-      coverage+'/23';
-
-
-  document.getElementById('validation')
-    .innerHTML=
-
-      `Concurso ${saved.target}
-
-      <br><br>
-
-      <b>
-      ${tenPlus}/6 jogos com 10+ acertos
-      </b>
-
-      • Média:
-      <b>${avg(hits).toFixed(2)}</b>
-
-      • Cobertura:
-      <b>${coverage}/23</b>
-
-      <br><br>
-
-      ${hits.map(
-        (value,index)=>
-          `Jogo ${index+1}: <b>${value}</b>`
-      ).join(' • ')}`;
-
-
-  localStorage.setItem(
-    VKEY,
-    JSON.stringify({
-
-      target:saved.target,
-      hits,
-      best,
-      coverage,
-      tenPlus
-
-    })
-  );
+return;
 
 }
 
 
-/* =========================
+if(
+!saved||
+!Array.isArray(saved.games)||
+!saved.games.length
+)
+return;
+
+
+const target=
+H.find(
+item=>
+Number(item.concurso)===
+Number(saved.target)
+);
+
+
+if(!target)
+return;
+
+
+const hits=
+saved.games.map(
+game=>
+game.filter(
+n=>
+target.dezenas.includes(n)
+).length
+);
+
+
+const best=
+Math.max(
+...hits
+);
+
+
+const coverage=
+unique(
+saved.games.flat()
+).length;
+
+
+const tenPlus=
+hits.filter(
+x=>x>=10
+).length;
+
+
+document.getElementById(
+'best'
+).textContent=
+best+'/15';
+
+
+document.getElementById(
+'coverage'
+).textContent=
+coverage+'/23';
+
+
+document.getElementById(
+'validation'
+).innerHTML=
+
+`
+
+Concurso ${saved.target}
+
+<br><br>
+
+<b>
+${tenPlus}/6 jogos com 10+ acertos
+</b>
+
+•
+
+Média:
+<b>
+${average(hits).toFixed(2)}
+</b>
+
+•
+
+Cobertura:
+<b>
+${coverage}/23
+</b>
+
+<br><br>
+
+${hits.map(
+(x,i)=>
+`Jogo ${i+1}: <b>${x}</b>`
+).join(' • ')}
+
+`;
+
+
+localStorage.setItem(
+VKEY,
+JSON.stringify({
+
+target:
+saved.target,
+
+hits,
+
+best,
+
+coverage,
+
+tenPlus
+
+})
+);
+
+}
+
+
+/* =========================================================
    HISTÓRICO MANUAL
-========================= */
+========================================================= */
 
 function addManual(){
 
-  const input=
-    document.getElementById(
-      'manual'
-    );
+const input=
+document.getElementById(
+'manual'
+);
 
 
-  const numbers=
-    unique(
-      (
-        input.value.match(/\d+/g)||[]
-      )
-      .map(Number)
-      .filter(
-        n=>n>=1&&n<=25
-      )
-    );
+const numbers=
+unique(
+(
+input.value.match(
+/\d+/g
+)||[]
+)
+.map(Number)
+.filter(
+n=>
+n>=1&&
+n<=25
+)
+);
 
 
-  if(numbers.length!==15){
+if(
+numbers.length!==15
+){
 
-    alert(
-      'Digite exatamente 15 dezenas diferentes entre 01 e 25.'
-    );
+alert(
+'Digite exatamente 15 dezenas diferentes entre 01 e 25.'
+);
 
-    return;
-
-  }
-
-
-  const nextContest=
-    (
-      Number(
-        H[0]?.concurso||0
-      )+1
-    );
-
-
-  H.unshift({
-
-    concurso:nextContest,
-
-    dezenas:
-      sortNums(numbers),
-
-    data:'Manual'
-
-  });
-
-
-  H=
-    H
-    .sort(
-      (a,b)=>
-        b.concurso-a.concurso
-    )
-    .slice(0,100);
-
-
-  saveHistory();
-
-
-  input.value='';
-
-
-  draw();
+return;
 
 }
 
 
-/* =========================
-   LIMPAR HISTÓRICO
-========================= */
+const next=
+Number(
+H[0]?.concurso||0
+)+1;
+
+
+H.unshift({
+
+concurso:next,
+
+dezenas:
+sortNums(numbers),
+
+data:'Manual'
+
+});
+
+
+H=
+H
+.sort(
+(a,b)=>
+b.concurso-a.concurso
+)
+.slice(
+0,
+HISTORY_LIMIT
+);
+
+
+saveHistory();
+
+
+input.value='';
+
+
+draw();
+
+}
+
+
+/* =========================================================
+   LIMPAR
+========================================================= */
 
 function clearAll(){
 
-  if(
-    !confirm(
-      'Apagar o histórico e os jogos salvos?'
-    )
-  )
-    return;
+if(
+!confirm(
+'Apagar histórico, modelo e jogos salvos?'
+)
+)
+return;
 
 
-  H=[];
-  S={};
-  P=null;
-  GAMES=[];
+H=[];
+
+S={};
+
+P=null;
+
+GAMES=[];
+
+MODEL=null;
 
 
-  localStorage.removeItem(KEY);
-  localStorage.removeItem(GKEY);
-  localStorage.removeItem(VKEY);
+localStorage.removeItem(KEY);
+
+localStorage.removeItem(GKEY);
+
+localStorage.removeItem(VKEY);
+
+localStorage.removeItem(MODELKEY);
 
 
-  document.getElementById('count')
-    .textContent='0';
+document.getElementById(
+'count'
+).textContent='0';
 
 
-  document.getElementById('latest')
-    .textContent='—';
+document.getElementById(
+'latest'
+).textContent='—';
 
 
-  document.getElementById('lastResult')
-    .innerHTML='—';
+document.getElementById(
+'lastResult'
+).innerHTML='—';
 
 
-  document.getElementById('core')
-    .innerHTML='';
+document.getElementById(
+'core'
+).innerHTML='';
 
 
-  document.getElementById('score')
-    .innerHTML='';
+document.getElementById(
+'score'
+).innerHTML='';
 
 
-  document.getElementById('nucleus')
-    .textContent=
-      'Nenhuma seleção calculada.';
+document.getElementById(
+'nucleus'
+).textContent=
+'Nenhuma seleção calculada.';
 
 
-  document.getElementById('games')
-    .innerHTML=
-      'Atualize o histórico e gere os jogos.';
+document.getElementById(
+'games'
+).textContent=
+'Atualize o histórico e gere os jogos.';
 
 
-  document.getElementById('best')
-    .textContent='—';
+document.getElementById(
+'engineStatus'
+).textContent=
+'Aguardando histórico.';
 
 
-  document.getElementById('coverage')
-    .textContent='—';
+document.getElementById(
+'engineScore'
+).textContent='—';
 
 
-  document.getElementById('validation')
-    .textContent=
-      'Nenhuma validação registrada.';
+document.getElementById(
+'engineCoverage'
+).textContent='—';
+
+
+document.getElementById(
+'best'
+).textContent='—';
+
+
+document.getElementById(
+'coverage'
+).textContent='—';
+
+
+document.getElementById(
+'validation'
+).textContent=
+'Nenhuma validação registrada.';
 
 }
 
 
-/* =========================
+/* =========================================================
    INICIALIZAÇÃO
-========================= */
+========================================================= */
 
 loadHistory();
 
 
 /*
-  Recupera jogos salvos.
+  Recupera jogos anteriores.
 */
 
 try{
 
-  const saved=
-    JSON.parse(
-      localStorage.getItem(
-        GKEY
-      )||'null'
-    );
+const saved=
+JSON.parse(
+localStorage.getItem(
+GKEY
+)||'null'
+);
 
 
-  if(
-    saved&&
-    Array.isArray(saved.games)
-  ){
+if(
+saved&&
+Array.isArray(saved.games)
+){
 
-    GAMES=
-      saved.games
-        .map(
-          game=>
-            sortNums(
-              unique(game)
-            )
-        )
-        .filter(
-          game=>
-            game.length===15
-        );
+GAMES=
+saved.games
+.map(
+game=>
+sortNums(
+unique(game)
+)
+)
+.filter(
+game=>
+game.length===15
+);
 
 
-    if(GAMES.length)
-      renderGames();
+if(GAMES.length)
+renderGames();
 
-  }
+}
 
 }catch(e){
 
-  console.warn(
-    'Não foi possível recuperar jogos.',
-    e
-  );
+console.warn(
+'Falha ao recuperar jogos:',
+e
+);
+
 
 }
 
 
 validateSavedGames();
 
+
 </script>
 
 </body>
+
 </html>
