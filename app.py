@@ -10,11 +10,10 @@ import os
 
 
 # ============================================================
-# LOTOFÁCIL MONITOR
-# BACKEND V25.6
+# LOTOFÁCIL MONITOR — BACKEND V25.7
 # ============================================================
 
-APP_VERSION = "V25.6"
+APP_VERSION = "V25.7"
 
 app = FastAPI(
     title="Lotofácil Monitor",
@@ -23,7 +22,7 @@ app = FastAPI(
 
 
 # ============================================================
-# APIS
+# FONTES
 # ============================================================
 
 CAIXA_BASE = (
@@ -49,6 +48,8 @@ HISTORY_CACHE_TTL = 21600
 
 MAX_HISTORY = 120
 
+MAX_WORKERS = 12
+
 
 # ============================================================
 # CACHE
@@ -58,8 +59,11 @@ _cache = {
     "latest": None,
     "latest_time": 0,
 
-    "history": {},
-    "history_time": {}
+    "history": None,
+    "history_time": 0,
+
+    "history_by_limit": {},
+    "history_by_limit_time": {}
 }
 
 _cache_lock = threading.Lock()
@@ -132,8 +136,8 @@ def http_get_json(url: str):
 
 def normalize_result(
     data,
-    source,
-    response_time
+    source="unknown",
+    response_time=0
 ):
 
     if not isinstance(data, dict):
@@ -208,85 +212,70 @@ def normalize_result(
 
 
 # ============================================================
-# BUSCAR CONCURSO ESPECÍFICO
+# NORMALIZA LISTA DE RESULTADOS
 # ============================================================
 
-def buscar_concurso(concurso):
+def normalize_history(data, source="history"):
 
-    erros = []
+    if isinstance(data, dict):
 
+        candidatos = (
+            data.get("resultados")
+            or data.get("data")
+            or data.get("concursos")
+            or data.get("history")
+            or data.get("historico")
+        )
 
-    # --------------------------------------------------------
-    # FALLBACK
-    # --------------------------------------------------------
+        if isinstance(candidatos, list):
 
-    fallback_url = (
-        f"{FALLBACK_BASE}/{concurso}"
+            data = candidatos
+
+        else:
+
+            data = [data]
+
+    if not isinstance(data, list):
+
+        raise RuntimeError(
+            "Histórico inválido"
+        )
+
+    resultados = []
+
+    for item in data:
+
+        try:
+
+            resultado = normalize_result(
+                item,
+                source=source,
+                response_time=0
+            )
+
+            resultados.append(
+                resultado
+            )
+
+        except Exception:
+
+            continue
+
+    resultados.sort(
+        key=lambda x: x["concurso"],
+        reverse=True
     )
 
-    try:
-
-        data, elapsed = http_get_json(
-            fallback_url
-        )
-
-        return normalize_result(
-            data,
-            "fallback",
-            elapsed
-        )
-
-    except Exception as e:
-
-        erros.append(
-            f"fallback: {e}"
-        )
-
-
-    # --------------------------------------------------------
-    # CAIXA
-    # --------------------------------------------------------
-
-    caixa_url = (
-        f"{CAIXA_BASE}/{concurso}"
-    )
-
-    try:
-
-        data, elapsed = http_get_json(
-            caixa_url
-        )
-
-        return normalize_result(
-            data,
-            "caixa",
-            elapsed
-        )
-
-    except Exception as e:
-
-        erros.append(
-            f"caixa: {e}"
-        )
-
-
-    raise RuntimeError(
-        " | ".join(erros)
-    )
+    return resultados
 
 
 # ============================================================
-# ÚLTIMO CONCURSO
+# BUSCAR ÚLTIMO
 # ============================================================
 
 def buscar_latest():
 
     agora = time.time()
-
-
-    # --------------------------------------------------------
-    # CACHE
-    # --------------------------------------------------------
 
     with _cache_lock:
 
@@ -296,8 +285,7 @@ def buscar_latest():
 
         if (
             cached is not None
-            and agora - cached_time
-            < LATEST_CACHE_TTL
+            and agora - cached_time < LATEST_CACHE_TTL
         ):
 
             return cached
@@ -385,149 +373,470 @@ def buscar_latest():
 
 
 # ============================================================
-# HISTÓRICO
+# HISTÓRICO — MÉTODO RÁPIDO
+# ============================================================
+
+def buscar_historico_rapido():
+
+    # Primeiro tenta obter todos os concursos
+    # através do endpoint base.
+
+    try:
+
+        started = time.time()
+
+        data, elapsed = http_get_json(
+            FALLBACK_BASE
+        )
+
+        resultados = normalize_history(
+            data,
+            "fallback-history"
+        )
+
+        if resultados:
+
+            for item in resultados:
+
+                item["_response_time"] = round(
+                    time.time() - started,
+                    2
+                )
+
+            return resultados
+
+    except Exception:
+
+        pass
+
+
+    # --------------------------------------------------------
+    # Segunda tentativa: CAIXA
+    # --------------------------------------------------------
+
+    try:
+
+        data, elapsed = http_get_json(
+            CAIXA_BASE
+        )
+
+        resultados = normalize_history(
+            data,
+            "caixa-history"
+        )
+
+        if resultados:
+
+            return resultados
+
+    except Exception:
+
+        pass
+
+
+    return []
+
+
+# ============================================================
+# BUSCAR CONCURSO INDIVIDUAL
+# ============================================================
+
+def buscar_concurso(concurso):
+
+    erros = []
+
+
+    # --------------------------------------------------------
+    # FALLBACK
+    # --------------------------------------------------------
+
+    fallback_url = (
+        f"{FALLBACK_BASE}/{concurso}"
+    )
+
+    try:
+
+        data, elapsed = http_get_json(
+            fallback_url
+        )
+
+        return normalize_result(
+            data,
+            "fallback",
+            elapsed
+        )
+
+    except Exception as e:
+
+        erros.append(
+            f"fallback: {e}"
+        )
+
+
+    # --------------------------------------------------------
+    # CAIXA
+    # --------------------------------------------------------
+
+    caixa_url = (
+        f"{CAIXA_BASE}/{concurso}"
+    )
+
+    try:
+
+        data, elapsed = http_get_json(
+            caixa_url
+        )
+
+        return normalize_result(
+            data,
+            "caixa",
+            elapsed
+        )
+
+    except Exception as e:
+
+        erros.append(
+            f"caixa: {e}"
+        )
+
+
+    raise RuntimeError(
+        " | ".join(erros)
+    )
+
+
+# ============================================================
+# HISTÓRICO COMPLETO
 # ============================================================
 
 def buscar_historico(limit=120):
 
     limit = max(
         1,
-        min(int(limit), MAX_HISTORY)
+        min(
+            int(limit),
+            MAX_HISTORY
+        )
     )
+
 
     agora = time.time()
 
 
     # --------------------------------------------------------
-    # CACHE
+    # CACHE POR LIMITE
     # --------------------------------------------------------
 
     with _cache_lock:
 
-        cached = _cache["history"].get(
-            limit
-        )
+        cached = _cache[
+            "history_by_limit"
+        ].get(limit)
 
         cached_time = _cache[
-            "history_time"
-        ].get(
-            limit,
-            0
-        )
+            "history_by_limit_time"
+        ].get(limit, 0)
 
         if (
             cached is not None
-            and agora - cached_time
-            < HISTORY_CACHE_TTL
+            and agora - cached_time < HISTORY_CACHE_TTL
         ):
 
             return cached
 
 
     # --------------------------------------------------------
-    # DESCOBRIR CONCURSO ATUAL
-    # --------------------------------------------------------
-
-    latest = buscar_latest()
-
-    atual = int(
-        latest["concurso"]
-    )
-
-
-    concursos = list(
-        range(
-            atual,
-            max(
-                0,
-                atual - limit
-            ),
-            -1
-        )
-    )
-
-
-    resultados = []
-
-
-    # --------------------------------------------------------
-    # BUSCA PARALELA
-    # --------------------------------------------------------
-
-    with ThreadPoolExecutor(
-        max_workers=5
-    ) as executor:
-
-        futures = {
-
-            executor.submit(
-                buscar_concurso,
-                concurso
-            ): concurso
-
-            for concurso in concursos
-
-        }
-
-
-        for future in as_completed(
-            futures
-        ):
-
-            try:
-
-                resultado = (
-                    future.result()
-                )
-
-                resultados.append(
-                    resultado
-                )
-
-            except Exception:
-
-                continue
-
-
-    # --------------------------------------------------------
-    # ORDENAR
-    # --------------------------------------------------------
-
-    resultados.sort(
-        key=lambda x: x["concurso"],
-        reverse=True
-    )
-
-
-    resultados = resultados[:limit]
-
-
-    retorno = {
-
-        "concursoAtual": atual,
-
-        "total": len(
-            resultados
-        ),
-
-        "resultados": resultados
-
-    }
-
-
-    # --------------------------------------------------------
-    # SALVAR CACHE
+    # CACHE GERAL
     # --------------------------------------------------------
 
     with _cache_lock:
 
-        _cache["history"][limit] = (
-            retorno
+        full_cache = _cache["history"]
+
+        full_cache_time = _cache[
+            "history_time"
+        ]
+
+        if (
+            full_cache is not None
+            and agora - full_cache_time
+            < HISTORY_CACHE_TTL
+        ):
+
+            resultados = full_cache[
+                "resultados"
+            ][:limit]
+
+            retorno = {
+                "concursoAtual":
+                    full_cache["concursoAtual"],
+
+                "total":
+                    len(resultados),
+
+                "resultados":
+                    resultados
+            }
+
+            _cache[
+                "history_by_limit"
+            ][limit] = retorno
+
+            _cache[
+                "history_by_limit_time"
+            ][limit] = time.time()
+
+            return retorno
+
+
+    # --------------------------------------------------------
+    # TENTATIVA RÁPIDA
+    # --------------------------------------------------------
+
+    resultados = buscar_historico_rapido()
+
+
+    if resultados:
+
+        resultados.sort(
+            key=lambda x: x["concurso"],
+            reverse=True
         )
 
-        _cache["history_time"][limit] = (
+        # Remove duplicados
+
+        unicos = {}
+
+        for item in resultados:
+
+            unicos[
+                item["concurso"]
+            ] = item
+
+        resultados = list(
+            unicos.values()
+        )
+
+        resultados.sort(
+            key=lambda x: x["concurso"],
+            reverse=True
+        )
+
+
+        # Se encontrou pelo menos parte
+        # suficiente do histórico
+
+        if len(resultados) >= limit:
+
+            resultados = resultados[:limit]
+
+        else:
+
+            # ------------------------------------------------
+            # COMPLETA O QUE FALTOU
+            # ------------------------------------------------
+
+            latest = buscar_latest()
+
+            atual = int(
+                latest["concurso"]
+            )
+
+            existentes = {
+                x["concurso"]
+                for x in resultados
+            }
+
+            faltantes = []
+
+            for concurso in range(
+                atual,
+                max(
+                    0,
+                    atual - limit
+                ),
+                -1
+            ):
+
+                if concurso not in existentes:
+
+                    faltantes.append(
+                        concurso
+                    )
+
+                if (
+                    len(resultados)
+                    + len(faltantes)
+                    >= limit
+                ):
+
+                    break
+
+
+            if faltantes:
+
+                with ThreadPoolExecutor(
+                    max_workers=MAX_WORKERS
+                ) as executor:
+
+                    futures = {
+                        executor.submit(
+                            buscar_concurso,
+                            concurso
+                        ): concurso
+
+                        for concurso
+                        in faltantes
+                    }
+
+                    for future in as_completed(
+                        futures
+                    ):
+
+                        try:
+
+                            resultados.append(
+                                future.result()
+                            )
+
+                        except Exception:
+
+                            continue
+
+
+        resultados.sort(
+            key=lambda x: x["concurso"],
+            reverse=True
+        )
+
+        resultados = resultados[:limit]
+
+
+    else:
+
+        # ----------------------------------------------------
+        # FALLBACK FINAL
+        # ----------------------------------------------------
+
+        latest = buscar_latest()
+
+        atual = int(
+            latest["concurso"]
+        )
+
+        concursos = list(
+            range(
+                atual,
+                max(
+                    0,
+                    atual - limit
+                ),
+                -1
+            )
+        )
+
+        resultados = []
+
+        with ThreadPoolExecutor(
+            max_workers=MAX_WORKERS
+        ) as executor:
+
+            futures = {
+                executor.submit(
+                    buscar_concurso,
+                    concurso
+                ): concurso
+
+                for concurso in concursos
+            }
+
+            for future in as_completed(
+                futures
+            ):
+
+                try:
+
+                    resultados.append(
+                        future.result()
+                    )
+
+                except Exception:
+
+                    continue
+
+        resultados.sort(
+            key=lambda x: x["concurso"],
+            reverse=True
+        )
+
+        resultados = resultados[:limit]
+
+
+    # --------------------------------------------------------
+    # CONCURSO ATUAL
+    # --------------------------------------------------------
+
+    if resultados:
+
+        concurso_atual = max(
+            x["concurso"]
+            for x in resultados
+        )
+
+    else:
+
+        concurso_atual = int(
+            buscar_latest()["concurso"]
+        )
+
+
+    retorno_completo = {
+
+        "concursoAtual":
+            concurso_atual,
+
+        "total":
+            len(resultados),
+
+        "resultados":
+            resultados
+    }
+
+
+    # --------------------------------------------------------
+    # SALVA CACHE
+    # --------------------------------------------------------
+
+    with _cache_lock:
+
+        _cache["history"] = (
+            retorno_completo
+        )
+
+        _cache["history_time"] = (
             time.time()
         )
+
+
+        retorno = {
+            "concursoAtual":
+                concurso_atual,
+
+            "total":
+                len(resultados),
+
+            "resultados":
+                resultados[:limit]
+        }
+
+
+        _cache[
+            "history_by_limit"
+        ][limit] = retorno
+
+        _cache[
+            "history_by_limit_time"
+        ][limit] = time.time()
 
 
     return retorno
@@ -582,9 +891,7 @@ def api_status():
                 latest["concurso"],
 
             "source":
-                latest.get(
-                    "_source"
-                ),
+                latest.get("_source"),
 
             "response_time":
                 latest.get(
@@ -616,12 +923,10 @@ def api_status():
 
 
 # ============================================================
-# ÚLTIMO RESULTADO
+# LATEST
 # ============================================================
 
-@app.get(
-    "/api/lotofacil/latest"
-)
+@app.get("/api/lotofacil/latest")
 def lotofacil_latest():
 
     try:
@@ -640,15 +945,10 @@ def lotofacil_latest():
 
 
 # ============================================================
-# HISTÓRICO
-#
-# IMPORTANTE:
-# ESTA ROTA VEM ANTES DE /{concurso}
+# HISTORY
 # ============================================================
 
-@app.get(
-    "/api/lotofacil/history"
-)
+@app.get("/api/lotofacil/history")
 def lotofacil_history(
     limit: int = 120
 ):
@@ -671,12 +971,10 @@ def lotofacil_history(
 
 
 # ============================================================
-# CONCURSO ESPECÍFICO
+# CONCURSO INDIVIDUAL
 # ============================================================
 
-@app.get(
-    "/api/lotofacil/{concurso}"
-)
+@app.get("/api/lotofacil/{concurso}")
 def lotofacil_concurso(
     concurso: int
 ):
@@ -711,9 +1009,7 @@ def lotofacil_concurso(
 
 
 # ============================================================
-# PÁGINA PRINCIPAL
-#
-# ABRE O FRONTEND V25.7
+# FRONTEND
 # ============================================================
 
 @app.get("/")
@@ -723,7 +1019,6 @@ def root():
         "static",
         "index.html"
     )
-
 
     if not os.path.exists(
         frontend
@@ -737,7 +1032,6 @@ def root():
                 "static/index.html não encontrado"
 
         )
-
 
     return FileResponse(
         frontend,
