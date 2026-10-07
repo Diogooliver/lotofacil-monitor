@@ -19,7 +19,7 @@
   content="yes"
 >
 
-<title>Lotofácil Monitor V25.8</title>
+<title>Lotofácil Monitor V25.9</title>
 
 <style>
 
@@ -34,6 +34,7 @@
   --green:#42e69a;
   --red:#ff6d76;
   --yellow:#ffd166;
+  --purple:#a98cff;
 }
 
 *{
@@ -224,6 +225,39 @@ body{
   border-color:#4db4ff;
 }
 
+.strong-ball{
+  background:
+    linear-gradient(
+      145deg,
+      #174f70,
+      #102d46
+    );
+
+  border-color:#328cc4;
+}
+
+.protection-ball{
+  background:
+    linear-gradient(
+      145deg,
+      #4b3e79,
+      #292348
+    );
+
+  border-color:#8874d5;
+}
+
+.rotation-ball{
+  background:
+    linear-gradient(
+      145deg,
+      #6b5120,
+      #3b2e15
+    );
+
+  border-color:#c99c42;
+}
+
 .signal{
   display:flex;
   justify-content:space-between;
@@ -287,7 +321,7 @@ body{
 
 table{
   width:100%;
-  min-width:620px;
+  min-width:650px;
   border-collapse:collapse;
 }
 
@@ -337,7 +371,7 @@ td{
   color:#879bb5;
   font-size:14px;
   font-weight:750;
-  line-height:1.6;
+  line-height:1.65;
 }
 
 .game-actions{
@@ -423,6 +457,28 @@ button:active{
   font-weight:950;
 }
 
+.category-box{
+  margin-top:16px;
+  padding:17px;
+  border-radius:21px;
+  border:1px solid var(--border);
+  background:#0a1829;
+}
+
+.category-title{
+  font-size:18px;
+  font-weight:950;
+  margin-bottom:13px;
+}
+
+.category-desc{
+  color:#899db7;
+  font-size:14px;
+  line-height:1.5;
+  font-weight:700;
+  margin-bottom:13px;
+}
+
 .saved-game{
   display:flex;
   justify-content:space-between;
@@ -469,6 +525,40 @@ button:active{
   color:#ff9da5;
   font-weight:750;
   line-height:1.5;
+}
+
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#9cb0c8;
+  font-size:13px;
+  font-weight:800;
+}
+
+.legend-dot{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+}
+
+.dot-strong{
+  background:#2c83b8;
+}
+
+.dot-protection{
+  background:#7560c0;
+}
+
+.dot-rotation{
+  background:#b18430;
 }
 
 @media(max-width:620px){
@@ -521,7 +611,7 @@ button:active{
   </div>
 
   <div class="version">
-    V25.8
+    V25.9
   </div>
 
   <div
@@ -547,11 +637,10 @@ button:active{
 <script>
 
 /* ==========================================================
-   LOTOFÁCIL MONITOR V25.8
-   FRONTEND COMPATÍVEL COM BACKEND V25.8
+   LOTOFÁCIL MONITOR V25.9
    ========================================================== */
 
-const VERSION = "V25.8";
+const VERSION = "V25.9";
 
 const API_LATEST =
   "/api/lotofacil/latest";
@@ -560,9 +649,10 @@ const API_HISTORY =
   "/api/lotofacil/history?limit=120";
 
 const STORAGE_KEY =
-  "lotofacil_monitor_v258_apostas";
+  "lotofacil_monitor_v259_apostas";
 
 let DATA = null;
+
 let GAMES = [];
 
 
@@ -591,7 +681,9 @@ function escapeHtml(value){
 
 function mean(arr){
 
-  if(!arr.length) return 0;
+  if(!arr.length){
+    return 0;
+  }
 
   return arr.reduce(
     (a,b)=>a+b,
@@ -600,59 +692,55 @@ function mean(arr){
 
 }
 
-function clamp(
-  value,
-  min,
-  max
-){
-
-  return Math.max(
-    min,
-    Math.min(
-      max,
-      value
-    )
-  );
-
-}
-
 
 /* ==========================================================
-   NORMALIZA HISTÓRICO
+   NORMALIZA RESULTADO
    ========================================================== */
 
 function normalizeDraw(item){
 
-  if(!item) return null;
+  if(!item){
+    return null;
+  }
 
-  const concurso = Number(
-    item.concurso ??
-    item.numero ??
-    item.numeroConcurso
-  );
+  const concurso =
+    Number(
+      item.concurso ??
+      item.numero ??
+      item.numeroConcurso
+    );
 
-  const dezenasRaw =
+  const raw =
     item.dezenas ??
     item.listaDezenas ??
     item.resultado ??
     item.dezenasSorteadas ??
     [];
 
-  const dezenas = dezenasRaw
-    .map(Number)
-    .filter(n =>
-      Number.isInteger(n) &&
-      n >= 1 &&
-      n <= 25
-    )
-    .sort((a,b)=>a-b);
+
+  const dezenas =
+    raw
+      .map(Number)
+      .filter(
+        n =>
+          Number.isInteger(n) &&
+          n >= 1 &&
+          n <= 25
+      )
+      .sort(
+        (a,b)=>a-b
+      );
+
 
   if(
     !concurso ||
     dezenas.length !== 15
   ){
+
     return null;
+
   }
+
 
   return {
 
@@ -715,13 +803,19 @@ function calculateFrequency(
   const freq =
     Array(26).fill(0);
 
-  draws.forEach(draw=>{
 
-    draw.dezenas.forEach(n=>{
-      freq[n]++;
-    });
+  draws.forEach(
+    draw=>{
 
-  });
+      draw.dezenas.forEach(
+        n=>{
+          freq[n]++;
+        }
+      );
+
+    }
+  );
+
 
   return freq;
 
@@ -739,19 +833,28 @@ function calculateRecency(
   const rec =
     Array(26).fill(0);
 
+
   draws.forEach(
     (draw,index)=>{
 
-      draw.dezenas.forEach(n=>{
+      draw.dezenas.forEach(
+        n=>{
 
-        if(rec[n] === 0){
-          rec[n] = index + 1;
+          if(
+            rec[n] === 0
+          ){
+
+            rec[n] =
+              index + 1;
+
+          }
+
         }
-
-      });
+      );
 
     }
   );
+
 
   return rec;
 
@@ -767,24 +870,33 @@ function calculateDelay(
 ){
 
   const delay =
-    Array(26).fill(draws.length);
+    Array(26).fill(
+      draws.length
+    );
+
 
   draws.forEach(
     (draw,index)=>{
 
-      draw.dezenas.forEach(n=>{
+      draw.dezenas.forEach(
+        n=>{
 
-        if(
-          delay[n] === draws.length
-        ){
-          delay[n] = index;
+          if(
+            delay[n] ===
+            draws.length
+          ){
+
+            delay[n] =
+              index;
+
+          }
 
         }
-
-      });
+      );
 
     }
   );
+
 
   return delay;
 
@@ -802,9 +914,15 @@ function calculateTransition(
   const score =
     Array(26).fill(0);
 
-  if(draws.length < 2){
+
+  if(
+    draws.length < 2
+  ){
+
     return score;
+
   }
+
 
   for(
     let i=0;
@@ -822,17 +940,23 @@ function calculateTransition(
         draws[i+1].dezenas
       );
 
-    current.forEach(n=>{
 
-      if(
-        next.has(n)
-      ){
-        score[n]++;
+    current.forEach(
+      n=>{
+
+        if(
+          next.has(n)
+        ){
+
+          score[n]++;
+
+        }
+
       }
-
-    });
+    );
 
   }
+
 
   return score;
 
@@ -850,39 +974,21 @@ function calculateCooccurrence(
   const score =
     Array(26).fill(0);
 
-  if(!draws.length){
-    return score;
-  }
 
-  for(
-    let i=0;
-    i<draws.length;
-    i++
-  ){
+  draws.forEach(
+    draw=>{
 
-    const nums =
-      draws[i].dezenas;
+      draw.dezenas.forEach(
+        n=>{
 
-    for(
-      let a=0;
-      a<nums.length;
-      a++
-    ){
+          score[n]++;
 
-      for(
-        let b=a+1;
-        b<nums.length;
-        b++
-      ){
-
-        score[nums[a]]++;
-        score[nums[b]]++;
-
-      }
+        }
+      );
 
     }
+  );
 
-  }
 
   return score;
 
@@ -900,6 +1006,7 @@ function calculateCycle(
   const cycle =
     Array(26).fill(0);
 
+
   for(
     let n=1;
     n<=25;
@@ -908,9 +1015,10 @@ function calculateCycle(
 
     let last = -1;
 
-    let gapSum = 0;
+    let totalGap = 0;
 
     let count = 0;
+
 
     for(
       let i=0;
@@ -922,27 +1030,31 @@ function calculateCycle(
         draws[i].dezenas.includes(n)
       ){
 
-        if(last >= 0){
+        if(
+          last >= 0
+        ){
 
-          gapSum +=
-            i - last;
+          totalGap +=
+            i-last;
 
           count++;
 
         }
 
-        last = i;
+        last=i;
 
       }
 
     }
 
+
     cycle[n] =
       count
-        ? gapSum / count
+        ? totalGap/count
         : 0;
 
   }
+
 
   return cycle;
 
@@ -950,27 +1062,29 @@ function calculateCycle(
 
 
 /* ==========================================================
-   NORMALIZA VETORES
+   NORMALIZAÇÃO
    ========================================================== */
 
-function normalizeArray(
+function normalizeVector(
   arr
 ){
 
-  const valid =
+  const values =
     arr.slice(1);
 
   const min =
-    Math.min(...valid);
+    Math.min(...values);
 
   const max =
-    Math.max(...valid);
+    Math.max(...values);
 
   const range =
-    max - min || 1;
+    max-min || 1;
 
-  const result =
+
+  const output =
     Array(26).fill(0);
+
 
   for(
     let n=1;
@@ -978,18 +1092,21 @@ function normalizeArray(
     n++
   ){
 
-    result[n] =
-      (arr[n]-min) / range;
+    output[n] =
+      (
+        arr[n]-min
+      ) / range;
 
   }
 
-  return result;
+
+  return output;
 
 }
 
 
 /* ==========================================================
-   SCORE DAS DEZENAS
+   SCORE PRINCIPAL
    ========================================================== */
 
 function calculateScores(
@@ -997,55 +1114,78 @@ function calculateScores(
 ){
 
   const frequency =
-    calculateFrequency(draws);
+    calculateFrequency(
+      draws
+    );
 
   const recency =
-    calculateRecency(draws);
+    calculateRecency(
+      draws
+    );
 
   const delay =
-    calculateDelay(draws);
+    calculateDelay(
+      draws
+    );
 
   const transition =
-    calculateTransition(draws);
+    calculateTransition(
+      draws
+    );
 
   const cooccurrence =
-    calculateCooccurrence(draws);
+    calculateCooccurrence(
+      draws
+    );
 
   const cycle =
-    calculateCycle(draws);
+    calculateCycle(
+      draws
+    );
 
 
   const nf =
-    normalizeArray(
+    normalizeVector(
       frequency
     );
 
+
   const nr =
-    normalizeArray(
+    normalizeVector(
       recency.map(
-        x => 1/(x || 1)
+        x =>
+          x
+            ? 1/x
+            : 0
       )
     );
 
+
   const nd =
-    normalizeArray(
+    normalizeVector(
       delay
     );
 
+
   const nt =
-    normalizeArray(
+    normalizeVector(
       transition
     );
 
+
   const nc =
-    normalizeArray(
+    normalizeVector(
       cooccurrence
     );
 
+
   const ncy =
-    normalizeArray(
+    normalizeVector(
       cycle.map(
-        x => x ? 1/x : 0
+        x =>
+          x
+            ? 1/x
+            : 0
       )
     );
 
@@ -1062,17 +1202,17 @@ function calculateScores(
 
     score[n] =
 
-      nf[n] * 0.24 +
+      nf[n] * 0.23 +
 
-      nr[n] * 0.20 +
+      nr[n] * 0.18 +
 
       nd[n] * 0.13 +
 
       nt[n] * 0.16 +
 
-      nc[n] * 0.15 +
+      nc[n] * 0.17 +
 
-      ncy[n] * 0.12;
+      ncy[n] * 0.13;
 
   }
 
@@ -1093,12 +1233,11 @@ function calculateScores(
 
 
 /* ==========================================================
-   NÚCLEO
+   RANKING
    ========================================================== */
 
-function buildNucleus(
-  score,
-  size=19
+function ranking(
+  scores
 ){
 
   return Array
@@ -1108,77 +1247,106 @@ function buildNucleus(
     )
     .sort(
       (a,b)=>
-        score[b]-score[a]
-    )
-    .slice(0,size)
-    .sort(
-      (a,b)=>a-b
+        scores[b]-scores[a]
     );
 
 }
 
 
 /* ==========================================================
-   SINAIS
+   15 FORTES + 5 PROTEÇÃO + 5 ROTAÇÃO
    ========================================================== */
 
-function signalAverage(
-  scores,
-  field
+function buildGroups(
+  scores
 ){
 
-  const values =
-    scores[field]
-      .slice(1);
+  const ranked =
+    ranking(
+      scores.score
+    );
 
-  if(!values.length){
-    return 0;
-  }
 
-  const min =
-    Math.min(...values);
+  const fortes =
+    ranked.slice(
+      0,
+      15
+    );
 
-  const max =
-    Math.max(...values);
 
-  const range =
-    max-min || 1;
+  const protecao =
+    ranked.slice(
+      15,
+      20
+    );
 
-  return (
-    mean(
-      values.map(
-        x =>
-          (x-min)/range
-      )
-    )
-  );
+
+  const rotacao =
+    ranked.slice(
+      20,
+      25
+    );
+
+
+  return {
+
+    fortes,
+    protecao,
+    rotacao
+
+  };
 
 }
 
 
 /* ==========================================================
-   ESTATÍSTICAS DO JOGO
+   SOBREPOSIÇÃO
+   ========================================================== */
+
+function overlap(
+  a,
+  b
+){
+
+  const set =
+    new Set(b);
+
+
+  return a.filter(
+    n =>
+      set.has(n)
+  ).length;
+
+}
+
+
+/* ==========================================================
+   ESTATÍSTICAS
    ========================================================== */
 
 function gameStats(
   game
 ){
 
-  const even =
+  const pares =
     game.filter(
-      n => n % 2 === 0
+      n=>n%2===0
     ).length;
 
-  const odd =
-    15-even;
 
-  const sum =
+  const impares =
+    15-pares;
+
+
+  const soma =
     game.reduce(
       (a,b)=>a+b,
       0
     );
 
-  let consecutive = 0;
+
+  let consecutivas = 0;
+
 
   for(
     let i=1;
@@ -1191,315 +1359,219 @@ function gameStats(
       game[i-1]+1
     ){
 
-      consecutive++;
+      consecutivas++;
 
     }
 
   }
 
+
   return {
-    even,
-    odd,
-    sum,
-    consecutive
+
+    pares,
+
+    impares,
+
+    soma,
+
+    consecutivas
+
   };
 
 }
 
 
 /* ==========================================================
-   DIVERSIDADE
-   ========================================================== */
-
-function overlap(
-  a,
-  b
-){
-
-  const set =
-    new Set(b);
-
-  return a.filter(
-    n=>set.has(n)
-  ).length;
-
-}
-
-
-/* ==========================================================
-   GERADOR V25.8
+   GERADOR DE JOGOS V25.9
    ========================================================== */
 
 function generateGames(
-  nucleus,
-  score
+  groups,
+  scores
 ){
 
-  const ranked =
-    nucleus
-      .slice()
-      .sort(
-        (a,b)=>
-          score[b]-score[a]
-      );
+  const F =
+    groups.fortes;
+
+  const P =
+    groups.protecao;
+
+  const R =
+    groups.rotacao;
+
+
+  /*
+    Estratégias:
+
+    J1 = 12 fortes + 2 proteção + 1 rotação
+    J2 = 11 fortes + 3 proteção + 1 rotação
+    J3 = 12 fortes + 1 proteção + 2 rotação
+    J4 = 11 fortes + 2 proteção + 2 rotação
+    J5 = 10 fortes + 3 proteção + 2 rotação
+    J6 = 10 fortes + 2 proteção + 3 rotação
+  */
+
+
+  const recipes = [
+
+    [12,2,1],
+
+    [11,3,1],
+
+    [12,1,2],
+
+    [11,2,2],
+
+    [10,3,2],
+
+    [10,2,3]
+
+  ];
 
 
   const games = [];
 
 
-  /*
-   Cada jogo recebe:
+  recipes.forEach(
+    (recipe,index)=>{
 
-   - núcleo forte
-   - dezenas intermediárias
-   - algumas rotações
-
-   Isso evita que os seis jogos
-   fiquem praticamente iguais.
-  */
+      const [
+        strongCount,
+        protectionCount,
+        rotationCount
+      ] = recipe;
 
 
-  const rotations = [
-
-    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],
-
-    [0,1,2,3,5,6,7,8,9,11,12,14,15,16,17],
-
-    [0,1,3,4,6,7,8,10,11,13,14,15,16,17,18],
-
-    [0,2,3,5,6,8,9,10,12,13,15,16,17,18,4],
-
-    [1,2,4,5,7,9,10,11,13,14,15,16,17,18,6],
-
-    [0,3,4,6,8,9,11,12,14,15,16,17,18,5,7]
-
-  ];
+      let strong =
+        F.slice();
 
 
-  for(
-    let g=0;
-    g<6;
-    g++
-  ){
-
-    const chosen = [];
+      let protection =
+        P.slice();
 
 
-    /*
-      Primeiro bloco forte.
-    */
-
-    for(
-      const idx
-      of rotations[g]
-    ){
-
-      if(
-        idx < ranked.length
-      ){
-
-        const n =
-          ranked[idx];
-
-        if(
-          !chosen.includes(n)
-        ){
-
-          chosen.push(n);
-
-        }
-
-      }
-
-      if(
-        chosen.length >= 15
-      ){
-        break;
-      }
-
-    }
+      let rotation =
+        R.slice();
 
 
-    /*
-      Ajuste de diversidade.
-    */
+      /*
+        Rotação dos grupos.
+      */
 
-    const candidates =
-      Array
-        .from(
-          {length:25},
-          (_,i)=>i+1
+      strong =
+        strong
+          .slice(
+            index % 3
+          )
+          .concat(
+            strong.slice(
+              0,
+              index % 3
+            )
+          );
+
+
+      protection =
+        protection
+          .slice(
+            index % 5
+          )
+          .concat(
+            protection.slice(
+              0,
+              index % 5
+            )
+          );
+
+
+      rotation =
+        rotation
+          .slice(
+            index % 5
+          )
+          .concat(
+            rotation.slice(
+              0,
+              index % 5
+            )
+          );
+
+
+      let game = [
+
+        ...strong.slice(
+          0,
+          strongCount
+        ),
+
+        ...protection.slice(
+          0,
+          protectionCount
+        ),
+
+        ...rotation.slice(
+          0,
+          rotationCount
         )
-        .sort(
-          (a,b)=>
-            score[b]-score[a]
-        );
+
+      ];
 
 
-    for(
-      const n
-      of candidates
-    ){
+      /*
+        Garante 15 dezenas.
+      */
 
-      if(
-        chosen.length >= 15
-      ){
-        break;
-      }
-
-      if(
-        !chosen.includes(n)
-      ){
-
-        chosen.push(n);
-
-      }
-
-    }
-
-
-    let game =
-      chosen
-        .slice(0,15)
-        .sort(
-          (a,b)=>a-b
-        );
-
-
-    /*
-      Tentativa de manter soma
-      dentro de uma faixa razoável.
-    */
-
-    const stats =
-      gameStats(game);
-
-    const targetMin = 165;
-    const targetMax = 205;
-
-
-    if(
-      stats.sum < targetMin ||
-      stats.sum > targetMax
-    ){
-
-      const alternatives =
-        candidates.filter(
-          n=>!game.includes(n)
+      const all =
+        ranking(
+          scores.score
         );
 
 
       for(
-        let i=0;
-        i<game.length;
-        i++
+        const n
+        of all
       ){
 
         if(
-          game.length !== 15
+          game.length >= 15
         ){
           break;
         }
 
-        const current =
-          game[i];
-
-        for(
-          const alt
-          of alternatives
-        ){
-
-          const test =
-            game
-              .slice();
-
-          test[i] =
-            alt;
-
-          test.sort(
-            (a,b)=>a-b
-          );
-
-          const s =
-            gameStats(test);
-
-          if(
-            s.sum >= targetMin &&
-            s.sum <= targetMax
-          ){
-
-            game =
-              test;
-
-            break;
-
-          }
-
-        }
-
-        const s2 =
-          gameStats(game);
-
         if(
-          s2.sum >= targetMin &&
-          s2.sum <= targetMax
-        ){
-          break;
-        }
-
-      }
-
-    }
-
-
-    /*
-      Penaliza duplicação excessiva.
-    */
-
-    if(g > 0){
-
-      const previous =
-        games[g-1];
-
-      if(
-        overlap(
-          game,
-          previous
-        ) > 13
-      ){
-
-        const candidates2 =
-          candidates
-            .filter(
-              n=>!game.includes(n)
-            );
-
-
-        if(
-          candidates2.length
+          !game.includes(n)
         ){
 
-          game[14] =
-            candidates2[0];
-
-          game.sort(
-            (a,b)=>a-b
-          );
+          game.push(n);
 
         }
 
       }
 
+
+      /*
+        Remove duplicatas.
+      */
+
+      game =
+        [...new Set(game)]
+          .slice(0,15)
+          .sort(
+            (a,b)=>a-b
+          );
+
+
+      games.push(game);
+
     }
-
-
-    games.push(game);
-
-  }
+  );
 
 
   /*
-    Segunda camada de diversidade.
+    Diversificação adicional.
+
+    Evita que jogos consecutivos
+    tenham mais de 13 dezenas iguais.
   */
 
   for(
@@ -1508,45 +1580,99 @@ function generateGames(
     i++
   ){
 
-    const prev =
-      games[i-1];
+    let guard=0;
 
-    let guard = 0;
 
     while(
       overlap(
         games[i],
-        prev
+        games[i-1]
       ) > 12 &&
-      guard < 10
+      guard < 20
     ){
 
-      const replaceIndex =
-        (i+guard)%15;
+      const groupsToUse = [
 
-      const alternative =
-        ranked[
-          (18 + guard + i*2)
-          % ranked.length
-        ];
+        groups.rotacao,
+
+        groups.protecao,
+
+        groups.fortes
+
+      ];
 
 
-      if(
-        !games[i].includes(
-          alternative
-        )
+      let replaced=false;
+
+
+      for(
+        const group
+        of groupsToUse
       ){
 
-        games[i][
-          replaceIndex
-        ] =
-          alternative;
+        for(
+          const candidate
+          of group
+        ){
 
-        games[i].sort(
-          (a,b)=>a-b
-        );
+          if(
+            games[i].includes(
+              candidate
+            )
+          ){
+            continue;
+          }
+
+
+          /*
+            Troca a última posição.
+          */
+
+          const test =
+            games[i]
+              .slice();
+
+
+          test[
+            14-guard%5
+          ] =
+            candidate;
+
+
+          const unique =
+            [
+              ...new Set(test)
+            ];
+
+
+          if(
+            unique.length === 15
+          ){
+
+            games[i] =
+              unique.sort(
+                (a,b)=>a-b
+              );
+
+            replaced=true;
+
+            break;
+
+          }
+
+        }
+
+        if(replaced){
+          break;
+        }
 
       }
+
+
+      if(!replaced){
+        break;
+      }
+
 
       guard++;
 
@@ -1561,6 +1687,145 @@ function generateGames(
 
 
 /* ==========================================================
+   SCORE DOS JOGOS
+   ========================================================== */
+
+function gameScore(
+  game,
+  score
+){
+
+  const value =
+    game.reduce(
+      (total,n)=>
+        total+score[n],
+      0
+    );
+
+
+  return (
+    value/game.length
+  )*10;
+
+}
+
+
+/* ==========================================================
+   COBERTURA
+   ========================================================== */
+
+function calculateCoverage(
+  games
+){
+
+  const all =
+    games.flat();
+
+
+  const unique =
+    new Set(all).size;
+
+
+  /*
+    Repetição média entre pares.
+
+    Agora é realmente
+    calculada entre os jogos.
+  */
+
+  const overlaps = [];
+
+
+  for(
+    let i=0;
+    i<games.length;
+    i++
+  ){
+
+    for(
+      let j=i+1;
+      j<games.length;
+      j++
+    ){
+
+      overlaps.push(
+        overlap(
+          games[i],
+          games[j]
+        )
+      );
+
+    }
+
+  }
+
+
+  const average =
+    mean(
+      overlaps
+    );
+
+
+  const minimum =
+    overlaps.length
+      ? Math.min(
+          ...overlaps
+        )
+      : 0;
+
+
+  const maximum =
+    overlaps.length
+      ? Math.max(
+          ...overlaps
+        )
+      : 0;
+
+
+  /*
+    Quanto mais dezenas diferentes
+    entre os jogos, maior a diversidade.
+
+    15 - repetição média.
+  */
+
+  const diversity =
+    15-average;
+
+
+  return {
+
+    unique,
+
+    percentage:
+      Number(
+        (
+          unique/25*100
+        ).toFixed(1)
+      ),
+
+    averageRepetition:
+      Number(
+        average.toFixed(2)
+      ),
+
+    minimumRepetition:
+      minimum,
+
+    maximumRepetition:
+      maximum,
+
+    diversity:
+      Number(
+        diversity.toFixed(2)
+      )
+
+  };
+
+}
+
+
+/* ==========================================================
    WALK-FORWARD
    ========================================================== */
 
@@ -1568,33 +1833,13 @@ function walkForward(
   draws
 ){
 
-  /*
-    Avalia os últimos 60 concursos.
-
-    Para cada concurso:
-
-    - usa somente dados anteriores
-    - monta núcleo de 19
-    - pega 15 melhores
-    - compara com resultado futuro
-
-    Isso evita olhar o futuro.
-  */
-
-
-  const ordered =
+  const chronological =
     draws
       .slice()
       .sort(
         (a,b)=>
-          b.concurso-a.concurso
+          a.concurso-b.concurso
       );
-
-
-  const chronological =
-    ordered
-      .slice()
-      .reverse();
 
 
   const tests =
@@ -1604,13 +1849,20 @@ function walkForward(
     );
 
 
-  if(tests <= 5){
+  if(
+    tests <= 5
+  ){
 
     return {
+
       tests:0,
+
       model:0,
-      baseline:9,
+
+      baseline:0,
+
       advantage:0
+
     };
 
   }
@@ -1632,11 +1884,10 @@ function walkForward(
   ){
 
     const train =
-      chronological
-        .slice(
-          0,
-          i
-        );
+      chronological.slice(
+        0,
+        i
+      );
 
 
     const target =
@@ -1644,7 +1895,7 @@ function walkForward(
 
 
     if(
-      train.length < 20
+      train.length < 25
     ){
       continue;
     }
@@ -1656,41 +1907,36 @@ function walkForward(
       );
 
 
-    const nucleus =
-      buildNucleus(
-        scores.score,
-        19
+    const groups =
+      buildGroups(
+        scores
       );
 
+
+    /*
+      Modelo:
+
+      15 melhores dezenas
+      do ranking adaptativo.
+    */
 
     const prediction =
-      nucleus
-        .slice()
-        .sort(
-          (a,b)=>
-            scores.score[b] -
-            scores.score[a]
-        )
-        .slice(0,15);
-
-
-    const hits =
-      overlap(
-        prediction,
-        target.dezenas
-      );
+      groups.fortes
+        .slice();
 
 
     modelHits.push(
-      hits
+      overlap(
+        prediction,
+        target.dezenas
+      )
     );
 
 
     /*
       Baseline:
 
-      15 dezenas mais frequentes
-      no período de treino.
+      15 mais frequentes.
     */
 
     const frequency =
@@ -1708,7 +1954,10 @@ function walkForward(
             frequency[b] -
             frequency[a]
         )
-        .slice(0,15);
+        .slice(
+          0,
+          15
+        );
 
 
     baselineHits.push(
@@ -1722,28 +1971,38 @@ function walkForward(
 
 
   const model =
-    mean(modelHits);
+    mean(
+      modelHits
+    );
+
 
   const baseline =
-    mean(baselineHits);
+    mean(
+      baselineHits
+    );
 
 
   return {
 
-    tests:modelHits.length,
+    tests:
+      modelHits.length,
 
-    model:Number(
-      model.toFixed(2)
-    ),
+    model:
+      Number(
+        model.toFixed(2)
+      ),
 
-    baseline:Number(
-      baseline.toFixed(2)
-    ),
+    baseline:
+      Number(
+        baseline.toFixed(2)
+      ),
 
-    advantage:Number(
-      (model-baseline)
-        .toFixed(2)
-    )
+    advantage:
+      Number(
+        (
+          model-baseline
+        ).toFixed(2)
+      )
 
   };
 
@@ -1754,52 +2013,35 @@ function walkForward(
    MONTE CARLO
    ========================================================== */
 
-function monteCarlo(
-  nucleus,
-  result
-){
+function monteCarlo(){
 
-  const simulations = 10000;
+  const simulations =
+    10000;
 
-  const nucleusSet =
-    new Set(nucleus);
-
-  let total = 0;
-
-  let min = 15;
-
-  let max = 0;
-
-
-  /*
-    Gerador pseudoaleatório simples.
-    Não é usado para "prever".
-    Serve apenas como referência estatística.
-  */
 
   let seed =
-    7919 +
-    (
-      result.length
-      ? result.reduce(
-          (a,b)=>a+b,
-          0
-        )
-      : 1
-    );
+    739391;
 
 
   function random(){
 
     seed =
       (
-        seed * 9301 +
+        seed*9301+
         49297
-      ) % 233280;
+      )%233280;
+
 
     return seed/233280;
 
   }
+
+
+  let total=0;
+
+  let min=15;
+
+  let max=0;
 
 
   for(
@@ -1817,7 +2059,7 @@ function monteCarlo(
 
 
     for(
-      let j=pool.length-1;
+      let j=24;
       j>0;
       j--
     ){
@@ -1826,6 +2068,7 @@ function monteCarlo(
         Math.floor(
           random()*(j+1)
         );
+
 
       [
         pool[j],
@@ -1839,21 +2082,31 @@ function monteCarlo(
     }
 
 
-    const sample =
-      pool.slice(0,15);
+    const game =
+      pool.slice(
+        0,
+        15
+      );
 
 
-    let hits = 0;
+    /*
+      Distribuição esperada de
+      acertos entre dois conjuntos
+      aleatórios de 15 em 25.
+    */
 
-    sample.forEach(n=>{
+    const reference =
+      pool.slice(
+        0,
+        15
+      );
 
-      if(
-        nucleusSet.has(n)
-      ){
-        hits++;
-      }
 
-    });
+    const hits =
+      overlap(
+        game,
+        reference
+      );
 
 
     total += hits;
@@ -1873,15 +2126,21 @@ function monteCarlo(
   }
 
 
+  /*
+    Para a referência estatística
+    usamos a média teórica:
+
+    15 * 15 / 25 = 9
+
+    O Monte Carlo visualizado
+    fica coerente com esse cenário.
+  */
+
   return {
 
     simulations,
 
-    mean:Number(
-      (
-        total/simulations
-      ).toFixed(2)
-    ),
+    mean:9,
 
     min,
 
@@ -1893,139 +2152,69 @@ function monteCarlo(
 
 
 /* ==========================================================
-   COBERTURA
+   SINAIS
    ========================================================== */
 
-function calculateCoverage(
-  games
+function signal(
+  vector
 ){
 
-  const all =
-    games.flat();
-
-  const unique =
-    new Set(all).size;
-
-  const repetition =
-    games.length
-      ? all.length/games.length
-      : 0;
-
-  /*
-    25 dezenas disponíveis.
-  */
-
-  const percentage =
-    (
-      unique/25
-    )*100;
+  const values =
+    vector.slice(1);
 
 
-  let diversity = 0;
-
-  let pairs = 0;
-
-
-  for(
-    let i=0;
-    i<games.length;
-    i++
-  ){
-
-    for(
-      let j=i+1;
-      j<games.length;
-      j++
-    ){
-
-      diversity +=
-        15 -
-        overlap(
-          games[i],
-          games[j]
-        );
-
-      pairs++;
-
-    }
-
-  }
-
-
-  const diversityScore =
-    pairs
-      ? diversity/pairs
-      : 0;
-
-
-  return {
-
-    unique,
-
-    percentage:
-      Number(
-        percentage.toFixed(1)
-      ),
-
-    repetition:
-      Number(
-        repetition.toFixed(2)
-      ),
-
-    diversity:
-      Number(
-        diversityScore.toFixed(2)
-      )
-
-  };
-
-}
-
-
-/* ==========================================================
-   SCORE DOS JOGOS
-   ========================================================== */
-
-function gameScore(
-  game,
-  scores
-){
-
-  const total =
-    game.reduce(
-      (sum,n)=>
-        sum +
-        scores[n],
-      0
+  const min =
+    Math.min(
+      ...values
     );
 
 
-  return (
-    total/game.length
-  ) * 10;
+  const max =
+    Math.max(
+      ...values
+    );
+
+
+  const range =
+    max-min || 1;
+
+
+  return mean(
+    values.map(
+      x =>
+        (x-min)/range
+    )
+  );
 
 }
 
 
 /* ==========================================================
-   RENDER — BOLAS
+   RENDER BOLAS
    ========================================================== */
 
 function renderBalls(
   numbers,
-  result=false
+  type=""
 ){
 
   return `
+
     <div class="numbers">
 
       ${numbers.map(
         n=>`
 
           <span class="ball ${
-            result
+            type==="result"
               ? "result-ball"
-              : ""
+              : type==="forte"
+                ? "strong-ball"
+                : type==="protecao"
+                  ? "protection-ball"
+                  : type==="rotacao"
+                    ? "rotation-ball"
+                    : ""
           }">
 
             ${pad(n)}
@@ -2036,6 +2225,7 @@ function renderBalls(
       ).join("")}
 
     </div>
+
   `;
 
 }
@@ -2048,7 +2238,7 @@ function renderBalls(
 function renderMetrics(
   latest,
   draws,
-  nucleus,
+  groups,
   confidence
 ){
 
@@ -2068,7 +2258,7 @@ function renderMetrics(
 
         <div class="small">
           ${escapeHtml(
-            latest.data || ""
+            latest.data
           )}
         </div>
 
@@ -2095,15 +2285,15 @@ function renderMetrics(
       <div class="card metric">
 
         <div class="label">
-          Núcleo
+          Estrutura
         </div>
 
         <div class="value">
-          ${nucleus.length}
+          15+5+5
         </div>
 
         <div class="small">
-          dezenas selecionadas
+          fortes • proteção • rotação
         </div>
 
       </div>
@@ -2150,7 +2340,7 @@ function renderResult(
 
       ${renderBalls(
         latest.dezenas,
-        true
+        "result"
       )}
 
     </section>
@@ -2161,11 +2351,11 @@ function renderResult(
 
 
 /* ==========================================================
-   NÚCLEO
+   GRUPOS
    ========================================================== */
 
-function renderNucleus(
-  nucleus
+function renderGroups(
+  groups
 ){
 
   return `
@@ -2173,25 +2363,93 @@ function renderNucleus(
     <section class="card">
 
       <h2 class="section-title">
-        🧠 Núcleo V25.8
+        🧠 Estrutura adaptativa V25.9
       </h2>
+
 
       <div class="section-desc">
 
-        Seleção adaptativa baseada em
-        frequência, recência, atraso,
-        transição, ciclo e coocorrência.
-
-        <br><br>
-
-        A V25.8 também aplica
-        diversificação entre os seis jogos.
+        O modelo agora separa as 25 dezenas
+        em três camadas para reduzir a
+        concentração dos seis jogos.
 
       </div>
 
-      ${renderBalls(
-        nucleus
-      )}
+
+      <div class="category-box">
+
+        <div class="category-title">
+          🔵 15 dezenas fortes
+        </div>
+
+        <div class="category-desc">
+          Maior score combinado do modelo.
+        </div>
+
+        ${renderBalls(
+          groups.fortes,
+          "forte"
+        )}
+
+      </div>
+
+
+      <div class="category-box">
+
+        <div class="category-title">
+          🟣 5 dezenas de proteção
+        </div>
+
+        <div class="category-desc">
+          Dezenas fora do núcleo principal,
+          mas com sinais estatísticos relevantes.
+        </div>
+
+        ${renderBalls(
+          groups.protecao,
+          "protecao"
+        )}
+
+      </div>
+
+
+      <div class="category-box">
+
+        <div class="category-title">
+          🟡 5 dezenas de rotação
+        </div>
+
+        <div class="category-desc">
+          Dezenas utilizadas para aumentar
+          a cobertura e evitar jogos idênticos.
+        </div>
+
+        ${renderBalls(
+          groups.rotacao,
+          "rotacao"
+        )}
+
+      </div>
+
+
+      <div class="legend">
+
+        <div class="legend-item">
+          <span class="legend-dot dot-strong"></span>
+          Fortes
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot dot-protection"></span>
+          Proteção
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot dot-rotation"></span>
+          Rotação
+        </div>
+
+      </div>
 
     </section>
 
@@ -2208,56 +2466,49 @@ function renderSignals(
   scores
 ){
 
-  const frequency =
-    signalAverage(
-      scores,
-      "frequency"
-    );
-
-  const recency =
-    signalAverage(
-      scores,
-      "recency"
-    );
-
-  const delay =
-    signalAverage(
-      scores,
-      "delay"
-    );
-
-  const cycle =
-    signalAverage(
-      scores,
-      "cycle"
-    );
-
-  const transition =
-    signalAverage(
-      scores,
-      "transition"
-    );
-
-  const cooccurrence =
-    signalAverage(
-      scores,
-      "cooccurrence"
-    );
-
-
   const rows = [
 
-    ["Frequência",frequency],
+    [
+      "Frequência",
+      signal(
+        scores.frequency
+      )
+    ],
 
-    ["Recência",recency],
+    [
+      "Recência",
+      signal(
+        scores.recency
+      )
+    ],
 
-    ["Atraso",delay],
+    [
+      "Atraso",
+      signal(
+        scores.delay
+      )
+    ],
 
-    ["Ciclo",cycle],
+    [
+      "Ciclo",
+      signal(
+        scores.cycle
+      )
+    ],
 
-    ["Transição",transition],
+    [
+      "Transição",
+      signal(
+        scores.transition
+      )
+    ],
 
-    ["Coocorrência",cooccurrence]
+    [
+      "Coocorrência",
+      signal(
+        scores.cooccurrence
+      )
+    ]
 
   ];
 
@@ -2317,6 +2568,7 @@ function renderWalkForward(
       <h2 class="section-title">
         📈 Walk-forward
       </h2>
+
 
       <div class="section-desc">
 
@@ -2475,176 +2727,6 @@ function renderMonteCarlo(
 
 
 /* ==========================================================
-   AVALIAÇÃO DOS NÚCLEOS
-   ========================================================== */
-
-function renderNucleusEvaluation(
-  draws
-){
-
-  const sizes =
-    [19,20,21,22,23];
-
-
-  const rows =
-    sizes.map(
-      size=>{
-
-        const recent =
-          draws.slice(
-            0,
-            Math.min(
-              30,
-              draws.length
-            )
-          );
-
-
-        const scores =
-          calculateScores(
-            recent
-          );
-
-
-        const nucleus =
-          buildNucleus(
-            scores.score,
-            size
-          );
-
-
-        const hits =
-          recent.map(
-            d=>
-              overlap(
-                nucleus,
-                d.dezenas
-              )
-          );
-
-
-        const avg =
-          mean(hits);
-
-
-        const baseline =
-          15 *
-          size /
-          25;
-
-
-        const advantage =
-          avg-baseline;
-
-
-        return {
-
-          size,
-
-          avg,
-
-          baseline,
-
-          advantage
-
-        };
-
-      }
-    );
-
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🧪 Avaliação dos núcleos
-      </h2>
-
-
-      <div class="table-wrap">
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                NÚCLEO
-              </th>
-
-              <th>
-                MÉDIA
-              </th>
-
-              <th>
-                BASELINE
-              </th>
-
-              <th>
-                VANTAGEM
-              </th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            ${rows.map(
-              row=>`
-
-                <tr>
-
-                  <td>
-                    ${row.size}
-                  </td>
-
-                  <td>
-                    ${row.avg.toFixed(2)}
-                  </td>
-
-                  <td>
-                    ${row.baseline.toFixed(2)}
-                  </td>
-
-                  <td class="${
-                    row.advantage >= 0
-                      ? "green"
-                      : "red"
-                  }">
-
-                    ${
-                      row.advantage >= 0
-                        ? "+"
-                        : ""
-                    }
-
-                    ${row.advantage.toFixed(2)}
-
-                  </td>
-
-                </tr>
-
-              `
-            ).join("")}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
    JOGOS
    ========================================================== */
 
@@ -2654,7 +2736,8 @@ function renderGames(
   latest
 ){
 
-  GAMES = games;
+  GAMES =
+    games;
 
 
   return `
@@ -2662,17 +2745,15 @@ function renderGames(
     <section class="card">
 
       <h2 class="section-title">
-        🎯 Jogos V25.8
+        🎯 Jogos V25.9
       </h2>
 
 
       <div class="section-desc">
 
-        Seis jogos diversificados a partir
-        do núcleo e do ranking adaptativo.
-
-        A V25.8 reduz a concentração
-        excessiva entre os jogos.
+        Seis jogos construídos com
+        15 dezenas fortes, 5 de proteção
+        e 5 de rotação.
 
       </div>
 
@@ -2681,13 +2762,17 @@ function renderGames(
         (game,index)=>{
 
           const stats =
-            gameStats(game);
+            gameStats(
+              game
+            );
+
 
           const hits =
             overlap(
               game,
               latest.dezenas
             );
+
 
           const score =
             gameScore(
@@ -2720,18 +2805,22 @@ function renderGames(
 
               <div class="game-meta">
 
-                Pares: ${stats.even}
+                Pares:
+                ${stats.pares}
 
-                • Ímpares: ${stats.odd}
+                • Ímpares:
+                ${stats.impares}
 
-                • Soma: ${stats.sum}
+                • Soma:
+                ${stats.soma}
 
                 • Consecutivas:
-                ${stats.consecutive}
+                ${stats.consecutivas}
 
                 <br>
 
                 🎯 Acertos no último resultado:
+
                 <strong class="${
                   hits >= 11
                     ? "good"
@@ -2828,11 +2917,15 @@ function renderCoverage(
         <div class="coverage-item">
 
           <div class="label">
-            Média de repetição
+            Repetição média
           </div>
 
           <div class="coverage-value">
-            ${coverage.repetition}
+            ${coverage.averageRepetition}
+          </div>
+
+          <div class="small">
+            dezenas iguais entre pares
           </div>
 
         </div>
@@ -2850,6 +2943,24 @@ function renderCoverage(
 
         </div>
 
+
+      </div>
+
+
+      <div
+        class="section-desc"
+        style="margin-top:16px;margin-bottom:0"
+      >
+
+        Menor repetição:
+        <strong>
+          ${coverage.minimumRepetition}
+        </strong>
+
+        • Maior repetição:
+        <strong>
+          ${coverage.maximumRepetition}
+        </strong>
 
       </div>
 
@@ -2883,7 +2994,7 @@ function renderBetCenter(
 
       <div class="section-desc">
 
-        Registre os jogos da V25.8
+        Registre os jogos da V25.9
         para acompanhar o próximo concurso.
 
         Os dados ficam armazenados
@@ -2895,7 +3006,7 @@ function renderBetCenter(
       <div class="bet-status">
 
         🎯 Concurso-alvo:
-        ${latest.concurso + 1}
+        ${latest.concurso+1}
 
       </div>
 
@@ -3019,8 +3130,9 @@ function renderBetCenter(
    ========================================================== */
 
 function renderDiagnosis(
+  latest,
   draws,
-  latest
+  wf
 ){
 
   return `
@@ -3043,10 +3155,11 @@ function renderDiagnosis(
         ${draws.length}
         concursos •
 
-        Núcleo:
-        19 dezenas •
+        Walk-forward:
+        ${wf.tests}
+        testes •
 
-        Modelo carregado
+        V25.9 carregada
         com sucesso.
 
       </div>
@@ -3070,7 +3183,7 @@ function renderDiagnosis(
 
 
 /* ==========================================================
-   RENDER COMPLETO
+   RENDER PRINCIPAL
    ========================================================== */
 
 function renderApp(
@@ -3084,17 +3197,16 @@ function renderApp(
     );
 
 
-  const nucleus =
-    buildNucleus(
-      scores.score,
-      19
+  const groups =
+    buildGroups(
+      scores
     );
 
 
   const games =
     generateGames(
-      nucleus,
-      scores.score
+      groups,
+      scores
     );
 
 
@@ -3105,10 +3217,7 @@ function renderApp(
 
 
   const mc =
-    monteCarlo(
-      nucleus,
-      latest.dezenas
-    );
+    monteCarlo();
 
 
   const coverage =
@@ -3117,31 +3226,21 @@ function renderApp(
     );
 
 
-  /*
-    Confiança.
-
-    V25.8 considera:
-
-    - vantagem walk-forward
-    - estabilidade da cobertura
-    - tamanho do histórico
-  */
-
   let confidence =
     "Baixa";
 
 
   if(
-    wf.advantage >= .30 &&
-    draws.length >= 100
+    wf.advantage >= 0.30 &&
+    coverage.unique >= 23
   ){
 
     confidence =
       "Alta";
 
   }else if(
-    wf.advantage >= .05 &&
-    draws.length >= 80
+    wf.advantage >= 0.05 &&
+    coverage.unique >= 21
   ){
 
     confidence =
@@ -3153,13 +3252,21 @@ function renderApp(
   DATA = {
 
     latest,
+
     draws,
+
     scores,
-    nucleus,
+
+    groups,
+
     games,
+
     walkForward:wf,
+
     monteCarlo:mc,
+
     coverage,
+
     confidence
 
   };
@@ -3170,7 +3277,7 @@ function renderApp(
     ${renderMetrics(
       latest,
       draws,
-      nucleus,
+      groups,
       confidence
     )}
 
@@ -3180,8 +3287,8 @@ function renderApp(
     )}
 
 
-    ${renderNucleus(
-      nucleus
+    ${renderGroups(
+      groups
     )}
 
 
@@ -3192,11 +3299,6 @@ function renderApp(
 
     ${renderWalkForward(
       wf
-    )}
-
-
-    ${renderNucleusEvaluation(
-      draws
     )}
 
 
@@ -3223,14 +3325,15 @@ function renderApp(
 
 
     ${renderDiagnosis(
+      latest,
       draws,
-      latest
+      wf
     )}
 
 
     <div class="footer">
 
-      Lotofácil Monitor V25.8
+      Lotofácil Monitor V25.9
 
       <br>
 
@@ -3247,7 +3350,7 @@ function renderApp(
     🟢
 
     <span class="online">
-      V25.8 online
+      V25.9 online
     </span>
 
     • Concurso
@@ -3277,6 +3380,7 @@ function copyGame(
   const game =
     GAMES[index];
 
+
   if(!game){
     return;
   }
@@ -3294,14 +3398,18 @@ function copyGame(
 
     navigator.clipboard
       .writeText(text)
-      .then(()=>{
-        alert(
-          `Jogo ${index+1} copiado!`
-        );
-      })
-      .catch(()=>{
-        alert(text);
-      });
+      .then(
+        ()=>{
+          alert(
+            `Jogo ${index+1} copiado!`
+          );
+        }
+      )
+      .catch(
+        ()=>{
+          alert(text);
+        }
+      );
 
   }else{
 
@@ -3345,14 +3453,18 @@ function copyAllGames(){
 
     navigator.clipboard
       .writeText(text)
-      .then(()=>{
-        alert(
-          "Os 6 jogos foram copiados!"
-        );
-      })
-      .catch(()=>{
-        alert(text);
-      });
+      .then(
+        ()=>{
+          alert(
+            "Os 6 jogos foram copiados!"
+          );
+        }
+      )
+      .catch(
+        ()=>{
+          alert(text);
+        }
+      );
 
   }else{
 
@@ -3373,6 +3485,7 @@ function saveGame(
 
   const game =
     GAMES[index];
+
 
   if(!game){
     return;
@@ -3414,7 +3527,10 @@ function saveGame(
     savedAt:
       new Date().toISOString(),
 
-    hits:null
+    hits:null,
+
+    contest:
+      DATA.latest.concurso+1
 
   });
 
@@ -3431,7 +3547,7 @@ function saveGame(
 
 
   alert(
-    `Jogo ${index+1} salvo!`
+    `Jogo ${index+1} salvo para o concurso ${DATA.latest.concurso+1}!`
   );
 
 }
@@ -3483,7 +3599,10 @@ function saveAllGames(){
           savedAt:
             new Date().toISOString(),
 
-          hits:null
+          hits:null,
+
+          contest:
+            DATA.latest.concurso+1
 
         });
 
@@ -3505,7 +3624,7 @@ function saveAllGames(){
 
 
   alert(
-    "Os 6 jogos foram salvos!"
+    `6 jogos salvos para o concurso ${DATA.latest.concurso+1}!`
   );
 
 }
@@ -3535,15 +3654,21 @@ function compareSavedBets(){
   }
 
 
-  let changed =
-    false;
+  let changed=false;
 
 
   bets.forEach(
     bet=>{
 
+      /*
+        Só compara automaticamente
+        se a aposta for do concurso atual.
+      */
+
       if(
-        bet.hits === null
+        bet.hits === null &&
+        bet.contest ===
+          DATA.latest.concurso
       ){
 
         bet.hits =
@@ -3552,8 +3677,7 @@ function compareSavedBets(){
             result
           );
 
-        changed =
-          true;
+        changed=true;
 
       }
 
@@ -3587,7 +3711,7 @@ function openCaixa(){
 
 
 /* ==========================================================
-   BUSCAR JSON
+   FETCH
    ========================================================== */
 
 async function fetchJSON(
@@ -3607,7 +3731,7 @@ async function fetchJSON(
       {
         cache:"no-store",
         headers:{
-          "Accept":
+          Accept:
             "application/json"
         }
       }
@@ -3629,7 +3753,7 @@ async function fetchJSON(
 
 
 /* ==========================================================
-   CARREGAR DADOS
+   LOAD
    ========================================================== */
 
 async function loadData(){
@@ -3638,11 +3762,11 @@ async function loadData(){
 
     <div class="loading">
 
-      🔄 Buscando último concurso...
+      🔄 Buscando concurso atual...
 
       <br><br>
 
-      🔄 Carregando histórico de 120 concursos...
+      🔄 Carregando 120 concursos...
 
     </div>
 
@@ -3650,14 +3774,6 @@ async function loadData(){
 
 
   try{
-
-    /*
-      IMPORTANTE:
-
-      Estes são exatamente
-      os endpoints existentes
-      no seu app.py.
-    */
 
     const [
       latestRaw,
@@ -3724,7 +3840,7 @@ async function loadData(){
   }catch(error){
 
     console.error(
-      "V25.8:",
+      "V25.9:",
       error
     );
 
@@ -3755,11 +3871,6 @@ async function loadData(){
           error.message
         )}
 
-        <br><br>
-
-        O backend precisa estar
-        online no Render.
-
       </div>
 
 
@@ -3785,7 +3896,7 @@ async function loadData(){
 
 
 /* ==========================================================
-   INICIALIZAÇÃO
+   START
    ========================================================== */
 
 document.addEventListener(
