@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#5b35e8">
-<title>Lotofácil Monitor V25.3</title>
+<title>Lotofácil Monitor V25.5</title>
 
 <style>
 :root{
@@ -123,6 +123,11 @@ h3{
 
 .btn:active{
   transform:scale(.99);
+}
+
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 .btn.secondary{
@@ -371,6 +376,7 @@ td{
 }
 
 @media(max-width:600px){
+
   .card{
     padding:20px;
     border-radius:26px;
@@ -406,6 +412,11 @@ td{
     width:44px;
     height:44px;
   }
+
+  .game-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
 }
 </style>
 </head>
@@ -414,336 +425,633 @@ td{
 
 <div class="container">
 
-  <!-- CABEÇALHO -->
-  <section class="card">
-    <div class="hero">
-      <div class="logo">🧠</div>
-      <div>
-        <h1>Lotofácil Monitor V25.3</h1>
-        <div class="subtitle">
-          Intelligence Engine • Walk-forward • Monte Carlo
-        </div>
+<!-- =====================================================
+     CABEÇALHO
+===================================================== -->
+
+<section class="card">
+
+  <div class="hero">
+
+    <div class="logo">🧠</div>
+
+    <div>
+      <h1>Lotofácil Monitor V25.5</h1>
+
+      <div class="subtitle">
+        Intelligence Engine • Walk-forward • Monte Carlo
       </div>
     </div>
 
-    <div class="status">
-      <div class="status-title" id="statusTitle">
-        🟢 Inicializando sistema...
-      </div>
-      <div class="status-small" id="statusSmall">
-        Carregando dados públicos da Lotofácil.
-      </div>
+  </div>
+
+  <div class="status">
+
+    <div class="status-title" id="statusTitle">
+      🟡 Inicializando sistema...
     </div>
 
-    <button class="btn" onclick="carregarDados()">
-      🔄 Atualizar dados
-    </button>
-  </section>
-
-
-  <!-- DADOS -->
-  <section class="card">
-    <h2>📡 Dados da Lotofácil</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div class="value" id="ultimoConcurso">—</div>
-        <div class="label">Último concurso</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="totalConcursos">—</div>
-        <div class="label">Concursos analisados</div>
-      </div>
+    <div class="status-small" id="statusSmall">
+      Conectando ao backend do Render.
     </div>
 
-    <div class="note" style="margin-top:15px">
-      <strong>🎯 Último resultado</strong>
-      <div class="numbers" id="ultimoResultado"></div>
-    </div>
-  </section>
+  </div>
+
+  <button
+    id="btnAtualizar"
+    class="btn"
+    onclick="carregarDados()"
+  >
+    🔄 Atualizar dados
+  </button>
+
+</section>
 
 
-  <!-- ENGINE -->
-  <section class="card">
-    <h2>🧠 Intelligence Engine V25.3</h2>
+<!-- =====================================================
+     DADOS
+===================================================== -->
 
-    <p class="subtitle">
-      O motor testa diferentes tamanhos de núcleo usando somente
-      informações disponíveis antes de cada concurso avaliado.
-    </p>
+<section class="card">
 
-    <div class="note warning">
-      <strong>⚠️ Importante</strong><br>
-      O índice estatístico não representa probabilidade de premiação.
-      A Lotofácil continua sendo um sorteio aleatório.
-    </div>
+  <h2>📡 Dados da Lotofácil</h2>
 
-    <div class="grid2" style="margin-top:15px">
-      <div class="metric">
-        <div class="value" id="melhorNucleo">—</div>
-        <div class="label">Melhor tamanho</div>
-      </div>
+  <div class="grid2">
 
-      <div class="metric">
-        <div class="value" id="mediaModelo">—</div>
-        <div class="label">Média de acertos</div>
-      </div>
+    <div class="metric">
 
-      <div class="metric">
-        <div class="value" id="mediaRandom">—</div>
-        <div class="label">Referência aleatória</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="diferencaModelo">—</div>
-        <div class="label">Diferença</div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- MONTE CARLO -->
-  <section class="card">
-    <h2>🎲 Monte Carlo</h2>
-
-    <div class="note">
-      <strong>Referência estatística</strong><br><br>
-
-      O sistema simula 10.000 núcleos aleatórios do mesmo tamanho
-      encontrado pelo laboratório e compara a média de acertos.
-    </div>
-
-    <div class="grid2" style="margin-top:15px">
-      <div class="metric">
-        <div class="value" id="mcSim">10.000</div>
-        <div class="label">Simulações</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="mcMedia">—</div>
-        <div class="label">Média aleatória</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="mcP90">—</div>
-        <div class="label">Percentil 90</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="mcModelo">—</div>
-        <div class="label">Modelo</div>
-      </div>
-    </div>
-
-    <div class="note" style="margin-top:15px">
-      Diferença modelo × Monte Carlo:
-      <strong id="mcDiff">—</strong>
-    </div>
-  </section>
-
-
-  <!-- TESTE TAMANHO -->
-  <section class="card">
-    <h2>🎯 Teste de tamanho do núcleo</h2>
-
-    <p class="subtitle">
-      Cada tamanho é avaliado em walk-forward. O modelo nunca utiliza
-      o resultado futuro para construir a previsão daquele teste.
-    </p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Tamanho</th>
-            <th>Testes</th>
-            <th>Média</th>
-            <th>13+</th>
-            <th>14+</th>
-            <th>15</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaNucleos"></tbody>
-      </table>
-    </div>
-  </section>
-
-
-  <!-- EFICÁCIA DOS SINAIS -->
-  <section class="card">
-    <h2>🔬 Eficácia dos sinais</h2>
-
-    <p class="subtitle">
-      Agora todos os sinais são avaliados usando exatamente o
-      <strong>mesmo tamanho de núcleo escolhido pelo laboratório</strong>.
-    </p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Sinal</th>
-            <th>Normal</th>
-            <th>Sem sinal</th>
-            <th>Δ</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaSinais"></tbody>
-      </table>
-    </div>
-  </section>
-
-
-  <!-- WALK FORWARD -->
-  <section class="card">
-    <h2>🧪 Walk-forward V25.3</h2>
-
-    <div class="note">
-      <strong id="wfTestes">— testes</strong>
-
-      <br><br>
-
-      Média:
-      <strong id="wfMedia">—</strong>
-
-      <br>
-
-      13+:
-      <strong id="wf13">—</strong>
-
-      <br>
-
-      14+:
-      <strong id="wf14">—</strong>
-
-      <br>
-
-      15:
-      <strong id="wf15">—</strong>
-
-      <br><br>
-
-      Referência:
-      <strong id="wfRandom">—</strong>
-
-      <br>
-
-      Diferença:
-      <strong id="wfDiff">—</strong>
-    </div>
-  </section>
-
-
-  <!-- NÚCLEO -->
-  <section class="card">
-    <h2>🎯 Núcleo Adaptativo V25.3</h2>
-
-    <div class="note">
-      <strong>
-        Núcleo selecionado:
-        <span id="nucleoTexto">—</span>
-        dezenas
-      </strong>
-
-      <p>
-        O tamanho é escolhido pelo desempenho histórico walk-forward.
-        A composição utiliza o ranking estatístico calculado sem
-        acessar informações futuras.
-      </p>
-    </div>
-
-    <div class="numbers" id="nucleoNumeros"></div>
-
-    <h3 style="margin-top:25px">
-      Ranking das dezenas
-    </h3>
-
-    <div id="ranking"></div>
-  </section>
-
-
-  <!-- JOGOS -->
-  <section class="card">
-    <h2>🎯 Jogos gerados</h2>
-
-    <div class="note">
-      <strong>6 jogos × 15 dezenas</strong><br>
-      Os jogos procuram equilibrar força estatística,
-      cobertura do núcleo e baixa sobreposição entre si.
-    </div>
-
-    <button class="btn" onclick="gerarJogos(true)">
-      🎲 Gerar 6 jogos novamente
-    </button>
-
-    <div id="jogos"></div>
-  </section>
-
-
-  <!-- VALIDAÇÃO -->
-  <section class="card">
-    <h2>🧪 Validação pós-sorteio</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div class="value" id="melhorAcer">—</div>
-        <div class="label">Melhor acerto</div>
-      </div>
-
-      <div class="metric">
-        <div class="value" id="cobertura">—</div>
-        <div class="label">Cobertura do núcleo</div>
-      </div>
-    </div>
-
-    <div class="note" style="margin-top:15px">
-      <strong>Digite um resultado para validar:</strong>
-
-      <input
-        id="resultadoManual"
-        class="input"
-        style="margin-top:12px"
-        placeholder="01 02 03 ... 25"
+      <div
+        class="value"
+        id="ultimoConcurso"
       >
+        —
+      </div>
 
-      <button class="btn secondary" onclick="validarManual()">
-        🔎 Validar jogos
-      </button>
+      <div class="label">
+        Último concurso
+      </div>
 
-      <div id="resultadoValidacao" style="margin-top:15px"></div>
     </div>
-  </section>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="totalConcursos"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Concursos analisados
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="note"
+    style="margin-top:15px"
+  >
+
+    <strong>🎯 Último resultado</strong>
+
+    <div
+      class="numbers"
+      id="ultimoResultado"
+    ></div>
+
+  </div>
+
+</section>
 
 
-  <!-- HISTÓRICO -->
-  <section class="card">
-    <h2>📊 Histórico manual</h2>
+<!-- =====================================================
+     ENGINE
+===================================================== -->
+
+<section class="card">
+
+  <h2>
+    🧠 Intelligence Engine V25.5
+  </h2>
+
+  <p class="subtitle">
+    O motor testa diferentes tamanhos de núcleo usando
+    somente informações disponíveis antes de cada
+    concurso avaliado.
+  </p>
+
+  <div class="note warning">
+
+    <strong>⚠️ Importante</strong><br>
+
+    O índice estatístico não representa probabilidade
+    de premiação. A Lotofácil continua sendo um sorteio
+    aleatório.
+
+  </div>
+
+  <div
+    class="grid2"
+    style="margin-top:15px"
+  >
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="melhorNucleo"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Melhor tamanho
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mediaModelo"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Média de acertos
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mediaRandom"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Referência aleatória
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="diferencaModelo"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Diferença
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MONTE CARLO
+===================================================== -->
+
+<section class="card">
+
+  <h2>🎲 Monte Carlo</h2>
+
+  <div class="note">
+
+    <strong>Referência estatística</strong><br><br>
+
+    O sistema simula 10.000 núcleos aleatórios
+    do mesmo tamanho encontrado pelo laboratório
+    e compara a média de acertos.
+
+  </div>
+
+  <div
+    class="grid2"
+    style="margin-top:15px"
+  >
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mcSim"
+      >
+        10.000
+      </div>
+
+      <div class="label">
+        Simulações
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mcMedia"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Média aleatória
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mcP90"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Percentil 90
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="mcModelo"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Modelo
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="note"
+    style="margin-top:15px"
+  >
+
+    Diferença modelo × Monte Carlo:
+
+    <strong id="mcDiff">—</strong>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     TESTE DE TAMANHO
+===================================================== -->
+
+<section class="card">
+
+  <h2>
+    🎯 Teste de tamanho do núcleo
+  </h2>
+
+  <p class="subtitle">
+
+    Cada tamanho é avaliado em walk-forward.
+    O modelo nunca utiliza o resultado futuro
+    para construir a previsão daquele teste.
+
+  </p>
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Tamanho</th>
+          <th>Testes</th>
+          <th>Média</th>
+          <th>13+</th>
+          <th>14+</th>
+          <th>15</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="tabelaNucleos"></tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     SINAIS
+===================================================== -->
+
+<section class="card">
+
+  <h2>🔬 Eficácia dos sinais</h2>
+
+  <p class="subtitle">
+
+    Os sinais são avaliados usando exatamente
+    o mesmo tamanho de núcleo escolhido pelo laboratório.
+
+  </p>
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Sinal</th>
+          <th>Normal</th>
+          <th>Sem sinal</th>
+          <th>Δ</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="tabelaSinais"></tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     WALK FORWARD
+===================================================== -->
+
+<section class="card">
+
+  <h2>🧪 Walk-forward V25.5</h2>
+
+  <div class="note">
+
+    <strong id="wfTestes">
+      — testes
+    </strong>
+
+    <br><br>
+
+    Média:
+    <strong id="wfMedia">—</strong>
+
+    <br>
+
+    13+:
+    <strong id="wf13">—</strong>
+
+    <br>
+
+    14+:
+    <strong id="wf14">—</strong>
+
+    <br>
+
+    15:
+    <strong id="wf15">—</strong>
+
+    <br><br>
+
+    Referência:
+    <strong id="wfRandom">—</strong>
+
+    <br>
+
+    Diferença:
+    <strong id="wfDiff">—</strong>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     NÚCLEO
+===================================================== -->
+
+<section class="card">
+
+  <h2>🎯 Núcleo Adaptativo V25.5</h2>
+
+  <div class="note">
+
+    <strong>
+
+      Núcleo selecionado:
+      <span id="nucleoTexto">—</span>
+      dezenas
+
+    </strong>
+
+    <p>
+
+      O tamanho é escolhido pelo desempenho histórico
+      walk-forward. A composição utiliza o ranking
+      estatístico calculado sem acessar informações futuras.
+
+    </p>
+
+  </div>
+
+  <div
+    class="numbers"
+    id="nucleoNumeros"
+  ></div>
+
+  <h3 style="margin-top:25px">
+    Ranking das dezenas
+  </h3>
+
+  <div id="ranking"></div>
+
+</section>
+
+
+<!-- =====================================================
+     JOGOS
+===================================================== -->
+
+<section class="card">
+
+  <h2>🎯 Jogos gerados</h2>
+
+  <div class="note">
+
+    <strong>6 jogos × 15 dezenas</strong><br>
+
+    Os jogos procuram equilibrar força estatística,
+    cobertura do núcleo e baixa sobreposição entre si.
+
+  </div>
+
+  <button
+    id="btnGerar"
+    class="btn"
+    onclick="gerarJogos(true)"
+  >
+    🎲 Gerar 6 jogos novamente
+  </button>
+
+  <div id="jogos"></div>
+
+</section>
+
+
+<!-- =====================================================
+     VALIDAÇÃO
+===================================================== -->
+
+<section class="card">
+
+  <h2>🧪 Validação pós-sorteio</h2>
+
+  <div class="grid2">
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="melhorAcer"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Melhor acerto
+      </div>
+
+    </div>
+
+    <div class="metric">
+
+      <div
+        class="value"
+        id="cobertura"
+      >
+        —
+      </div>
+
+      <div class="label">
+        Cobertura do núcleo
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="note"
+    style="margin-top:15px"
+  >
+
+    <strong>
+      Digite um resultado para validar:
+    </strong>
 
     <input
-      id="historicoManual"
+      id="resultadoManual"
       class="input"
+      style="margin-top:12px"
       placeholder="01 02 03 ... 25"
     >
 
-    <button class="btn secondary" onclick="adicionarHistorico()">
-      ➕ Adicionar concurso
+    <button
+      class="btn secondary"
+      onclick="validarManual()"
+    >
+      🔎 Validar jogos
     </button>
 
-    <button class="btn danger" onclick="limparHistorico()">
-      🗑️ Limpar histórico manual
-    </button>
+    <div
+      id="resultadoValidacao"
+      style="margin-top:15px"
+    ></div>
 
-    <div id="historicoLista" style="margin-top:15px"></div>
-  </section>
-
-
-  <div class="footer">
-    Lotofácil Monitor V25.3 • Intelligence Engine<br>
-    Modelo baseado somente em dados públicos.<br>
-    Nenhuma informação privada da CAIXA é acessada.<br>
-    Estatística não garante o resultado do sorteio.
   </div>
+
+</section>
+
+
+<!-- =====================================================
+     HISTÓRICO MANUAL
+===================================================== -->
+
+<section class="card">
+
+  <h2>📊 Histórico manual</h2>
+
+  <input
+    id="historicoManual"
+    class="input"
+    placeholder="01 02 03 ... 25"
+  >
+
+  <button
+    class="btn secondary"
+    onclick="adicionarHistorico()"
+  >
+    ➕ Adicionar concurso
+  </button>
+
+  <button
+    class="btn danger"
+    onclick="limparHistorico()"
+  >
+    🗑️ Limpar histórico manual
+  </button>
+
+  <div
+    id="historicoLista"
+    style="margin-top:15px"
+  ></div>
+
+</section>
+
+
+<div class="footer">
+
+  Lotofácil Monitor V25.5 • Intelligence Engine<br>
+
+  Modelo baseado somente em dados públicos.<br>
+
+  Nenhuma informação privada da CAIXA é acessada.<br>
+
+  Estatística não garante o resultado do sorteio.
+
+</div>
 
 </div>
 
@@ -751,154 +1059,220 @@ td{
 <script>
 
 /* =========================================================
-   LOTOFÁCIL MONITOR V25.3
-   ========================================================= */
+   LOTOFÁCIL MONITOR V25.5
+========================================================= */
 
-const VERSION = "V25.3";
+const VERSION = "V25.5";
 
 const API_LATEST = "/api/lotofacil/latest";
-const API_HISTORY = "/api/lotofacil/history?limit=120";
+
+const API_HISTORY =
+  "/api/lotofacil/history?limit=120";
 
 const TOTAL_NUMBERS = 25;
+
 const GAME_SIZE = 15;
+
 const GAMES = 6;
 
 const WALK_TESTS = 25;
+
 const MONTE_CARLO = 10000;
 
+const STORAGE_HISTORY =
+  "lotofacil_v255_history";
+
+const STORAGE_MANUAL =
+  "lotofacil_manual_v255";
+
+
 let historico = [];
+
 let ultimo = null;
+
 let analise = null;
+
 let jogosAtuais = [];
+
 let historicoManual = [];
 
 
 /* =========================================================
    UTILITÁRIOS
-   ========================================================= */
+========================================================= */
 
 function pad(n){
+
   return String(n).padStart(2,"0");
+
 }
+
 
 function range(a,b){
-  return Array.from({length:b-a+1},(_,i)=>a+i);
+
+  return Array.from(
+    {length:b-a+1},
+    (_,i)=>a+i
+  );
+
 }
 
-function shuffle(arr){
-  const a = [...arr];
 
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+function shuffle(arr){
+
+  const a=[...arr];
+
+  for(
+    let i=a.length-1;
+    i>0;
+    i--
+  ){
+
+    const j=
+      Math.floor(
+        Math.random()*(i+1)
+      );
+
+    [a[i],a[j]]=
+      [a[j],a[i]];
+
   }
 
   return a;
+
 }
 
-function clamp(v,min,max){
-  return Math.max(min,Math.min(max,v));
-}
 
 function mean(arr){
-  if(!arr.length) return 0;
-  return arr.reduce((a,b)=>a+b,0)/arr.length;
-}
 
-function median(arr){
   if(!arr.length) return 0;
 
-  const a=[...arr].sort((x,y)=>x-y);
-  const m=Math.floor(a.length/2);
+  return arr.reduce(
+    (a,b)=>a+b,
+    0
+  )/arr.length;
 
-  return a.length%2
-    ? a[m]
-    : (a[m-1]+a[m])/2;
 }
+
 
 function percentile(arr,p){
+
   if(!arr.length) return 0;
 
-  const a=[...arr].sort((x,y)=>x-y);
-  const index=(a.length-1)*p;
+  const a=[...arr]
+    .sort((x,y)=>x-y);
+
+  const index=
+    (a.length-1)*p;
+
   const lo=Math.floor(index);
+
   const hi=Math.ceil(index);
 
-  if(lo===hi) return a[lo];
+  if(lo===hi)
+    return a[lo];
 
-  return a[lo]+(a[hi]-a[lo])*(index-lo);
+  return a[lo]+
+    (a[hi]-a[lo])*
+    (index-lo);
+
 }
+
 
 function intersection(a,b){
+
   const s=new Set(b);
-  return a.filter(x=>s.has(x));
-}
 
-function validDraw(arr){
-  if(!Array.isArray(arr)) return false;
+  return a.filter(
+    x=>s.has(x)
+  );
 
-  const nums=arr
-    .map(Number)
-    .filter(n=>Number.isInteger(n) && n>=1 && n<=25);
-
-  return new Set(nums).size===15;
 }
 
 
 /* =========================================================
-   NORMALIZAÇÃO DOS DADOS
-   ========================================================= */
+   NORMALIZAÇÃO
+========================================================= */
 
 function normalizarDezenas(raw){
 
-  if(!raw) return [];
+  if(!raw)
+    return [];
 
   let arr=[];
 
   if(Array.isArray(raw)){
+
     arr=raw;
+
   }else if(typeof raw==="string"){
-    arr=raw.match(/\d{1,2}/g)||[];
+
+    arr=
+      raw.match(/\d{1,2}/g)||[];
+
   }
 
   arr=arr
     .map(Number)
-    .filter(n=>n>=1 && n<=25);
+    .filter(
+      n=>n>=1&&n<=25
+    );
 
-  arr=[...new Set(arr)];
+  arr=[
+    ...new Set(arr)
+  ];
 
-  if(arr.length!==15) return [];
+  if(arr.length!==15)
+    return [];
 
-  return arr.sort((a,b)=>a-b);
+  return arr.sort(
+    (a,b)=>a-b
+  );
+
 }
 
 
 function normalizarConcurso(item){
 
-  if(!item) return null;
+  if(!item)
+    return null;
 
-  const dezenas =
+  const dezenas=
     normalizarDezenas(
       item.dezenas ||
       item.listaDezenas ||
       item.numeros ||
-      item.resultado
+      item.resultado ||
+      item.dezenasSorteadas
     );
 
-  if(dezenas.length!==15) return null;
+  if(dezenas.length!==15)
+    return null;
 
-  const concurso = Number(
-    item.concurso ||
-    item.numero ||
-    item.numeroConcurso ||
-    0
-  );
+  const concurso=
+    Number(
+      item.concurso ||
+      item.numero ||
+      item.numeroConcurso ||
+      0
+    );
+
+  if(!concurso)
+    return null;
 
   return {
+
     concurso,
-    data:item.data || item.dataApuracao || "",
+
+    data:
+      item.data ||
+      item.dataApuracao ||
+      "",
+
     dezenas
+
   };
+
 }
 
 
@@ -907,233 +1281,558 @@ function extrairHistorico(data){
   let lista=[];
 
   if(Array.isArray(data)){
+
     lista=data;
-  }
-  else if(Array.isArray(data.concursos)){
+
+  }else if(
+    Array.isArray(data.concursos)
+  ){
+
     lista=data.concursos;
-  }
-  else if(Array.isArray(data.historico)){
+
+  }else if(
+    Array.isArray(data.historico)
+  ){
+
     lista=data.historico;
-  }
-  else if(Array.isArray(data.resultados)){
+
+  }else if(
+    Array.isArray(data.resultados)
+  ){
+
     lista=data.resultados;
+
   }
 
-  const normalizados=lista
-    .map(normalizarConcurso)
-    .filter(Boolean);
+  const normalizados=
+    lista
+      .map(normalizarConcurso)
+      .filter(Boolean);
 
   const mapa=new Map();
 
   normalizados.forEach(x=>{
-    mapa.set(x.concurso,x);
+
+    mapa.set(
+      x.concurso,
+      x
+    );
+
   });
 
   return [...mapa.values()]
-    .sort((a,b)=>a.concurso-b.concurso);
+    .sort(
+      (a,b)=>
+        a.concurso-b.concurso
+    );
+
 }
 
 
 /* =========================================================
    API
-   ========================================================= */
+========================================================= */
 
 async function fetchJSON(url){
 
-  const r=await fetch(
-    url,
-    {
-      cache:"no-store",
-      headers:{
-        "Accept":"application/json"
+  const response=
+    await fetch(
+      url,
+      {
+        cache:"no-store",
+        headers:{
+          "Accept":
+            "application/json"
+        }
       }
-    }
-  );
+    );
 
-  if(!r.ok){
-    throw new Error("HTTP "+r.status);
+  if(!response.ok){
+
+    let mensagem=
+      "HTTP "+response.status;
+
+    try{
+
+      const erro=
+        await response.json();
+
+      if(erro.detail)
+        mensagem=
+          erro.detail;
+
+    }catch(e){}
+
+    throw new Error(mensagem);
+
   }
 
-  return await r.json();
+  return await response.json();
+
 }
 
 
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(
+  title,
+  small
+){
+
+  document.getElementById(
+    "statusTitle"
+  ).textContent=title;
+
+  document.getElementById(
+    "statusSmall"
+  ).textContent=small;
+
+}
+
+
+/* =========================================================
+   CARREGAMENTO
+========================================================= */
+
 async function carregarDados(){
 
+  const btn=
+    document.getElementById(
+      "btnAtualizar"
+    );
+
+  btn.disabled=true;
+
+  btn.innerHTML=
+    "⏳ Atualizando...";
+
   setStatus(
-    "🟡 Atualizando dados...",
-    "Consultando os resultados públicos."
+    "🟡 Consultando dados...",
+    "Conectando ao backend do Render."
   );
 
   try{
 
-    const [latestData,historyData] =
-      await Promise.all([
-        fetchJSON(API_LATEST),
-        fetchJSON(API_HISTORY)
-      ]);
-
-    const latest=normalizarConcurso(latestData);
-
-    const hist=extrairHistorico(historyData);
-
-    if(latest && latest.dezenas.length===15){
-
-      ultimo=latest;
-
-      if(!hist.some(x=>x.concurso===latest.concurso)){
-        hist.push(latest);
-      }
-    }
-
-    historico=hist
-      .sort((a,b)=>a.concurso-b.concurso);
-
-    if(historico.length<10){
-      throw new Error(
-        "Histórico insuficiente para análise."
+    const latestData=
+      await fetchJSON(
+        API_LATEST
       );
+
+    const latest=
+      normalizarConcurso(
+        latestData
+      );
+
+    if(!latest){
+
+      throw new Error(
+        "Último resultado inválido."
+      );
+
     }
 
-    document.getElementById("ultimoConcurso")
-      .textContent=ultimo?.concurso || "—";
+    ultimo=latest;
 
-    document.getElementById("totalConcursos")
-      .textContent=historico.length;
+    /*
+      Primeiro mostramos o último resultado.
+    */
+
+    document.getElementById(
+      "ultimoConcurso"
+    ).textContent=
+      latest.concurso;
 
     renderUltimo();
 
-    executarAnalise();
+
+    /*
+      Depois carregamos o histórico.
+    */
 
     setStatus(
-      "🟢 Dados atualizados",
-      `${historico.length} concursos disponíveis para análise.`
+      "🟡 Último resultado recebido",
+      "Carregando histórico para análise..."
     );
 
-  }catch(err){
+    const historyData=
+      await fetchJSON(
+        API_HISTORY
+      );
 
-    console.error(err);
+    const hist=
+      extrairHistorico(
+        historyData
+      );
+
+    if(
+      !hist.some(
+        x=>
+          x.concurso===
+          latest.concurso
+      )
+    ){
+
+      hist.push(latest);
+
+    }
+
+    historico=
+      hist.sort(
+        (a,b)=>
+          a.concurso-b.concurso
+      );
+
+
+    /*
+      Guarda uma cópia local do histórico.
+    */
+
+    try{
+
+      localStorage.setItem(
+        STORAGE_HISTORY,
+        JSON.stringify(
+          historico
+        )
+      );
+
+    }catch(e){}
+
+
+    document.getElementById(
+      "totalConcursos"
+    ).textContent=
+      historico.length;
+
+
+    if(historico.length<10){
+
+      throw new Error(
+        "O backend retornou apenas "+
+        historico.length+
+        " concursos. É necessário histórico suficiente."
+      );
+
+    }
+
+
+    /*
+      Executa o motor.
+    */
 
     setStatus(
-      "🔴 Erro ao carregar dados",
-      "Verifique o backend do Render e tente novamente."
+      "🧠 Processando inteligência...",
+      "Walk-forward e Monte Carlo em execução."
     );
 
     /*
-      Se já houver dados carregados, mantemos a análise.
+      Pequena pausa para permitir
+      atualização visual no iPhone.
     */
-    if(historico.length){
-      executarAnalise();
+
+    await new Promise(
+      resolve=>
+        setTimeout(
+          resolve,
+          30
+        )
+    );
+
+    executarAnalise();
+
+
+    setStatus(
+      "🟢 Sistema atualizado",
+      historico.length+
+      " concursos analisados."
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erro:",
+      error
+    );
+
+
+    /*
+      Tenta usar histórico local
+      caso o servidor tenha falhado.
+    */
+
+    const recuperado=
+      carregarHistoricoLocal();
+
+    if(
+      recuperado.length>=10
+    ){
+
+      historico=
+        recuperado;
+
+      if(
+        !ultimo &&
+        historico.length
+      ){
+
+        ultimo=
+          historico[
+            historico.length-1
+          ];
+
+      }
+
+      document.getElementById(
+        "ultimoConcurso"
+      ).textContent=
+        ultimo?.concurso ||
+        "—";
+
+      document.getElementById(
+        "totalConcursos"
+      ).textContent=
+        historico.length;
+
+      renderUltimo();
+
+      try{
+
+        executarAnalise();
+
+        setStatus(
+          "🟡 Dados locais utilizados",
+          "O servidor apresentou: "+
+          error.message
+        );
+
+        return;
+
+      }catch(e){}
+
     }
+
+
+    setStatus(
+      "🔴 Erro ao carregar dados",
+      error.message ||
+      "Verifique o backend do Render."
+    );
+
+  }finally{
+
+    btn.disabled=false;
+
+    btn.innerHTML=
+      "🔄 Atualizar dados";
+
   }
+
 }
 
 
-function setStatus(title,small){
+/* =========================================================
+   HISTÓRICO LOCAL
+========================================================= */
 
-  document.getElementById("statusTitle")
-    .textContent=title;
+function carregarHistoricoLocal(){
 
-  document.getElementById("statusSmall")
-    .textContent=small;
+  try{
+
+    const raw=
+      localStorage.getItem(
+        STORAGE_HISTORY
+      );
+
+    if(!raw)
+      return [];
+
+    const data=
+      JSON.parse(raw);
+
+    if(!Array.isArray(data))
+      return [];
+
+    return data
+      .map(normalizarConcurso)
+      .filter(Boolean)
+      .sort(
+        (a,b)=>
+          a.concurso-b.concurso
+      );
+
+  }catch(e){
+
+    return [];
+
+  }
+
 }
 
 
 /* =========================================================
    ÚLTIMO RESULTADO
-   ========================================================= */
+========================================================= */
 
 function renderUltimo(){
 
-  const box=document.getElementById("ultimoResultado");
+  const box=
+    document.getElementById(
+      "ultimoResultado"
+    );
 
   if(!ultimo){
+
     box.innerHTML="";
+
     return;
+
   }
 
-  box.innerHTML=ultimo.dezenas
-    .map(n=>`<div class="ball">${pad(n)}</div>`)
-    .join("");
+  box.innerHTML=
+    ultimo.dezenas
+      .map(
+        n=>
+        `<div class="ball">
+          ${pad(n)}
+        </div>`
+      )
+      .join("");
+
 }
 
 
 /* =========================================================
-   ESTATÍSTICA BASE
-   ========================================================= */
+   FREQUÊNCIA
+========================================================= */
 
 function contarFrequencia(draws){
 
   const f={};
 
-  range(1,25).forEach(n=>f[n]=0);
+  range(1,25)
+    .forEach(
+      n=>f[n]=0
+    );
 
   draws.forEach(d=>{
+
     d.dezenas.forEach(n=>{
+
       f[n]++;
+
     });
+
   });
 
   return f;
+
 }
 
+
+/* =========================================================
+   ATRASO
+========================================================= */
 
 function calcularAtraso(draws){
 
   const atraso={};
 
-  range(1,25).forEach(n=>{
-    atraso[n]=draws.length+1;
-  });
+  range(1,25)
+    .forEach(
+      n=>
+        atraso[n]=
+          draws.length+1
+    );
 
-  for(let i=draws.length-1;i>=0;i--){
 
-    const dist=draws.length-1-i;
+  for(
+    let i=draws.length-1;
+    i>=0;
+    i--
+  ){
 
-    draws[i].dezenas.forEach(n=>{
-      if(atraso[n]===draws.length+1){
-        atraso[n]=dist;
-      }
-    });
+    const distancia=
+      draws.length-1-i;
+
+    draws[i].dezenas
+      .forEach(n=>{
+
+        if(
+          atraso[n]===
+          draws.length+1
+        ){
+
+          atraso[n]=
+            distancia;
+
+        }
+
+      });
+
   }
 
   return atraso;
+
 }
 
+
+/* =========================================================
+   RECÊNCIA
+========================================================= */
 
 function calcularRecencia(draws){
 
   const r={};
 
-  range(1,25).forEach(n=>r[n]=0);
+  range(1,25)
+    .forEach(
+      n=>r[n]=0
+    );
 
-  const janela=Math.min(10,draws.length);
+  const janela=
+    Math.min(
+      10,
+      draws.length
+    );
 
-  const recentes=draws.slice(-janela);
+  const recentes=
+    draws.slice(-janela);
 
-  recentes.forEach((d,i)=>{
+  recentes.forEach(
+    (d,i)=>{
 
-    const peso=i+1;
+      const peso=i+1;
 
-    d.dezenas.forEach(n=>{
-      r[n]+=peso;
-    });
+      d.dezenas
+        .forEach(n=>{
 
-  });
+          r[n]+=peso;
+
+        });
+
+    }
+  );
 
   return r;
+
 }
 
+
+/* =========================================================
+   COOCORRÊNCIA
+========================================================= */
 
 function calcularCoocorrencia(draws){
 
   const co={};
 
-  range(1,25).forEach(n=>{
-    co[n]=0;
-  });
-
-  if(draws.length<2) return co;
+  range(1,25)
+    .forEach(
+      n=>co[n]=0
+    );
 
   const pares={};
 
@@ -1142,240 +1841,409 @@ function calcularCoocorrencia(draws){
     const nums=d.dezenas;
 
     nums.forEach(a=>{
+
       nums.forEach(b=>{
 
-        if(a===b) return;
+        if(a===b)
+          return;
 
-        const key=a+"-"+b;
+        const key=
+          a+"-"+b;
 
-        pares[key]=(pares[key]||0)+1;
+        pares[key]=
+          (pares[key]||0)+1;
+
       });
-    });
-  });
 
-  /*
-    Mede participação em pares frequentes.
-  */
-  range(1,25).forEach(n=>{
-
-    let total=0;
-
-    range(1,25).forEach(m=>{
-      if(m===n) return;
-
-      total += pares[n+"-"+m] || 0;
     });
 
-    co[n]=total;
   });
+
+
+  range(1,25)
+    .forEach(n=>{
+
+      let total=0;
+
+      range(1,25)
+        .forEach(m=>{
+
+          if(m===n)
+            return;
+
+          total+=
+            pares[n+"-"+m]||
+            0;
+
+        });
+
+      co[n]=total;
+
+    });
 
   return co;
+
 }
 
+
+/* =========================================================
+   TRANSIÇÃO
+========================================================= */
 
 function calcularTransicao(draws){
 
   const t={};
 
-  range(1,25).forEach(n=>t[n]=0);
+  range(1,25)
+    .forEach(
+      n=>t[n]=0
+    );
 
-  if(draws.length<2) return t;
+  if(draws.length<2)
+    return t;
 
-  const anterior=draws[draws.length-2].dezenas;
+  const anterior=
+    draws[
+      draws.length-2
+    ].dezenas;
 
-  /*
-    Sinal simples de repetição/transição.
-    Não é previsão.
-  */
-  anterior.forEach(n=>{
-    t[n]+=1;
-  });
+  anterior.forEach(
+    n=>t[n]+=1
+  );
 
-  const ultimoDraw=draws[draws.length-1].dezenas;
+  const atual=
+    draws[
+      draws.length-1
+    ].dezenas;
 
-  ultimoDraw.forEach(n=>{
-    t[n]+=2;
-  });
+  atual.forEach(
+    n=>t[n]+=2
+  );
 
   return t;
+
 }
 
+
+/* =========================================================
+   CICLO
+========================================================= */
 
 function calcularCiclo(draws){
 
   const c={};
 
-  range(1,25).forEach(n=>c[n]=0);
+  range(1,25)
+    .forEach(
+      n=>c[n]=0
+    );
 
-  const atraso=calcularAtraso(draws);
+  const atraso=
+    calcularAtraso(
+      draws
+    );
 
-  range(1,25).forEach(n=>{
+  range(1,25)
+    .forEach(n=>{
 
-    const a=atraso[n];
+      c[n]=
+        Math.cos(
+          atraso[n]/4
+        );
 
-    /*
-      Função cíclica suave.
-    */
-    c[n]=Math.cos(a/4);
-  });
+    });
 
   return c;
+
 }
 
 
 /* =========================================================
-   NORMALIZAÇÃO DE SCORE
-   ========================================================= */
+   NORMALIZAÇÃO
+========================================================= */
 
 function normalizeMap(map){
 
-  const values=Object.values(map);
+  const values=
+    Object.values(map);
 
-  const min=Math.min(...values);
-  const max=Math.max(...values);
+  const min=
+    Math.min(...values);
+
+  const max=
+    Math.max(...values);
 
   const out={};
 
-  range(1,25).forEach(n=>{
+  range(1,25)
+    .forEach(n=>{
 
-    if(max===min){
-      out[n]=0.5;
-    }else{
-      out[n]=(map[n]-min)/(max-min);
-    }
+      if(max===min){
 
-  });
+        out[n]=0.5;
+
+      }else{
+
+        out[n]=
+          (map[n]-min)/
+          (max-min);
+
+      }
+
+    });
 
   return out;
+
 }
 
 
 /* =========================================================
    RANKING
-   ========================================================= */
+========================================================= */
 
-function construirRanking(draws, options={}){
+function construirRanking(
+  draws,
+  options={}
+){
 
-  const freq=normalizeMap(
-    contarFrequencia(draws)
-  );
+  const freq=
+    normalizeMap(
+      contarFrequencia(
+        draws
+      )
+    );
 
-  const rec=normalizeMap(
-    calcularRecencia(draws)
-  );
+  const rec=
+    normalizeMap(
+      calcularRecencia(
+        draws
+      )
+    );
 
-  const atrasoRaw=calcularAtraso(draws);
+  const atrasoRaw=
+    calcularAtraso(
+      draws
+    );
 
   const atraso={};
 
-  range(1,25).forEach(n=>{
+  range(1,25)
+    .forEach(n=>{
 
-    /*
-      Atraso moderado:
-      nem simplesmente "mais atrasado = melhor".
-    */
-    atraso[n]=1/(1+atrasoRaw[n]);
+      /*
+        Sinal moderado.
+        Evita transformar atraso puro
+        em falsa previsão.
+      */
 
-  });
+      atraso[n]=
+        1/
+        (1+atrasoRaw[n]);
 
-  const atrasoNorm=normalizeMap(atraso);
+    });
 
-  const co=normalizeMap(
-    calcularCoocorrencia(draws)
-  );
+  const atrasoNorm=
+    normalizeMap(
+      atraso
+    );
 
-  const trans=normalizeMap(
-    calcularTransicao(draws)
-  );
+  const co=
+    normalizeMap(
+      calcularCoocorrencia(
+        draws
+      )
+    );
 
-  const ciclo=normalizeMap(
-    calcularCiclo(draws)
-  );
+  const trans=
+    normalizeMap(
+      calcularTransicao(
+        draws
+      )
+    );
+
+  const ciclo=
+    normalizeMap(
+      calcularCiclo(
+        draws
+      )
+    );
+
 
   const weights={
-    frequencia: options.frequencia ?? 0.22,
-    recencia: options.recencia ?? 0.20,
-    atraso: options.atraso ?? 0.10,
-    coocorrencia: options.coocorrencia ?? 0.18,
-    transicao: options.transicao ?? 0.15,
-    ciclo: options.ciclo ?? 0.15
+
+    frequencia:
+      options.frequencia ??
+      0.22,
+
+    recencia:
+      options.recencia ??
+      0.20,
+
+    atraso:
+      options.atraso ??
+      0.10,
+
+    coocorrencia:
+      options.coocorrencia ??
+      0.18,
+
+    transicao:
+      options.transicao ??
+      0.15,
+
+    ciclo:
+      options.ciclo ??
+      0.15
+
   };
+
 
   const scores={};
 
-  range(1,25).forEach(n=>{
+  range(1,25)
+    .forEach(n=>{
 
-    scores[n]=
-      freq[n]*weights.frequencia+
-      rec[n]*weights.recencia+
-      atrasoNorm[n]*weights.atraso+
-      co[n]*weights.coocorrencia+
-      trans[n]*weights.transicao+
-      ciclo[n]*weights.ciclo;
+      scores[n]=
 
-  });
+        freq[n]*
+        weights.frequencia+
+
+        rec[n]*
+        weights.recencia+
+
+        atrasoNorm[n]*
+        weights.atraso+
+
+        co[n]*
+        weights.coocorrencia+
+
+        trans[n]*
+        weights.transicao+
+
+        ciclo[n]*
+        weights.ciclo;
+
+    });
+
 
   return {
+
     scores,
+
     componentes:{
+
       frequencia:freq,
+
       recencia:rec,
+
       atraso:atrasoNorm,
+
       coocorrencia:co,
+
       transicao:trans,
-      ciclo:ciclo
+
+      ciclo
+
     }
+
   };
+
 }
 
 
 /* =========================================================
-   PONTUAÇÃO ESTRUTURAL
-   ========================================================= */
+   ESTRUTURA
+========================================================= */
 
 function pares(jogo){
 
-  return jogo.filter(n=>n%2===0).length;
+  return jogo.filter(
+    n=>n%2===0
+  ).length;
+
 }
 
 
 function soma(jogo){
 
-  return jogo.reduce((a,b)=>a+b,0);
+  return jogo.reduce(
+    (a,b)=>a+b,
+    0
+  );
+
 }
 
 
 function consecutivas(jogo){
 
-  const s=[...jogo].sort((a,b)=>a-b);
+  const s=
+    [...jogo]
+      .sort(
+        (a,b)=>a-b
+      );
 
   let atual=1;
+
   let maior=1;
 
-  for(let i=1;i<s.length;i++){
+  for(
+    let i=1;
+    i<s.length;
+    i++
+  ){
 
-    if(s[i]===s[i-1]+1){
+    if(
+      s[i]===
+      s[i-1]+1
+    ){
+
       atual++;
-      maior=Math.max(maior,atual);
+
+      maior=
+        Math.max(
+          maior,
+          atual
+        );
+
     }else{
+
       atual=1;
+
     }
 
   }
 
   return maior;
+
 }
 
 
 function faixas(jogo){
 
   return [
-    jogo.filter(n=>n>=1&&n<=5).length,
-    jogo.filter(n=>n>=6&&n<=10).length,
-    jogo.filter(n=>n>=11&&n<=15).length,
-    jogo.filter(n=>n>=16&&n<=20).length,
-    jogo.filter(n=>n>=21&&n<=25).length
+
+    jogo.filter(
+      n=>n>=1&&n<=5
+    ).length,
+
+    jogo.filter(
+      n=>n>=6&&n<=10
+    ).length,
+
+    jogo.filter(
+      n=>n>=11&&n<=15
+    ).length,
+
+    jogo.filter(
+      n=>n>=16&&n<=20
+    ).length,
+
+    jogo.filter(
+      n=>n>=21&&n<=25
+    ).length
+
   ];
+
 }
 
 
@@ -1391,61 +2259,79 @@ function estruturaScore(jogo){
 
   let score=0;
 
-  /*
-    Paridade:
-    6-9 pares é uma região razoável,
-    sem afirmar que seja previsão.
-  */
-  if(p>=6 && p<=9) score+=2;
-  else if(p>=5 && p<=10) score+=1;
 
-  /*
-    Soma.
-  */
-  if(s>=165 && s<=210) score+=2;
-  else if(s>=150 && s<=220) score+=1;
+  if(p>=6&&p<=9)
+    score+=2;
 
-  /*
-    Consecutivas.
-  */
-  if(c>=6 && c<=10) score+=2;
-  else if(c>=5 && c<=11) score+=1;
+  else if(p>=5&&p<=10)
+    score+=1;
 
-  /*
-    Faixas não podem ficar extremamente concentradas.
-  */
-  const vazias=f.filter(x=>x===0).length;
 
-  if(vazias===0) score+=2;
-  else if(vazias===1) score+=1;
+  if(s>=165&&s<=210)
+    score+=2;
+
+  else if(s>=150&&s<=220)
+    score+=1;
+
+
+  if(c>=6&&c<=10)
+    score+=2;
+
+  else if(c>=5&&c<=11)
+    score+=1;
+
+
+  const vazias=
+    f.filter(
+      x=>x===0
+    ).length;
+
+  if(vazias===0)
+    score+=2;
+
+  else if(vazias===1)
+    score+=1;
+
 
   return score;
+
 }
 
 
 /* =========================================================
-   SCORE DE UM JOGO
-   ========================================================= */
+   SCORE DO JOGO
+========================================================= */
 
-function scoreJogo(jogo, ranking){
+function scoreJogo(
+  jogo,
+  ranking
+){
 
-  let s=0;
+  let score=0;
 
   jogo.forEach(n=>{
-    s+=ranking.scores[n] || 0;
+
+    score+=
+      ranking.scores[n]||
+      0;
+
   });
 
-  s*=10;
+  score*=10;
 
-  s+=estruturaScore(jogo);
+  score+=
+    estruturaScore(
+      jogo
+    );
 
-  return s;
+  return score;
+
 }
 
 
 /* =========================================================
    WALK-FORWARD
-   ========================================================= */
+========================================================= */
 
 function avaliarTamanho(
   draws,
@@ -1457,220 +2343,414 @@ function avaliarTamanho(
   if(draws.length<35){
 
     return {
+
       tamanho,
+
       testes:0,
+
       media:0,
+
       treze:0,
+
       quatorze:0,
+
       quinze:0,
+
       resultados:[]
+
     };
+
   }
 
-  const inicio=Math.max(
-    25,
-    draws.length-tests
-  );
+
+  const inicio=
+    Math.max(
+      25,
+      draws.length-tests
+    );
 
   const resultados=[];
 
-  for(let i=inicio;i<draws.length;i++){
 
-    const treino=draws.slice(
-      Math.max(0,i-60),
-      i
+  for(
+    let i=inicio;
+    i<draws.length;
+    i++
+  ){
+
+    const treino=
+      draws.slice(
+        Math.max(
+          0,
+          i-60
+        ),
+        i
+      );
+
+
+    const ranking=
+      construirRanking(
+        treino,
+        weights||{}
+      );
+
+
+    const top=
+      Object.entries(
+        ranking.scores
+      )
+      .sort(
+        (a,b)=>b[1]-a[1]
+      )
+      .slice(
+        0,
+        tamanho
+      )
+      .map(
+        x=>Number(x[0])
+      );
+
+
+    const real=
+      draws[i].dezenas;
+
+
+    const acertos=
+      intersection(
+        top,
+        real
+      ).length;
+
+
+    resultados.push(
+      acertos
     );
 
-    const ranking=construirRanking(
-      treino,
-      weights||{}
-    );
-
-    const top=Object.entries(ranking.scores)
-      .sort((a,b)=>b[1]-a[1])
-      .slice(0,tamanho)
-      .map(x=>Number(x[0]));
-
-    const real=draws[i].dezenas;
-
-    const acertos=intersection(top,real).length;
-
-    resultados.push(acertos);
   }
 
+
   return {
+
     tamanho,
-    testes:resultados.length,
-    media:mean(resultados),
-    treze:resultados.filter(x=>x>=13).length,
-    quatorze:resultados.filter(x=>x>=14).length,
-    quinze:resultados.filter(x=>x>=15).length,
+
+    testes:
+      resultados.length,
+
+    media:
+      mean(resultados),
+
+    treze:
+      resultados.filter(
+        x=>x>=13
+      ).length,
+
+    quatorze:
+      resultados.filter(
+        x=>x>=14
+      ).length,
+
+    quinze:
+      resultados.filter(
+        x=>x>=15
+      ).length,
+
     resultados
+
   };
-}
 
-
-function executarLaboratorio(draws,weights=null){
-
-  const tamanhos=range(15,25);
-
-  const resultados=tamanhos.map(t=>
-    avaliarTamanho(
-      draws,
-      t,
-      weights
-    )
-  );
-
-  /*
-    Critério principal:
-    média.
-
-    Desempate:
-    14+
-    depois 15
-    depois menor núcleo.
-  */
-  resultados.sort((a,b)=>{
-
-    if(b.media!==a.media)
-      return b.media-a.media;
-
-    if(b.quatorze!==a.quatorze)
-      return b.quatorze-a.quatorze;
-
-    if(b.quinze!==a.quinze)
-      return b.quinze-a.quinze;
-
-    return a.tamanho-b.tamanho;
-  });
-
-  return {
-    vencedor:resultados[0],
-    todos:resultados
-  };
 }
 
 
 /* =========================================================
-   REFERÊNCIA ALEATÓRIA
-   ========================================================= */
+   LABORATÓRIO
+========================================================= */
 
-function randomNucleus(size){
+function executarLaboratorio(
+  draws,
+  weights=null
+){
 
-  return shuffle(range(1,25))
-    .slice(0,size);
+  /*
+    V25.5:
+    15 até 24 inclusive.
+  */
+
+  const tamanhos=
+    range(15,24);
+
+
+  const resultados=
+    tamanhos.map(
+      tamanho=>
+        avaliarTamanho(
+          draws,
+          tamanho,
+          weights
+        )
+    );
+
+
+  resultados.sort(
+    (a,b)=>{
+
+      if(
+        b.media!==a.media
+      ){
+
+        return b.media-
+          a.media;
+
+      }
+
+      if(
+        b.quatorze!==
+        a.quatorze
+      ){
+
+        return b.quatorze-
+          a.quatorze;
+
+      }
+
+      if(
+        b.quinze!==
+        a.quinze
+      ){
+
+        return b.quinze-
+          a.quinze;
+
+      }
+
+      return a.tamanho-
+        b.tamanho;
+
+    }
+  );
+
+
+  return {
+
+    vencedor:
+      resultados[0],
+
+    todos:
+      resultados
+
+  };
+
 }
 
 
-function randomBaseline(draws,size,tests=WALK_TESTS){
+/* =========================================================
+   ALEATÓRIO
+========================================================= */
 
-  if(!draws.length) return 0;
+function randomNucleus(size){
 
-  const inicio=Math.max(
-    25,
-    draws.length-tests
+  return shuffle(
+    range(1,25)
+  ).slice(
+    0,
+    size
   );
+
+}
+
+
+function randomBaseline(
+  draws,
+  size,
+  tests=WALK_TESTS
+){
+
+  if(!draws.length)
+    return 0;
+
+  const inicio=
+    Math.max(
+      25,
+      draws.length-tests
+    );
 
   const valores=[];
 
-  for(let i=inicio;i<draws.length;i++){
 
-    const nucleus=randomNucleus(size);
+  for(
+    let i=inicio;
+    i<draws.length;
+    i++
+  ){
 
-    const real=draws[i].dezenas;
+    const nucleus=
+      randomNucleus(
+        size
+      );
 
     valores.push(
-      intersection(nucleus,real).length
+      intersection(
+        nucleus,
+        draws[i].dezenas
+      ).length
     );
+
   }
 
-  return mean(valores);
+
+  return mean(
+    valores
+  );
+
 }
 
 
 /* =========================================================
    MONTE CARLO
-   ========================================================= */
+========================================================= */
 
-function monteCarlo(draws,size){
+function monteCarlo(
+  draws,
+  size
+){
 
   const resultados=[];
 
-  /*
-    Usa os concursos avaliados no final do histórico.
-  */
-  const base=draws.slice(
-    Math.max(0,draws.length-WALK_TESTS)
-  );
+  const base=
+    draws.slice(
+      Math.max(
+        0,
+        draws.length-WALK_TESTS
+      )
+    );
 
-  for(let i=0;i<MONTE_CARLO;i++){
+
+  if(!base.length){
+
+    return {
+      media:0,
+      p90:0,
+      p95:0,
+      resultados:[]
+    };
+
+  }
+
+
+  for(
+    let i=0;
+    i<MONTE_CARLO;
+    i++
+  ){
 
     const draw=
       base[
         Math.floor(
-          Math.random()*base.length
+          Math.random()*
+          base.length
         )
       ];
 
-    const nucleus=randomNucleus(size);
+
+    const nucleus=
+      randomNucleus(
+        size
+      );
+
 
     resultados.push(
-      intersection(nucleus,draw.dezenas).length
+      intersection(
+        nucleus,
+        draw.dezenas
+      ).length
     );
+
   }
 
+
   return {
-    media:mean(resultados),
-    p90:percentile(resultados,.90),
-    p95:percentile(resultados,.95),
+
+    media:
+      mean(resultados),
+
+    p90:
+      percentile(
+        resultados,
+        .90
+      ),
+
+    p95:
+      percentile(
+        resultados,
+        .95
+      ),
+
     resultados
+
   };
+
 }
 
 
 /* =========================================================
-   EFICÁCIA DOS SINAIS
-   ========================================================= */
+   SINAIS
+========================================================= */
 
 const SIGNALS=[
+
   {
     key:"frequencia",
     nome:"🔥 Frequência"
   },
+
   {
     key:"recencia",
     nome:"🕘 Recência"
   },
+
   {
     key:"atraso",
     nome:"❄️ Atraso"
   },
+
   {
     key:"coocorrencia",
     nome:"🔗 Coocorrência"
   },
+
   {
     key:"transicao",
     nome:"➡️ Transição"
   },
+
   {
     key:"ciclo",
     nome:"🔄 Ciclo"
   }
+
 ];
 
 
-function testarSinais(draws,size){
+function testarSinais(
+  draws,
+  size
+){
 
   const normalWeights={
+
     frequencia:.22,
+
     recencia:.20,
+
     atraso:.10,
+
     coocorrencia:.18,
+
     transicao:.15,
+
     ciclo:.15
+
   };
+
 
   const normal=
     avaliarTamanho(
@@ -1679,279 +2759,602 @@ function testarSinais(draws,size){
       normalWeights
     );
 
-  return SIGNALS.map(signal=>{
 
-    const weights={...normalWeights};
+  return SIGNALS.map(
+    signal=>{
 
-    /*
-      Remove o sinal e redistribui
-      proporcionalmente entre os demais.
-    */
-    const removido=weights[signal.key];
+      const weights={
+        ...normalWeights
+      };
 
-    delete weights[signal.key];
 
-    const total=Object.values(weights)
-      .reduce((a,b)=>a+b,0);
+      const removido=
+        weights[
+          signal.key
+        ];
 
-    Object.keys(weights).forEach(k=>{
-      weights[k]+=weights[k]/total*removido;
-    });
 
-    const sem=
-      avaliarTamanho(
-        draws,
-        size,
+      delete weights[
+        signal.key
+      ];
+
+
+      const total=
+        Object.values(
+          weights
+        )
+        .reduce(
+          (a,b)=>a+b,
+          0
+        );
+
+
+      Object.keys(
         weights
-      );
+      )
+      .forEach(k=>{
 
-    return {
-      nome:signal.nome,
-      normal:normal.media,
-      sem:sem.media,
-      delta:sem.media-normal.media
-    };
-  });
-}
+        weights[k]+=
+          weights[k]/
+          total*
+          removido;
+
+      });
 
 
-/* =========================================================
-   NÚCLEO ATUAL
-   ========================================================= */
+      const sem=
+        avaliarTamanho(
+          draws,
+          size,
+          weights
+        );
 
-function obterNucleo(draws,size){
 
-  const treino=draws.slice(
-    Math.max(0,draws.length-60)
+      return {
+
+        nome:
+          signal.nome,
+
+        normal:
+          normal.media,
+
+        sem:
+          sem.media,
+
+        delta:
+          sem.media-
+          normal.media
+
+      };
+
+    }
   );
 
-  const ranking=construirRanking(treino);
-
-  const nucleo=Object.entries(ranking.scores)
-    .sort((a,b)=>b[1]-a[1])
-    .slice(0,size)
-    .map(x=>Number(x[0]));
-
-  return {
-    nucleo,
-    ranking
-  };
 }
 
 
 /* =========================================================
-   GERAÇÃO DE JOGOS
-   ========================================================= */
+   NÚCLEO FINAL
+========================================================= */
 
-function criarJogo(nucleo,ranking){
+function obterNucleo(
+  draws,
+  size
+){
 
   /*
-    Sorteio ponderado sem repetição.
+    Usa somente histórico anterior
+    ao próximo sorteio.
   */
-  const disponiveis=[...nucleo];
+
+  const treino=
+    draws.slice(
+      0,
+      Math.max(
+        0,
+        draws.length-1
+      )
+    )
+    .slice(
+      -60
+    );
+
+
+  const ranking=
+    construirRanking(
+      treino
+    );
+
+
+  const nucleo=
+    Object.entries(
+      ranking.scores
+    )
+    .sort(
+      (a,b)=>b[1]-a[1]
+    )
+    .slice(
+      0,
+      size
+    )
+    .map(
+      x=>Number(x[0])
+    );
+
+
+  return {
+
+    nucleo,
+
+    ranking
+
+  };
+
+}
+
+
+/* =========================================================
+   GERAÇÃO DE UM JOGO
+========================================================= */
+
+function criarJogo(
+  nucleo,
+  ranking
+){
+
+  /*
+    V25.5:
+    Agora o jogo pode utilizar todas as
+    25 dezenas, mas dá preferência ao núcleo.
+
+    Isso evita que um núcleo de 15 dezenas
+    produza sempre os mesmos 15 números.
+  */
+
+  const disponiveis=
+    range(1,25);
+
+
   const jogo=[];
 
+
   while(
-    jogo.length<GAME_SIZE &&
+    jogo.length<
+    GAME_SIZE &&
     disponiveis.length
   ){
 
-    const pesos=disponiveis.map(n=>
-      Math.max(
-        .001,
-        ranking.scores[n]+.15
-      )
-    );
+    const pesos=
+      disponiveis.map(
+        n=>{
 
-    const total=pesos.reduce(
-      (a,b)=>a+b,0
-    );
+          const base=
+            ranking.scores[n]||
+            0;
 
-    let r=Math.random()*total;
+          const noNucleo=
+            nucleo.includes(n);
+
+
+          /*
+            Bônus para dezenas do núcleo.
+          */
+
+          return Math.max(
+            .001,
+            base+
+            (noNucleo
+              ? .28
+              : .02)
+          );
+
+        }
+      );
+
+
+    const total=
+      pesos.reduce(
+        (a,b)=>a+b,
+        0
+      );
+
+
+    let r=
+      Math.random()*
+      total;
+
 
     let escolhido=0;
 
-    for(let i=0;i<pesos.length;i++){
+
+    for(
+      let i=0;
+      i<pesos.length;
+      i++
+    ){
 
       r-=pesos[i];
 
       if(r<=0){
+
         escolhido=i;
+
         break;
+
       }
+
     }
+
 
     jogo.push(
-      disponiveis.splice(escolhido,1)[0]
-    );
-  }
-
-  return jogo.sort((a,b)=>a-b);
-}
-
-
-function sobreposicao(a,b){
-
-  return intersection(a,b).length;
-}
-
-
-function gerarJogos(force=false){
-
-  if(!analise || !analise.nucleo){
-    return;
-  }
-
-  const nucleo=analise.nucleo;
-  const ranking=analise.ranking;
-
-  const candidatos=[];
-
-  /*
-    Gera muitos candidatos.
-  */
-  for(let i=0;i<2500;i++){
-
-    const jogo=criarJogo(
-      nucleo,
-      ranking
+      disponiveis.splice(
+        escolhido,
+        1
+      )[0]
     );
 
-    if(jogo.length!==15) continue;
-
-    const score=scoreJogo(
-      jogo,
-      ranking
-    );
-
-    candidatos.push({
-      jogo,
-      score
-    });
   }
 
-  /*
-    Primeiro jogo:
-    melhor score.
-  */
-  candidatos.sort(
-    (a,b)=>b.score-a.score
+
+  return jogo.sort(
+    (a,b)=>a-b
   );
 
-  const selecionados=[];
+}
 
-  if(candidatos.length){
-    selecionados.push(
-      candidatos[0]
-    );
-  }
 
-  /*
-    Próximos jogos:
-    combinam força + diversidade.
-  */
-  while(
-    selecionados.length<GAMES &&
-    candidatos.length
+/* =========================================================
+   SOBREPOSIÇÃO
+========================================================= */
+
+function sobreposicao(
+  a,
+  b
+){
+
+  return intersection(
+    a,
+    b
+  ).length;
+
+}
+
+
+/* =========================================================
+   GERAÇÃO DOS 6 JOGOS
+========================================================= */
+
+function gerarJogos(
+  force=false
+){
+
+  if(
+    !analise ||
+    !analise.nucleo ||
+    !analise.ranking
   ){
 
-    let melhor=null;
-    let melhorValor=-Infinity;
-
-    /*
-      Limita busca para não pesar no iPhone.
-    */
-    const amostra=candidatos.slice(
-      0,
-      Math.min(700,candidatos.length)
+    setStatus(
+      "🟡 Análise ainda não disponível",
+      "Atualize os dados antes de gerar os jogos."
     );
 
-    for(const candidato of amostra){
+    return;
 
-      if(
-        selecionados.some(
-          x=>JSON.stringify(x.jogo)===
-             JSON.stringify(candidato.jogo)
-        )
-      ){
-        continue;
-      }
-
-      let maiorOverlap=0;
-      let somaOverlap=0;
-
-      selecionados.forEach(s=>{
-        const ov=sobreposicao(
-          candidato.jogo,
-          s.jogo
-        );
-
-        maiorOverlap=Math.max(
-          maiorOverlap,
-          ov
-        );
-
-        somaOverlap+=ov;
-      });
-
-      /*
-        Penaliza sobreposição excessiva.
-      */
-      const diversidade=
-        -maiorOverlap*1.8-
-        somaOverlap*.35;
-
-      const valor=
-        candidato.score+
-        diversidade+
-        Math.random()*.4;
-
-      if(valor>melhorValor){
-
-        melhorValor=valor;
-        melhor=candidato;
-      }
-    }
-
-    if(melhor){
-      selecionados.push(melhor);
-    }else{
-      break;
-    }
   }
 
-  jogosAtuais=
-    selecionados.map(x=>x.jogo);
 
-  renderJogos();
-  validarUltimoAutomaticamente();
+  const btn=
+    document.getElementById(
+      "btnGerar"
+    );
+
+
+  btn.disabled=true;
+
+  btn.innerHTML=
+    "⏳ Gerando jogos...";
+
+
+  /*
+    Pequena pausa para o navegador
+    atualizar o botão.
+  */
+
+  setTimeout(
+    ()=>{
+
+      try{
+
+        const nucleo=
+          analise.nucleo;
+
+        const ranking=
+          analise.ranking;
+
+
+        const candidatos=[];
+
+
+        /*
+          1.200 candidatos.
+          Reduz carga no iPhone.
+        */
+
+        for(
+          let i=0;
+          i<1200;
+          i++
+        ){
+
+          const jogo=
+            criarJogo(
+              nucleo,
+              ranking
+            );
+
+
+          if(
+            jogo.length!==15
+          )
+            continue;
+
+
+          const score=
+            scoreJogo(
+              jogo,
+              ranking
+            );
+
+
+          candidatos.push({
+
+            jogo,
+
+            score
+
+          });
+
+        }
+
+
+        candidatos.sort(
+          (a,b)=>
+            b.score-a.score
+        );
+
+
+        const selecionados=[];
+
+
+        if(
+          candidatos.length
+        ){
+
+          selecionados.push(
+            candidatos[0]
+          );
+
+        }
+
+
+        /*
+          Escolhe os demais buscando
+          diversidade.
+        */
+
+        while(
+          selecionados.length<
+          GAMES &&
+          candidatos.length
+        ){
+
+          let melhor=null;
+
+          let melhorValor=
+            -Infinity;
+
+
+          const amostra=
+            candidatos.slice(
+              0,
+              Math.min(
+                500,
+                candidatos.length
+              )
+            );
+
+
+          for(
+            const candidato
+            of amostra
+          ){
+
+            if(
+              selecionados.some(
+                s=>
+                  JSON.stringify(
+                    s.jogo
+                  )===
+                  JSON.stringify(
+                    candidato.jogo
+                  )
+              )
+            ){
+
+              continue;
+
+            }
+
+
+            let maiorOverlap=0;
+
+            let somaOverlap=0;
+
+
+            selecionados.forEach(
+              s=>{
+
+                const ov=
+                  sobreposicao(
+                    candidato.jogo,
+                    s.jogo
+                  );
+
+
+                maiorOverlap=
+                  Math.max(
+                    maiorOverlap,
+                    ov
+                  );
+
+
+                somaOverlap+=
+                  ov;
+
+              }
+            );
+
+
+            /*
+              Penaliza jogos muito iguais.
+            */
+
+            const diversidade=
+
+              -maiorOverlap*
+              2.2
+
+              -
+
+              somaOverlap*
+              .40;
+
+
+            const valor=
+
+              candidato.score+
+              diversidade+
+              Math.random()*
+              .5;
+
+
+            if(
+              valor>
+              melhorValor
+            ){
+
+              melhorValor=
+                valor;
+
+              melhor=
+                candidato;
+
+            }
+
+          }
+
+
+          if(melhor){
+
+            selecionados.push(
+              melhor
+            );
+
+          }else{
+
+            break;
+
+          }
+
+        }
+
+
+        jogosAtuais=
+          selecionados.map(
+            x=>x.jogo
+          );
+
+
+        renderJogos();
+
+        validarUltimoAutomaticamente();
+
+
+        setStatus(
+          "🟢 Jogos gerados",
+          "6 jogos criados pelo motor V25.5."
+        );
+
+
+      }catch(error){
+
+        console.error(error);
+
+        setStatus(
+          "🔴 Erro ao gerar jogos",
+          error.message
+        );
+
+      }finally{
+
+        btn.disabled=false;
+
+        btn.innerHTML=
+          "🎲 Gerar 6 jogos novamente";
+
+      }
+
+    },
+    50
+  );
+
+}
+
+
+/* =========================================================
+   NOME ESTRATÉGIA
+========================================================= */
+
+function nomeEstrategia(i){
+
+  const nomes=[
+
+    "🧠 Núcleo",
+
+    "🔥 Frequência",
+
+    "🕘 Recente",
+
+    "🔗 Coocorrência",
+
+    "➡️ Transição",
+
+    "🎯 Cobertura"
+
+  ];
+
+  return nomes[i]||
+    "🎯 Portfólio";
+
 }
 
 
 /* =========================================================
    RENDER JOGOS
-   ========================================================= */
-
-function nomeEstrategia(i){
-
-  const nomes=[
-    "🧠 Núcleo",
-    "🔥 Frequência",
-    "🕘 Recente",
-    "🔗 Coocorrência",
-    "➡️ Transição",
-    "🎯 Cobertura"
-  ];
-
-  return nomes[i]||"🎯 Portfólio";
-}
-
+========================================================= */
 
 function renderJogos(){
 
-  const box=document.getElementById("jogos");
+  const box=
+    document.getElementById(
+      "jogos"
+    );
 
-  if(!jogosAtuais.length){
+
+  if(
+    !jogosAtuais.length
+  ){
 
     box.innerHTML=
       `<div class="loader">
@@ -1959,249 +3362,398 @@ function renderJogos(){
       </div>`;
 
     return;
+
   }
+
 
   box.innerHTML="";
 
-  jogosAtuais.forEach((jogo,i)=>{
 
-    const p=pares(jogo);
-    const s=soma(jogo);
-    const c=consecutivas(jogo);
-    const f=faixas(jogo);
+  jogosAtuais.forEach(
+    (jogo,i)=>{
 
-    const div=document.createElement("div");
+      const p=
+        pares(jogo);
 
-    div.className="game";
+      const s=
+        soma(jogo);
 
-    div.innerHTML=`
-      <div class="game-head">
-        <div class="game-title">
-          Jogo ${i+1}
+      const c=
+        consecutivas(jogo);
+
+      const f=
+        faixas(jogo);
+
+
+      const div=
+        document.createElement(
+          "div"
+        );
+
+
+      div.className="game";
+
+
+      div.innerHTML=`
+
+        <div class="game-head">
+
+          <div class="game-title">
+            Jogo ${i+1}
+          </div>
+
+          <div class="badge">
+            ${nomeEstrategia(i)}
+          </div>
+
         </div>
 
-        <div class="badge">
-          ${nomeEstrategia(i)}
+        <div class="numbers">
+
+          ${jogo.map(
+            n=>
+            `<div class="ball">
+              ${pad(n)}
+            </div>`
+          ).join("")}
+
         </div>
-      </div>
 
-      <div class="numbers">
-        ${jogo.map(n=>
-          `<div class="ball">${pad(n)}</div>`
-        ).join("")}
-      </div>
+        <div class="game-info">
 
-      <div class="game-info">
-        Pares: ${p}
-        • Soma: ${s}
-        • Consecutivas: ${c}
-        <br>
-        Faixas: ${f.join("-")}
-      </div>
-    `;
+          Pares: ${p}
+          • Soma: ${s}
+          • Consecutivas: ${c}
 
-    box.appendChild(div);
-  });
+          <br>
+
+          Faixas:
+          ${f.join("-")}
+
+        </div>
+
+      `;
+
+
+      box.appendChild(
+        div
+      );
+
+    }
+  );
+
 }
 
 
 /* =========================================================
-   RANKING VISUAL
-   ========================================================= */
+   RANKING
+========================================================= */
 
-function renderRanking(ranking){
+function renderRanking(
+  ranking
+){
 
-  const box=document.getElementById("ranking");
+  const box=
+    document.getElementById(
+      "ranking"
+    );
 
-  const arr=Object.entries(
-    ranking.scores
-  )
-  .sort((a,b)=>b[1]-a[1]);
 
-  const max=arr[0]?.[1]||1;
+  const arr=
+    Object.entries(
+      ranking.scores
+    )
+    .sort(
+      (a,b)=>b[1]-a[1]
+    );
 
-  box.innerHTML=arr.map(
-    ([n,s],i)=>{
 
-      const width=
-        Math.max(
-          5,
-          s/max*100
-        );
+  const max=
+    arr[0]?.[1]||
+    1;
 
-      return `
-        <div class="rank-row">
-          <div class="rank-num">
-            ${pad(n)}
+
+  box.innerHTML=
+    arr.map(
+      ([n,s])=>{
+
+        const width=
+          Math.max(
+            5,
+            s/max*100
+          );
+
+
+        return `
+
+          <div class="rank-row">
+
+            <div class="rank-num">
+              ${pad(n)}
+            </div>
+
+            <div class="rank-bar">
+
+              <span
+                style="width:${width}%"
+              ></span>
+
+            </div>
+
+            <div class="rank-score">
+              ${(s*100).toFixed(1)}
+            </div>
+
           </div>
 
-          <div class="rank-bar">
-            <span style="width:${width}%"></span>
-          </div>
+        `;
 
-          <div class="rank-score">
-            ${(s*100).toFixed(1)}
-          </div>
-        </div>
-      `;
-    }
-  ).join("");
+      }
+    )
+    .join("");
+
 }
 
 
 /* =========================================================
    RENDER NÚCLEO
-   ========================================================= */
+========================================================= */
 
-function renderNucleo(nucleo){
+function renderNucleo(
+  nucleo
+){
 
   document.getElementById(
     "nucleoTexto"
-  ).textContent=nucleo.length;
+  ).textContent=
+    nucleo.length;
+
 
   document.getElementById(
     "melhorNucleo"
-  ).textContent=nucleo.length;
+  ).textContent=
+    nucleo.length;
+
 
   const box=
     document.getElementById(
       "nucleoNumeros"
     );
 
-  box.innerHTML=nucleo
-    .sort((a,b)=>a-b)
-    .map(n=>
-      `<div class="ball outline">
-        ${pad(n)}
-      </div>`
-    ).join("");
+
+  box.innerHTML=
+    [...nucleo]
+      .sort(
+        (a,b)=>a-b
+      )
+      .map(
+        n=>
+        `<div class="ball outline">
+          ${pad(n)}
+        </div>`
+      )
+      .join("");
+
 }
 
 
 /* =========================================================
-   RENDER TAMANHOS
-   ========================================================= */
+   TABELA NÚCLEOS
+========================================================= */
 
-function renderTabelaNucleos(resultados){
+function renderTabelaNucleos(
+  resultados
+){
 
   const tbody=
     document.getElementById(
       "tabelaNucleos"
     );
 
+
   tbody.innerHTML="";
+
 
   const ordenados=
     [...resultados]
-      .sort((a,b)=>a.tamanho-b.tamanho);
+      .sort(
+        (a,b)=>
+          a.tamanho-
+          b.tamanho
+      );
 
-  ordenados.forEach(r=>{
 
-    const vencedor=
-      analise &&
-      r.tamanho===analise.tamanho;
+  ordenados.forEach(
+    r=>{
 
-    const tr=document.createElement("tr");
+      const vencedor=
+        analise&&
+        r.tamanho===
+        analise.tamanho;
 
-    if(vencedor){
-      tr.style.background="#f0ecff";
+
+      const tr=
+        document.createElement(
+          "tr"
+        );
+
+
+      if(vencedor){
+
+        tr.style.background=
+          "#f0ecff";
+
+      }
+
+
+      tr.innerHTML=`
+
+        <td>
+
+          <strong>
+
+            ${r.tamanho}
+
+            ${vencedor?"⭐":""}
+
+          </strong>
+
+        </td>
+
+        <td>
+          ${r.testes}
+        </td>
+
+        <td>
+          ${r.media.toFixed(2)}
+        </td>
+
+        <td>
+          ${r.treze}
+        </td>
+
+        <td>
+          ${r.quatorze}
+        </td>
+
+        <td>
+          ${r.quinze}
+        </td>
+
+      `;
+
+
+      tbody.appendChild(
+        tr
+      );
+
     }
+  );
 
-    tr.innerHTML=`
-      <td>
-        <strong>
-          ${r.tamanho}
-          ${vencedor?"⭐":""}
-        </strong>
-      </td>
-
-      <td>${r.testes}</td>
-
-      <td>
-        ${r.media.toFixed(2)}
-      </td>
-
-      <td>
-        ${r.treze}
-      </td>
-
-      <td>
-        ${r.quatorze}
-      </td>
-
-      <td>
-        ${r.quinze}
-      </td>
-    `;
-
-    tbody.appendChild(tr);
-  });
 }
 
 
 /* =========================================================
-   RENDER SINAIS
-   ========================================================= */
+   TABELA SINAIS
+========================================================= */
 
-function renderSinais(sinais){
+function renderSinais(
+  sinais
+){
 
   const tbody=
     document.getElementById(
       "tabelaSinais"
     );
 
+
   tbody.innerHTML="";
 
-  sinais.forEach(s=>{
 
-    const tr=document.createElement("tr");
+  sinais.forEach(
+    s=>{
 
-    const classe=
-      s.delta>=0
-        ? "green"
-        : "red";
+      const tr=
+        document.createElement(
+          "tr"
+        );
 
-    tr.innerHTML=`
-      <td class="signal">
-        ${s.nome}
-      </td>
 
-      <td>
-        ${s.normal.toFixed(2)}
-      </td>
+      const classe=
+        s.delta>=0
+          ? "green"
+          : "red";
 
-      <td>
-        ${s.sem.toFixed(2)}
-      </td>
 
-      <td class="${classe}">
-        ${s.delta>=0?"+":""}${s.delta.toFixed(3)}
-      </td>
-    `;
+      tr.innerHTML=`
 
-    tbody.appendChild(tr);
-  });
+        <td class="signal">
+          ${s.nome}
+        </td>
+
+        <td>
+          ${s.normal.toFixed(2)}
+        </td>
+
+        <td>
+          ${s.sem.toFixed(2)}
+        </td>
+
+        <td class="${classe}">
+          ${s.delta>=0?"+":""}
+          ${s.delta.toFixed(3)}
+        </td>
+
+      `;
+
+
+      tbody.appendChild(
+        tr
+      );
+
+    }
+  );
+
 }
 
 
 /* =========================================================
-   VALIDAÇÃO AUTOMÁTICA
-   ========================================================= */
+   VALIDAÇÃO
+========================================================= */
 
-function validarJogos(resultado){
+function validarJogos(
+  resultado
+){
 
-  if(!resultado || resultado.length!==15){
+  if(
+    !resultado||
+    resultado.length!==15
+  ){
+
     return null;
+
   }
 
-  const acertos=jogosAtuais.map(
-    jogo=>intersection(
-      jogo,
-      resultado
-    ).length
-  );
 
-  const melhor=Math.max(...acertos);
+  const acertos=
+    jogosAtuais.map(
+      jogo=>
+        intersection(
+          jogo,
+          resultado
+        ).length
+    );
+
+
+  if(!acertos.length)
+    return null;
+
+
+  const melhor=
+    Math.max(
+      ...acertos
+    );
+
 
   const unicos=[
     ...new Set(
@@ -2209,37 +3761,55 @@ function validarJogos(resultado){
     )
   ];
 
+
   const cobertura=
     intersection(
       unicos,
       resultado
     ).length;
 
+
   return {
+
     acertos,
+
     melhor,
+
     cobertura,
-    totalCandidatas:unicos.length
+
+    totalCandidatas:
+      unicos.length
+
   };
+
 }
 
 
 function validarUltimoAutomaticamente(){
 
-  if(!ultimo || !jogosAtuais.length){
+  if(
+    !ultimo||
+    !jogosAtuais.length
+  )
     return;
-  }
 
-  const r=validarJogos(
-    ultimo.dezenas
-  );
 
-  if(!r) return;
+  const r=
+    validarJogos(
+      ultimo.dezenas
+    );
+
+
+  if(!r)
+    return;
+
 
   document.getElementById(
     "melhorAcer"
   ).textContent=
-    r.melhor+"/15";
+    r.melhor+
+    "/15";
+
 
   document.getElementById(
     "cobertura"
@@ -2247,24 +3817,41 @@ function validarUltimoAutomaticamente(){
     r.cobertura+
     "/"+
     r.totalCandidatas;
+
+}
+
+
+/* =========================================================
+   PARSE MANUAL
+========================================================= */
+
+function parseInput(
+  str
+){
+
+  const nums=
+    (str.match(
+      /\d{1,2}/g
+    )||[])
+    .map(Number)
+    .filter(
+      n=>n>=1&&n<=25
+    );
+
+
+  return [
+    ...new Set(nums)
+  ]
+  .sort(
+    (a,b)=>a-b
+  );
+
 }
 
 
 /* =========================================================
    VALIDAÇÃO MANUAL
-   ========================================================= */
-
-function parseInput(str){
-
-  const nums=
-    (str.match(/\d{1,2}/g)||[])
-      .map(Number)
-      .filter(n=>n>=1&&n<=25);
-
-  return [...new Set(nums)]
-    .sort((a,b)=>a-b);
-}
-
+========================================================= */
 
 function validarManual(){
 
@@ -2273,40 +3860,69 @@ function validarManual(){
       "resultadoManual"
     ).value;
 
-  const resultado=parseInput(input);
+
+  const resultado=
+    parseInput(
+      input
+    );
+
 
   const box=
     document.getElementById(
       "resultadoValidacao"
     );
 
-  if(resultado.length!==15){
+
+  if(
+    resultado.length!==15
+  ){
 
     box.innerHTML=`
+
       <div class="note warning">
-        ⚠️ Digite exatamente 15 dezenas
-        diferentes entre 01 e 25.
+
+        ⚠️ Digite exatamente
+        15 dezenas diferentes
+        entre 01 e 25.
+
       </div>
+
     `;
 
     return;
+
   }
 
-  const r=validarJogos(resultado);
+
+  const r=
+    validarJogos(
+      resultado
+    );
+
 
   if(!r){
 
-    box.innerHTML=
-      `<div class="note">
+    box.innerHTML=`
+
+      <div class="note">
+
         Nenhum jogo disponível.
-      </div>`;
+
+      </div>
+
+    `;
 
     return;
+
   }
+
 
   document.getElementById(
     "melhorAcer"
-  ).textContent=r.melhor+"/15";
+  ).textContent=
+    r.melhor+
+    "/15";
+
 
   document.getElementById(
     "cobertura"
@@ -2315,27 +3931,46 @@ function validarManual(){
     "/"+
     r.totalCandidatas;
 
+
   box.innerHTML=`
+
     <div class="note">
-      <strong>Resultado validado</strong><br><br>
+
+      <strong>
+        Resultado validado
+      </strong>
+
+      <br><br>
 
       Melhor jogo:
-      <strong>${r.melhor}/15</strong>
+
+      <strong>
+        ${r.melhor}/15
+      </strong>
 
       <br><br>
 
       ${r.acertos.map(
         (x,i)=>
-        `Jogo ${i+1}: <strong>${x}/15</strong><br>`
+        `
+        Jogo ${i+1}:
+        <strong>
+          ${x}/15
+        </strong>
+        <br>
+        `
       ).join("")}
+
     </div>
+
   `;
+
 }
 
 
 /* =========================================================
    HISTÓRICO MANUAL
-   ========================================================= */
+========================================================= */
 
 function carregarHistoricoManual(){
 
@@ -2343,25 +3978,48 @@ function carregarHistoricoManual(){
 
     const raw=
       localStorage.getItem(
-        "lotofacil_manual_v253"
+        STORAGE_MANUAL
       );
 
-    historicoManual=
-      raw?JSON.parse(raw):[];
 
-  }catch{
+    historicoManual=
+      raw?
+        JSON.parse(raw):
+        [];
+
+
+    if(
+      !Array.isArray(
+        historicoManual
+      )
+    ){
+
+      historicoManual=[];
+
+    }
+
+  }catch(e){
 
     historicoManual=[];
+
   }
+
 }
 
 
 function salvarHistoricoManual(){
 
-  localStorage.setItem(
-    "lotofacil_manual_v253",
-    JSON.stringify(historicoManual)
-  );
+  try{
+
+    localStorage.setItem(
+      STORAGE_MANUAL,
+      JSON.stringify(
+        historicoManual
+      )
+    );
+
+  }catch(e){}
+
 }
 
 
@@ -2372,24 +4030,39 @@ function adicionarHistorico(){
       "historicoManual"
     );
 
-  const nums=parseInput(input.value);
 
-  if(nums.length!==15){
+  const nums=
+    parseInput(
+      input.value
+    );
+
+
+  if(
+    nums.length!==15
+  ){
 
     alert(
       "Digite exatamente 15 dezenas diferentes."
     );
 
     return;
+
   }
 
-  historicoManual.push(nums);
+
+  historicoManual.push(
+    nums
+  );
+
 
   salvarHistoricoManual();
 
+
   input.value="";
 
+
   renderHistoricoManual();
+
 }
 
 
@@ -2400,7 +4073,10 @@ function renderHistoricoManual(){
       "historicoLista"
     );
 
-  if(!historicoManual.length){
+
+  if(
+    !historicoManual.length
+  ){
 
     box.innerHTML=
       `<div class="small-text">
@@ -2408,28 +4084,45 @@ function renderHistoricoManual(){
       </div>`;
 
     return;
+
   }
+
 
   box.innerHTML=
     historicoManual
       .slice()
       .reverse()
-      .map((j,i)=>`
-        <div class="note" style="margin-top:10px">
+      .map(
+        (j,i)=>
+        `
+
+        <div
+          class="note"
+          style="margin-top:10px"
+        >
+
           <strong>
-            Concurso manual ${historicoManual.length-i}
+            Concurso manual
+            ${historicoManual.length-i}
           </strong>
 
           <div class="numbers">
-            ${j.map(n=>
+
+            ${j.map(
+              n=>
               `<div class="ball small">
                 ${pad(n)}
               </div>`
             ).join("")}
+
           </div>
+
         </div>
-      `)
+
+        `
+      )
       .join("");
+
 }
 
 
@@ -2440,205 +4133,279 @@ function limparHistorico(){
       "Deseja realmente limpar o histórico manual?"
     )
   ){
+
     return;
+
   }
+
 
   historicoManual=[];
 
+
   salvarHistoricoManual();
 
+
   renderHistoricoManual();
+
 }
 
 
 /* =========================================================
-   EXECUÇÃO PRINCIPAL
-   ========================================================= */
+   EXECUTAR ANÁLISE
+========================================================= */
 
 function executarAnalise(){
 
   if(
-    !historico ||
+    !historico||
     historico.length<10
   ){
+
     return;
+
   }
 
+
   /*
-    Retira o último concurso do treinamento
-    quando possível para evitar vazamento.
+    Para o laboratório, usamos o histórico completo.
+    Cada teste individual usa somente dados anteriores
+    ao concurso testado.
   */
+
   const dados=[
     ...historico
   ];
 
-  /*
-    Laboratório:
-    testa de 15 a 24 dezenas.
-  */
+
   const laboratorio=
     executarLaboratorio(
       dados
     );
 
+
   const vencedor=
     laboratorio.vencedor;
 
-  if(!vencedor){
+
+  if(!vencedor)
     return;
-  }
+
 
   const tamanho=
     vencedor.tamanho;
 
+
   /*
-    Núcleo final.
+    IMPORTANTE:
+    inclui vencedor dentro de analise.
+    Isso corrige o erro do V25.3.
   */
+
   const nucleoInfo=
     obterNucleo(
       dados,
       tamanho
     );
 
+
   analise={
+
     tamanho,
-    media:vencedor.media,
-    treze:vencedor.treze,
-    quatorze:vencedor.quatorze,
-    quinze:vencedor.quinze,
-    nucleo:nucleoInfo.nucleo,
-    ranking:nucleoInfo.ranking,
+
+    vencedor,
+
+    media:
+      vencedor.media,
+
+    treze:
+      vencedor.treze,
+
+    quatorze:
+      vencedor.quatorze,
+
+    quinze:
+      vencedor.quinze,
+
+    nucleo:
+      nucleoInfo.nucleo,
+
+    ranking:
+      nucleoInfo.ranking,
+
     laboratorio
+
   };
 
+
   /*
-    Referência aleatória.
+    Baseline aleatório.
   */
-  const random=
+
+  analise.random=
     randomBaseline(
       dados,
       tamanho
     );
 
-  analise.random=random;
+
   analise.diferenca=
-    vencedor.media-random;
+    analise.media-
+    analise.random;
+
 
   /*
     Monte Carlo.
   */
-  const mc=
+
+  analise.mc=
     monteCarlo(
       dados,
       tamanho
     );
 
-  analise.mc=mc;
 
   /*
-    Sinais usando EXATAMENTE
-    o tamanho vencedor.
+    Eficácia dos sinais.
   */
+
   analise.sinais=
     testarSinais(
       dados,
       tamanho
     );
 
+
   renderTudo();
 
+
   /*
-    Geração automática.
+    Gera automaticamente
+    os 6 jogos.
   */
+
   gerarJogos();
+
 }
 
 
 /* =========================================================
    RENDER GERAL
-   ========================================================= */
+========================================================= */
 
 function renderTudo(){
 
-  if(!analise) return;
+  if(!analise)
+    return;
+
 
   document.getElementById(
     "melhorNucleo"
   ).textContent=
     analise.tamanho;
 
+
   document.getElementById(
     "mediaModelo"
   ).textContent=
     analise.media.toFixed(2);
+
 
   document.getElementById(
     "mediaRandom"
   ).textContent=
     analise.random.toFixed(2);
 
+
   const dif=
     analise.diferenca;
+
 
   const difEl=
     document.getElementById(
       "diferencaModelo"
     );
 
+
   difEl.textContent=
     (dif>=0?"+":"")+
     dif.toFixed(2);
 
+
   difEl.className=
     "value "+
-    (dif>=0?"green":"red");
+    (dif>=0?
+      "green":
+      "red");
+
 
   /*
     Monte Carlo.
   */
+
   document.getElementById(
     "mcMedia"
   ).textContent=
-    analise.mc.media.toFixed(2);
+    analise.mc.media
+      .toFixed(2);
+
 
   document.getElementById(
     "mcP90"
   ).textContent=
-    analise.mc.p90.toFixed(2);
+    analise.mc.p90
+      .toFixed(2);
+
 
   document.getElementById(
     "mcModelo"
   ).textContent=
-    analise.media.toFixed(2);
+    analise.media
+      .toFixed(2);
+
 
   const mcDif=
     analise.media-
     analise.mc.media;
 
+
   document.getElementById(
     "mcDiff"
   ).innerHTML=
-    `<span class="${mcDif>=0?"green":"red"}">
-      ${mcDif>=0?"+":""}${mcDif.toFixed(2)}
+
+    `<span class="${
+      mcDif>=0?
+      "green":
+      "red"
+    }">
+
+      ${mcDif>=0?"+":""}
+      ${mcDif.toFixed(2)}
+
     </span>`;
 
+
   /*
-    Tabela tamanhos.
+    Tabela.
   */
+
   renderTabelaNucleos(
     analise.laboratorio.todos
   );
 
+
   /*
     Sinais.
   */
+
   renderSinais(
     analise.sinais
   );
 
+
   /*
     Walk-forward.
   */
+
   document.getElementById(
     "wfTestes"
   ).textContent=
@@ -2646,31 +4413,38 @@ function renderTudo(){
       analise.vencedor
     );
 
+
   document.getElementById(
     "wfMedia"
   ).textContent=
-    analise.media.toFixed(2)+"/"+
+    analise.media.toFixed(2)+
+    "/"+
     analise.tamanho;
+
 
   document.getElementById(
     "wf13"
   ).textContent=
     analise.treze;
 
+
   document.getElementById(
     "wf14"
   ).textContent=
     analise.quatorze;
+
 
   document.getElementById(
     "wf15"
   ).textContent=
     analise.quinze;
 
+
   document.getElementById(
     "wfRandom"
   ).textContent=
     analise.random.toFixed(2);
+
 
   document.getElementById(
     "wfDiff"
@@ -2678,39 +4452,93 @@ function renderTudo(){
     (analise.diferenca>=0?"+":"")+
     analise.diferenca.toFixed(2);
 
+
   /*
     Núcleo.
   */
+
   renderNucleo(
     analise.nucleo
   );
 
+
+  /*
+    Ranking.
+  */
+
   renderRanking(
     analise.ranking
   );
+
 }
 
 
+/* =========================================================
+   TEXTO WALK-FORWARD
+========================================================= */
+
 function vencedorTexto(r){
 
-  if(!r){
+  if(!r)
     return "— testes";
-  }
 
-  return `${r.testes} testes walk-forward`;
+  return
+    `${r.testes} testes walk-forward`;
+
 }
 
 
 /* =========================================================
    INICIALIZAÇÃO
-   ========================================================= */
+========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   ()=>{
+
     carregarHistoricoManual();
+
     renderHistoricoManual();
+
+    /*
+      Mostra histórico local enquanto
+      o servidor é consultado.
+    */
+
+    const local=
+      carregarHistoricoLocal();
+
+
+    if(local.length){
+
+      historico=
+        local;
+
+      ultimo=
+        local[
+          local.length-1
+        ];
+
+
+      document.getElementById(
+        "ultimoConcurso"
+      ).textContent=
+        ultimo.concurso;
+
+
+      document.getElementById(
+        "totalConcursos"
+      ).textContent=
+        historico.length;
+
+
+      renderUltimo();
+
+    }
+
+
     carregarDados();
+
   }
 );
 
