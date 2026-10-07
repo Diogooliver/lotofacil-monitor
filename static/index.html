@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
 <meta name="viewport"
 content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -11,7 +11,7 @@ content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color"
 content="#6035e9">
 
-<title>Lotofácil Monitor V25.1</title>
+<title>Lotofácil Monitor V25.2</title>
 
 <style>
 
@@ -22,19 +22,9 @@ box-sizing:border-box;
 
 body{
 margin:0;
-background:linear-gradient(
-180deg,
-#f7f5ff 0%,
-#eeeaff 100%
-);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+background:linear-gradient(180deg,#f8f6ff,#eeeaff);
 color:#17151f;
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-Roboto,
-Arial,
-sans-serif;
 }
 
 .app{
@@ -49,27 +39,26 @@ background:#fff;
 border-radius:28px;
 padding:20px;
 margin-bottom:16px;
-box-shadow:0 8px 30px rgba(64,40,130,.08);
+box-shadow:0 8px 30px rgba(60,40,120,.08);
 }
 
 .head{
 display:flex;
 align-items:center;
-gap:14px;
+gap:15px;
 }
 
 .logo{
-width:62px;
-height:62px;
-border-radius:19px;
+width:64px;
+height:64px;
+border-radius:20px;
 background:#6035e9;
 display:grid;
 place-items:center;
-font-size:31px;
-flex:none;
+font-size:32px;
 }
 
-.head h1{
+h1{
 margin:0;
 font-size:25px;
 font-weight:900;
@@ -77,9 +66,9 @@ font-weight:900;
 
 .head p{
 margin:5px 0 0;
-font-size:13px;
 color:#777483;
 font-weight:700;
+font-size:13px;
 }
 
 .title{
@@ -89,10 +78,9 @@ margin-bottom:15px;
 }
 
 .subtitle{
-font-size:16px;
+font-size:17px;
 font-weight:900;
-margin-top:16px;
-margin-bottom:8px;
+margin:18px 0 10px;
 }
 
 .muted{
@@ -102,19 +90,10 @@ line-height:1.55;
 }
 
 .box{
-border:2px solid #ddd6ff;
 background:#faf9ff;
+border:2px solid #ded8f5;
 border-radius:20px;
 padding:15px;
-}
-
-.alert{
-padding:14px;
-border-radius:18px;
-background:#f6f3ff;
-border:2px solid #dfd8ff;
-font-size:13px;
-line-height:1.55;
 }
 
 .dot{
@@ -126,17 +105,9 @@ background:#999;
 margin-right:7px;
 }
 
-.green{
-background:#28b36d;
-}
-
-.orange{
-background:#e5a000;
-}
-
-.red{
-background:#df4c4c;
-}
+.green{background:#28b36d}
+.orange{background:#e2a400}
+.red{background:#dc4b4b}
 
 button{
 width:100%;
@@ -146,8 +117,8 @@ padding:16px;
 margin-top:12px;
 background:#6035e9;
 color:#fff;
-font-weight:900;
 font-size:16px;
+font-weight:900;
 }
 
 button:disabled{
@@ -162,8 +133,8 @@ border:2px solid #ddd6ff;
 
 .danger{
 background:#fff6f6;
-color:#bc3d3d;
-border:2px solid #ffd6d6;
+color:#ba3b3b;
+border:2px solid #ffd5d5;
 }
 
 .grid{
@@ -174,8 +145,8 @@ margin-top:12px;
 }
 
 .stat{
-background:#f9f8fd;
-border:2px solid #e0daf5;
+background:#faf9ff;
+border:2px solid #ded8f5;
 border-radius:19px;
 padding:14px;
 }
@@ -187,6 +158,8 @@ font-weight:900;
 }
 
 .stat span{
+display:block;
+margin-top:4px;
 font-size:12px;
 color:#777483;
 font-weight:700;
@@ -199,20 +172,19 @@ gap:8px;
 margin-top:12px;
 }
 
-.ball,
-.core{
+.ball{
 width:41px;
 height:41px;
 border-radius:50%;
 display:grid;
 place-items:center;
 background:#6035e9;
-color:#fff;
+color:white;
 font-weight:900;
 }
 
 .core{
-background:#fff;
+background:white;
 color:#6035e9;
 border:2px solid #6035e9;
 }
@@ -220,8 +192,8 @@ border:2px solid #6035e9;
 .strategy{
 padding:12px 0;
 border-bottom:1px solid #eee;
+font-weight:800;
 font-size:14px;
-font-weight:700;
 }
 
 .strategy:last-child{
@@ -231,8 +203,7 @@ border-bottom:0;
 .signal{
 display:flex;
 justify-content:space-between;
-align-items:center;
-gap:12px;
+gap:10px;
 padding:12px 0;
 border-bottom:1px solid #eee;
 font-size:14px;
@@ -244,33 +215,66 @@ border-bottom:0;
 }
 
 .tag{
-padding:5px 9px;
+display:inline-block;
+padding:5px 10px;
 border-radius:20px;
 background:#eeeaff;
 color:#5731d7;
 font-size:10px;
 font-weight:900;
-white-space:nowrap;
 }
 
-.tag.good{
-background:#e5f8ed;
+.good{
 color:#16844c;
 }
 
-.tag.warn{
-background:#fff4d8;
-color:#9a6500;
-}
-
-.tag.bad{
-background:#ffe7e7;
+.bad{
 color:#b63232;
 }
 
+.warn{
+color:#9a6500;
+}
+
+.progress{
+height:9px;
+background:#e7e3f5;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progressFill{
+height:100%;
+background:#6035e9;
+width:0%;
+}
+
+.row{
+display:grid;
+grid-template-columns:38px 1fr 55px;
+gap:8px;
+align-items:center;
+margin-top:8px;
+font-size:12px;
+font-weight:900;
+}
+
+.bar{
+height:8px;
+background:#e7e3f4;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:#6035e9;
+}
+
 .game{
-border:2px solid #ddd8f2;
 background:#faf9ff;
+border:2px solid #ddd8f2;
 border-radius:22px;
 padding:16px;
 margin-top:12px;
@@ -281,7 +285,6 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 gap:8px;
-margin-bottom:10px;
 }
 
 .game h3{
@@ -291,103 +294,75 @@ font-size:18px;
 
 .help{
 font-size:12px;
+line-height:1.7;
 color:#777483;
 font-weight:700;
-line-height:1.7;
 margin-top:8px;
 }
 
 .input{
 width:100%;
 padding:15px;
-border:2px solid #ded9ef;
 border-radius:17px;
+border:2px solid #ddd7ef;
 background:#fbfaff;
 font-size:16px;
 outline:none;
 }
 
-.progress{
-height:9px;
-background:#e8e4f8;
-border-radius:20px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.progressFill{
-height:100%;
-background:#6035e9;
-width:0%;
-transition:width .25s;
-}
-
-.row{
-display:grid;
-grid-template-columns:38px 1fr 48px;
-gap:8px;
-align-items:center;
-font-size:12px;
-font-weight:900;
-margin-top:8px;
-}
-
-.bar{
-height:8px;
-background:#e7e3f4;
-border-radius:10px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-background:#6035e9;
-}
-
 .numberGrid{
 display:grid;
-grid-template-columns:repeat(5,1fr);
+grid-template-columns:repeat(6,1fr);
 gap:7px;
 margin-top:12px;
 }
 
 .numberCell{
-background:#f7f5ff;
-border:2px solid #e2ddf4;
-border-radius:12px;
-padding:8px 4px;
+background:#faf9ff;
+border:2px solid #e0daf5;
+border-radius:13px;
+padding:9px 3px;
 text-align:center;
 font-weight:900;
+font-size:13px;
 }
 
 .numberCell small{
 display:block;
 font-size:9px;
-color:#88838f;
+color:#888;
 margin-top:3px;
+}
+
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:12px;
+margin-top:10px;
+}
+
+.table th,
+.table td{
+padding:9px 5px;
+border-bottom:1px solid #eee;
+text-align:center;
+}
+
+.table th{
+font-weight:900;
+}
+
+.table td:first-child,
+.table th:first-child{
+text-align:left;
 }
 
 .footer{
 text-align:center;
 color:#888;
 font-size:11px;
-line-height:1.55;
-padding:10px 5px;
-}
-
-.goodText{
-color:#16844c;
-font-weight:900;
-}
-
-.badText{
-color:#b63232;
-font-weight:900;
-}
-
-.neutralText{
-color:#765e00;
-font-weight:900;
+line-height:1.6;
+padding:10px;
 }
 
 @media(max-width:520px){
@@ -397,7 +372,7 @@ font-weight:900;
 padding:17px;
 }
 
-.head h1{
+h1{
 font-size:22px;
 }
 
@@ -405,10 +380,13 @@ font-size:22px;
 font-size:21px;
 }
 
-.ball,
-.core{
+.ball{
 width:40px;
 height:40px;
+}
+
+.numberGrid{
+grid-template-columns:repeat(5,1fr);
 }
 
 }
@@ -423,24 +401,16 @@ height:40px;
 <main class="app">
 
 
-<!-- =====================================================
-     CABEÇALHO
-===================================================== -->
-
 <header class="head">
 
-<div class="logo">
-🧠
-</div>
+<div class="logo">🧠</div>
 
 <div>
 
-<h1>
-Lotofácil Monitor V25.1
-</h1>
+<h1>Lotofácil Monitor V25.2</h1>
 
 <p>
-Intelligence Engine • Backtest real
+Laboratório estatístico • Monte Carlo • Walk-forward
 </p>
 
 </div>
@@ -462,13 +432,10 @@ Intelligence Engine • Backtest real
 
 <b>
 
-<span
-id="dot"
-class="dot">
-</span>
+<span id="dot" class="dot"></span>
 
 <span id="status">
-Aguardando atualização
+Aguardando dados
 </span>
 
 </b>
@@ -477,13 +444,11 @@ Aguardando atualização
 id="statusText"
 class="muted">
 
-Carregue o histórico público da
-CAIXA para iniciar o modelo.
+Carregue os resultados públicos da CAIXA.
 
 </div>
 
 </div>
-
 
 <button
 id="update"
@@ -493,51 +458,32 @@ onclick="updateData()">
 
 </button>
 
-
 <div class="grid">
 
 <div class="stat">
 
-<b id="latest">
-—
-</b>
+<b id="latest">—</b>
 
-<span>
-Último concurso
-</span>
+<span>Último concurso</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="count">
-0
-</b>
+<b id="count">0</b>
 
-<span>
-Concursos analisados
-</span>
+<span>Concursos analisados</span>
 
 </div>
 
 </div>
 
+<div class="box" style="margin-top:12px">
 
-<div
-class="box"
-style="margin-top:12px">
+<b>🎯 Último resultado</b>
 
-<b>
-🎯 Último resultado
-</b>
-
-<div
-id="lastResult"
-class="balls">
-
+<div id="lastResult" class="balls">
 —
-
 </div>
 
 </div>
@@ -546,87 +492,67 @@ class="balls">
 
 
 <!-- =====================================================
-     ÍNDICE DO MODELO
+     ENGINE
 ===================================================== -->
 
 <section class="card">
 
 <div class="title">
-🧠 Intelligence Engine V25.1
+🧠 Intelligence Engine V25.2
 </div>
 
 <div class="muted">
 
-O modelo combina frequência,
-recência, atraso, repetição,
-coocorrência, transição e ciclos.
+O motor testa diferentes sinais estatísticos
+e compara o desempenho do modelo contra
+referências aleatórias.
 
-A qualidade do modelo é avaliada
-por testes fora da amostra.
+<br><br>
+
+<b>
+Importante:
+</b>
+
+nenhum indicador representa previsão
+garantida do próximo sorteio.
 
 </div>
 
-
 <div
-id="engineStatus"
-class="alert"
+id="engine"
+class="box"
 style="margin-top:12px">
 
-Aguardando histórico.
+Aguardando análise.
 
 </div>
-
 
 <div class="grid">
 
 <div class="stat">
 
-<b id="modelIndex">
-—
-</b>
+<b id="index">—</b>
 
-<span>
-Índice do modelo
-</span>
+<span>Índice experimental</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="modelLift">
-—
-</b>
+<b id="bestSize">—</b>
 
-<span>
-Vantagem vs aleatório
-</span>
+<span>Melhor tamanho</span>
 
 </div>
 
 </div>
 
+<div class="progress">
 
 <div
-class="progress">
-
-<div
-id="modelProgress"
+id="indexBar"
 class="progressFill">
-
 </div>
-
-</div>
-
-
-<div
-class="muted"
-style="margin-top:7px">
-
-O índice é uma métrica de
-qualidade estatística e
-<b>não representa probabilidade
-de ganhar.</b>
 
 </div>
 
@@ -634,90 +560,56 @@ de ganhar.</b>
 
 
 <!-- =====================================================
-     BACKTEST
+     MONTE CARLO
 ===================================================== -->
 
 <section class="card">
 
 <div class="title">
-🧪 Backtest V25.1
+🎲 Monte Carlo
 </div>
 
 <div
-id="backtestSummary"
-class="alert">
+id="monteSummary"
+class="box">
 
-Ainda não foi executado.
+Executando comparação...
 
 </div>
-
 
 <div class="grid">
 
 <div class="stat">
 
-<b id="btTests">
-—
-</b>
+<b id="mcRuns">—</b>
 
-<span>
-Testes realizados
-</span>
+<span>Simulações</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="btAverage">
-—
-</b>
+<b id="mcAverage">—</b>
 
-<span>
-Média V25 / 23
-</span>
+<span>Média aleatória</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="btRandom">
-—
-</b>
+<b id="mcP90">—</b>
 
-<span>
-Média aleatória / 23
-</span>
+<span>Percentil 90</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="btLift">
-—
-</b>
+<b id="mcModel">—</b>
 
-<span>
-Diferença
-</span>
+<span>Modelo</span>
 
 </div>
-
-</div>
-
-
-<div
-class="subtitle">
-
-🏆 Distribuição dos acertos
-
-</div>
-
-<div
-id="btDistribution"
-class="numberGrid">
 
 </div>
 
@@ -725,40 +617,27 @@ class="numberGrid">
 
 
 <!-- =====================================================
-     NÚCLEO
+     TAMANHOS
 ===================================================== -->
 
 <section class="card">
 
 <div class="title">
-🎯 Núcleo Adaptativo V25.1
+🎯 Teste de tamanho do núcleo
+</div>
+
+<div class="muted">
+
+O sistema testa quantas dezenas devem
+ser consideradas fortes antes de adicionar
+proteção e cobertura.
+
 </div>
 
 <div
-id="nucleus"
-class="muted">
+id="sizeTable">
 
-Nenhuma seleção calculada.
-
-</div>
-
-
-<div
-id="core"
-class="balls">
-</div>
-
-
-<div
-class="subtitle">
-
-Ranking das dezenas
-
-</div>
-
-
-<div
-id="score">
+Aguardando backtest.
 
 </div>
 
@@ -772,119 +651,23 @@ id="score">
 <section class="card">
 
 <div class="title">
-🔎 Sinais estatísticos
+🔬 Eficácia dos sinais
 </div>
 
+<div class="muted">
 
-<div class="signal">
+Cada sinal é removido individualmente
+e o modelo é novamente testado.
 
-<div>
-🔥 Frequência
-</div>
-
-<b id="sigFreq">
-—
-</b>
+Se retirar um sinal melhora o resultado,
+ele pode estar prejudicando o modelo.
 
 </div>
-
-
-<div class="signal">
-
-<div>
-🕐 Recência
-</div>
-
-<b id="sigRecent">
-—
-</b>
-
-</div>
-
-
-<div class="signal">
-
-<div>
-❄️ Atraso
-</div>
-
-<b id="sigLate">
-—
-</b>
-
-</div>
-
-
-<div class="signal">
-
-<div>
-🔄 Repetição
-</div>
-
-<b id="sigRepeat">
-—
-</b>
-
-</div>
-
-
-<div class="signal">
-
-<div>
-🔗 Coocorrência
-</div>
-
-<b id="sigPair">
-—
-</b>
-
-</div>
-
-
-<div class="signal">
-
-<div>
-➡️ Transição
-</div>
-
-<b id="sigTransition">
-—
-</b>
-
-</div>
-
-
-<div class="signal">
-
-<div>
-🔁 Ciclo
-</div>
-
-<b id="sigCycle">
-—
-</b>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     DETECTOR
-===================================================== -->
-
-<section class="card">
-
-<div class="title">
-🕵️ Detector de Sinais
-</div>
-
 
 <div
-id="signals"
-class="muted">
+id="signalTable">
 
-Nenhum sinal calculado.
+Aguardando análise.
 
 </div>
 
@@ -892,91 +675,90 @@ Nenhum sinal calculado.
 
 
 <!-- =====================================================
-     ESTRATÉGIAS
+     BACKTEST
 ===================================================== -->
 
 <section class="card">
 
 <div class="title">
-📊 Estratégias V25.1
+🧪 Walk-forward
 </div>
 
+<div
+id="backtest"
+class="box">
 
-<div class="strategy">
-
-🔥 Frequência:
-
-<b id="freq">
-—
-</b>
+Aguardando.
 
 </div>
 
+<div class="grid">
 
-<div class="strategy">
+<div class="stat">
 
-🕐 Recente:
+<b id="btTests">—</b>
 
-<b id="recent">
-—
-</b>
-
-</div>
-
-
-<div class="strategy">
-
-❄️ Atrasados:
-
-<b id="late">
-—
-</b>
+<span>Testes</span>
 
 </div>
 
+<div class="stat">
 
-<div class="strategy">
+<b id="btAvg">—</b>
 
-🔄 Repetição:
-
-<b id="repeat">
-—
-</b>
+<span>Média / 23</span>
 
 </div>
 
+<div class="stat">
 
-<div class="strategy">
+<b id="bt14">—</b>
 
-🔗 Coocorrência:
-
-<b id="pairStrategy">
-—
-</b>
+<span>14+</span>
 
 </div>
 
+<div class="stat">
 
-<div class="strategy">
+<b id="bt15">—</b>
 
-➡️ Transição:
-
-<b id="transitionStrategy">
-—
-</b>
+<span>15</span>
 
 </div>
 
+</div>
 
-<div class="strategy">
+</section>
 
-🧪 Walk-forward:
 
-<b id="backtestStrategy">
-—
-</b>
+<!-- =====================================================
+     NÚCLEO
+===================================================== -->
+
+<section class="card">
+
+<div class="title">
+🎯 Núcleo Adaptativo V25.2
+</div>
+
+<div
+id="nucleus"
+class="muted">
+
+Aguardando cálculo.
 
 </div>
+
+<div
+id="core"
+class="balls">
+</div>
+
+<div class="subtitle">
+Ranking
+</div>
+
+<div id="ranking"></div>
 
 </section>
 
@@ -988,31 +770,27 @@ Nenhum sinal calculado.
 <section class="card">
 
 <div class="title">
-🎲 Gerador V25.1
+🎲 Gerador V25.2
 </div>
 
 <div class="muted">
 
-18 núcleo + 3 proteção + 2 cobertura
-= 23 candidatas.
-
-O portfólio prioriza força,
-cobertura e menor sobreposição.
+O gerador utiliza o tamanho de núcleo
+selecionado pelo laboratório e monta
+6 jogos com diversificação.
 
 </div>
 
-
 <button
 id="generate"
-onclick="generate()">
+onclick="generateGames()">
 
-🎲 Gerar 6 jogos V25.1
+🎲 Gerar 6 jogos
 
 </button>
 
-
 <div
-id="generatorInfo"
+id="generatorStatus"
 class="muted"
 style="margin-top:10px">
 
@@ -1031,13 +809,10 @@ style="margin-top:10px">
 🎯 Jogos gerados
 </div>
 
-
 <div
-id="games"
-class="muted">
+id="games">
 
-Atualize o histórico e gere
-os jogos.
+Nenhum jogo gerado.
 
 </div>
 
@@ -1054,36 +829,25 @@ os jogos.
 🧪 Validação pós-sorteio
 </div>
 
-
 <div class="grid">
 
 <div class="stat">
 
-<b id="best">
-—
-</b>
+<b id="bestHit">—</b>
 
-<span>
-Melhor acerto
-</span>
+<span>Melhor acerto</span>
 
 </div>
-
 
 <div class="stat">
 
-<b id="coverage">
-—
-</b>
+<b id="coverage">—</b>
 
-<span>
-Cobertura das 23
-</span>
+<span>Cobertura</span>
 
 </div>
 
 </div>
-
 
 <div
 id="validation"
@@ -1107,13 +871,10 @@ Nenhuma validação registrada.
 📊 Histórico manual
 </div>
 
-
 <input
 id="manual"
 class="input"
-placeholder="01 02 03 ... 25"
->
-
+placeholder="01 02 03 ... 25">
 
 <button
 class="secondary"
@@ -1122,7 +883,6 @@ onclick="addManual()">
 ➕ Adicionar concurso
 
 </button>
-
 
 <button
 class="danger"
@@ -1137,23 +897,20 @@ onclick="clearAll()">
 
 <footer class="footer">
 
-Lotofácil Monitor V25.1
-• Intelligence Engine
+Lotofácil Monitor V25.2
+• Laboratório estatístico
 
 <br>
 
-Modelo baseado somente em
-dados públicos.
+Somente dados públicos.
 
 <br>
 
-O índice estatístico não é
-probabilidade de premiação.
+Monte Carlo não prevê resultados futuros.
 
 <br>
 
-Estatística não garante o
-resultado do sorteio.
+Estatística não garante premiação.
 
 </footer>
 
@@ -1167,128 +924,90 @@ resultado do sorteio.
    CONFIGURAÇÃO
 ===================================================== */
 
-const API =
+const API=
 'https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil';
 
-const TOTAL_NUMBERS=25;
+const KEY=
+'lotofacil_v252_history';
 
-const GAME_SIZE=15;
+const GAME_KEY=
+'lotofacil_v252_games';
 
-const TOTAL_GAMES=6;
+const MAX_HISTORY=100;
 
-const HISTORY_LIMIT=100;
+const MC_PER_TEST=1000;
 
-const KEY='lotofacil_v251_history';
+const TESTS=25;
 
-const GKEY='lotofacil_v251_games';
-
-const VKEY='lotofacil_v251_validation';
+const SIZES=[
+15,
+16,
+17,
+18,
+20,
+23
+];
 
 let H=[];
 
-let S={};
+let SCORES={};
 
-let P=null;
+let CANDIDATES=[];
 
-let MODEL=null;
+let BEST_SIZE=18;
 
 let GAMES=[];
+
+let LAB=null;
 
 
 /* =====================================================
    UTILIDADES
 ===================================================== */
 
-function unique(arr){
-
-return [...new Set(arr)];
-
+function unique(a){
+return [...new Set(a)];
 }
 
-
-function sortNums(arr){
-
-return [...arr].sort(
-(a,b)=>a-b
-);
-
+function sortNums(a){
+return [...a].sort((x,y)=>x-y);
 }
-
 
 function pad(n){
-
 return String(n).padStart(2,'0');
-
 }
 
-
-function average(arr){
-
-return arr.length
-?
-arr.reduce(
-(a,b)=>a+b,
-0
-)/arr.length
-:
+function avg(a){
+return a.length?
+a.reduce((x,y)=>x+y,0)/a.length:
 0;
-
 }
-
 
 function clamp(x,a=0,b=1){
-
-return Math.max(
-a,
-Math.min(b,x)
-);
-
+return Math.max(a,Math.min(b,x));
 }
-
 
 function overlap(a,b){
-
-return a.filter(
-n=>b.includes(n)
-).length;
-
+return a.filter(n=>b.includes(n)).length;
 }
 
-
-function evenCount(game){
-
-return game.filter(
-n=>n%2===0
-).length;
-
+function evenCount(g){
+return g.filter(n=>n%2===0).length;
 }
 
-
-function sumGame(game){
-
-return game.reduce(
-(a,b)=>a+b,
-0
-);
-
+function sumGame(g){
+return g.reduce((a,b)=>a+b,0);
 }
 
+function consecutive(g){
 
-function consecutiveCount(game){
-
-const s=sortNums(game);
+const s=sortNums(g);
 
 let c=0;
 
-for(
-let i=1;
-i<s.length;
-i++
-){
+for(let i=1;i<s.length;i++){
 
-if(
-s[i]===s[i-1]+1
-)c++;
+if(s[i]===s[i-1]+1)c++;
 
 }
 
@@ -1296,20 +1015,12 @@ return c;
 
 }
 
+function ranges(g){
 
-function rangeCounts(game){
+const r=[0,0,0,0,0];
 
-const r=[
-0,0,0,0,0
-];
-
-game.forEach(
-n=>{
-
-r[
-Math.floor((n-1)/5)
-]++;
-
+g.forEach(n=>{
+r[Math.floor((n-1)/5)]++;
 });
 
 return r;
@@ -1321,32 +1032,34 @@ return r;
    API
 ===================================================== */
 
-async function fetchJSON(url){
+async function getJSON(url){
 
-const response=
-await fetch(
-url,
-{
+const r=
+await fetch(url,{
 cache:'no-store'
+});
+
+if(!r.ok)
+throw new Error('HTTP '+r.status);
+
+return r.json();
+
 }
+
+function getContest(data){
+
+return Number(
+data?.numero||
+data?.concurso||
+data?.numeroConcurso||
+0
 );
 
-if(!response.ok){
-
-throw new Error(
-'HTTP '+response.status
-);
-
 }
 
-return response.json();
+function getNumbers(data){
 
-}
-
-
-function extractNumbers(data){
-
-const possible=[
+const arrays=[
 
 data?.listaDezenas,
 
@@ -1358,23 +1071,16 @@ data?.dezenasSorteadasOrdemSorteio
 
 ];
 
+for(const a of arrays){
 
-for(
-const arr of possible
-){
-
-if(!Array.isArray(arr))
+if(!Array.isArray(a))
 continue;
 
-
-const nums=
+const n=
 unique(
-arr
-.map(
-x=>
-Number(
-String(x)
-.replace(/\D/g,'')
+a.map(
+x=>Number(
+String(x).replace(/\D/g,'')
 )
 )
 .filter(
@@ -1382,29 +1088,12 @@ x=>x>=1&&x<=25
 )
 );
 
-
-if(nums.length===15){
-
-return sortNums(nums);
+if(n.length===15)
+return sortNums(n);
 
 }
-
-}
-
 
 return null;
-
-}
-
-
-function contestNumber(data){
-
-return Number(
-data?.numero||
-data?.concurso||
-data?.numeroConcurso||
-0
-);
 
 }
 
@@ -1413,11 +1102,7 @@ data?.numeroConcurso||
    STATUS
 ===================================================== */
 
-function setStatus(
-title,
-message,
-color=''
-){
+function status(title,text,color){
 
 document.getElementById(
 'status'
@@ -1425,12 +1110,138 @@ document.getElementById(
 
 document.getElementById(
 'statusText'
-).textContent=message;
+).textContent=text;
 
 document.getElementById(
 'dot'
-).className=
-'dot '+color;
+).className='dot '+color;
+
+}
+
+
+/* =====================================================
+   UPDATE
+===================================================== */
+
+async function updateData(){
+
+const btn=
+document.getElementById('update');
+
+btn.disabled=true;
+
+btn.textContent=
+'📡 Carregando...';
+
+status(
+'Atualizando',
+'Consultando resultados públicos...',
+'orange'
+);
+
+try{
+
+const latestData=
+await getJSON(API);
+
+const latest=
+getContest(latestData);
+
+if(!latest)
+throw new Error(
+'Concurso não identificado'
+);
+
+const results=[];
+
+for(
+let start=0;
+start<75;
+start+=5
+){
+
+const promises=[];
+
+for(
+let i=0;
+i<5;
+i++
+){
+
+const c=latest-start-i;
+
+if(c<1)continue;
+
+promises.push(
+getJSON(API+'/'+c)
+.then(data=>{
+
+const dezenas=
+getNumbers(data);
+
+if(!dezenas)return null;
+
+return{
+concurso:c,
+dezenas,
+data:data.dataApuracao||''
+};
+
+})
+.catch(()=>null)
+);
+
+}
+
+const block=
+await Promise.all(promises);
+
+block.forEach(
+x=>{
+if(x)results.push(x);
+}
+);
+
+}
+
+H=
+results
+.sort(
+(a,b)=>b.concurso-a.concurso
+)
+.slice(0,MAX_HISTORY);
+
+save();
+
+renderData();
+
+status(
+'Dados atualizados',
+`${H.length} concursos carregados.`,
+'green'
+);
+
+runLab();
+
+btn.textContent=
+'🔄 Atualizar novamente';
+
+}catch(e){
+
+console.error(e);
+
+status(
+'Erro',
+'Não foi possível carregar os dados.',
+'red'
+);
+
+btn.textContent=
+'📡 Tentar novamente';
+
+}
+
+btn.disabled=false;
 
 }
 
@@ -1439,7 +1250,7 @@ document.getElementById(
    STORAGE
 ===================================================== */
 
-function saveHistory(){
+function save(){
 
 localStorage.setItem(
 KEY,
@@ -1448,8 +1259,7 @@ JSON.stringify(H)
 
 }
 
-
-function loadHistory(){
+function load(){
 
 try{
 
@@ -1464,215 +1274,23 @@ H=[];
 
 }
 
-
 H=
 H
 .filter(
 x=>
 x&&
-x.concurso&&
-Array.isArray(x.dezenas)&&
+x.dezenas&&
 x.dezenas.length===15
 )
 .sort(
-(a,b)=>
-Number(b.concurso)-
-Number(a.concurso)
+(a,b)=>b.concurso-a.concurso
 )
-.slice(
-0,
-HISTORY_LIMIT
-);
+.slice(0,MAX_HISTORY);
 
-draw();
+renderData();
 
-}
-
-
-/* =====================================================
-   ATUALIZAÇÃO
-===================================================== */
-
-async function updateData(){
-
-const btn=
-document.getElementById(
-'update'
-);
-
-btn.disabled=true;
-
-btn.textContent=
-'📡 Carregando histórico...';
-
-
-setStatus(
-'Atualizando',
-'Consultando resultados públicos...',
-'orange'
-);
-
-
-try{
-
-const latestData=
-await fetchJSON(API);
-
-const latest=
-contestNumber(
-latestData
-);
-
-
-if(!latest){
-
-throw new Error(
-'Concurso atual não identificado.'
-);
-
-}
-
-
-const contests=[];
-
-
-for(
-let i=0;
-i<80;
-i++
-){
-
-const c=
-latest-i;
-
-if(c<1)
-break;
-
-contests.push(c);
-
-}
-
-
-const results=[];
-
-
-for(
-let i=0;
-i<contests.length;
-i+=5
-){
-
-const block=
-contests.slice(
-i,
-i+5
-);
-
-
-const responses=
-await Promise.allSettled(
-
-block.map(
-async c=>{
-
-const data=
-await fetchJSON(
-API+'/'+c
-);
-
-const dezenas=
-extractNumbers(
-data
-);
-
-if(!dezenas)
-return null;
-
-return{
-
-concurso:c,
-
-dezenas,
-
-data:
-data.dataApuracao||
-data.data||
-''
-
-};
-
-}
-)
-
-);
-
-
-responses.forEach(
-r=>{
-
-if(
-r.status==='fulfilled'&&
-r.value
-){
-
-results.push(
-r.value
-);
-
-}
-
-});
-
-}
-
-
-H=
-results
-.sort(
-(a,b)=>
-b.concurso-a.concurso
-)
-.slice(
-0,
-HISTORY_LIMIT
-);
-
-
-saveHistory();
-
-draw();
-
-
-setStatus(
-'Dados atualizados',
-`${H.length} concursos analisados.`,
-'green'
-);
-
-
-btn.textContent=
-'🔄 Atualizar novamente';
-
-
-}catch(error){
-
-console.error(error);
-
-
-setStatus(
-'Falha',
-'Não foi possível atualizar os dados públicos.',
-'red'
-);
-
-
-btn.textContent=
-'📡 Tentar novamente';
-
-}
-
-
-btn.disabled=false;
+if(H.length>=8)
+runLab();
 
 }
 
@@ -1681,46 +1299,27 @@ btn.disabled=false;
    INDICADORES
 ===================================================== */
 
-function basicIndicators(history){
+function indicators(history){
 
-const frequency={};
-
+const freq={};
 const delay={};
-
 const recent={};
-
 const repeat={};
 
+for(let n=1;n<=25;n++){
 
-for(
-let n=1;
-n<=25;
-n++
-){
-
-frequency[n]=0;
-
+freq[n]=0;
 delay[n]=history.length;
-
 recent[n]=0;
-
 repeat[n]=0;
 
 }
 
-
-history.forEach(
-draw=>{
-
-draw.dezenas.forEach(
-n=>{
-
-frequency[n]++;
-
+history.forEach(d=>{
+d.dezenas.forEach(n=>{
+freq[n]++;
 });
-
 });
-
 
 for(
 let i=0;
@@ -1728,110 +1327,64 @@ i<history.length;
 i++
 ){
 
-history[i].dezenas.forEach(
-n=>{
+history[i].dezenas.forEach(n=>{
 
-if(
-delay[n]===history.length
-){
-
+if(delay[n]===history.length)
 delay[n]=i;
 
-}
-
 });
 
 }
 
+history.slice(0,20).forEach(
+(d,i)=>{
 
-history
-.slice(
-0,
-20
-)
-.forEach(
-(draw,i)=>{
+d.dezenas.forEach(n=>{
 
-draw.dezenas.forEach(
-n=>{
-
-recent[n]+=
-20-i;
+recent[n]+=20-i;
 
 });
 
 });
-
 
 if(history[0]){
 
 history[0].dezenas.forEach(
-n=>{
-
-repeat[n]=1;
-
-});
+n=>repeat[n]=1
+);
 
 }
 
-
 const maxF=
-Math.max(
-...Object.values(frequency),
-1
-);
-
+Math.max(...Object.values(freq),1);
 
 const maxD=
-Math.max(
-...Object.values(delay),
-1
-);
-
+Math.max(...Object.values(delay),1);
 
 const maxR=
-Math.max(
-...Object.values(recent),
-1
-);
-
+Math.max(...Object.values(recent),1);
 
 const out={};
 
-
-for(
-let n=1;
-n<=25;
-n++
-){
+for(let n=1;n<=25;n++){
 
 out[n]={
 
-frequency:
-frequency[n]/maxF,
+frequency:freq[n]/maxF,
 
-delay:
-delay[n]/maxD,
+delay:delay[n]/maxD,
 
-recent:
-recent[n]/maxR,
+recent:recent[n]/maxR,
 
-repeat:
-repeat[n],
+repeat:repeat[n],
 
-rawFrequency:
-frequency[n],
+rawFrequency:freq[n],
 
-rawDelay:
-delay[n],
-
-rawRecent:
-recent[n]
+rawDelay:delay[n]
 
 };
 
 }
-
 
 return out;
 
@@ -1842,56 +1395,29 @@ return out;
    COOCORRÊNCIA
 ===================================================== */
 
-function buildCooccurrence(history){
+function cooccurrence(history){
 
-const pair={};
+const pairs={};
 
-for(
-let a=1;
-a<=25;
-a++
-){
+for(let n=1;n<=25;n++){
 
-pair[a]={};
+pairs[n]={};
 
-for(
-let b=1;
-b<=25;
-b++
-){
-
-pair[a][b]=0;
+for(let m=1;m<=25;m++)
+pairs[n][m]=0;
 
 }
 
-}
+history.forEach(d=>{
 
+const a=d.dezenas;
 
-history.forEach(
-draw=>{
+for(let i=0;i<a.length;i++){
 
-const nums=
-draw.dezenas;
+for(let j=i+1;j<a.length;j++){
 
-for(
-let i=0;
-i<nums.length;
-i++
-){
-
-for(
-let j=i+1;
-j<nums.length;
-j++
-){
-
-const a=nums[i];
-
-const b=nums[j];
-
-pair[a][b]++;
-
-pair[b][a]++;
+pairs[a[i]][a[j]]++;
+pairs[a[j]][a[i]]++;
 
 }
 
@@ -1899,70 +1425,28 @@ pair[b][a]++;
 
 });
 
-
 const score={};
 
-
-for(
-let n=1;
-n<=25;
-n++
-){
+for(let n=1;n<=25;n++){
 
 const vals=
-Object.entries(
-pair[n]
-)
-.filter(
-([x])=>
-Number(x)!==n
-)
-.map(
-([,v])=>v
-)
-.sort(
-(a,b)=>b-a
-);
-
+Object.entries(pairs[n])
+.filter(([x])=>Number(x)!==n)
+.map(([,v])=>v)
+.sort((a,b)=>b-a);
 
 score[n]=
-vals.length
-?
-average(
-vals.slice(0,5)
-)
-:
-0;
+avg(vals.slice(0,5));
 
 }
-
 
 const max=
-Math.max(
-...Object.values(score),
-1
-);
+Math.max(...Object.values(score),1);
 
+for(let n=1;n<=25;n++)
+score[n]/=max;
 
-for(
-let n=1;
-n<=25;
-n++
-){
-
-score[n]=
-score[n]/max;
-
-}
-
-
-return{
-
-pair,
-
-score
-
-};
+return score;
 
 }
 
@@ -1971,30 +1455,18 @@ score
    TRANSIÇÃO
 ===================================================== */
 
-function buildTransitions(history){
+function transition(history){
 
-const transition={};
+const t={};
 
-for(
-let n=1;
-n<=25;
-n++
-){
+for(let n=1;n<=25;n++){
 
-transition[n]={};
+t[n]={};
 
-for(
-let m=1;
-m<=25;
-m++
-){
-
-transition[n][m]=0;
+for(let m=1;m<=25;m++)
+t[n][m]=0;
 
 }
-
-}
-
 
 for(
 let i=0;
@@ -2002,332 +1474,165 @@ i<history.length-1;
 i++
 ){
 
-const current=
-history[i].dezenas;
+const a=history[i].dezenas;
+const b=history[i+1].dezenas;
 
-const next=
-history[i+1].dezenas;
-
-
-current.forEach(
-a=>{
-
-next.forEach(
-b=>{
-
-transition[a][b]++;
-
+a.forEach(x=>{
+b.forEach(y=>{
+t[x][y]++;
 });
-
 });
 
 }
-
 
 const score={};
 
-
-for(
-let n=1;
-n<=25;
-n++
-){
+for(let n=1;n<=25;n++){
 
 const vals=
-Object.values(
-transition[n]
-)
-.sort(
-(a,b)=>b-a
-);
+Object.values(t[n])
+.sort((a,b)=>b-a);
 
-
-score[n]=
-vals.length
-?
-average(
-vals.slice(0,5)
-)
-:
-0;
+score[n]=avg(vals.slice(0,5));
 
 }
-
 
 const max=
-Math.max(
-...Object.values(score),
-1
-);
+Math.max(...Object.values(score),1);
 
+for(let n=1;n<=25;n++)
+score[n]/=max;
 
-for(
-let n=1;
-n<=25;
-n++
-){
-
-score[n]=
-score[n]/max;
-
-}
-
-
-return{
-
-transition,
-
-score
-
-};
+return score;
 
 }
 
 
 /* =====================================================
-   CICLOS
+   CICLO
 ===================================================== */
 
-function buildCycleSignals(history){
+function cycle(history){
 
-const appearances={};
+const pos={};
 
-for(
-let n=1;
-n<=25;
-n++
-){
+for(let n=1;n<=25;n++)
+pos[n]=[];
 
-appearances[n]=[];
+history.forEach((d,i)=>{
 
-}
-
-
-history.forEach(
-(draw,index)=>{
-
-draw.dezenas.forEach(
-n=>{
-
-appearances[n].push(index);
-
+d.dezenas.forEach(n=>{
+pos[n].push(i);
 });
 
 });
-
 
 const score={};
 
+for(let n=1;n<=25;n++){
 
-for(
-let n=1;
-n<=25;
-n++
-){
+const a=pos[n];
 
-const arr=
-appearances[n];
-
-
-if(arr.length<2){
+if(a.length<2){
 
 score[n]=.5;
-
 continue;
 
 }
 
-
 const gaps=[];
 
+for(let i=1;i<a.length;i++)
+gaps.push(a[i]-a[i-1]);
 
-for(
-let i=1;
-i<arr.length;
-i++
-){
-
-gaps.push(
-arr[i]-arr[i-1]
-);
-
-}
-
-
-const avgGap=
-average(gaps);
-
-const currentGap=
-arr[0];
+const g=avg(gaps);
 
 score[n]=
 clamp(
 1-
-Math.abs(
-currentGap-avgGap
-)/
-Math.max(
-avgGap,
-1
-)
+Math.abs(a[0]-g)/
+Math.max(g,1)
 );
 
 }
 
-
-return{
-score
-};
+return score;
 
 }
 
 
 /* =====================================================
-   SCORE DO MODELO
+   SCORE
 ===================================================== */
 
-function calculateScores(history){
+const SIGNALS=[
 
-const basic=
-basicIndicators(history);
+'frequency',
+'recent',
+'delay',
+'repeat',
+'pair',
+'transition',
+'cycle'
 
-const co=
-buildCooccurrence(history);
+];
 
-const tr=
-buildTransitions(history);
+function buildScores(history,disabled=[]){
 
-const cy=
-buildCycleSignals(history);
+const b=indicators(history);
 
+const pair=cooccurrence(history);
 
-const scores={};
+const trans=transition(history);
 
+const cyc=cycle(history);
 
-for(
-let n=1;
-n<=25;
-n++
-){
+const out={};
 
-scores[n]={
+for(let n=1;n<=25;n++){
 
-frequency:
-basic[n].frequency,
+const s={};
 
-delay:
-basic[n].delay,
+s.frequency=
+disabled.includes('frequency')?
+0:
+b[n].frequency;
 
-recent:
-basic[n].recent,
+s.recent=
+disabled.includes('recent')?
+0:
+b[n].recent;
 
-repeat:
-basic[n].repeat,
+s.delay=
+disabled.includes('delay')?
+0:
+b[n].delay;
 
-pair:
-co.score[n],
+s.repeat=
+disabled.includes('repeat')?
+0:
+b[n].repeat;
 
-transition:
-tr.score[n],
+s.pair=
+disabled.includes('pair')?
+0:
+pair[n];
 
-cycle:
-cy.score[n]
+s.transition=
+disabled.includes('transition')?
+0:
+trans[n];
 
-};
+s.cycle=
+disabled.includes('cycle')?
+0:
+cyc[n];
+
+out[n]=s;
 
 }
 
-
-return scores;
-
-}
-
-
-/* =====================================================
-   CANDIDATAS
-===================================================== */
-
-function buildCandidates(scores){
-
-const ranking=
-Object.keys(scores)
-.map(Number)
-.sort(
-(a,b)=>
-combinedScore(scores[b])-
-combinedScore(scores[a])
-);
-
-
-const core=
-ranking.slice(
-0,
-18
-);
-
-
-const protection=
-ranking
-.filter(
-n=>!core.includes(n)
-)
-.sort(
-(a,b)=>
-(
-scores[b].delay+
-scores[b].transition
-)-
-(
-scores[a].delay+
-scores[a].transition
-)
-)
-.slice(
-0,
-3
-);
-
-
-const coverage=
-ranking
-.filter(
-n=>
-!core.includes(n)&&
-!protection.includes(n)
-)
-.sort(
-(a,b)=>
-(
-scores[b].pair+
-scores[b].cycle
-)-
-(
-scores[a].pair+
-scores[a].cycle
-)
-)
-.slice(
-0,
-2
-);
-
-
-return{
-
-core,
-
-protection,
-
-coverage,
-
-candidates:
-unique([
-...core,
-...protection,
-...coverage
-])
-
-};
+return out;
 
 }
 
@@ -2336,621 +1641,1182 @@ unique([
    SCORE COMBINADO
 ===================================================== */
 
-function combinedScore(s){
+function score(s){
 
-return clamp(
+let total=0;
 
-s.frequency*.20+
+let weight=0;
 
-s.recent*.18+
+const weights={
 
-s.delay*.06+
+frequency:.20,
 
-s.repeat*.10+
+recent:.18,
 
-s.pair*.18+
+delay:.06,
 
-s.transition*.16+
+repeat:.10,
 
-s.cycle*.12
+pair:.18,
 
+transition:.16,
+
+cycle:.12
+
+};
+
+SIGNALS.forEach(k=>{
+
+if(s[k]!==0){
+
+total+=s[k]*weights[k];
+
+weight+=weights[k];
+
+}
+
+});
+
+return weight?
+total/weight:
+0;
+
+}
+
+
+/* =====================================================
+   RANKING
+===================================================== */
+
+function ranking(scores){
+
+return Object.keys(scores)
+.map(Number)
+.sort(
+(a,b)=>score(scores[b])-score(scores[a])
 );
 
 }
 
 
 /* =====================================================
-   BACKTEST WALK-FORWARD
-=====================================================
-
-   IMPORTANTE:
-
-   Para prever H[i], o modelo usa somente
-   H[i+1 ... fim].
-
-   Portanto o resultado alvo nunca entra
-   no cálculo daquele teste.
-
+   ESTRUTURA
 ===================================================== */
 
-function runBacktest(history){
+function structural(g){
 
-if(
-history.length<15
-){
+let s=0;
 
-return{
+const e=evenCount(g);
 
-tests:0,
+if(e>=6&&e<=9)s+=25;
 
-modelHits:[],
+const sum=sumGame(g);
 
-randomHits:[],
+if(sum>=175&&sum<=215)s+=15;
 
-averageModel:0,
+const r=ranges(g);
 
-averageRandom:0,
+r.forEach(x=>{
 
-lift:0,
+if(x>=1&&x<=5)s+=8;
 
-distribution:{
+});
 
-11:0,
-12:0,
-13:0,
-14:0,
-15:0
+const c=consecutive(g);
+
+if(c>=3&&c<=9)s+=10;
+
+return s;
 
 }
 
+
+/* =====================================================
+   CANDIDATAS
+===================================================== */
+
+function selectCandidates(scores,size){
+
+const r=ranking(scores);
+
+return r.slice(0,size);
+
+}
+
+
+/* =====================================================
+   JOGO
+===================================================== */
+
+function makeGame(scores,size,usage={},mode='balanced'){
+
+let r=ranking(scores);
+
+if(mode==='frequency'){
+
+r.sort(
+(a,b)=>
+scores[b].frequency-
+scores[a].frequency
+);
+
+}
+
+if(mode==='recent'){
+
+r.sort(
+(a,b)=>
+scores[b].recent-
+scores[a].recent
+);
+
+}
+
+if(mode==='pair'){
+
+r.sort(
+(a,b)=>
+scores[b].pair-
+scores[a].pair
+);
+
+}
+
+if(mode==='transition'){
+
+r.sort(
+(a,b)=>
+scores[b].transition-
+scores[a].transition
+);
+
+}
+
+r.sort(
+(a,b)=>
+(
+score(scores[b])-
+(usage[b]||0)*.08
+)-
+(
+score(scores[a])-
+(usage[a]||0)*.08
+)
+);
+
+
+/*
+  Monta um jogo usando
+  apenas as candidatas fortes.
+*/
+
+const candidates=
+r.slice(0,size);
+
+const game=[];
+
+
+/*
+  Uma por faixa primeiro.
+*/
+
+for(let faixa=0;faixa<5;faixa++){
+
+const n=
+candidates.find(
+x=>
+!game.includes(x)&&
+Math.floor((x-1)/5)===faixa
+);
+
+if(n)game.push(n);
+
+}
+
+
+/*
+  Completa com as melhores.
+*/
+
+for(const n of candidates){
+
+if(game.length>=15)break;
+
+if(!game.includes(n))
+game.push(n);
+
+}
+
+
+/*
+  Se o núcleo for menor que 15,
+  completa com ranking geral.
+*/
+
+for(const n of r){
+
+if(game.length>=15)break;
+
+if(!game.includes(n))
+game.push(n);
+
+}
+
+
+/*
+  Ajuste de paridade.
+*/
+
+for(let guard=0;guard<10;guard++){
+
+const e=evenCount(game);
+
+if(e>=6&&e<=9)break;
+
+if(e<6){
+
+const add=
+r.find(
+n=>
+!game.includes(n)&&n%2===0
+);
+
+const rem=
+game.find(
+n=>n%2!==0
+);
+
+if(add&&rem)
+game[game.indexOf(rem)]=add;
+
+}else{
+
+const add=
+r.find(
+n=>
+!game.includes(n)&&n%2!==0
+);
+
+const rem=
+game.find(
+n=>n%2===0
+);
+
+if(add&&rem)
+game[game.indexOf(rem)]=add;
+
+}
+
+}
+
+return sortNums(
+unique(game)
+).slice(0,15);
+
+}
+
+
+/* =====================================================
+   RANDOM
+===================================================== */
+
+function randomSubset(size){
+
+const a=
+Array.from(
+{length:25},
+(_,i)=>i+1
+);
+
+for(let i=a.length-1;i>0;i--){
+
+const j=
+Math.floor(
+Math.random()*(i+1)
+);
+
+[a[i],a[j]]=
+[a[j],a[i]];
+
+}
+
+return a.slice(0,size);
+
+}
+
+
+/* =====================================================
+   MONTE CARLO
+===================================================== */
+
+function monteCarlo(target,size,runs=MC_PER_TEST){
+
+const hits=[];
+
+for(let i=0;i<runs;i++){
+
+const r=
+randomSubset(size);
+
+hits.push(
+overlap(r,target)
+);
+
+}
+
+hits.sort((a,b)=>a-b);
+
+const average=
+avg(hits);
+
+const p90=
+hits[
+Math.floor(
+hits.length*.90
+)
+];
+
+const p95=
+hits[
+Math.floor(
+hits.length*.95
+)
+];
+
+return{
+average,
+p90,
+p95,
+hits
 };
 
 }
 
 
-const maxTests=
+/* =====================================================
+   BACKTEST POR TAMANHO
+===================================================== */
+
+function testSize(history,size){
+
+const results=[];
+
+const tests=
 Math.min(
-25,
+TESTS,
 history.length-10
 );
 
-
-const modelHits=[];
-
-const randomHits=[];
-
-
 for(
 let i=0;
-i<maxTests;
+i<tests;
 i++
 ){
 
 const past=
-history.slice(
-i+1
-);
-
+history.slice(i+1);
 
 const target=
 history[i].dezenas;
 
-
-if(
-past.length<8
-)
+if(past.length<8)
 continue;
 
+const scores=
+buildScores(past);
 
-/*
-  Modelo calculado apenas
-  com o passado.
-*/
+const selected=
+selectCandidates(
+scores,
+size
+);
+
+const hit=
+overlap(
+selected,
+target
+);
+
+results.push(hit);
+
+}
+
+return{
+
+tests:results.length,
+
+average:avg(results),
+
+hits13:
+results.filter(x=>x>=13).length,
+
+hits14:
+results.filter(x=>x>=14).length,
+
+hits15:
+results.filter(x=>x>=15).length,
+
+results
+
+};
+
+}
+
+
+/* =====================================================
+   TESTE DE SINAIS
+===================================================== */
+
+function testSignal(history,signal){
+
+const normal=
+testSizeWithDisabled(
+history,
+18,
+[]
+);
+
+const disabled=
+testSizeWithDisabled(
+history,
+18,
+[signal]
+);
+
+return{
+
+normal:normal.average,
+
+disabled:disabled.average,
+
+difference:
+disabled.average-
+normal.average
+
+};
+
+}
+
+
+function testSizeWithDisabled(
+history,
+size,
+disabled
+){
+
+const results=[];
+
+const tests=
+Math.min(
+TESTS,
+history.length-10
+);
+
+for(
+let i=0;
+i<tests;
+i++
+){
+
+const past=
+history.slice(i+1);
+
+const target=
+history[i].dezenas;
+
+if(past.length<8)
+continue;
 
 const scores=
-calculateScores(past);
-
-const candidates=
-buildCandidates(scores);
-
-
-/*
-  Acertos do conjunto
-  de 23 candidatas.
-*/
-
-const mh=
-target.filter(
-n=>
-candidates.candidates.includes(n)
-).length;
-
-
-modelHits.push(mh);
-
-
-/*
-  Base aleatória.
-
-  Repetimos 20 amostras
-  aleatórias de 23 dezenas
-  para reduzir ruído.
-*/
-
-let randomTotal=0;
-
-const samples=20;
-
-
-for(
-let s=0;
-s<samples;
-s++
-){
-
-const pool=
-Array.from(
-{
-length:25
-},
-(_,index)=>
-index+1
+buildScores(
+past,
+disabled
 );
 
-
-/*
-  Fisher-Yates.
-*/
-
-for(
-let k=pool.length-1;
-k>0;
-k--
-){
-
-const j=
-Math.floor(
-Math.random()*(k+1)
+const selected=
+selectCandidates(
+scores,
+size
 );
 
-[
-pool[k],
-pool[j]
-]=
-[
-pool[j],
-pool[k]
-];
-
-}
-
-
-const randomSet=
-pool.slice(
-0,
-23
-);
-
-
-randomTotal+=
-target.filter(
-n=>
-randomSet.includes(n)
-).length;
-
-}
-
-
-randomHits.push(
-randomTotal/samples
+results.push(
+overlap(selected,target)
 );
 
 }
 
+return{
 
-const averageModel=
-average(
-modelHits
-);
+average:avg(results),
 
+results
 
-const averageRandom=
-average(
-randomHits
-);
+};
+
+}
 
 
-const lift=
-averageRandom
+/* =====================================================
+   LABORATÓRIO
+===================================================== */
+
+function runLab(){
+
+if(H.length<12){
+
+document.getElementById(
+'engine'
+).textContent=
+'Histórico insuficiente para o laboratório.';
+
+return;
+
+}
+
+document.getElementById(
+'engine'
+).textContent=
+'🧪 Executando testes...';
+
+
+setTimeout(
+()=>{
+
+const sizeResults={};
+
+SIZES.forEach(
+size=>{
+
+sizeResults[size]=
+testSize(H,size);
+
+});
+
+
+/*
+  Determina o melhor tamanho
+  pela média de acertos.
+*/
+
+BEST_SIZE=
+SIZES.reduce(
+(best,size)=>
+sizeResults[size].average>
+sizeResults[best].average
 ?
-(
-averageModel-
-averageRandom
-)/
-averageRandom
+size
 :
+best,
+SIZES[0]
+);
+
+
+/*
+  Backtest do núcleo de 23.
+*/
+
+const base=
+sizeResults[23];
+
+
+/*
+  Monte Carlo para os 23.
+*/
+
+const target=
+H[0].dezenas;
+
+const mc=
+monteCarlo(
+target,
+23,
+MC_PER_TEST
+);
+
+
+/*
+  O Monte Carlo acima é uma
+  referência do último concurso.
+
+  Para uma referência mais
+  robusta, fazemos também
+  vários concursos.
+*/
+
+let mcMeans=[];
+
+const mcTests=
+Math.min(
+10,
+H.length-1
+);
+
+for(
+let i=0;
+i<mcTests;
+i++
+){
+
+const r=
+monteCarlo(
+H[i].dezenas,
+BEST_SIZE,
+300
+);
+
+mcMeans.push(
+r.average
+);
+
+}
+
+const mcAverage=
+avg(mcMeans);
+
+
+/*
+  Melhor tamanho contra
+  referência Monte Carlo.
+*/
+
+const bestAverage=
+sizeResults[BEST_SIZE].average;
+
+const advantage=
+mcAverage?
+(
+(bestAverage-mcAverage)/
+mcAverage
+)*100:
 0;
 
 
-const distribution={
+/*
+  Teste de sinais.
+*/
 
-11:0,
-12:0,
-13:0,
-14:0,
-15:0
+const signalResults={};
+
+SIGNALS.forEach(
+signal=>{
+
+signalResults[signal]=
+testSignal(H,signal);
+
+});
+
+
+/*
+  Índice experimental.
+
+  Não é probabilidade.
+
+  Mede somente:
+  - vantagem relativa
+  - consistência
+  - tamanho
+*/
+
+let better=0;
+
+const bestRes=
+sizeResults[BEST_SIZE];
+
+bestRes.results.forEach(
+x=>{
+
+if(
+x>=13
+)better++;
+
+});
+
+
+const consistency=
+bestRes.results.length?
+better/bestRes.results.length:
+0;
+
+
+const idx=
+Math.round(
+clamp(
+.45+
+advantage/100+
+consistency*.35,
+0,
+1
+)*100
+);
+
+
+/*
+  Scores atuais.
+*/
+
+SCORES=
+buildScores(H);
+
+CANDIDATES=
+selectCandidates(
+SCORES,
+BEST_SIZE
+);
+
+LAB={
+
+sizeResults,
+
+mcAverage,
+
+advantage,
+
+signalResults,
+
+index:idx
 
 };
 
 
-modelHits.forEach(
-h=>{
+renderLab();
 
-for(
-let n=11;
-n<=15;
-n++
-){
+},30);
 
-if(h>=n)
-distribution[n]++;
+}
+
+
+/* =====================================================
+   RENDER LAB
+===================================================== */
+
+function renderLab(){
+
+const L=LAB;
+
+document.getElementById(
+'index'
+).textContent=
+L.index+'/100';
+
+document.getElementById(
+'indexBar'
+).style.width=
+L.index+'%';
+
+document.getElementById(
+'bestSize'
+).textContent=
+L.sizeResults[BEST_SIZE].average.toFixed(2)+
+' / '+BEST_SIZE;
+
+
+let signalBest='Nenhum';
+
+let signalBestValue=-Infinity;
+
+SIGNALS.forEach(
+s=>{
+
+const d=
+L.signalResults[s].difference;
+
+if(d>signalBestValue){
+
+signalBestValue=d;
+
+signalBest=s;
 
 }
 
 });
 
 
-return{
-
-tests:modelHits.length,
-
-modelHits,
-
-randomHits,
-
-averageModel,
-
-averageRandom,
-
-lift,
-
-distribution
-
-};
-
-}
-
-
-/* =====================================================
-   ÍNDICE DO MODELO
-===================================================== */
-
-function calculateModelIndex(backtest){
-
-if(
-!backtest||
-!backtest.tests
-){
-
-return 0;
-
-}
-
-
-/*
-  Componente 1:
-  desempenho contra aleatório.
-
-  O ganho é limitado para evitar
-  que uma amostra pequena gere
-  100 pontos.
-*/
-
-const liftComponent=
-clamp(
-(backtest.lift+0.05)/0.35
-);
-
-
-/*
-  Componente 2:
-  média absoluta de acertos.
-
-  23 candidatas naturalmente têm
-  média alta. Aqui usamos somente
-  o quanto supera uma referência
-  de 13.8 acertos, de maneira
-  moderada.
-*/
-
-const averageComponent=
-clamp(
-(
-backtest.averageModel-
-13.2
-)/
-2.8
-);
-
-
-/*
-  Componente 3:
-  consistência.
-
-  Mede quantos testes ficaram
-  acima da média aleatória.
-*/
-
-let better=0;
-
-
-for(
-let i=0;
-i<backtest.tests;
-i++
-){
-
-if(
-backtest.modelHits[i]>
-backtest.randomHits[i]
-){
-
-better++;
-
-}
-
-}
-
-
-const consistency=
-backtest.tests
-?
-better/backtest.tests
-:
-0;
-
-
-/*
-  Índice final.
-
-  Não é probabilidade.
-*/
-
-const index=
-Math.round(
-clamp(
-
-liftComponent*.40+
-
-averageComponent*.25+
-
-consistency*.35
-
-)*100
-);
-
-
-return{
-
-index,
-
-consistency,
-
-liftComponent,
-
-averageComponent
-
-};
-
-}
-
-
-/* =====================================================
-   RENDER BACKTEST
-===================================================== */
-
-function renderBacktest(bt,index){
-
-if(!bt||!bt.tests){
-
 document.getElementById(
-'backtestSummary'
-).textContent=
-'Histórico insuficiente para o backtest.';
-
-return;
-
-}
-
-
-const liftPct=
-bt.lift*100;
-
-
-let tag='tag';
-
-let text='Desempenho próximo da referência.';
-
-
-if(
-liftPct>=5
-){
-
-tag+=' good';
-
-text=
-'O modelo apresentou vantagem estatística nos testes realizados.';
-
-}else if(
-liftPct<=-5
-){
-
-tag+=' bad';
-
-text=
-'O modelo ficou abaixo da referência aleatória.';
-
-}else{
-
-tag+=' warn';
-
-}
-
-
-document.getElementById(
-'backtestSummary'
+'engine'
 ).innerHTML=
 
 `
 
+<b>🧠 Resultado do laboratório</b>
+
+<br><br>
+
+Melhor núcleo:
+<b>${BEST_SIZE} dezenas</b>
+
+<br>
+
+Média:
 <b>
-🧪 ${bt.tests} testes walk-forward
+${L.sizeResults[BEST_SIZE].average.toFixed(2)}
 </b>
 
 <br><br>
 
-${text}
+Melhor sinal ao ser removido:
+<b>${labelSignal(signalBest)}</b>
+
+<br>
+
+Variação:
+<b>
+${signalBestValue>=0?'+':''}${signalBestValue.toFixed(3)}
+</b>
 
 <br><br>
 
-<span class="${tag}">
-${liftPct>=0?'+':''}${liftPct.toFixed(2)}%
-vs aleatório
-</span>
+⚠️ Índice experimental.
+Não representa probabilidade.
 
 `;
 
+
+/*
+  Monte Carlo
+*/
+
+const currentMc=
+monteCarlo(
+H[0].dezenas,
+BEST_SIZE,
+MC_PER_TEST
+);
+
+
+document.getElementById(
+'mcRuns'
+).textContent=
+MC_PER_TEST;
+
+
+document.getElementById(
+'mcAverage'
+).textContent=
+currentMc.average.toFixed(2);
+
+
+document.getElementById(
+'mcP90'
+).textContent=
+currentMc.p90;
+
+
+document.getElementById(
+'mcModel'
+).textContent=
+L.sizeResults[BEST_SIZE].average.toFixed(2);
+
+
+const diff=
+L.sizeResults[BEST_SIZE].average-
+L.mcAverage;
+
+
+document.getElementById(
+'monteSummary'
+).innerHTML=
+
+`
+
+🎲 <b>Referência Monte Carlo</b>
+
+<br><br>
+
+Média aleatória:
+<b>${L.mcAverage.toFixed(2)}</b>
+
+<br>
+
+Média do melhor núcleo:
+<b>${L.sizeResults[BEST_SIZE].average.toFixed(2)}</b>
+
+<br><br>
+
+Diferença:
+<b class="${diff>=0?'good':'bad'}">
+
+${diff>=0?'+':''}${diff.toFixed(2)}
+
+</b>
+
+<br><br>
+
+Isso é uma comparação estatística,
+não uma previsão do próximo sorteio.
+
+`;
+
+
+/*
+  Tabela de tamanhos
+*/
+
+let sizeHTML=
+`
+
+<table class="table">
+
+<tr>
+
+<th>Tamanho</th>
+<th>Média</th>
+<th>13+</th>
+<th>14+</th>
+<th>15</th>
+
+</tr>
+
+`;
+
+
+SIZES.forEach(
+size=>{
+
+const r=
+L.sizeResults[size];
+
+sizeHTML+=
+`
+
+<tr>
+
+<td>
+<b>${size}</b>
+${size===BEST_SIZE?' ⭐':''}
+</td>
+
+<td>
+${r.average.toFixed(2)}
+</td>
+
+<td>
+${r.hits13}
+</td>
+
+<td>
+${r.hits14}
+</td>
+
+<td>
+${r.hits15}
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+sizeHTML+=
+'</table>';
+
+document.getElementById(
+'sizeTable'
+).innerHTML=
+sizeHTML;
+
+
+/*
+  Tabela de sinais
+*/
+
+let signalHTML=
+`
+
+<table class="table">
+
+<tr>
+
+<th>Sinal</th>
+<th>Normal</th>
+<th>Sem sinal</th>
+<th>Δ</th>
+
+</tr>
+
+`;
+
+
+SIGNALS.forEach(
+signal=>{
+
+const r=
+L.signalResults[signal];
+
+const d=
+r.difference;
+
+signalHTML+=
+`
+
+<tr>
+
+<td>
+<b>${labelSignal(signal)}</b>
+</td>
+
+<td>
+${r.normal.toFixed(2)}
+</td>
+
+<td>
+${r.disabled.toFixed(2)}
+</td>
+
+<td class="${d>=0?'good':'bad'}">
+
+${d>=0?'+':''}${d.toFixed(3)}
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+signalHTML+=
+'</table>';
+
+document.getElementById(
+'signalTable'
+).innerHTML=
+signalHTML;
+
+
+/*
+  Backtest
+*/
+
+const b=
+L.sizeResults[23];
 
 document.getElementById(
 'btTests'
 ).textContent=
-bt.tests;
-
+b.tests;
 
 document.getElementById(
-'btAverage'
+'btAvg'
 ).textContent=
-bt.averageModel.toFixed(2);
-
+b.average.toFixed(2);
 
 document.getElementById(
-'btRandom'
+'bt14'
 ).textContent=
-bt.averageRandom.toFixed(2);
-
+b.hits14;
 
 document.getElementById(
-'btLift'
+'bt15'
 ).textContent=
-(
-liftPct>=0?'+':''
-)+
-liftPct.toFixed(2)+'%';
-
+b.hits15;
 
 document.getElementById(
-'btDistribution'
-).innerHTML=
-
-[11,12,13,14,15]
-.map(
-n=>
-`
-<div class="numberCell">
-
-${n}+
-
-<small>
-${bt.distribution[n]}
-vezes
-</small>
-
-</div>
-`
-)
-.join('');
-
-
-document.getElementById(
-'modelIndex'
-).textContent=
-index.index+'/100';
-
-
-document.getElementById(
-'modelLift'
-).textContent=
-(
-liftPct>=0?'+':''
-)+
-liftPct.toFixed(1)+'%';
-
-
-document.getElementById(
-'modelProgress'
-).style.width=
-index.index+'%';
-
-
-document.getElementById(
-'backtestStrategy'
-).textContent=
-`${bt.averageModel.toFixed(2)} acertos/23`;
-
-
-document.getElementById(
-'engineStatus'
+'backtest'
 ).innerHTML=
 
 `
 
-<b>
-🧠 Índice do modelo: ${index.index}/100
-</b>
+🧪 <b>${b.tests} testes walk-forward</b>
 
 <br><br>
 
-O índice considera desempenho
-contra uma referência aleatória,
-consistência dos testes e média
-de acertos.
+Média:
+<b>${b.average.toFixed(2)}/23</b>
+
+<br>
+
+13+:
+<b>${b.hits13}</b>
+
+<br>
+
+14+:
+<b>${b.hits14}</b>
+
+<br>
+
+15:
+<b>${b.hits15}</b>
 
 <br><br>
 
-<b>
-⚠️ Não é probabilidade de prêmio.
+Referência Monte Carlo:
+<b>${L.mcAverage.toFixed(2)}</b>
+
+<br>
+
+Diferença:
+<b class="${b.average>=L.mcAverage?'good':'bad'}">
+
+${(
+b.average-L.mcAverage>=0?
+'+':''
+)+
+(b.average-L.mcAverage).toFixed(2)}
+
 </b>
 
 `;
+
+
+/*
+  Núcleo
+*/
+
+renderNucleus();
 
 }
 
 
 /* =====================================================
-   RENDER MODELO
+   LABEL
 ===================================================== */
 
-function renderModel(){
+function labelSignal(s){
 
-if(!MODEL)
+const labels={
+
+frequency:'🔥 Frequência',
+
+recent:'🕐 Recência',
+
+delay:'❄️ Atraso',
+
+repeat:'🔄 Repetição',
+
+pair:'🔗 Coocorrência',
+
+transition:'➡️ Transição',
+
+cycle:'🔁 Ciclo'
+
+};
+
+return labels[s]||s;
+
+}
+
+
+/* =====================================================
+   NÚCLEO
+===================================================== */
+
+function renderNucleus(){
+
+if(!SCORES)
 return;
 
+const r=
+ranking(SCORES);
 
-S=
-MODEL.scores;
-
-
-P=
-buildCandidates(S);
-
-
-const ranking=
-Object.keys(S)
-.map(Number)
-.sort(
-(a,b)=>
-combinedScore(S[b])-
-combinedScore(S[a])
+CANDIDATES=
+r.slice(
+0,
+BEST_SIZE
 );
 
 
@@ -2961,22 +2827,15 @@ document.getElementById(
 `
 
 <b>
-18 núcleo + 3 proteção + 2 cobertura = 23 candidatas
+Núcleo selecionado:
+${BEST_SIZE} dezenas
 </b>
 
 <br><br>
 
-🛡️ Proteção:
-<b>
-${P.protection.map(pad).join(' • ')}
-</b>
-
-<br>
-
-🎯 Cobertura:
-<b>
-${P.coverage.map(pad).join(' • ')}
-</b>
+O laboratório escolheu o tamanho
+com melhor desempenho médio no
+walk-forward.
 
 `;
 
@@ -2985,11 +2844,11 @@ document.getElementById(
 'core'
 ).innerHTML=
 
-P.core
+CANDIDATES
 .map(
 n=>
 `
-<span class="core">
+<span class="ball core">
 ${pad(n)}
 </span>
 `
@@ -2997,27 +2856,18 @@ ${pad(n)}
 .join('');
 
 
-const top=
-ranking.slice(
-0,
-15
-);
-
-
 document.getElementById(
-'score'
+'ranking'
 ).innerHTML=
 
-top
+r.slice(0,15)
 .map(
 n=>
 `
 
 <div class="row">
 
-<b>
-${pad(n)}
-</b>
+<b>${pad(n)}</b>
 
 <div class="bar">
 
@@ -3025,7 +2875,7 @@ ${pad(n)}
 class="fill"
 style="
 width:${Math.round(
-combinedScore(S[n])*100
+score(SCORES[n])*100
 )}%
 ">
 </div>
@@ -3034,7 +2884,7 @@ combinedScore(S[n])*100
 
 <span>
 ${Math.round(
-combinedScore(S[n])*100
+score(SCORES[n])*100
 )}%
 </span>
 
@@ -3044,677 +2894,52 @@ combinedScore(S[n])*100
 )
 .join('');
 
-
-const vals=
-Object.values(S);
-
-
-const avg=
-key=>
-Math.round(
-average(
-vals.map(
-x=>x[key]
-)
-)*100
-);
-
-
-document.getElementById(
-'sigFreq'
-).textContent=
-avg('frequency')+'%';
-
-
-document.getElementById(
-'sigRecent'
-).textContent=
-avg('recent')+'%';
-
-
-document.getElementById(
-'sigLate'
-).textContent=
-avg('delay')+'%';
-
-
-document.getElementById(
-'sigRepeat'
-).textContent=
-avg('repeat')+'%';
-
-
-document.getElementById(
-'sigPair'
-).textContent=
-avg('pair')+'%';
-
-
-document.getElementById(
-'sigTransition'
-).textContent=
-avg('transition')+'%';
-
-
-document.getElementById(
-'sigCycle'
-).textContent=
-avg('cycle')+'%';
-
-
-document.getElementById(
-'freq'
-).textContent=
-avg('frequency')+'%';
-
-
-document.getElementById(
-'recent'
-).textContent=
-avg('recent')+'%';
-
-
-document.getElementById(
-'late'
-).textContent=
-avg('delay')+'%';
-
-
-document.getElementById(
-'repeat'
-).textContent=
-avg('repeat')+'%';
-
-
-document.getElementById(
-'pairStrategy'
-).textContent=
-avg('pair')+'%';
-
-
-document.getElementById(
-'transitionStrategy'
-).textContent=
-avg('transition')+'%';
-
-
-document.getElementById(
-'signals'
-).innerHTML=
-
-`
-
-<div class="alert">
-
-🎯 <b>Top 5 dezenas do modelo:</b>
-
-<br><br>
-
-${ranking
-.slice(0,5)
-.map(
-n=>
-`${pad(n)} (${Math.round(
-combinedScore(S[n])*100
-)}%)`
-)
-.join(' • ')}
-
-<br><br>
-
-🔗 O modelo combina
-coocorrência e transição.
-
-<br>
-
-🔁 O ciclo também participa
-da pontuação.
-
-</div>
-
-`;
-
 }
 
 
 /* =====================================================
-   CÁLCULO COMPLETO
+   GERADOR
 ===================================================== */
 
-function calculateAll(){
+function generateGames(){
 
-if(
-H.length<8
-)
-return;
-
-
-const scores=
-calculateScores(H);
-
-
-const backtest=
-runBacktest(H);
-
-
-const index=
-calculateModelIndex(
-backtest
-);
-
-
-MODEL={
-
-scores,
-
-backtest,
-
-index
-
-};
-
-
-renderModel();
-
-renderBacktest(
-backtest,
-index
-);
-
-}
-
-
-/* =====================================================
-   ESTRUTURA
-===================================================== */
-
-function structuralScore(game){
-
-if(
-game.length!==15||
-unique(game).length!==15
-){
-
-return -999;
-
-}
-
-
-let score=0;
-
-
-const pairs=
-evenCount(game);
-
-
-if(
-pairs>=6&&
-pairs<=9
-){
-
-score+=30;
-
-}else{
-
-score-=
-Math.abs(
-pairs-7.5
-)*5;
-
-}
-
-
-const ranges=
-rangeCounts(game);
-
-
-ranges.forEach(
-r=>{
-
-if(
-r>=1&&
-r<=5
-){
-
-score+=10;
-
-}else{
-
-score-=8;
-
-}
-
-});
-
-
-const sum=
-sumGame(game);
-
-
-if(
-sum>=175&&
-sum<=215
-){
-
-score+=10;
-
-}
-
-
-const consecutive=
-consecutiveCount(game);
-
-
-if(
-consecutive>=3&&
-consecutive<=9
-){
-
-score+=8;
-
-}
-
-
-return score;
-
-}
-
-
-/* =====================================================
-   GERADOR DE JOGO
-===================================================== */
-
-function createGame(mode,usage){
-
-const ranking=
-Object.keys(S)
-.map(Number)
-.sort(
-(a,b)=>{
-
-let A=
-combinedScore(S[a]);
-
-let B=
-combinedScore(S[b]);
-
-
-if(mode==='frequency'){
-
-A=
-S[a].frequency*.65+
-combinedScore(S[a])*.35;
-
-B=
-S[b].frequency*.65+
-combinedScore(S[b])*.35;
-
-}
-
-
-if(mode==='recent'){
-
-A=
-S[a].recent*.65+
-combinedScore(S[a])*.35;
-
-B=
-S[b].recent*.65+
-combinedScore(S[b])*.35;
-
-}
-
-
-if(mode==='pair'){
-
-A=
-S[a].pair*.65+
-combinedScore(S[a])*.35;
-
-B=
-S[b].pair*.65+
-combinedScore(S[b])*.35;
-
-}
-
-
-if(mode==='transition'){
-
-A=
-S[a].transition*.65+
-combinedScore(S[a])*.35;
-
-B=
-S[b].transition*.65+
-combinedScore(S[b])*.35;
-
-}
-
-
-if(mode==='coverage'){
-
-A+=
-P.coverage.includes(a)
-?
-.20
-:
-0;
-
-B+=
-P.coverage.includes(b)
-?
-.20
-:
-0;
-
-}
-
-
-A-=
-(usage[a]||0)*.10;
-
-B-=
-(usage[b]||0)*.10;
-
-
-return B-A;
-
-});
-
-
-const game=[];
-
-
-/*
-  Pelo menos uma dezena
-  em cada faixa.
-*/
-
-for(
-let faixa=0;
-faixa<5;
-faixa++
-){
-
-const candidate=
-ranking.find(
-n=>
-!game.includes(n)&&
-Math.floor(
-(n-1)/5
-)===faixa
-);
-
-
-if(candidate)
-game.push(candidate);
-
-}
-
-
-/*
-  Completa.
-*/
-
-for(
-const n of ranking
-){
-
-if(
-game.length>=15
-)
-break;
-
-
-if(
-!game.includes(n)
-){
-
-game.push(n);
-
-}
-
-}
-
-
-/*
-  Ajuste de pares.
-*/
-
-for(
-let guard=0;
-guard<10;
-guard++
-){
-
-const pairs=
-evenCount(game);
-
-
-if(
-pairs>=6&&
-pairs<=9
-)
-break;
-
-
-if(pairs<6){
-
-const add=
-ranking.find(
-n=>
-!game.includes(n)&&
-n%2===0
-);
-
-
-const remove=
-game
-.filter(
-n=>n%2!==0
-)
-.sort(
-(a,b)=>
-combinedScore(S[a])-
-combinedScore(S[b])
-)[0];
-
-
-if(
-add===undefined||
-remove===undefined
-)
-break;
-
-
-game[
-game.indexOf(remove)
-]=
-add;
-
-}
-
-
-if(pairs>9){
-
-const add=
-ranking.find(
-n=>
-!game.includes(n)&&
-n%2!==0
-);
-
-
-const remove=
-game
-.filter(
-n=>n%2===0
-)
-.sort(
-(a,b)=>
-combinedScore(S[a])-
-combinedScore(S[b])
-)[0];
-
-
-if(
-add===undefined||
-remove===undefined
-)
-break;
-
-
-game[
-game.indexOf(remove)
-]=
-add;
-
-}
-
-}
-
-
-return sortNums(
-unique(game)
-).slice(
-0,
-15
-);
-
-}
-
-
-/* =====================================================
-   PORTFÓLIO
-===================================================== */
-
-function portfolioScore(
-game,
-games,
-usage
-){
-
-let score=
-game.reduce(
-(total,n)=>
-total+
-combinedScore(S[n]),
-0
-);
-
-
-score+=
-structuralScore(game);
-
-
-game.forEach(
-n=>{
-
-if(!usage[n])
-score+=2;
-
-});
-
-
-games.forEach(
-old=>{
-
-const ov=
-overlap(
-game,
-old
-);
-
-
-if(ov>10){
-
-score-=
-(ov-10)*4;
-
-}
-
-});
-
-
-return score;
-
-}
-
-
-/* =====================================================
-   GERAR 6 JOGOS
-===================================================== */
-
-function generate(){
-
-if(
-H.length<8
-){
+if(!SCORES||H.length<8){
 
 alert(
-'Atualize o histórico antes de gerar os jogos.'
+'Atualize o histórico antes de gerar.'
 );
 
 return;
 
 }
 
-
-if(!MODEL){
-
-calculateAll();
-
-}
-
-
-P=
-buildCandidates(S);
-
-
-const button=
+const btn=
 document.getElementById(
 'generate'
 );
 
+btn.disabled=true;
 
-button.disabled=true;
-
-button.textContent=
+btn.textContent=
 '🧠 Montando portfólio...';
 
 
-const modes=[
-
-'balanced',
-
-'frequency',
-
-'recent',
-
-'pair',
-
-'transition',
-
-'coverage'
-
-];
-
-
-const games=[];
-
 const usage={};
 
-
-for(
-let n=1;
-n<=25;
-n++
-){
-
+for(let n=1;n<=25;n++)
 usage[n]=0;
 
-}
 
+const modes=[
+'balanced',
+'frequency',
+'recent',
+'pair',
+'transition',
+'balanced'
+];
+
+const games=[];
 
 for(
 let i=0;
@@ -3726,63 +2951,70 @@ let best=null;
 
 let bestScore=-Infinity;
 
-
 for(
 let attempt=0;
-attempt<35;
+attempt<40;
 attempt++
 ){
 
-const game=
-createGame(
-modes[i],
-usage
+const g=
+makeGame(
+SCORES,
+BEST_SIZE,
+usage,
+modes[i]
 );
 
-
-if(
-game.length!==15
-)
+if(g.length!==15)
 continue;
 
 
-const sc=
-portfolioScore(
-game,
-games,
-usage
-);
+let s=
+structural(g);
 
 
-if(sc>bestScore){
+g.forEach(
+n=>{
+s+=score(SCORES[n])*20;
+});
 
-bestScore=sc;
 
-best=game;
+games.forEach(
+old=>{
+
+const o=
+overlap(g,old);
+
+if(o>10)
+s-=(o-10)*5;
+
+});
+
+
+g.forEach(
+n=>{
+s-=(usage[n]||0)*2;
+});
+
+
+if(s>bestScore){
+
+bestScore=s;
+best=g;
 
 }
 
 }
 
-
-if(!best){
-
-best=
-createGame(
-modes[i],
-usage
-);
-
-}
-
+if(best){
 
 games.push(best);
 
-
 best.forEach(
-n=>
-usage[n]++
+n=>usage[n]++
 );
+
+}
 
 }
 
@@ -3790,258 +3022,88 @@ usage[n]++
 GAMES=
 games;
 
-
-/*
-  Tenta cobrir todas as 23.
-*/
-
-const missing=
-P.candidates.filter(
-n=>
-!GAMES.some(
-g=>g.includes(n)
-)
-);
-
-
-missing.forEach(
-n=>{
-
-let target=-1;
-
-let remove=null;
-
-let loss=Infinity;
-
-
-GAMES.forEach(
-(game,i)=>{
-
-game.forEach(
-old=>{
-
-if(
-P.protection.includes(old)
-)
-return;
-
-
-const candidate=
-game.map(
-x=>
-x===old
-?
-n
-:
-x
-);
-
-
-if(
-candidate.length!==15||
-unique(candidate).length!==15
-)
-return;
-
-
-const l=
-combinedScore(S[old])-
-combinedScore(S[n]);
-
-
-if(l<loss){
-
-loss=l;
-
-target=i;
-
-remove=old;
-
-}
-
-});
-
-});
-
-
-if(
-target>=0&&
-remove!==null
-){
-
-GAMES[target]=
-sortNums(
-GAMES[target].map(
-x=>
-x===remove
-?
-n
-:
-x
-)
-);
-
-}
-
-});
-
-
-GAMES=
-GAMES
-.map(
-g=>
-sortNums(
-unique(g)
-).slice(0,15)
-)
-.filter(
-g=>g.length===15
-)
-.slice(0,6);
-
-
-while(
-GAMES.length<6
-){
-
-GAMES.push(
-createGame(
-'balanced',
-usage
-)
-);
-
-}
-
-
 localStorage.setItem(
-GKEY,
+GAME_KEY,
 JSON.stringify({
 
-version:'V25.1',
-
-target:
-Number(
-H[0]?.concurso||0
-)+1,
+concurso:
+Number(H[0]?.concurso||0)+1,
 
 games:GAMES,
 
-createdAt:
-Date.now()
+bestSize:BEST_SIZE
 
 })
 );
 
-
 renderGames();
 
 
-const covered=
-unique(
-GAMES.flat()
-).length;
-
-
 document.getElementById(
-'generatorInfo'
-).innerHTML=
+'generatorStatus'
+).textContent=
+`✅ 6 jogos • núcleo ${BEST_SIZE} • ${unique(GAMES.flat()).length} dezenas cobertas`;
 
-`✅ 6 jogos • 🎯 ${covered}/23 candidatas cobertas`;
+btn.disabled=false;
 
-
-button.disabled=false;
-
-button.textContent=
+btn.textContent=
 '🔄 Gerar novamente';
 
 }
 
 
 /* =====================================================
-   RENDER JOGOS
+   RENDER GAMES
 ===================================================== */
 
 function renderGames(){
 
-const container=
+if(!GAMES.length){
+
 document.getElementById(
 'games'
-);
-
-
-if(
-!GAMES.length
-){
-
-container.innerHTML=
-`
-<div class="box">
-Nenhum jogo gerado.
-</div>
-`;
+).innerHTML=
+'Nenhum jogo gerado.';
 
 return;
 
 }
 
-
 const labels=[
-
 '🧠 Núcleo',
-
 '🔥 Frequência',
-
 '🕐 Recente',
-
 '🔗 Coocorrência',
-
 '➡️ Transição',
-
 '🎯 Cobertura'
-
 ];
 
-
-container.innerHTML=
+document.getElementById(
+'games'
+).innerHTML=
 
 GAMES
 .map(
-(game,index)=>{
-
-const pairs=
-evenCount(game);
-
-const sum=
-sumGame(game);
-
-const consecutive=
-consecutiveCount(game);
-
-const ranges=
-rangeCounts(game);
-
-
-return`
+(g,i)=>
+`
 
 <div class="game">
 
 <div class="gameHead">
 
 <h3>
-Jogo ${index+1}
+Jogo ${i+1}
 </h3>
 
 <span class="tag">
-${labels[index]||'🎯 Portfólio'}
+${labels[i]}
 </span>
 
 </div>
 
-
 <div class="balls">
 
-${game
+${g
 .map(
 n=>
 `
@@ -4054,34 +3116,31 @@ ${pad(n)}
 
 </div>
 
-
 <div class="help">
 
 Pares:
-<b>${pairs}</b>
+<b>${evenCount(g)}</b>
 
 •
 
 Soma:
-<b>${sum}</b>
+<b>${sumGame(g)}</b>
 
 •
 
 Consecutivas:
-<b>${consecutive}</b>
+<b>${consecutive(g)}</b>
 
 <br>
 
 Faixas:
-<b>${ranges.join('-')}</b>
+<b>${ranges(g).join('-')}</b>
 
 </div>
 
 </div>
 
-`;
-
-}
+`
 )
 .join('');
 
@@ -4089,111 +3148,38 @@ Faixas:
 
 
 /* =====================================================
-   VALIDAÇÃO
+   DATA RENDER
 ===================================================== */
 
-function validateSavedGames(){
-
-let saved=null;
-
-
-try{
-
-saved=
-JSON.parse(
-localStorage.getItem(
-GKEY
-)||'null'
-);
-
-}catch(e){
-
-return;
-
-}
-
-
-if(
-!saved||
-!Array.isArray(saved.games)
-)
-return;
-
-
-const target=
-H.find(
-x=>
-Number(x.concurso)===
-Number(saved.target)
-);
-
-
-if(!target)
-return;
-
-
-const hits=
-saved.games.map(
-game=>
-game.filter(
-n=>
-target.dezenas.includes(n)
-).length
-);
-
-
-if(!hits.length)
-return;
-
-
-const best=
-Math.max(...hits);
-
-
-const coverage=
-unique(
-saved.games.flat()
-).length;
-
+function renderData(){
 
 document.getElementById(
-'best'
+'latest'
 ).textContent=
-best+'/15';
-
+H[0]?.concurso||'—';
 
 document.getElementById(
-'coverage'
+'count'
 ).textContent=
-coverage+'/23';
-
+H.length;
 
 document.getElementById(
-'validation'
+'lastResult'
 ).innerHTML=
-
-`
-
-Concurso:
-<b>${saved.target}</b>
-
-<br><br>
-
-${hits
+H[0]
+?
+H[0].dezenas
 .map(
-(x,i)=>
-`Jogo ${i+1}: <b>${x}</b>`
+n=>
+`
+<span class="ball">
+${pad(n)}
+</span>
+`
 )
-.join(' • ')}
-
-<br><br>
-
-Média:
-<b>
-${average(hits).toFixed(2)}
-</b>
-
-`;
+.join('')
+:
+'—';
 
 }
 
@@ -4209,13 +3195,10 @@ document.getElementById(
 'manual'
 );
 
-
-const numbers=
+const nums=
 unique(
 (
-input.value.match(
-/\d+/g
-)||[]
+input.value.match(/\d+/g)||[]
 )
 .map(Number)
 .filter(
@@ -4223,143 +3206,145 @@ n=>n>=1&&n<=25
 )
 );
 
-
-if(
-numbers.length!==15
-){
+if(nums.length!==15){
 
 alert(
-'Digite exatamente 15 dezenas diferentes entre 01 e 25.'
+'Digite exatamente 15 dezenas diferentes.'
 );
 
 return;
 
 }
 
-
-const next=
-Number(
-H[0]?.concurso||0
-)+1;
-
+const contest=
+Number(H[0]?.concurso||0)+1;
 
 H.unshift({
 
-concurso:next,
+concurso:contest,
 
-dezenas:
-sortNums(numbers),
+dezenas:sortNums(nums),
 
 data:'Manual'
 
 });
 
-
 H=
 H
 .sort(
-(a,b)=>
-b.concurso-a.concurso
+(a,b)=>b.concurso-a.concurso
 )
-.slice(
-0,
-HISTORY_LIMIT
-);
+.slice(0,MAX_HISTORY);
 
-
-saveHistory();
+save();
 
 input.value='';
 
-draw();
+renderData();
+
+runLab();
 
 }
 
 
 /* =====================================================
-   DESENHO
+   VALIDATION
 ===================================================== */
 
-function draw(){
+function validateGames(){
+
+try{
+
+const saved=
+JSON.parse(
+localStorage.getItem(
+GAME_KEY
+)||'null'
+);
+
+if(!saved||!saved.games)
+return;
+
+const target=
+H.find(
+x=>
+Number(x.concurso)===
+Number(saved.concurso)
+);
+
+if(!target)
+return;
+
+const hits=
+saved.games.map(
+g=>
+overlap(
+g,
+target.dezenas
+)
+);
+
+const best=
+Math.max(...hits);
 
 document.getElementById(
-'count'
+'bestHit'
 ).textContent=
-H.length;
-
+best+'/15';
 
 document.getElementById(
-'latest'
+'coverage'
 ).textContent=
-H[0]?.concurso||'—';
-
+unique(saved.games.flat()).length;
 
 document.getElementById(
-'lastResult'
+'validation'
 ).innerHTML=
 
-H[0]
+`
 
-?
+Concurso:
+<b>${saved.concurso}</b>
 
-H[0].dezenas
+<br><br>
+
+${hits
 .map(
-n=>
-`
-<span class="ball">
-${pad(n)}
-</span>
-`
+(x,i)=>
+`Jogo ${i+1}: <b>${x}</b>`
 )
-.join('')
+.join(' • ')}
 
-:
+<br><br>
 
-'—';
+Média:
+<b>${avg(hits).toFixed(2)}</b>
 
+`;
 
-if(
-H.length>=8
-){
-
-calculateAll();
-
-}
+}catch(e){}
 
 }
 
 
 /* =====================================================
-   LIMPAR
+   CLEAR
 ===================================================== */
 
 function clearAll(){
 
 if(
 !confirm(
-'Apagar histórico, jogos e validações?'
+'Apagar histórico e jogos?'
 )
 )
 return;
 
-
-H=[];
-
-S={};
-
-P=null;
-
-MODEL=null;
-
-GAMES=[];
-
-
 localStorage.removeItem(KEY);
 
-localStorage.removeItem(GKEY);
-
-localStorage.removeItem(VKEY);
-
+localStorage.removeItem(
+GAME_KEY
+);
 
 location.reload();
 
@@ -4367,21 +3352,19 @@ location.reload();
 
 
 /* =====================================================
-   INICIALIZAÇÃO
+   INIT
 ===================================================== */
 
-loadHistory();
-
+load();
 
 try{
 
 const saved=
 JSON.parse(
 localStorage.getItem(
-GKEY
+GAME_KEY
 )||'null'
 );
-
 
 if(
 saved&&
@@ -4390,36 +3373,21 @@ Array.isArray(saved.games)
 
 GAMES=
 saved.games
-.map(
-g=>
-sortNums(
-unique(g)
-)
-)
 .filter(
-g=>g.length===15
+g=>Array.isArray(g)&&g.length===15
 )
 .slice(0,6);
 
-
-if(GAMES.length){
+if(saved.bestSize)
+BEST_SIZE=saved.bestSize;
 
 renderGames();
 
 }
 
-}
+}catch(e){}
 
-}catch(e){
-
-console.warn(
-'Erro ao recuperar jogos:',
-e
-);
-}
-
-
-validateSavedGames();
+validateGames();
 
 </script>
 
