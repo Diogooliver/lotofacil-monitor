@@ -1,594 +1,624 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,viewport-fit=cover"
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
 >
 
-<meta
-  name="theme-color"
-  content="#06101d"
->
-
-<meta
-  name="apple-mobile-web-app-capable"
-  content="yes"
->
-
-<title>Lotofácil Monitor V25.9</title>
+<title>Lotofácil Monitor V25.10</title>
 
 <style>
 
 :root{
-  --bg:#06101d;
-  --panel:#0b1727;
-  --panel2:#0d1b2d;
-  --border:#1c3048;
-  --text:#f4f7fb;
-  --muted:#91a5bf;
-  --blue:#42a5ff;
-  --green:#42e69a;
-  --red:#ff6d76;
-  --yellow:#ffd166;
-  --purple:#a98cff;
+
+    --bg:#061426;
+    --card:#0b1b2e;
+    --card2:#0d2035;
+    --border:#193653;
+
+    --text:#f5f7fb;
+    --muted:#91a6c2;
+
+    --blue:#2196f3;
+    --blue2:#42a5f5;
+
+    --purple:#9c27ff;
+    --yellow:#ffbf00;
+
+    --green:#19d46b;
+    --red:#ff6b6b;
+
 }
 
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-  margin:0;
-  padding:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
+    box-sizing:border-box;
 }
 
 body{
-  min-height:100vh;
 
-  background:
-    radial-gradient(
-      circle at 10% 0%,
-      rgba(40,120,200,.16),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 100% 20%,
-      rgba(30,90,150,.12),
-      transparent 32%
-    ),
-    var(--bg);
+    margin:0;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #102b47 0%,
+            var(--bg) 48%
+        );
+
+    color:var(--text);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
 }
 
 .container{
-  width:min(980px,100%);
-  margin:auto;
-  padding:20px 16px 50px;
+
+    width:min(
+        100%,
+        900px
+    );
+
+    margin:auto;
+
+    padding:
+        22px
+        16px
+        80px;
+
 }
 
-.header{
-  padding:8px 4px 20px;
-}
+h1{
 
-.title{
-  margin:0;
-  font-size:34px;
-  font-weight:950;
-  letter-spacing:-1.5px;
+    font-size:42px;
+    margin:5px 0 8px;
+    font-weight:900;
+
 }
 
 .subtitle{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:16px;
-  font-weight:750;
-  line-height:1.45;
+
+    color:var(--muted);
+
+    font-size:19px;
+
+    font-weight:800;
+
+    line-height:1.45;
+
 }
 
 .version{
-  display:inline-flex;
-  margin-top:20px;
-  padding:8px 15px;
-  border-radius:14px;
-  background:rgba(40,145,240,.12);
-  color:#51adff;
-  font-size:18px;
-  font-weight:950;
+
+    display:inline-block;
+
+    margin:
+        25px
+        0
+        20px;
+
+    padding:
+        12px
+        24px;
+
+    background:#0b3154;
+
+    border-radius:30px;
+
+    color:#4da7ff;
+
+    font-weight:900;
+
+    font-size:20px;
+
 }
 
 .status{
-  margin-top:14px;
-  padding:16px 18px;
-  border:1px solid var(--border);
-  border-radius:21px;
-  background:rgba(12,27,46,.9);
-  font-weight:850;
-  color:#d3deeb;
+
+    background:#09182a;
+
+    border:1px solid var(--border);
+
+    border-radius:28px;
+
+    padding:20px;
+
+    font-size:19px;
+
+    font-weight:800;
+
+    margin-bottom:22px;
+
 }
 
 .online{
-  color:#29e76f;
+
+    color:#24e66e;
+
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:18px;
+
 }
 
 .card{
-  margin-top:16px;
-  padding:20px;
-  border-radius:26px;
-  border:1px solid var(--border);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(14,29,48,.98),
-      rgba(7,18,31,.98)
-    );
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d2035,
+            #08172a
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:28px;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.18);
+
 }
 
-.metric{
-  margin-top:0;
-  min-height:130px;
+.card h2{
+
+    margin:
+        0 0
+        18px;
+
+    font-size:28px;
+
 }
 
 .label{
-  color:#8ea4bf;
-  font-size:14px;
-  font-weight:950;
-  letter-spacing:1px;
-  text-transform:uppercase;
+
+    color:#91a6c2;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
 }
 
-.value{
-  margin-top:11px;
-  font-size:39px;
-  line-height:1;
-  font-weight:950;
+.big{
+
+    font-size:52px;
+
+    font-weight:950;
+
+    margin:
+        8px
+        0;
+
 }
 
-.small{
-  margin-top:9px;
-  color:var(--muted);
-  font-size:15px;
-  font-weight:700;
+.muted{
+
+    color:var(--muted);
+
+    font-weight:750;
+
+    line-height:1.5;
+
 }
 
 .section-title{
-  margin:0 0 10px;
-  font-size:27px;
-  font-weight:950;
-  letter-spacing:-.7px;
+
+    font-size:31px;
+
+    font-weight:950;
+
+    margin:
+        8px
+        0
+        12px;
+
 }
 
-.section-desc{
-  margin-bottom:18px;
-  color:#92a6c0;
-  font-size:16px;
-  font-weight:700;
-  line-height:1.48;
+.layer{
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:25px;
+
+    padding:23px;
+
+    margin-top:17px;
+
+    background:
+        rgba(
+            4,
+            16,
+            29,
+            .7
+        );
+
+}
+
+.layer h3{
+
+    margin:0 0 10px;
+
+    font-size:23px;
+
 }
 
 .numbers{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:18px;
+
 }
 
 .ball{
-  width:47px;
-  height:47px;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+    width:58px;
+    height:58px;
 
-  border-radius:50%;
+    display:flex;
 
-  background:
-    linear-gradient(
-      145deg,
-      #1b3857,
-      #10263f
-    );
+    align-items:center;
+    justify-content:center;
 
-  border:1px solid #2b4b6b;
+    border-radius:50%;
 
-  font-size:16px;
-  font-weight:950;
+    font-size:18px;
+
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d66a2,
+            #17304e
+        );
+
+    border:
+        1px solid
+        #2c6d9f;
+
 }
 
-.result-ball{
-  background:
-    linear-gradient(
-      145deg,
-      #188ce8,
-      #0d5ca0
-    );
+.ball.strong{
 
-  border-color:#4db4ff;
+    background:
+        linear-gradient(
+            145deg,
+            #1f86d1,
+            #143c63
+        );
+
 }
 
-.strong-ball{
-  background:
-    linear-gradient(
-      145deg,
-      #174f70,
-      #102d46
-    );
+.ball.protection{
 
-  border-color:#328cc4;
+    background:
+        linear-gradient(
+            145deg,
+            #a32cff,
+            #49316f
+        );
+
+    border-color:#a767ff;
+
 }
 
-.protection-ball{
-  background:
-    linear-gradient(
-      145deg,
-      #4b3e79,
-      #292348
-    );
+.ball.rotation{
 
-  border-color:#8874d5;
-}
+    background:
+        linear-gradient(
+            145deg,
+            #d28b12,
+            #5a4215
+        );
 
-.rotation-ball{
-  background:
-    linear-gradient(
-      145deg,
-      #6b5120,
-      #3b2e15
-    );
+    border-color:#d39b32;
 
-  border-color:#c99c42;
-}
-
-.signal{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  padding:15px 0;
-
-  border-bottom:
-    1px solid rgba(100,125,150,.15);
-}
-
-.signal:last-child{
-  border-bottom:0;
-}
-
-.signal-name{
-  color:#a7b9cf;
-  font-size:17px;
-  font-weight:750;
-}
-
-.signal-value{
-  font-size:18px;
-  font-weight:950;
-}
-
-.good{
-  color:var(--green);
-}
-
-.bad{
-  color:var(--red);
-}
-
-.warning{
-  color:var(--yellow);
-}
-
-.walk-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.walk-item{
-  padding:19px;
-  border-radius:21px;
-  background:#0c192b;
-  border:1px solid var(--border);
-}
-
-.walk-value{
-  margin-top:8px;
-  font-size:34px;
-  font-weight:950;
-}
-
-.table-wrap{
-  overflow-x:auto;
-}
-
-table{
-  width:100%;
-  min-width:650px;
-  border-collapse:collapse;
-}
-
-th{
-  padding:12px 9px;
-  color:#8298b4;
-  text-align:left;
-  font-size:13px;
-  letter-spacing:.8px;
-}
-
-td{
-  padding:14px 9px;
-  border-top:1px solid rgba(100,125,150,.15);
-  font-weight:750;
 }
 
 .game{
-  margin-top:14px;
-  padding:19px;
-  border-radius:23px;
-  background:#091727;
-  border:1px solid var(--border);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:27px;
+
+    padding:24px;
+
+    margin:
+        18px 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0a1b2e,
+            #071527
+        );
+
 }
 
 .game-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:15px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
 }
 
 .game-title{
-  font-size:21px;
-  font-weight:950;
+
+    font-size:27px;
+
+    font-weight:950;
+
 }
 
 .score{
-  color:#59b2ff;
-  font-size:17px;
-  font-weight:950;
+
+    color:#54a9ff;
+
+    font-size:22px;
+
+    font-weight:950;
+
 }
 
-.game-meta{
-  margin-top:14px;
-  color:#879bb5;
-  font-size:14px;
-  font-weight:750;
-  line-height:1.65;
+.game .ball{
+
+    background:
+        linear-gradient(
+            145deg,
+            #1a3d65,
+            #122a47
+        );
+
 }
 
-.game-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:16px;
+.stats{
+
+    color:#91a6c2;
+
+    font-weight:800;
+
+    line-height:1.8;
+
+    margin-top:14px;
+
+}
+
+.hit{
+
+    color:#55b5ff;
+
+    font-weight:950;
+
 }
 
 button{
-  border:0;
-  border-radius:14px;
-  padding:12px 15px;
-  color:#fff;
-  background:#162a42;
-  font-weight:900;
-  cursor:pointer;
+
+    border:0;
+
+    border-radius:18px;
+
+    padding:
+        15px
+        20px;
+
+    font-size:16px;
+
+    font-weight:900;
+
+    color:white;
+
+    cursor:pointer;
+
 }
 
-button:active{
-  transform:scale(.98);
+.btn-blue{
+
+    background:#1688dc;
+
 }
 
-.primary{
-  background:
-    linear-gradient(
-      135deg,
-      #1b92ec,
-      #1165aa
-    );
+.btn-green{
+
+    background:#17bd66;
+
 }
 
-.success{
-  background:
-    linear-gradient(
-      135deg,
-      #19bd7b,
-      #11764f
-    );
+.btn-dark{
+
+    background:#14283f;
+
 }
 
-.secondary{
-  background:#17273b;
+.buttons{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:16px;
+
 }
 
-.coverage-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+.cover-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:16px;
+
 }
 
-.coverage-item{
-  padding:18px;
-  border-radius:20px;
-  background:#0d1a2c;
-  border:1px solid var(--border);
+.metric{
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    background:#0b1a2d;
+
 }
 
-.coverage-value{
-  margin-top:8px;
-  font-size:33px;
-  font-weight:950;
+.metric .value{
+
+    font-size:50px;
+
+    font-weight:950;
+
+    margin-top:8px;
+
 }
 
-.bet-box{
-  background:
-    linear-gradient(
-      145deg,
-      rgba(13,52,84,.95),
-      rgba(7,23,40,.98)
-    );
+.positive{
 
-  border-color:#22618e;
+    color:var(--green);
+
 }
 
-.bet-status{
-  display:inline-flex;
-  padding:8px 12px;
-  border-radius:12px;
-  background:#594713;
-  color:#ffe08a;
-  font-size:13px;
-  font-weight:950;
+.negative{
+
+    color:var(--red);
+
 }
 
-.category-box{
-  margin-top:16px;
-  padding:17px;
-  border-radius:21px;
-  border:1px solid var(--border);
-  background:#0a1829;
+.warning{
+
+    border:
+        1px solid
+        #6c4b16;
+
+    background:
+        rgba(
+            90,
+            63,
+            10,
+            .20
+        );
+
 }
 
-.category-title{
-  font-size:18px;
-  font-weight:950;
-  margin-bottom:13px;
+.bet-center{
+
+    border:
+        1px solid
+        #167ac0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d2b48,
+            #081b30
+        );
+
 }
 
-.category-desc{
-  color:#899db7;
-  font-size:14px;
-  line-height:1.5;
-  font-weight:700;
-  margin-bottom:13px;
+.target{
+
+    display:inline-block;
+
+    background:#745510;
+
+    padding:
+        13px
+        20px;
+
+    border-radius:18px;
+
+    font-weight:950;
+
+    margin:
+        10px 0
+        18px;
+
 }
 
-.saved-game{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
+.small{
 
-  padding:15px 0;
+    font-size:14px;
 
-  border-bottom:
-    1px solid rgba(100,125,150,.16);
-}
+    color:#7790ae;
 
-.saved-game:last-child{
-  border-bottom:0;
-}
-
-.hits{
-  font-size:18px;
-  font-weight:950;
-}
-
-.footer{
-  padding:30px 10px 10px;
-  text-align:center;
-  color:#63758e;
-  font-size:14px;
-  font-weight:700;
-  line-height:1.6;
 }
 
 .loading{
-  padding:55px 20px;
-  text-align:center;
-  color:#8ea4bd;
-  font-weight:800;
+
+    text-align:center;
+
+    padding:50px;
+
+    color:#91a6c2;
+
+    font-weight:900;
+
 }
 
-.error{
-  margin-top:16px;
-  padding:18px;
-  border-radius:20px;
-  background:#3c1920;
-  border:1px solid #68303a;
-  color:#ff9da5;
-  font-weight:750;
-  line-height:1.5;
-}
+@media(max-width:650px){
 
-.legend{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:15px;
-}
+    h1{
+        font-size:34px;
+    }
 
-.legend-item{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#9cb0c8;
-  font-size:13px;
-  font-weight:800;
-}
+    .grid{
+        grid-template-columns:1fr;
+    }
 
-.legend-dot{
-  width:13px;
-  height:13px;
-  border-radius:50%;
-}
+    .cover-grid{
+        grid-template-columns:1fr 1fr;
+    }
 
-.dot-strong{
-  background:#2c83b8;
-}
+    .big{
+        font-size:43px;
+    }
 
-.dot-protection{
-  background:#7560c0;
-}
-
-.dot-rotation{
-  background:#b18430;
-}
-
-@media(max-width:620px){
-
-  .container{
-    padding:18px 14px 45px;
-  }
-
-  .title{
-    font-size:30px;
-  }
-
-  .card{
-    padding:17px;
-    border-radius:23px;
-  }
-
-  .value{
-    font-size:34px;
-  }
-
-  .ball{
-    width:44px;
-    height:44px;
-    font-size:15px;
-  }
-
-  .section-title{
-    font-size:24px;
-  }
+    .ball{
+        width:52px;
+        height:52px;
+    }
 
 }
 
@@ -600,3313 +630,2344 @@ button:active{
 
 <div class="container">
 
-<header class="header">
+    <div id="app">
 
-  <h1 class="title">
-    🎯 Lotofácil Monitor
-  </h1>
+        <div class="loading">
+            🧠 Carregando Lotofácil Monitor V25.10...
+        </div>
 
-  <div class="subtitle">
-    Intelligence Engine • Walk-forward • Estabilidade • Baseline
-  </div>
-
-  <div class="version">
-    V25.9
-  </div>
-
-  <div
-    class="status"
-    id="status"
-  >
-    🔄 Conectando ao backend...
-  </div>
-
-</header>
-
-<div id="app">
-
-  <div class="loading">
-    🔄 Carregando histórico da Lotofácil...
-  </div>
-
-</div>
+    </div>
 
 </div>
 
 
 <script>
 
-/* ==========================================================
-   LOTOFÁCIL MONITOR V25.9
-   ========================================================== */
+const VERSION = "V25.10";
 
-const VERSION = "V25.9";
+const TOTAL_GAMES = 6;
 
-const API_LATEST =
-  "/api/lotofacil/latest";
+const GAME_SIZE = 15;
 
-const API_HISTORY =
-  "/api/lotofacil/history?limit=120";
+const TOTAL_NUMBERS = 25;
 
-const STORAGE_KEY =
-  "lotofacil_monitor_v259_apostas";
+let history = [];
 
-let DATA = null;
+let latest = null;
 
-let GAMES = [];
+let games = [];
+
+let nucleus = null;
 
 
-/* ==========================================================
-   UTILIDADES
-   ========================================================== */
+// ============================================================
+// UTILIDADES
+// ============================================================
 
-function $(id){
-  return document.getElementById(id);
+function sleep(ms){
+
+    return new Promise(
+        resolve => setTimeout(resolve,ms)
+    );
+
 }
+
 
 function pad(n){
-  return String(n).padStart(2,"0");
-}
 
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-function mean(arr){
-
-  if(!arr.length){
-    return 0;
-  }
-
-  return arr.reduce(
-    (a,b)=>a+b,
-    0
-  ) / arr.length;
+    return String(n).padStart(2,"0");
 
 }
 
 
-/* ==========================================================
-   NORMALIZA RESULTADO
-   ========================================================== */
+function sum(arr){
 
-function normalizeDraw(item){
-
-  if(!item){
-    return null;
-  }
-
-  const concurso =
-    Number(
-      item.concurso ??
-      item.numero ??
-      item.numeroConcurso
+    return arr.reduce(
+        (a,b)=>a+b,
+        0
     );
 
-  const raw =
-    item.dezenas ??
-    item.listaDezenas ??
-    item.resultado ??
-    item.dezenasSorteadas ??
-    [];
+}
 
 
-  const dezenas =
-    raw
-      .map(Number)
-      .filter(
-        n =>
-          Number.isInteger(n) &&
-          n >= 1 &&
-          n <= 25
-      )
-      .sort(
-        (a,b)=>a-b
-      );
+function unique(arr){
 
-
-  if(
-    !concurso ||
-    dezenas.length !== 15
-  ){
-
-    return null;
-
-  }
-
-
-  return {
-
-    concurso,
-
-    data:
-      item.dataApuracao ??
-      item.data ??
-      "",
-
-    dezenas
-
-  };
+    return [...new Set(arr)];
 
 }
 
 
-/* ==========================================================
-   STORAGE
-   ========================================================== */
+function shuffle(arr){
 
-function getSavedBets(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem(
-        STORAGE_KEY
-      ) || "[]"
-    );
-
-  }catch{
-
-    return [];
-
-  }
-
-}
-
-function setSavedBets(
-  bets
-){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(bets)
-  );
-
-}
-
-
-/* ==========================================================
-   FREQUÊNCIA
-   ========================================================== */
-
-function calculateFrequency(
-  draws
-){
-
-  const freq =
-    Array(26).fill(0);
-
-
-  draws.forEach(
-    draw=>{
-
-      draw.dezenas.forEach(
-        n=>{
-          freq[n]++;
-        }
-      );
-
-    }
-  );
-
-
-  return freq;
-
-}
-
-
-/* ==========================================================
-   RECÊNCIA
-   ========================================================== */
-
-function calculateRecency(
-  draws
-){
-
-  const rec =
-    Array(26).fill(0);
-
-
-  draws.forEach(
-    (draw,index)=>{
-
-      draw.dezenas.forEach(
-        n=>{
-
-          if(
-            rec[n] === 0
-          ){
-
-            rec[n] =
-              index + 1;
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  return rec;
-
-}
-
-
-/* ==========================================================
-   ATRASO
-   ========================================================== */
-
-function calculateDelay(
-  draws
-){
-
-  const delay =
-    Array(26).fill(
-      draws.length
-    );
-
-
-  draws.forEach(
-    (draw,index)=>{
-
-      draw.dezenas.forEach(
-        n=>{
-
-          if(
-            delay[n] ===
-            draws.length
-          ){
-
-            delay[n] =
-              index;
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  return delay;
-
-}
-
-
-/* ==========================================================
-   TRANSIÇÃO
-   ========================================================== */
-
-function calculateTransition(
-  draws
-){
-
-  const score =
-    Array(26).fill(0);
-
-
-  if(
-    draws.length < 2
-  ){
-
-    return score;
-
-  }
-
-
-  for(
-    let i=0;
-    i<draws.length-1;
-    i++
-  ){
-
-    const current =
-      new Set(
-        draws[i].dezenas
-      );
-
-    const next =
-      new Set(
-        draws[i+1].dezenas
-      );
-
-
-    current.forEach(
-      n=>{
-
-        if(
-          next.has(n)
-        ){
-
-          score[n]++;
-
-        }
-
-      }
-    );
-
-  }
-
-
-  return score;
-
-}
-
-
-/* ==========================================================
-   COOCORRÊNCIA
-   ========================================================== */
-
-function calculateCooccurrence(
-  draws
-){
-
-  const score =
-    Array(26).fill(0);
-
-
-  draws.forEach(
-    draw=>{
-
-      draw.dezenas.forEach(
-        n=>{
-
-          score[n]++;
-
-        }
-      );
-
-    }
-  );
-
-
-  return score;
-
-}
-
-
-/* ==========================================================
-   CICLO
-   ========================================================== */
-
-function calculateCycle(
-  draws
-){
-
-  const cycle =
-    Array(26).fill(0);
-
-
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
-
-    let last = -1;
-
-    let totalGap = 0;
-
-    let count = 0;
-
+    const a = [...arr];
 
     for(
-      let i=0;
-      i<draws.length;
-      i++
+        let i=a.length-1;
+        i>0;
+        i--
     ){
 
-      if(
-        draws[i].dezenas.includes(n)
-      ){
-
-        if(
-          last >= 0
-        ){
-
-          totalGap +=
-            i-last;
-
-          count++;
-
-        }
-
-        last=i;
-
-      }
-
-    }
-
-
-    cycle[n] =
-      count
-        ? totalGap/count
-        : 0;
-
-  }
-
-
-  return cycle;
-
-}
-
-
-/* ==========================================================
-   NORMALIZAÇÃO
-   ========================================================== */
-
-function normalizeVector(
-  arr
-){
-
-  const values =
-    arr.slice(1);
-
-  const min =
-    Math.min(...values);
-
-  const max =
-    Math.max(...values);
-
-  const range =
-    max-min || 1;
-
-
-  const output =
-    Array(26).fill(0);
-
-
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
-
-    output[n] =
-      (
-        arr[n]-min
-      ) / range;
-
-  }
-
-
-  return output;
-
-}
-
-
-/* ==========================================================
-   SCORE PRINCIPAL
-   ========================================================== */
-
-function calculateScores(
-  draws
-){
-
-  const frequency =
-    calculateFrequency(
-      draws
-    );
-
-  const recency =
-    calculateRecency(
-      draws
-    );
-
-  const delay =
-    calculateDelay(
-      draws
-    );
-
-  const transition =
-    calculateTransition(
-      draws
-    );
-
-  const cooccurrence =
-    calculateCooccurrence(
-      draws
-    );
-
-  const cycle =
-    calculateCycle(
-      draws
-    );
-
-
-  const nf =
-    normalizeVector(
-      frequency
-    );
-
-
-  const nr =
-    normalizeVector(
-      recency.map(
-        x =>
-          x
-            ? 1/x
-            : 0
-      )
-    );
-
-
-  const nd =
-    normalizeVector(
-      delay
-    );
-
-
-  const nt =
-    normalizeVector(
-      transition
-    );
-
-
-  const nc =
-    normalizeVector(
-      cooccurrence
-    );
-
-
-  const ncy =
-    normalizeVector(
-      cycle.map(
-        x =>
-          x
-            ? 1/x
-            : 0
-      )
-    );
-
-
-  const score =
-    Array(26).fill(0);
-
-
-  for(
-    let n=1;
-    n<=25;
-    n++
-  ){
-
-    score[n] =
-
-      nf[n] * 0.23 +
-
-      nr[n] * 0.18 +
-
-      nd[n] * 0.13 +
-
-      nt[n] * 0.16 +
-
-      nc[n] * 0.17 +
-
-      ncy[n] * 0.13;
-
-  }
-
-
-  return {
-
-    frequency,
-    recency,
-    delay,
-    transition,
-    cooccurrence,
-    cycle,
-    score
-
-  };
-
-}
-
-
-/* ==========================================================
-   RANKING
-   ========================================================== */
-
-function ranking(
-  scores
-){
-
-  return Array
-    .from(
-      {length:25},
-      (_,i)=>i+1
-    )
-    .sort(
-      (a,b)=>
-        scores[b]-scores[a]
-    );
-
-}
-
-
-/* ==========================================================
-   15 FORTES + 5 PROTEÇÃO + 5 ROTAÇÃO
-   ========================================================== */
-
-function buildGroups(
-  scores
-){
-
-  const ranked =
-    ranking(
-      scores.score
-    );
-
-
-  const fortes =
-    ranked.slice(
-      0,
-      15
-    );
-
-
-  const protecao =
-    ranked.slice(
-      15,
-      20
-    );
-
-
-  const rotacao =
-    ranked.slice(
-      20,
-      25
-    );
-
-
-  return {
-
-    fortes,
-    protecao,
-    rotacao
-
-  };
-
-}
-
-
-/* ==========================================================
-   SOBREPOSIÇÃO
-   ========================================================== */
-
-function overlap(
-  a,
-  b
-){
-
-  const set =
-    new Set(b);
-
-
-  return a.filter(
-    n =>
-      set.has(n)
-  ).length;
-
-}
-
-
-/* ==========================================================
-   ESTATÍSTICAS
-   ========================================================== */
-
-function gameStats(
-  game
-){
-
-  const pares =
-    game.filter(
-      n=>n%2===0
-    ).length;
-
-
-  const impares =
-    15-pares;
-
-
-  const soma =
-    game.reduce(
-      (a,b)=>a+b,
-      0
-    );
-
-
-  let consecutivas = 0;
-
-
-  for(
-    let i=1;
-    i<game.length;
-    i++
-  ){
-
-    if(
-      game[i] ===
-      game[i-1]+1
-    ){
-
-      consecutivas++;
-
-    }
-
-  }
-
-
-  return {
-
-    pares,
-
-    impares,
-
-    soma,
-
-    consecutivas
-
-  };
-
-}
-
-
-/* ==========================================================
-   GERADOR DE JOGOS V25.9
-   ========================================================== */
-
-function generateGames(
-  groups,
-  scores
-){
-
-  const F =
-    groups.fortes;
-
-  const P =
-    groups.protecao;
-
-  const R =
-    groups.rotacao;
-
-
-  /*
-    Estratégias:
-
-    J1 = 12 fortes + 2 proteção + 1 rotação
-    J2 = 11 fortes + 3 proteção + 1 rotação
-    J3 = 12 fortes + 1 proteção + 2 rotação
-    J4 = 11 fortes + 2 proteção + 2 rotação
-    J5 = 10 fortes + 3 proteção + 2 rotação
-    J6 = 10 fortes + 2 proteção + 3 rotação
-  */
-
-
-  const recipes = [
-
-    [12,2,1],
-
-    [11,3,1],
-
-    [12,1,2],
-
-    [11,2,2],
-
-    [10,3,2],
-
-    [10,2,3]
-
-  ];
-
-
-  const games = [];
-
-
-  recipes.forEach(
-    (recipe,index)=>{
-
-      const [
-        strongCount,
-        protectionCount,
-        rotationCount
-      ] = recipe;
-
-
-      let strong =
-        F.slice();
-
-
-      let protection =
-        P.slice();
-
-
-      let rotation =
-        R.slice();
-
-
-      /*
-        Rotação dos grupos.
-      */
-
-      strong =
-        strong
-          .slice(
-            index % 3
-          )
-          .concat(
-            strong.slice(
-              0,
-              index % 3
-            )
-          );
-
-
-      protection =
-        protection
-          .slice(
-            index % 5
-          )
-          .concat(
-            protection.slice(
-              0,
-              index % 5
-            )
-          );
-
-
-      rotation =
-        rotation
-          .slice(
-            index % 5
-          )
-          .concat(
-            rotation.slice(
-              0,
-              index % 5
-            )
-          );
-
-
-      let game = [
-
-        ...strong.slice(
-          0,
-          strongCount
-        ),
-
-        ...protection.slice(
-          0,
-          protectionCount
-        ),
-
-        ...rotation.slice(
-          0,
-          rotationCount
-        )
-
-      ];
-
-
-      /*
-        Garante 15 dezenas.
-      */
-
-      const all =
-        ranking(
-          scores.score
-        );
-
-
-      for(
-        const n
-        of all
-      ){
-
-        if(
-          game.length >= 15
-        ){
-          break;
-        }
-
-        if(
-          !game.includes(n)
-        ){
-
-          game.push(n);
-
-        }
-
-      }
-
-
-      /*
-        Remove duplicatas.
-      */
-
-      game =
-        [...new Set(game)]
-          .slice(0,15)
-          .sort(
-            (a,b)=>a-b
-          );
-
-
-      games.push(game);
-
-    }
-  );
-
-
-  /*
-    Diversificação adicional.
-
-    Evita que jogos consecutivos
-    tenham mais de 13 dezenas iguais.
-  */
-
-  for(
-    let i=1;
-    i<games.length;
-    i++
-  ){
-
-    let guard=0;
-
-
-    while(
-      overlap(
-        games[i],
-        games[i-1]
-      ) > 12 &&
-      guard < 20
-    ){
-
-      const groupsToUse = [
-
-        groups.rotacao,
-
-        groups.protecao,
-
-        groups.fortes
-
-      ];
-
-
-      let replaced=false;
-
-
-      for(
-        const group
-        of groupsToUse
-      ){
-
-        for(
-          const candidate
-          of group
-        ){
-
-          if(
-            games[i].includes(
-              candidate
-            )
-          ){
-            continue;
-          }
-
-
-          /*
-            Troca a última posição.
-          */
-
-          const test =
-            games[i]
-              .slice();
-
-
-          test[
-            14-guard%5
-          ] =
-            candidate;
-
-
-          const unique =
-            [
-              ...new Set(test)
-            ];
-
-
-          if(
-            unique.length === 15
-          ){
-
-            games[i] =
-              unique.sort(
-                (a,b)=>a-b
-              );
-
-            replaced=true;
-
-            break;
-
-          }
-
-        }
-
-        if(replaced){
-          break;
-        }
-
-      }
-
-
-      if(!replaced){
-        break;
-      }
-
-
-      guard++;
-
-    }
-
-  }
-
-
-  return games;
-
-}
-
-
-/* ==========================================================
-   SCORE DOS JOGOS
-   ========================================================== */
-
-function gameScore(
-  game,
-  score
-){
-
-  const value =
-    game.reduce(
-      (total,n)=>
-        total+score[n],
-      0
-    );
-
-
-  return (
-    value/game.length
-  )*10;
-
-}
-
-
-/* ==========================================================
-   COBERTURA
-   ========================================================== */
-
-function calculateCoverage(
-  games
-){
-
-  const all =
-    games.flat();
-
-
-  const unique =
-    new Set(all).size;
-
-
-  /*
-    Repetição média entre pares.
-
-    Agora é realmente
-    calculada entre os jogos.
-  */
-
-  const overlaps = [];
-
-
-  for(
-    let i=0;
-    i<games.length;
-    i++
-  ){
-
-    for(
-      let j=i+1;
-      j<games.length;
-      j++
-    ){
-
-      overlaps.push(
-        overlap(
-          games[i],
-          games[j]
-        )
-      );
-
-    }
-
-  }
-
-
-  const average =
-    mean(
-      overlaps
-    );
-
-
-  const minimum =
-    overlaps.length
-      ? Math.min(
-          ...overlaps
-        )
-      : 0;
-
-
-  const maximum =
-    overlaps.length
-      ? Math.max(
-          ...overlaps
-        )
-      : 0;
-
-
-  /*
-    Quanto mais dezenas diferentes
-    entre os jogos, maior a diversidade.
-
-    15 - repetição média.
-  */
-
-  const diversity =
-    15-average;
-
-
-  return {
-
-    unique,
-
-    percentage:
-      Number(
-        (
-          unique/25*100
-        ).toFixed(1)
-      ),
-
-    averageRepetition:
-      Number(
-        average.toFixed(2)
-      ),
-
-    minimumRepetition:
-      minimum,
-
-    maximumRepetition:
-      maximum,
-
-    diversity:
-      Number(
-        diversity.toFixed(2)
-      )
-
-  };
-
-}
-
-
-/* ==========================================================
-   WALK-FORWARD
-   ========================================================== */
-
-function walkForward(
-  draws
-){
-
-  const chronological =
-    draws
-      .slice()
-      .sort(
-        (a,b)=>
-          a.concurso-b.concurso
-      );
-
-
-  const tests =
-    Math.min(
-      60,
-      chronological.length-30
-    );
-
-
-  if(
-    tests <= 5
-  ){
-
-    return {
-
-      tests:0,
-
-      model:0,
-
-      baseline:0,
-
-      advantage:0
-
-    };
-
-  }
-
-
-  const start =
-    chronological.length-tests;
-
-
-  const modelHits = [];
-
-  const baselineHits = [];
-
-
-  for(
-    let i=start;
-    i<chronological.length;
-    i++
-  ){
-
-    const train =
-      chronological.slice(
-        0,
-        i
-      );
-
-
-    const target =
-      chronological[i];
-
-
-    if(
-      train.length < 25
-    ){
-      continue;
-    }
-
-
-    const scores =
-      calculateScores(
-        train
-      );
-
-
-    const groups =
-      buildGroups(
-        scores
-      );
-
-
-    /*
-      Modelo:
-
-      15 melhores dezenas
-      do ranking adaptativo.
-    */
-
-    const prediction =
-      groups.fortes
-        .slice();
-
-
-    modelHits.push(
-      overlap(
-        prediction,
-        target.dezenas
-      )
-    );
-
-
-    /*
-      Baseline:
-
-      15 mais frequentes.
-    */
-
-    const frequency =
-      scores.frequency;
-
-
-    const baseline =
-      Array
-        .from(
-          {length:25},
-          (_,j)=>j+1
-        )
-        .sort(
-          (a,b)=>
-            frequency[b] -
-            frequency[a]
-        )
-        .slice(
-          0,
-          15
-        );
-
-
-    baselineHits.push(
-      overlap(
-        baseline,
-        target.dezenas
-      )
-    );
-
-  }
-
-
-  const model =
-    mean(
-      modelHits
-    );
-
-
-  const baseline =
-    mean(
-      baselineHits
-    );
-
-
-  return {
-
-    tests:
-      modelHits.length,
-
-    model:
-      Number(
-        model.toFixed(2)
-      ),
-
-    baseline:
-      Number(
-        baseline.toFixed(2)
-      ),
-
-    advantage:
-      Number(
-        (
-          model-baseline
-        ).toFixed(2)
-      )
-
-  };
-
-}
-
-
-/* ==========================================================
-   MONTE CARLO
-   ========================================================== */
-
-function monteCarlo(){
-
-  const simulations =
-    10000;
-
-
-  let seed =
-    739391;
-
-
-  function random(){
-
-    seed =
-      (
-        seed*9301+
-        49297
-      )%233280;
-
-
-    return seed/233280;
-
-  }
-
-
-  let total=0;
-
-  let min=15;
-
-  let max=0;
-
-
-  for(
-    let i=0;
-    i<simulations;
-    i++
-  ){
-
-    const pool =
-      Array
-        .from(
-          {length:25},
-          (_,j)=>j+1
-        );
-
-
-    for(
-      let j=24;
-      j>0;
-      j--
-    ){
-
-      const k =
-        Math.floor(
-          random()*(j+1)
-        );
-
-
-      [
-        pool[j],
-        pool[k]
-      ] =
-      [
-        pool[k],
-        pool[j]
-      ];
-
-    }
-
-
-    const game =
-      pool.slice(
-        0,
-        15
-      );
-
-
-    /*
-      Distribuição esperada de
-      acertos entre dois conjuntos
-      aleatórios de 15 em 25.
-    */
-
-    const reference =
-      pool.slice(
-        0,
-        15
-      );
-
-
-    const hits =
-      overlap(
-        game,
-        reference
-      );
-
-
-    total += hits;
-
-    min =
-      Math.min(
-        min,
-        hits
-      );
-
-    max =
-      Math.max(
-        max,
-        hits
-      );
-
-  }
-
-
-  /*
-    Para a referência estatística
-    usamos a média teórica:
-
-    15 * 15 / 25 = 9
-
-    O Monte Carlo visualizado
-    fica coerente com esse cenário.
-  */
-
-  return {
-
-    simulations,
-
-    mean:9,
-
-    min,
-
-    max
-
-  };
-
-}
-
-
-/* ==========================================================
-   SINAIS
-   ========================================================== */
-
-function signal(
-  vector
-){
-
-  const values =
-    vector.slice(1);
-
-
-  const min =
-    Math.min(
-      ...values
-    );
-
-
-  const max =
-    Math.max(
-      ...values
-    );
-
-
-  const range =
-    max-min || 1;
-
-
-  return mean(
-    values.map(
-      x =>
-        (x-min)/range
-    )
-  );
-
-}
-
-
-/* ==========================================================
-   RENDER BOLAS
-   ========================================================== */
-
-function renderBalls(
-  numbers,
-  type=""
-){
-
-  return `
-
-    <div class="numbers">
-
-      ${numbers.map(
-        n=>`
-
-          <span class="ball ${
-            type==="result"
-              ? "result-ball"
-              : type==="forte"
-                ? "strong-ball"
-                : type==="protecao"
-                  ? "protection-ball"
-                  : type==="rotacao"
-                    ? "rotation-ball"
-                    : ""
-          }">
-
-            ${pad(n)}
-
-          </span>
-
-        `
-      ).join("")}
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   MÉTRICAS
-   ========================================================== */
-
-function renderMetrics(
-  latest,
-  draws,
-  groups,
-  confidence
-){
-
-  return `
-
-    <div class="grid">
-
-      <div class="card metric">
-
-        <div class="label">
-          Último concurso
-        </div>
-
-        <div class="value">
-          ${latest.concurso}
-        </div>
-
-        <div class="small">
-          ${escapeHtml(
-            latest.data
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="card metric">
-
-        <div class="label">
-          Histórico
-        </div>
-
-        <div class="value">
-          ${draws.length}
-        </div>
-
-        <div class="small">
-          concursos analisados
-        </div>
-
-      </div>
-
-
-      <div class="card metric">
-
-        <div class="label">
-          Estrutura
-        </div>
-
-        <div class="value">
-          15+5+5
-        </div>
-
-        <div class="small">
-          fortes • proteção • rotação
-        </div>
-
-      </div>
-
-
-      <div class="card metric">
-
-        <div class="label">
-          Confiança
-        </div>
-
-        <div class="value">
-          ${confidence}
-        </div>
-
-        <div class="small">
-          estabilidade do modelo
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   RESULTADO
-   ========================================================== */
-
-function renderResult(
-  latest
-){
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🎲 Último resultado
-      </h2>
-
-      ${renderBalls(
-        latest.dezenas,
-        "result"
-      )}
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   GRUPOS
-   ========================================================== */
-
-function renderGroups(
-  groups
-){
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🧠 Estrutura adaptativa V25.9
-      </h2>
-
-
-      <div class="section-desc">
-
-        O modelo agora separa as 25 dezenas
-        em três camadas para reduzir a
-        concentração dos seis jogos.
-
-      </div>
-
-
-      <div class="category-box">
-
-        <div class="category-title">
-          🔵 15 dezenas fortes
-        </div>
-
-        <div class="category-desc">
-          Maior score combinado do modelo.
-        </div>
-
-        ${renderBalls(
-          groups.fortes,
-          "forte"
-        )}
-
-      </div>
-
-
-      <div class="category-box">
-
-        <div class="category-title">
-          🟣 5 dezenas de proteção
-        </div>
-
-        <div class="category-desc">
-          Dezenas fora do núcleo principal,
-          mas com sinais estatísticos relevantes.
-        </div>
-
-        ${renderBalls(
-          groups.protecao,
-          "protecao"
-        )}
-
-      </div>
-
-
-      <div class="category-box">
-
-        <div class="category-title">
-          🟡 5 dezenas de rotação
-        </div>
-
-        <div class="category-desc">
-          Dezenas utilizadas para aumentar
-          a cobertura e evitar jogos idênticos.
-        </div>
-
-        ${renderBalls(
-          groups.rotacao,
-          "rotacao"
-        )}
-
-      </div>
-
-
-      <div class="legend">
-
-        <div class="legend-item">
-          <span class="legend-dot dot-strong"></span>
-          Fortes
-        </div>
-
-        <div class="legend-item">
-          <span class="legend-dot dot-protection"></span>
-          Proteção
-        </div>
-
-        <div class="legend-item">
-          <span class="legend-dot dot-rotation"></span>
-          Rotação
-        </div>
-
-      </div>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   SINAIS
-   ========================================================== */
-
-function renderSignals(
-  scores
-){
-
-  const rows = [
-
-    [
-      "Frequência",
-      signal(
-        scores.frequency
-      )
-    ],
-
-    [
-      "Recência",
-      signal(
-        scores.recency
-      )
-    ],
-
-    [
-      "Atraso",
-      signal(
-        scores.delay
-      )
-    ],
-
-    [
-      "Ciclo",
-      signal(
-        scores.cycle
-      )
-    ],
-
-    [
-      "Transição",
-      signal(
-        scores.transition
-      )
-    ],
-
-    [
-      "Coocorrência",
-      signal(
-        scores.cooccurrence
-      )
-    ]
-
-  ];
-
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        📡 Sinais do modelo
-      </h2>
-
-
-      ${rows.map(
-        row=>`
-
-          <div class="signal">
-
-            <span class="signal-name">
-              ${row[0]}
-            </span>
-
-            <span class="signal-value">
-              ${row[1].toFixed(2)}
-            </span>
-
-          </div>
-
-        `
-      ).join("")}
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   WALK FORWARD
-   ========================================================== */
-
-function renderWalkForward(
-  wf
-){
-
-  const cls =
-    wf.advantage >= 0
-      ? "good"
-      : "bad";
-
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        📈 Walk-forward
-      </h2>
-
-
-      <div class="section-desc">
-
-        Testes cronológicos sem utilizar
-        o futuro para avaliar o passado.
-
-      </div>
-
-
-      <div class="walk-grid">
-
-
-        <div class="walk-item">
-
-          <div class="label">
-            Testes
-          </div>
-
-          <div class="walk-value">
-            ${wf.tests}
-          </div>
-
-        </div>
-
-
-        <div class="walk-item">
-
-          <div class="label">
-            Modelo
-          </div>
-
-          <div class="walk-value">
-            ${wf.model.toFixed(2)}
-          </div>
-
-        </div>
-
-
-        <div class="walk-item">
-
-          <div class="label">
-            Baseline
-          </div>
-
-          <div class="walk-value">
-            ${wf.baseline.toFixed(2)}
-          </div>
-
-        </div>
-
-
-        <div class="walk-item">
-
-          <div class="label">
-            Vantagem
-          </div>
-
-          <div class="walk-value ${cls}">
-            ${wf.advantage >= 0 ? "+" : ""}
-            ${wf.advantage.toFixed(2)}
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   MONTE CARLO
-   ========================================================== */
-
-function renderMonteCarlo(
-  mc
-){
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🎲 Monte Carlo
-      </h2>
-
-
-      <div class="coverage-grid">
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Simulações
-          </div>
-
-          <div class="coverage-value">
-            ${mc.simulations.toLocaleString(
-              "pt-BR"
-            )}
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Média aleatória
-          </div>
-
-          <div class="coverage-value">
-            ${mc.mean.toFixed(2)}
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Mínimo
-          </div>
-
-          <div class="coverage-value">
-            ${mc.min}
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Máximo
-          </div>
-
-          <div class="coverage-value">
-            ${mc.max}
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   JOGOS
-   ========================================================== */
-
-function renderGames(
-  games,
-  scores,
-  latest
-){
-
-  GAMES =
-    games;
-
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🎯 Jogos V25.9
-      </h2>
-
-
-      <div class="section-desc">
-
-        Seis jogos construídos com
-        15 dezenas fortes, 5 de proteção
-        e 5 de rotação.
-
-      </div>
-
-
-      ${games.map(
-        (game,index)=>{
-
-          const stats =
-            gameStats(
-              game
+        const j =
+            Math.floor(
+                Math.random()*(i+1)
             );
 
+        [
+            a[i],
+            a[j]
+        ]=[
+            a[j],
+            a[i]
+        ];
 
-          const hits =
-            overlap(
-              game,
-              latest.dezenas
-            );
+    }
 
-
-          const score =
-            gameScore(
-              game,
-              scores.score
-            );
-
-
-          return `
-
-            <div class="game">
-
-              <div class="game-head">
-
-                <div class="game-title">
-                  Jogo ${index+1}
-                </div>
-
-                <div class="score">
-                  Score ${score.toFixed(2)}
-                </div>
-
-              </div>
-
-
-              ${renderBalls(
-                game
-              )}
-
-
-              <div class="game-meta">
-
-                Pares:
-                ${stats.pares}
-
-                • Ímpares:
-                ${stats.impares}
-
-                • Soma:
-                ${stats.soma}
-
-                • Consecutivas:
-                ${stats.consecutivas}
-
-                <br>
-
-                🎯 Acertos no último resultado:
-
-                <strong class="${
-                  hits >= 11
-                    ? "good"
-                    : ""
-                }">
-
-                  ${hits}
-
-                </strong>
-
-              </div>
-
-
-              <div class="game-actions">
-
-                <button
-                  class="primary"
-                  onclick="copyGame(${index})"
-                >
-                  📋 Copiar
-                </button>
-
-
-                <button
-                  class="success"
-                  onclick="saveGame(${index})"
-                >
-                  💾 Salvar aposta
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-      ).join("")}
-
-
-    </section>
-
-  `;
+    return a;
 
 }
 
 
-/* ==========================================================
-   COBERTURA
-   ========================================================== */
+// ============================================================
+// FREQUÊNCIA
+// ============================================================
 
-function renderCoverage(
-  coverage
-){
+function frequencyScore(data){
 
-  return `
+    const counts =
+        Array(TOTAL_NUMBERS+1)
+        .fill(0);
 
-    <section class="card">
+    data.forEach(draw=>{
 
-      <h2 class="section-title">
-        🧩 Cobertura dos 6 jogos
-      </h2>
+        draw.dezenas.forEach(n=>{
 
-
-      <div class="coverage-grid">
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Dezenas únicas
-          </div>
-
-          <div class="coverage-value">
-            ${coverage.unique}
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Cobertura
-          </div>
-
-          <div class="coverage-value">
-            ${coverage.percentage}%
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Repetição média
-          </div>
-
-          <div class="coverage-value">
-            ${coverage.averageRepetition}
-          </div>
-
-          <div class="small">
-            dezenas iguais entre pares
-          </div>
-
-        </div>
-
-
-        <div class="coverage-item">
-
-          <div class="label">
-            Diversidade
-          </div>
-
-          <div class="coverage-value">
-            ${coverage.diversity}
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-      <div
-        class="section-desc"
-        style="margin-top:16px;margin-bottom:0"
-      >
-
-        Menor repetição:
-        <strong>
-          ${coverage.minimumRepetition}
-        </strong>
-
-        • Maior repetição:
-        <strong>
-          ${coverage.maximumRepetition}
-        </strong>
-
-      </div>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   CENTRAL DE APOSTAS
-   ========================================================== */
-
-function renderBetCenter(
-  latest
-){
-
-  const bets =
-    getSavedBets();
-
-
-  return `
-
-    <section class="card bet-box">
-
-      <h2 class="section-title">
-        💰 Central de Apostas
-      </h2>
-
-
-      <div class="section-desc">
-
-        Registre os jogos da V25.9
-        para acompanhar o próximo concurso.
-
-        Os dados ficam armazenados
-        neste dispositivo.
-
-      </div>
-
-
-      <div class="bet-status">
-
-        🎯 Concurso-alvo:
-        ${latest.concurso+1}
-
-      </div>
-
-
-      <div class="game-actions">
-
-        <button
-          class="primary"
-          onclick="saveAllGames()"
-        >
-          💾 Salvar os 6 jogos
-        </button>
-
-
-        <button
-          class="secondary"
-          onclick="copyAllGames()"
-        >
-          📋 Copiar todos
-        </button>
-
-
-        <button
-          class="secondary"
-          onclick="openCaixa()"
-        >
-          🏦 Resultado oficial
-        </button>
-
-      </div>
-
-
-      ${
-        bets.length
-
-        ?
-
-        `
-
-          <div
-            style="margin-top:22px"
-          >
-
-            <div class="label">
-              APOSTAS SALVAS
-            </div>
-
-
-            ${bets.map(
-              (bet,index)=>`
-
-                <div class="saved-game">
-
-                  <div>
-
-                    <strong>
-                      Jogo ${index+1}
-                    </strong>
-
-                    <div class="small">
-
-                      ${
-                        bet.numbers
-                          .map(pad)
-                          .join(" • ")
-                      }
-
-                    </div>
-
-                  </div>
-
-
-                  <div class="hits">
-
-                    ${
-                      bet.hits !== null
-                        ? bet.hits +
-                          " acertos"
-                        : "Pendente"
-                    }
-
-                  </div>
-
-                </div>
-
-              `
-            ).join("")}
-
-
-          </div>
-
-        `
-
-        :
-
-        `
-
-          <div
-            class="small"
-            style="margin-top:20px"
-          >
-
-            Nenhuma aposta salva
-            neste dispositivo.
-
-          </div>
-
-        `
-      }
-
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   DIAGNÓSTICO
-   ========================================================== */
-
-function renderDiagnosis(
-  latest,
-  draws,
-  wf
-){
-
-  return `
-
-    <section class="card">
-
-      <h2 class="section-title">
-        🔧 Diagnóstico
-      </h2>
-
-
-      <div class="section-desc">
-
-        Backend OK •
-
-        Concurso atual:
-        ${latest.concurso} •
-
-        Histórico:
-        ${draws.length}
-        concursos •
-
-        Walk-forward:
-        ${wf.tests}
-        testes •
-
-        V25.9 carregada
-        com sucesso.
-
-      </div>
-
-
-      <button
-        class="primary"
-        style="width:100%;font-size:16px"
-        onclick="loadData()"
-      >
-
-        🔄 Atualizar análise
-
-      </button>
-
-    </section>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   RENDER PRINCIPAL
-   ========================================================== */
-
-function renderApp(
-  latest,
-  draws
-){
-
-  const scores =
-    calculateScores(
-      draws
-    );
-
-
-  const groups =
-    buildGroups(
-      scores
-    );
-
-
-  const games =
-    generateGames(
-      groups,
-      scores
-    );
-
-
-  const wf =
-    walkForward(
-      draws
-    );
-
-
-  const mc =
-    monteCarlo();
-
-
-  const coverage =
-    calculateCoverage(
-      games
-    );
-
-
-  let confidence =
-    "Baixa";
-
-
-  if(
-    wf.advantage >= 0.30 &&
-    coverage.unique >= 23
-  ){
-
-    confidence =
-      "Alta";
-
-  }else if(
-    wf.advantage >= 0.05 &&
-    coverage.unique >= 21
-  ){
-
-    confidence =
-      "Média";
-
-  }
-
-
-  DATA = {
-
-    latest,
-
-    draws,
-
-    scores,
-
-    groups,
-
-    games,
-
-    walkForward:wf,
-
-    monteCarlo:mc,
-
-    coverage,
-
-    confidence
-
-  };
-
-
-  $("app").innerHTML = `
-
-    ${renderMetrics(
-      latest,
-      draws,
-      groups,
-      confidence
-    )}
-
-
-    ${renderResult(
-      latest
-    )}
-
-
-    ${renderGroups(
-      groups
-    )}
-
-
-    ${renderSignals(
-      scores
-    )}
-
-
-    ${renderWalkForward(
-      wf
-    )}
-
-
-    ${renderMonteCarlo(
-      mc
-    )}
-
-
-    ${renderGames(
-      games,
-      scores,
-      latest
-    )}
-
-
-    ${renderCoverage(
-      coverage
-    )}
-
-
-    ${renderBetCenter(
-      latest
-    )}
-
-
-    ${renderDiagnosis(
-      latest,
-      draws,
-      wf
-    )}
-
-
-    <div class="footer">
-
-      Lotofácil Monitor V25.9
-
-      <br>
-
-      Ferramenta estatística experimental.
-      Não existe garantia de premiação.
-
-    </div>
-
-  `;
-
-
-  $("status").innerHTML = `
-
-    🟢
-
-    <span class="online">
-      V25.9 online
-    </span>
-
-    • Concurso
-    <strong>
-      ${latest.concurso}
-    </strong>
-
-    • ${draws.length}
-    concursos analisados
-
-  `;
-
-
-  compareSavedBets();
-
-}
-
-
-/* ==========================================================
-   COPIAR JOGO
-   ========================================================== */
-
-function copyGame(
-  index
-){
-
-  const game =
-    GAMES[index];
-
-
-  if(!game){
-    return;
-  }
-
-
-  const text =
-    game
-      .map(pad)
-      .join(" ");
-
-
-  if(
-    navigator.clipboard
-  ){
-
-    navigator.clipboard
-      .writeText(text)
-      .then(
-        ()=>{
-          alert(
-            `Jogo ${index+1} copiado!`
-          );
-        }
-      )
-      .catch(
-        ()=>{
-          alert(text);
-        }
-      );
-
-  }else{
-
-    alert(text);
-
-  }
-
-}
-
-
-/* ==========================================================
-   COPIAR TODOS
-   ========================================================== */
-
-function copyAllGames(){
-
-  if(!GAMES.length){
-
-    alert(
-      "Nenhum jogo disponível."
-    );
-
-    return;
-
-  }
-
-
-  const text =
-    GAMES
-      .map(
-        (game,index)=>
-          `Jogo ${index+1}: ` +
-          game.map(pad).join(" ")
-      )
-      .join("\n");
-
-
-  if(
-    navigator.clipboard
-  ){
-
-    navigator.clipboard
-      .writeText(text)
-      .then(
-        ()=>{
-          alert(
-            "Os 6 jogos foram copiados!"
-          );
-        }
-      )
-      .catch(
-        ()=>{
-          alert(text);
-        }
-      );
-
-  }else{
-
-    alert(text);
-
-  }
-
-}
-
-
-/* ==========================================================
-   SALVAR JOGO
-   ========================================================== */
-
-function saveGame(
-  index
-){
-
-  const game =
-    GAMES[index];
-
-
-  if(!game){
-    return;
-  }
-
-
-  const bets =
-    getSavedBets();
-
-
-  const exists =
-    bets.some(
-      bet =>
-        JSON.stringify(
-          bet.numbers
-        ) ===
-        JSON.stringify(
-          game
-        )
-    );
-
-
-  if(exists){
-
-    alert(
-      "Esse jogo já está salvo."
-    );
-
-    return;
-
-  }
-
-
-  bets.push({
-
-    numbers:
-      game.slice(),
-
-    savedAt:
-      new Date().toISOString(),
-
-    hits:null,
-
-    contest:
-      DATA.latest.concurso+1
-
-  });
-
-
-  setSavedBets(
-    bets
-  );
-
-
-  renderApp(
-    DATA.latest,
-    DATA.draws
-  );
-
-
-  alert(
-    `Jogo ${index+1} salvo para o concurso ${DATA.latest.concurso+1}!`
-  );
-
-}
-
-
-/* ==========================================================
-   SALVAR TODOS
-   ========================================================== */
-
-function saveAllGames(){
-
-  if(!GAMES.length){
-
-    alert(
-      "Nenhum jogo disponível."
-    );
-
-    return;
-
-  }
-
-
-  const bets =
-    getSavedBets();
-
-
-  GAMES.forEach(
-    game=>{
-
-      const exists =
-        bets.some(
-          bet =>
-            JSON.stringify(
-              bet.numbers
-            ) ===
-            JSON.stringify(
-              game
-            )
-        );
-
-
-      if(!exists){
-
-        bets.push({
-
-          numbers:
-            game.slice(),
-
-          savedAt:
-            new Date().toISOString(),
-
-          hits:null,
-
-          contest:
-            DATA.latest.concurso+1
+            counts[n]++;
 
         });
 
-      }
+    });
+
+    const max =
+        Math.max(
+            ...counts.slice(1)
+        );
+
+    const min =
+        Math.min(
+            ...counts.slice(1)
+        );
+
+    const range =
+        Math.max(
+            1,
+            max-min
+        );
+
+    const score = {};
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        score[n] =
+            (counts[n]-min)/range;
 
     }
-  );
 
-
-  setSavedBets(
-    bets
-  );
-
-
-  renderApp(
-    DATA.latest,
-    DATA.draws
-  );
-
-
-  alert(
-    `6 jogos salvos para o concurso ${DATA.latest.concurso+1}!`
-  );
+    return {
+        score,
+        counts
+    };
 
 }
 
 
-/* ==========================================================
-   COMPARAR APOSTAS
-   ========================================================== */
+// ============================================================
+// RECÊNCIA
+// ============================================================
 
-function compareSavedBets(){
+function recencyScore(data){
 
-  if(!DATA){
-    return;
-  }
+    const score = {};
 
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
 
-  const result =
-    DATA.latest.dezenas;
-
-
-  const bets =
-    getSavedBets();
-
-
-  if(!bets.length){
-    return;
-  }
-
-
-  let changed=false;
-
-
-  bets.forEach(
-    bet=>{
-
-      /*
-        Só compara automaticamente
-        se a aposta for do concurso atual.
-      */
-
-      if(
-        bet.hits === null &&
-        bet.contest ===
-          DATA.latest.concurso
-      ){
-
-        bet.hits =
-          overlap(
-            bet.numbers,
-            result
-          );
-
-        changed=true;
-
-      }
+        score[n]=0;
 
     }
-  );
 
+    const recent =
+        data.slice(-35);
 
-  if(changed){
+    recent.forEach(
+        (draw,index)=>{
 
-    setSavedBets(
-      bets
+            const weight =
+                (index+1)/
+                recent.length;
+
+            draw.dezenas.forEach(n=>{
+
+                score[n] += weight;
+
+            });
+
+        }
     );
 
-  }
+    const max =
+        Math.max(
+            ...Object.values(score)
+        );
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        score[n] =
+            max ?
+            score[n]/max :
+            0;
+
+    }
+
+    return score;
 
 }
 
 
-/* ==========================================================
-   CAIXA
-   ========================================================== */
+// ============================================================
+// ATRASO
+// ============================================================
 
-function openCaixa(){
+function delayScore(data){
 
-  window.open(
-    "https://loterias.caixa.gov.br/",
-    "_blank"
-  );
+    const score = {};
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        let delay = 0;
+
+        for(
+            let i=data.length-1;
+            i>=0;
+            i--
+        ){
+
+            if(
+                data[i].dezenas.includes(n)
+            ){
+
+                break;
+
+            }
+
+            delay++;
+
+        }
+
+        score[n]=delay;
+
+    }
+
+    const max =
+        Math.max(
+            ...Object.values(score)
+        );
+
+    const result = {};
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        result[n] =
+            max ?
+            score[n]/max :
+            0;
+
+    }
+
+    return result;
 
 }
 
 
-/* ==========================================================
-   FETCH
-   ========================================================== */
+// ============================================================
+// CICLO
+// ============================================================
 
-async function fetchJSON(
-  url
+function cycleScore(data){
+
+    const result = {};
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        const positions=[];
+
+        for(
+            let i=0;
+            i<data.length;
+            i++
+        ){
+
+            if(
+                data[i].dezenas.includes(n)
+            ){
+
+                positions.push(i);
+
+            }
+
+        }
+
+        if(
+            positions.length<2
+        ){
+
+            result[n]=0.5;
+
+            continue;
+
+        }
+
+        const gaps=[];
+
+        for(
+            let i=1;
+            i<positions.length;
+            i++
+        ){
+
+            gaps.push(
+                positions[i]-
+                positions[i-1]
+            );
+
+        }
+
+        const avg =
+            gaps.reduce(
+                (a,b)=>a+b,
+                0
+            )/
+            gaps.length;
+
+        const currentGap =
+            data.length-1-
+            positions[
+                positions.length-1
+            ];
+
+        const distance =
+            Math.abs(
+                currentGap-avg
+            );
+
+        result[n] =
+            1/
+            (
+                1+
+                distance
+            );
+
+    }
+
+    return result;
+
+}
+
+
+// ============================================================
+// COOCORRÊNCIA
+// ============================================================
+
+function cooccurrenceScore(data){
+
+    const pair =
+        Array.from(
+            {length:26},
+            ()=>Array(26).fill(0)
+        );
+
+    data.forEach(draw=>{
+
+        const d =
+            draw.dezenas;
+
+        for(
+            let i=0;
+            i<d.length;
+            i++
+        ){
+
+            for(
+                let j=i+1;
+                j<d.length;
+                j++
+            ){
+
+                pair[d[i]][d[j]]++;
+                pair[d[j]][d[i]]++;
+
+            }
+
+        }
+
+    });
+
+    const score={};
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        const values =
+            pair[n].slice(1);
+
+        score[n] =
+            values.reduce(
+                (a,b)=>a+b,
+                0
+            );
+
+    }
+
+    const max =
+        Math.max(
+            ...Object.values(score)
+        );
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        score[n] =
+            max ?
+            score[n]/max :
+            0;
+
+    }
+
+    return score;
+
+}
+
+
+// ============================================================
+// SCORE ADAPTATIVO
+// ============================================================
+
+function calculateRanking(data){
+
+    const f =
+        frequencyScore(data);
+
+    const r =
+        recencyScore(data);
+
+    const d =
+        delayScore(data);
+
+    const c =
+        cycleScore(data);
+
+    const co =
+        cooccurrenceScore(data);
+
+    /*
+        V25.10
+
+        Pesos base:
+
+        Frequência   0.30
+        Recência     0.20
+        Atraso       0.12
+        Ciclo        0.18
+        Coocorrência 0.20
+    */
+
+    const ranking=[];
+
+    for(
+        let n=1;
+        n<=25;
+        n++
+    ){
+
+        const score =
+
+            f.score[n] * 0.30 +
+
+            r[n] * 0.20 +
+
+            d[n] * 0.12 +
+
+            c[n] * 0.18 +
+
+            co[n] * 0.20;
+
+        ranking.push({
+            n,
+            score,
+            freq:f.score[n],
+            recent:r[n],
+            delay:d[n],
+            cycle:c[n],
+            co:co[n]
+        });
+
+    }
+
+    ranking.sort(
+        (a,b)=>b.score-a.score
+    );
+
+    return ranking;
+
+}
+
+
+// ============================================================
+// NÚCLEO 15 + 5 + 5
+// ============================================================
+
+function buildNucleus(ranking){
+
+    const strong =
+        ranking
+        .slice(0,15)
+        .map(x=>x.n);
+
+    const protection =
+        ranking
+        .slice(15,20)
+        .map(x=>x.n);
+
+    const rotation =
+        ranking
+        .slice(20,25)
+        .map(x=>x.n);
+
+    return {
+        strong,
+        protection,
+        rotation
+    };
+
+}
+
+
+// ============================================================
+// CARACTERÍSTICAS DO JOGO
+// ============================================================
+
+function gameStats(game){
+
+    const even =
+        game.filter(n=>n%2===0)
+        .length;
+
+    const odd =
+        GAME_SIZE-even;
+
+    let consecutive=0;
+
+    for(
+        let i=1;
+        i<game.length;
+        i++
+    ){
+
+        if(
+            game[i] ===
+            game[i-1]+1
+        ){
+
+            consecutive++;
+
+        }
+
+    }
+
+    const bands=[
+        [1,5],
+        [6,10],
+        [11,15],
+        [16,20],
+        [21,25]
+    ];
+
+    const distribution =
+        bands.map(
+            ([a,b])=>
+                game.filter(
+                    n=>n>=a&&n<=b
+                ).length
+        );
+
+    return {
+        even,
+        odd,
+        sum:sum(game),
+        consecutive,
+        distribution
+    };
+
+}
+
+
+// ============================================================
+// DIVERSIDADE ENTRE JOGOS
+// ============================================================
+
+function overlap(a,b){
+
+    return a.filter(
+        n=>b.includes(n)
+    ).length;
+
+}
+
+
+function diversityPenalty(candidate, existing){
+
+    if(!existing.length)
+        return 0;
+
+    let total=0;
+
+    existing.forEach(g=>{
+
+        total +=
+            overlap(
+                candidate,
+                g
+            );
+
+    });
+
+    return total/
+        existing.length;
+
+}
+
+
+// ============================================================
+// CONSTRUTOR DE JOGOS
+// ============================================================
+
+function buildCandidate(
+    nucleus,
+    ranking,
+    mode
 ){
 
-  const response =
-    await fetch(
-      url +
-      (
-        url.includes("?")
-          ? "&"
-          : "?"
-      ) +
-      "t=" +
-      Date.now(),
-      {
-        cache:"no-store",
-        headers:{
-          Accept:
-            "application/json"
+    const strong =
+        [...nucleus.strong];
+
+    const protection =
+        [...nucleus.protection];
+
+    const rotation =
+        [...nucleus.rotation];
+
+    let candidate=[];
+
+
+    // --------------------------------------------------------
+    // JOGO 1 — FORÇA
+    // --------------------------------------------------------
+
+    if(mode===0){
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                11
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                2
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                2
+            )
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // JOGO 2 — PROTEÇÃO
+    // --------------------------------------------------------
+
+    else if(mode===1){
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                9
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                3
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                3
+            )
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // JOGO 3 — ROTAÇÃO
+    // --------------------------------------------------------
+
+    else if(mode===2){
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                9
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                2
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                4
+            )
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // JOGO 4 — EQUILÍBRIO
+    // --------------------------------------------------------
+
+    else if(mode===3){
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                10
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                3
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                2
+            )
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // JOGO 5 — DIVERSIDADE
+    // --------------------------------------------------------
+
+    else if(mode===4){
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                8
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                3
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                4
+            )
+        );
+
+    }
+
+
+    // --------------------------------------------------------
+    // JOGO 6 — COBERTURA
+    // --------------------------------------------------------
+
+    else{
+
+        candidate =
+            shuffle(
+                strong
+            ).slice(
+                0,
+                8
+            );
+
+        candidate.push(
+            ...shuffle(
+                protection
+            ).slice(
+                0,
+                4
+            )
+        );
+
+        candidate.push(
+            ...shuffle(
+                rotation
+            ).slice(
+                0,
+                3
+            )
+        );
+
+    }
+
+
+    candidate =
+        unique(candidate)
+        .sort(
+            (a,b)=>a-b
+        );
+
+    return candidate;
+
+}
+
+
+// ============================================================
+// AJUSTE DO JOGO
+// ============================================================
+
+function improveGame(
+    game,
+    ranking
+){
+
+    let result =
+        unique(game);
+
+    const ranked =
+        ranking.map(
+            x=>x.n
+        );
+
+    let attempts=0;
+
+    while(
+        result.length < 15 &&
+        attempts < 100
+    ){
+
+        const n =
+            ranked[
+                Math.floor(
+                    Math.random()*
+                    ranked.length
+                )
+            ];
+
+        if(
+            !result.includes(n)
+        ){
+
+            result.push(n);
+
         }
-      }
-    );
 
+        attempts++;
 
-  if(!response.ok){
+    }
 
-    throw new Error(
-      `HTTP ${response.status}`
-    );
-
-  }
-
-
-  return await response.json();
-
-}
-
-
-/* ==========================================================
-   LOAD
-   ========================================================== */
-
-async function loadData(){
-
-  $("app").innerHTML = `
-
-    <div class="loading">
-
-      🔄 Buscando concurso atual...
-
-      <br><br>
-
-      🔄 Carregando 120 concursos...
-
-    </div>
-
-  `;
-
-
-  try{
-
-    const [
-      latestRaw,
-      historyRaw
-    ] =
-      await Promise.all([
-
-        fetchJSON(
-          API_LATEST
-        ),
-
-        fetchJSON(
-          API_HISTORY
+    return result
+        .sort(
+            (a,b)=>a-b
         )
-
-      ]);
-
-
-    const latest =
-      normalizeDraw(
-        latestRaw
-      );
-
-
-    const draws =
-      (
-        historyRaw.resultados
-        || []
-      )
-      .map(
-        normalizeDraw
-      )
-      .filter(Boolean)
-      .sort(
-        (a,b)=>
-          b.concurso-a.concurso
-      );
-
-
-    if(!latest){
-
-      throw new Error(
-        "Último concurso inválido."
-      );
-
-    }
-
-
-    if(!draws.length){
-
-      throw new Error(
-        "Histórico vazio."
-      );
-
-    }
-
-
-    renderApp(
-      latest,
-      draws
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "V25.9:",
-      error
-    );
-
-
-    $("status").innerHTML = `
-
-      🔴
-
-      <span style="color:#ff747d">
-
-        Erro ao carregar backend
-
-      </span>
-
-    `;
-
-
-    $("app").innerHTML = `
-
-      <div class="error">
-
-        ❌ Não foi possível carregar
-        os dados da Lotofácil.
-
-        <br><br>
-
-        ${escapeHtml(
-          error.message
-        )}
-
-      </div>
-
-
-      <section class="card">
-
-        <button
-          class="primary"
-          style="width:100%"
-          onclick="loadData()"
-        >
-
-          🔄 Tentar novamente
-
-        </button>
-
-      </section>
-
-    `;
-
-  }
+        .slice(
+            0,
+            15
+        );
 
 }
 
 
-/* ==========================================================
-   START
-   ========================================================== */
+// ============================================================
+// SCORE DO JOGO
+// ============================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  ()=>{
-    loadData();
-  }
-);
+function gameScore(
+    game,
+    ranking
+){
+
+    let total=0;
+
+    game.forEach(n=>{
+
+        const item =
+            ranking.find(
+                x=>x.n===n
+            );
+
+        if(item)
+            total += item.score;
+
+    });
+
+    return total;
+
+}
+
+
+// ============================================================
+// GERA 6 JOGOS
+// ============================================================
+
+function generateGames(
+    nucleus,
+    ranking
+){
+
+    const result=[];
+
+    for(
+        let mode=0;
+        mode<TOTAL_GAMES;
+        mode++
+    ){
+
+        let best=null;
+
+        let bestValue=-Infinity;
+
+        for(
+            let attempt=0;
+            attempt<80;
+            attempt++
+        ){
+
+            let candidate =
+                buildCandidate(
+                    nucleus,
+                    ranking,
+                    mode
+                );
+
+            candidate =
+                improveGame(
+                    candidate,
+                    ranking
+                );
+
+            const stats =
+                gameStats(
+                    candidate
+                );
+
+            /*
+                Preferimos:
+
+                - soma dentro de faixa razoável
+                - 6 a 9 pares
+                - consecutivas moderadas
+                - baixa repetição
+                - força estatística
+            */
+
+            let value =
+                gameScore(
+                    candidate,
+                    ranking
+                );
+
+            if(
+                stats.even < 5 ||
+                stats.even > 10
+            ){
+
+                value -= 0.25;
+
+            }
+
+            if(
+                stats.sum < 175 ||
+                stats.sum > 220
+            ){
+
+                value -= 0.20;
+
+            }
+
+            if(
+                stats.consecutive > 9
+            ){
+
+                value -= 0.15;
+
+            }
+
+            value -=
+                diversityPenalty(
+                    candidate,
+                    result
+                ) * 0.07;
+
+            if(
+                value>bestValue
+            ){
+
+                bestValue=value;
+                best=candidate;
+
+            }
+
+        }
+
+        result.push(best);
+
+    }
+
+    return result;
+
+}
+
+
+// ============================================================
+// WALK-FORWARD
+// ============================================================
+
+function walkForward(data){
+
+    const tests = [];
+
+    const start =
+        Math.max(
+            35,
+            data.length-60
+        );
+
+    for(
+        let i=start;
+        i<data.length;
+        i++
+    ){
+
+        const training =
+            data.slice(
+                0,
+                i
+            );
+
+        const actual =
+            data[i].dezenas;
+
+        if(
+            training.length<30
+        ){
+
+            continue;
+
+        }
+
+        const ranking =
+            calculateRanking(
+                training
+            );
+
+        const nucleus =
+            buildNucleus(
+                ranking
+            );
+
+        const generated =
+            generateGames(
+                nucleus,
+                ranking
+            );
+
+        let best=0;
+
+        generated.forEach(game=>{
+
+            const hits =
+                overlap(
+                    game,
+                    actual
+                );
+
+            best =
+                Math.max(
+                    best,
+                    hits
+                );
+
+        });
+
+        tests.push({
+            concurso:
+                data[i].concurso,
+
+            best
+        });
+
+    }
+
+    if(!tests.length){
+
+        return {
+            tests:0,
+            model:0,
+            baseline:0,
+            advantage:0
+        };
+
+    }
+
+    const model =
+        tests.reduce(
+            (a,b)=>a+b.best,
+            0
+        )/
+        tests.length;
+
+    /*
+        Baseline:
+
+        jogo simples formado
+        pelas 15 dezenas mais
+        frequentes no treinamento.
+    */
+
+    const baselineResults=[];
+
+    for(
+        let i=start;
+        i<data.length;
+        i++
+    ){
+
+        const training =
+            data.slice(
+                0,
+                i
+            );
+
+        const actual =
+            data[i].dezenas;
+
+        const freq =
+            frequencyScore(
+                training
+            );
+
+        const base =
+            Array.from(
+                {length:25},
+                (_,j)=>j+1
+            )
+            .sort(
+                (a,b)=>
+                    freq.counts[b]-
+                    freq.counts[a]
+            )
+            .slice(
+                0,
+                15
+            );
+
+        baselineResults.push(
+            overlap(
+                base,
+                actual
+            )
+        );
+
+    }
+
+    const baseline =
+        baselineResults.reduce(
+            (a,b)=>a+b,
+            0
+        )/
+        baselineResults.length;
+
+    return {
+        tests:tests.length,
+        model,
+        baseline,
+        advantage:
+            model-baseline
+    };
+
+}
+
+
+// ============================================================
+// COBERTURA
+// ============================================================
+
+function coverage(games){
+
+    const all =
+        unique(
+            games.flat()
+        );
+
+    return {
+        unique:all.length,
+        percent:
+            Math.round(
+                all.length/
+                25*100
+            )
+    };
+
+}
+
+
+// ============================================================
+// REPETIÇÃO
+// ============================================================
+
+function repetition(games){
+
+    const values=[];
+
+    for(
+        let i=0;
+        i<games.length;
+        i++
+    ){
+
+        for(
+            let j=i+1;
+            j<games.length;
+            j++
+        ){
+
+            values.push(
+                overlap(
+                    games[i],
+                    games[j]
+                )
+            );
+
+        }
+
+    }
+
+    if(!values.length)
+        return 0;
+
+    return (
+        values.reduce(
+            (a,b)=>a+b,
+            0
+        )/
+        values.length
+    );
+
+}
+
+
+// ============================================================
+// DIVERSIDADE
+// ============================================================
+
+function diversity(games){
+
+    const rep =
+        repetition(games);
+
+    return Math.max(
+        0,
+        Math.min(
+            10,
+            15-rep
+        )
+    );
+
+}
+
+
+// ============================================================
+// RENDER NÚCLEO
+// ============================================================
+
+function renderBalls(
+    numbers,
+    type=""
+){
+
+    return numbers
+        .map(
+            n=>
+                `<span class="ball ${type}">
+                    ${pad(n)}
+                </span>`
+        )
+        .join("");
+
+}
+
+
+// ============================================================
+// RENDER JOGO
+// ============================================================
+
+function renderGame(
+    game,
+    index,
+    ranking
+){
+
+    const stats =
+        gameStats(
+            game
+        );
+
+    const score =
+        gameScore(
+            game,
+            ranking
+        );
+
+    const lastHits =
+        latest ?
+        overlap(
+            game,
+            latest.dezenas
+        ):
+        0;
+
+    return `
+
+        <div class="game">
+
+            <div class="game-head">
+
+                <div class="game-title">
+                    Jogo ${index+1}
+                </div>
+
+                <div class="score">
+                    Score ${score.toFixed(2)}
+                </div>
+
+            </div>
+
+            <div class="numbers">
+
+                ${renderBalls(game)}
+
+            </div>
+
+            <div class="stats">
+
+                Pares:
+                ${stats.even}
+                • Ímpares:
+                ${stats.odd}
+                • Soma:
+                ${stats.sum}
+                • Consecutivas:
+                ${stats.consecutive}
+
+            </div>
+
+            <div class="stats hit">
+
+                🎯 Acertos no último resultado:
+                ${lastHits}
+
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    class="btn-blue"
+                    onclick="copyGame(${index})"
+                >
+                    📋 Copiar
+                </button>
+
+                <button
+                    class="btn-green"
+                    onclick="saveGame(${index})"
+                >
+                    💾 Salvar aposta
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+// ============================================================
+// LOCAL STORAGE
+// ============================================================
+
+function getSaved(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                "lotofacil_v25_10"
+            )
+        ) || [];
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+
+function saveSaved(data){
+
+    localStorage.setItem(
+        "lotofacil_v25_10",
+        JSON.stringify(data)
+    );
+
+}
+
+
+function saveGame(index){
+
+    if(!games[index])
+        return;
+
+    const saved =
+        getSaved();
+
+    saved.push({
+
+        versao:VERSION,
+
+        concurso:
+            latest.concurso+1,
+
+        jogo:index+1,
+
+        dezenas:games[index],
+
+        salvoEm:
+            new Date().toISOString()
+
+    });
+
+    saveSaved(saved);
+
+    alert(
+        `Jogo ${index+1} salvo para o concurso ${latest.concurso+1}.`
+    );
+
+}
+
+
+function saveAll(){
+
+    const saved =
+        getSaved();
+
+    games.forEach(
+        (game,index)=>{
+
+            saved.push({
+
+                versao:VERSION,
+
+                concurso:
+                    latest.concurso+1,
+
+                jogo:index+1,
+
+                dezenas:game,
+
+                salvoEm:
+                    new Date().toISOString()
+
+            });
+
+        }
+    );
+
+    saveSaved(saved);
+
+    alert(
+        "Os 6 jogos foram salvos."
+    );
+
+}
+
+
+function copyGame(index){
+
+    if(!games[index])
+        return;
+
+    const text =
+        games[index]
+        .map(pad)
+        .join(" ");
+
+    navigator.clipboard
+        .writeText(text)
+        .then(
+            ()=>{
+                alert(
+                    `Jogo ${index+1} copiado.`
+                );
+            }
+        );
+
+}
+
+
+// ============================================================
+// RESULTADO OFICIAL
+// ============================================================
+
+function openOfficial(){
+
+    const contest =
+        latest.concurso+1;
+
+    window.open(
+        `https://loterias.caixa.gov.br/wps/portal/loterias/landing/lotofacil`,
+        "_blank"
+    );
+
+}
+
+
+// ============================================================
+// RENDER PRINCIPAL
+// ============================================================
+
+function render(){
+
+    const ranking =
+        calculateRanking(
+            history
+        );
+
+    nucleus =
+        buildNucleus(
+            ranking
+        );
+
+    games =
+        generateGames(
+            nucleus,
+            ranking
+        );
+
+    const wf =
+        walkForward(
+            history
+        );
+
+    const cov =
+        coverage(
+            games
+        );
+
+    const rep =
+        repetition(
+            games
+        );
+
+    const div =
+        diversity(
+            games
+        );
+
+    const target =
+        latest.concurso+1;
+
+    const confidence =
+        wf.advantage > 0.25
+            ? "Boa"
+            : wf.advantage > 0
+                ? "Moderada"
+                : "Baixa";
+
+
+    document.getElementById(
+        "app"
+    ).innerHTML = `
+
+        <h1>
+            🎯 Lotofácil Monitor
+        </h1>
+
+        <div class="subtitle">
+
+            Intelligence Engine • Walk-forward •
+            Estabilidade • Baseline • Validação limpa
+
+        </div>
+
+        <div class="version">
+            ${VERSION}
+        </div>
+
+
+        <div class="status">
+
+            🟢
+            <span class="online">
+                ${VERSION} online
+            </span>
+
+            • Concurso ${latest.concurso}
+            • ${history.length}
+              concursos analisados
+
+        </div>
+
+
+        <div class="grid">
+
+            <div class="card">
+
+                <div class="label">
+                    Último concurso
+                </div>
+
+                <div class="big">
+                    ${latest.concurso}
+                </div>
+
+                <div class="muted">
+                    ${latest.data || ""}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="label">
+                    Histórico
+                </div>
+
+                <div class="big">
+                    ${history.length}
+                </div>
+
+                <div class="muted">
+                    concursos analisados
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="label">
+                    Estrutura
+                </div>
+
+                <div class="big">
+                    15+5+5
+                </div>
+
+                <div class="muted">
+                    fortes • proteção • rotação
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="label">
+                    Confiança
+                </div>
+
+                <div class="big">
+                    ${confidence}
+                </div>
+
+                <div class="muted">
+                    baseada no walk-forward
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULTADO -->
+
+        <div class="card">
+
+            <div class="section-title">
+                🎲 Último resultado
+            </div>
+
+            <div class="numbers">
+
+                ${renderBalls(
+                    latest.dezenas
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- NÚCLEO -->
+
+        <div class="card">
+
+            <div class="section-title">
+                🧠 Estrutura adaptativa ${VERSION}
+            </div>
+
+            <div class="muted">
+
+                O modelo separa as 25 dezenas em
+                três camadas e mantém o concurso-alvo
+                fora da validação.
+
+            </div>
+
+
+            <div class="layer">
+
+                <h3>
+                    🔵 15 dezenas fortes
+                </h3>
+
+                <div class="muted">
+                    Maior score combinado do modelo.
+                </div>
+
+                <div class="numbers">
+
+                    ${renderBalls(
+                        nucleus.strong,
+                        "strong"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="layer">
+
+                <h3>
+                    🟣 5 dezenas de proteção
+                </h3>
+
+                <div class="muted">
+                    Fora do núcleo principal,
+                    mas com sinais estatísticos relevantes.
+                </div>
+
+                <div class="numbers">
+
+                    ${renderBalls(
+                        nucleus.protection,
+                        "protection"
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="layer">
+
+                <h3>
+                    🟡 5 dezenas de rotação
+                </h3>
+
+                <div class="muted">
+                    Utilizadas para ampliar a cobertura
+                    e reduzir jogos idênticos.
+                </div>
+
+                <div class="numbers">
+
+                    ${renderBalls(
+                        nucleus.rotation,
+                        "rotation"
+                    )}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WALK FORWARD -->
+
+        <div class="card">
+
+            <div class="section-title">
+                📈 Walk-forward V25.10
+            </div>
+
+            <div class="muted">
+
+                Testes cronológicos.
+                Cada concurso é avaliado somente
+                utilizando informações disponíveis
+                antes dele.
+
+            </div>
+
+            <div class="cover-grid">
+
+                <div class="metric">
+
+                    <div class="label">
+                        Testes
+                    </div>
+
+                    <div class="value">
+                        ${wf.tests}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Modelo
+                    </div>
+
+                    <div class="value">
+                        ${wf.model.toFixed(2)}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Baseline
+                    </div>
+
+                    <div class="value">
+                        ${wf.baseline.toFixed(2)}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Vantagem
+                    </div>
+
+                    <div class="value ${
+                        wf.advantage>=0
+                        ? "positive"
+                        : "negative"
+                    }">
+
+                        ${
+                            wf.advantage>=0
+                            ? "+"
+                            : ""
+                        }${wf.advantage.toFixed(2)}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SINAIS -->
+
+        <div class="card">
+
+            <div class="section-title">
+                📊 Sinais do modelo
+            </div>
+
+            ${renderSignal(
+                ranking
+            )}
+
+        </div>
+
+
+        <!-- JOGOS -->
+
+        <div class="card">
+
+            <div class="section-title">
+                🎯 Jogos ${VERSION}
+            </div>
+
+            <div class="muted">
+
+                Seis jogos construídos com
+                diferentes combinações de força,
+                proteção e rotação.
+
+            </div>
+
+            ${games
+                .map(
+                    (g,i)=>
+                        renderGame(
+                            g,
+                            i,
+                            ranking
+                        )
+                )
+                .join("")}
+
+        </div>
+
+
+        <!-- COBERTURA -->
+
+        <div class="card">
+
+            <div class="section-title">
+                🧩 Cobertura dos 6 jogos
+            </div>
+
+            <div class="cover-grid">
+
+                <div class="metric">
+
+                    <div class="label">
+                        Dezenas únicas
+                    </div>
+
+                    <div class="value">
+                        ${cov.unique}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Cobertura
+                    </div>
+
+                    <div class="value">
+                        ${cov.percent}%
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Repetição média
+                    </div>
+
+                    <div class="value">
+                        ${rep.toFixed(2)}
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="label">
+                        Diversidade
+                    </div>
+
+                    <div class="value">
+                        ${div.toFixed(2)}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CENTRAL DE APOSTAS -->
+
+        <div class="card bet-center">
+
+            <div class="section-title">
+                💰 Central de Apostas
+            </div>
+
+            <div class="muted">
+
+                Registre os jogos da V25.10
+                para acompanhar o próximo concurso.
+                Os dados ficam armazenados neste dispositivo.
+
+            </div>
+
+            <div class="target">
+
+                🎯 Concurso-alvo: ${target}
+
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    class="btn-blue"
+                    onclick="saveAll()"
+                >
+                    💾 Salvar os 6 jogos
+                </button>
+
+                <button
+                    class="btn-dark"
+                    onclick="copyAll()"
+                >
+                    📋 Copiar todos
+                </button>
+
+                <button
+                    class="btn-dark"
+                    onclick="openOfficial()"
+                >
+                    🏦 Resultado oficial
+                </button>
+
+            </div>
+
+            <p class="small">
+
+                Os jogos registrados são independentes
+                do resultado oficial.
+
+            </p>
+
+        </div>
+
+
+        <!-- AVISO -->
+
+        <div class="card warning">
+
+            <div class="section-title">
+                ⚠️ Validação
+            </div>
+
+            <div class="muted">
+
+                O modelo não prevê matematicamente
+                o resultado da Lotofácil.
+                Os indicadores servem para organizar
+                estatísticas históricas e diversificar
+                as combinações.
+
+                <br><br>
+
+                O principal teste da ${VERSION}
+                será comparar os jogos registrados
+                com o concurso ${target} depois que
+                o resultado oficial estiver disponível.
+
+            </div>
+
+        </div>
+
+
+        <div class="small">
+
+            Lotofácil Monitor ${VERSION}<br>
+            Engine estatística experimental
+
+        </div>
+
+    `;
+
+}
+
+
+// ============================================================
+// SINAIS
+// ============================================================
+
+function renderSignal(
+    ranking
+){
+
+    const top =
+        ranking.slice(
+            0,
+            10
+        );
+
+    return `
+
+        <div class="layer">
+
+            ${top.map(
+                (item,index)=>
+                `
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    padding:11px 0;
+                    border-bottom:1px solid #193653;
+                ">
+
+                    <strong>
+                        ${index+1}.
+                        ${pad(item.n)}
+                    </strong>
+
+                    <span>
+
+                        Score:
+                        ${item.score.toFixed(3)}
+
+                    </span>
+
+                </div>
+
+                `
+            ).join("")}
+
+        </div>
+
+    `;
+
+}
+
+
+// ============================================================
+// COPIAR TODOS
+// ============================================================
+
+function copyAll(){
+
+    const text =
+        games
+        .map(
+            (g,i)=>
+                `Jogo ${i+1}: `+
+                g.map(pad).join(" ")
+        )
+        .join("\n");
+
+    navigator.clipboard
+        .writeText(text)
+        .then(
+            ()=>{
+                alert(
+                    "Os 6 jogos foram copiados."
+                );
+            }
+        );
+
+}
+
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+
+async function load(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/lotofacil/history?limit=120"
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Falha ao carregar histórico."
+            );
+
+        }
+
+        const payload =
+            await response.json();
+
+        history =
+            payload.data || [];
+
+        if(
+            !history.length
+        ){
+
+            throw new Error(
+                "Histórico vazio."
+            );
+
+        }
+
+        history.sort(
+            (a,b)=>
+                a.concurso-
+                b.concurso
+        );
+
+        latest =
+            history[
+                history.length-1
+            ];
+
+        render();
+
+    }catch(error){
+
+        document.getElementById(
+            "app"
+        ).innerHTML = `
+
+            <div class="card">
+
+                <div class="section-title">
+                    ❌ Erro
+                </div>
+
+                <div class="muted">
+
+                    Não foi possível carregar
+                    os resultados da Lotofácil.
+
+                    <br><br>
+
+                    ${error.message}
+
+                </div>
+
+                <div class="buttons">
+
+                    <button
+                        class="btn-blue"
+                        onclick="location.reload()"
+                    >
+                        🔄 Tentar novamente
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+load();
 
 </script>
 
 </body>
+
 </html>
