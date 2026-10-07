@@ -1,58 +1,41 @@
 import os
 import json
 import time
-import ssl
 import urllib.request
 import urllib.error
-from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 
 
 # ============================================================
-# LOTOFÁCIL MONITOR V25.5
-# Backend FastAPI
+# LOTOFÁCIL MONITOR — BACKEND V25.6
 # ============================================================
 
-APP_NAME = "Lotofácil Monitor"
-VERSION = "V25.5"
+APP_VERSION = "V25.6"
 
-# Endpoints conhecidos da API do Portal de Loterias CAIXA.
-# Tentamos mais de um host porque o acesso pode variar.
-CAIXA_HOSTS = [
-    "https://servicebus2.caixa.gov.br",
-    "https://servicebus3.caixa.gov.br",
-]
+# API oficial/interna da CAIXA
+CAIXA_API = "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil"
 
-CAIXA_PATH = "/portaldeloterias/api/lotofacil"
+# API alternativa utilizada como fallback
+FALLBACK_API = "https://loteriascaixa-api.herokuapp.com/api/lotofacil"
 
-# Endpoint alternativo que pode retornar os últimos resultados
-CAIXA_HOME_PATH = "/portaldeloterias/api/home/ultimos-resultados"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-# Cache em memória
-CACHE = {
-    "latest": None,
-    "latest_time": 0,
-    "contests": {},
-}
-
-LATEST_CACHE_TTL = 60
-CONTEST_CACHE_TTL = 86400
-
-
-# ============================================================
-# FASTAPI
-# ============================================================
 
 app = FastAPI(
-    title=APP_NAME,
-    version=VERSION,
-    description="Backend do Lotofácil Monitor V25.5",
+    title="Lotofácil Monitor",
+    version=APP_VERSION,
+    description="Backend do Lotofácil Monitor"
 )
 
+
+# ============================================================
+# CORS
+# ============================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -64,428 +47,303 @@ app.add_middleware(
 
 
 # ============================================================
-# HEADERS
+# CACHE
 # ============================================================
 
-def build_headers(host):
+latest_cache = {
+    "data": None,
+    "timestamp": 0
+}
+
+history_cache = {}
+
+CACHE_LATEST_SECONDS = 60
+CACHE_HISTORY_SECONDS = 60 * 60 * 6
+
+
+# ============================================================
+# HTTP
+# ============================================================
+
+USER_AGENT = (
+    "Mozilla/5.0 (Linux; Android 10; K) "
+    "AppleWebKit/537.36 "
+    "(KHTML, like Gecko) "
+    "Chrome/120.0 Mobile Safari/537.36"
+)
+
+
+def request_json(url, timeout=5):
     """
-    Headers semelhantes aos utilizados por navegadores
-    ao acessar os serviços da CAIXA.
+    Faz uma requisição rápida.
+    Nunca deixa o backend preso por muito tempo.
     """
 
-    return {
-        "User-Agent": (
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
-            "AppleWebKit/605.1.15 "
-            "(KHTML, like Gecko) "
-            "Version/17.0 Mobile/15E148 Safari/604.1"
-        ),
-        "Accept": (
-            "application/json, text/plain, */*"
-        ),
-        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
-        "Connection": "keep-alive",
-        "Referer": "https://loterias.caixa.gov.br/",
-        "Origin": "https://loterias.caixa.gov.br",
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/json,text/plain,*/*",
+        "Connection": "close",
     }
 
-
-# ============================================================
-# SSL
-# ============================================================
-
-def get_ssl_context():
-    """
-    Utiliza o contexto SSL padrão do sistema.
-    """
-
-    return ssl.create_default_context()
-
-
-# ============================================================
-# REQUISIÇÃO CAIXA
-# ============================================================
-
-def caixa_request(path, timeout=20):
-    """
-    Tenta consultar os hosts da CAIXA.
-    Retorna JSON quando conseguir.
-    """
-
-    last_error = None
-
-    for host in CAIXA_HOSTS:
-
-        url = host + path
-
-        for tentativa in range(1, 4):
-
-            try:
-                headers = build_headers(host)
-
-                request = urllib.request.Request(
-                    url,
-                    headers=headers,
-                    method="GET",
-                )
-
-                context = get_ssl_context()
-
-                with urllib.request.urlopen(
-                    request,
-                    timeout=timeout,
-                    context=context,
-                ) as response:
-
-                    status = response.getcode()
-                    body = response.read().decode("utf-8", errors="replace")
-
-                    if status != 200:
-                        raise RuntimeError(
-                            f"HTTP {status}"
-                        )
-
-                    data = json.loads(body)
-
-                    return data
-
-            except urllib.error.HTTPError as e:
-
-                last_error = f"HTTP {e.code}"
-
-                # 403/429 podem ser bloqueio temporário.
-                if e.code in (403, 429):
-                    time.sleep(1.5 * tentativa)
-                    continue
-
-                # Outros erros HTTP
-                break
-
-            except Exception as e:
-
-                last_error = str(e)
-
-                time.sleep(0.8 * tentativa)
-
-        # tenta o próximo host
-
-    raise RuntimeError(
-        f"Não foi possível consultar a CAIXA: {last_error}"
+    request = urllib.request.Request(
+        url,
+        headers=headers,
+        method="GET"
     )
 
+    start = time.time()
 
-# ============================================================
-# NORMALIZAÇÃO DAS DEZENAS
-# ============================================================
+    try:
 
-def normalize_numbers(value):
-    """
-    Converte listas como:
-    ["01","02","03"]
-    ou
-    [1,2,3]
-    para:
-    [1,2,3]
-    """
+        with urllib.request.urlopen(
+            request,
+            timeout=timeout
+        ) as response:
 
-    if not isinstance(value, list):
-        return []
+            status = response.status
+            body = response.read().decode("utf-8")
 
-    result = []
+            elapsed = round(time.time() - start, 2)
 
-    for item in value:
+            if status != 200:
+                raise RuntimeError(
+                    f"HTTP {status}"
+                )
 
-        try:
+            data = json.loads(body)
 
-            if isinstance(item, str):
-                item = item.strip()
+            return data, elapsed
 
-                if not item:
-                    continue
+    except Exception as e:
 
-            number = int(item)
-
-            if 1 <= number <= 25:
-                result.append(number)
-
-        except Exception:
-            continue
-
-    return sorted(set(result))
-
-
-# ============================================================
-# EXTRAÇÃO DAS DEZENAS
-# ============================================================
-
-def extract_numbers(data):
-    """
-    Tenta encontrar as dezenas em diferentes formatos
-    usados pelos retornos da CAIXA.
-    """
-
-    possible_fields = [
-        "listaDezenas",
-        "dezenas",
-        "dezenasSorteadas",
-        "dezenasSorteadasOrdemSorteio",
-    ]
-
-    if isinstance(data, dict):
-
-        for field in possible_fields:
-
-            if field in data:
-
-                numbers = normalize_numbers(data[field])
-
-                if len(numbers) >= 15:
-                    return numbers[:15]
-
-    return []
-
-
-# ============================================================
-# NORMALIZAÇÃO DO CONCURSO
-# ============================================================
-
-def extract_contest_number(data):
-
-    if not isinstance(data, dict):
-        return None
-
-    possible_fields = [
-        "numero",
-        "concurso",
-        "numeroConcurso",
-    ]
-
-    for field in possible_fields:
-
-        value = data.get(field)
-
-        if value is not None:
-
-            try:
-                return int(value)
-            except Exception:
-                pass
-
-    return None
-
-
-# ============================================================
-# DATA
-# ============================================================
-
-def extract_date(data):
-
-    if not isinstance(data, dict):
-        return None
-
-    possible_fields = [
-        "dataApuracao",
-        "data",
-        "dataSorteio",
-    ]
-
-    for field in possible_fields:
-
-        value = data.get(field)
-
-        if value:
-            return value
-
-    return None
-
-
-# ============================================================
-# NORMALIZA OBJETO
-# ============================================================
-
-def normalize_contest(data):
-
-    if not isinstance(data, dict):
-        raise RuntimeError("Resposta da CAIXA não é um objeto JSON.")
-
-    contest = extract_contest_number(data)
-    numbers = extract_numbers(data)
-    date = extract_date(data)
-
-    if contest is None:
         raise RuntimeError(
-            "Não foi possível identificar o número do concurso."
+            f"{type(e).__name__}: {str(e)}"
         )
 
-    if len(numbers) < 15:
-        raise RuntimeError(
-            "Não foi possível identificar as 15 dezenas."
+
+# ============================================================
+# NORMALIZAÇÃO
+# ============================================================
+
+def normalize_result(raw):
+    """
+    Converte diferentes formatos de APIs
+    para um formato único utilizado pelo frontend.
+    """
+
+    if not isinstance(raw, dict):
+        raise ValueError("Resposta inválida da API")
+
+    concurso = (
+        raw.get("concurso")
+        or raw.get("numero")
+        or raw.get("numeroConcurso")
+    )
+
+    data = (
+        raw.get("data")
+        or raw.get("dataApuracao")
+        or raw.get("date")
+    )
+
+    dezenas = (
+        raw.get("listaDezenas")
+        or raw.get("dezenas")
+        or raw.get("resultado")
+        or raw.get("dezenasSorteadas")
+        or raw.get("dezenasSorteadasOrdemSorteio")
+    )
+
+    # Alguns retornos podem vir como string
+    if isinstance(dezenas, str):
+
+        dezenas = (
+            dezenas
+            .replace("[", "")
+            .replace("]", "")
+            .replace('"', "")
+            .replace("'", "")
+            .split(",")
+        )
+
+    if not isinstance(dezenas, list):
+        dezenas = []
+
+    dezenas_normalizadas = []
+
+    for numero in dezenas:
+
+        try:
+            numero = int(str(numero).strip())
+
+            if 1 <= numero <= 25:
+                dezenas_normalizadas.append(numero)
+
+        except Exception:
+            pass
+
+    # Remove duplicados e ordena
+    dezenas_normalizadas = sorted(
+        list(set(dezenas_normalizadas))
+    )
+
+    if not concurso:
+        raise ValueError("Concurso não encontrado")
+
+    if len(dezenas_normalizadas) < 15:
+        raise ValueError(
+            f"Resultado incompleto: {len(dezenas_normalizadas)} dezenas"
         )
 
     return {
-        "concurso": contest,
-        "numero": contest,
-        "data": date,
-        "dataApuracao": date,
-        "dezenas": numbers,
-        "listaDezenas": [
-            f"{n:02d}" for n in numbers
+        "concurso": int(concurso),
+        "numero": int(concurso),
+        "data": data,
+        "dataApuracao": data,
+        "dezenas": [
+            f"{n:02d}" for n in dezenas_normalizadas
         ],
-        "resultado": numbers,
-        "dezenasSorteadas": numbers,
-        "dezenasSorteadasOrdemSorteio": numbers,
+        "listaDezenas": [
+            f"{n:02d}" for n in dezenas_normalizadas
+        ],
+        "resultado": [
+            f"{n:02d}" for n in dezenas_normalizadas
+        ],
+        "dezenasSorteadas": [
+            f"{n:02d}" for n in dezenas_normalizadas
+        ],
     }
 
 
 # ============================================================
-# CONSULTAR CONCURSO ESPECÍFICO
+# BUSCA DO ÚLTIMO RESULTADO
 # ============================================================
 
-def get_contest(contest_number):
+def fetch_latest():
+    """
+    Busca o concurso mais recente.
 
-    contest_number = int(contest_number)
+    Prioridade:
+    1. API alternativa rápida
+    2. API oficial CAIXA
+    """
 
-    now = time.time()
-
-    cached = CACHE["contests"].get(contest_number)
-
-    if cached:
-
-        timestamp = cached.get("_timestamp", 0)
-
-        if now - timestamp < CONTEST_CACHE_TTL:
-
-            result = dict(cached)
-            result.pop("_timestamp", None)
-
-            return result
-
-    path = f"{CAIXA_PATH}/{contest_number}"
-
-    raw = caixa_request(path)
-
-    normalized = normalize_contest(raw)
-
-    normalized["_timestamp"] = now
-
-    CACHE["contests"][contest_number] = normalized
-
-    result = dict(normalized)
-    result.pop("_timestamp", None)
-
-    return result
-
-
-# ============================================================
-# CONSULTAR ÚLTIMO CONCURSO
-# ============================================================
-
-def get_latest():
-
-    now = time.time()
-
-    if CACHE["latest"]:
-
-        if now - CACHE["latest_time"] < LATEST_CACHE_TTL:
-
-            return CACHE["latest"]
+    errors = []
 
     # --------------------------------------------------------
-    # PRIMEIRA TENTATIVA
+    # 1 — FALLBACK
     # --------------------------------------------------------
 
     try:
 
-        raw = caixa_request(CAIXA_PATH)
+        raw, elapsed = request_json(
+            FALLBACK_API + "/latest",
+            timeout=5
+        )
 
-        normalized = normalize_contest(raw)
+        result = normalize_result(raw)
 
-        CACHE["latest"] = normalized
-        CACHE["latest_time"] = now
+        result["_source"] = "fallback"
+        result["_response_time"] = elapsed
 
-        CACHE["contests"][normalized["concurso"]] = {
-            **normalized,
-            "_timestamp": now,
-        }
+        return result
 
-        return normalized
+    except Exception as e:
 
-    except Exception as first_error:
+        errors.append(
+            f"fallback: {str(e)}"
+        )
 
-        # ----------------------------------------------------
-        # SEGUNDA TENTATIVA:
-        # endpoint de últimos resultados
-        # ----------------------------------------------------
+    # --------------------------------------------------------
+    # 2 — CAIXA
+    # --------------------------------------------------------
+
+    try:
+
+        raw, elapsed = request_json(
+            CAIXA_API,
+            timeout=4
+        )
+
+        result = normalize_result(raw)
+
+        result["_source"] = "caixa"
+        result["_response_time"] = elapsed
+
+        return result
+
+    except Exception as e:
+
+        errors.append(
+            f"caixa: {str(e)}"
+        )
+
+    raise RuntimeError(
+        "Nenhuma fonte respondeu. "
+        + " | ".join(errors)
+    )
+
+
+# ============================================================
+# BUSCA DE CONCURSO ESPECÍFICO
+# ============================================================
+
+def fetch_contest(contest):
+    """
+    Busca um concurso específico.
+
+    O fallback vem primeiro para evitar
+    que o Render fique esperando a CAIXA.
+    """
+
+    errors = []
+
+    urls = [
+        (
+            "fallback",
+            f"{FALLBACK_API}/{contest}",
+            5
+        ),
+        (
+            "caixa",
+            f"{CAIXA_API}/{contest}",
+            4
+        )
+    ]
+
+    for source, url, timeout in urls:
 
         try:
 
-            raw_home = caixa_request(
-                CAIXA_HOME_PATH
+            raw, elapsed = request_json(
+                url,
+                timeout=timeout
             )
 
-            # Alguns retornos trazem a Lotofácil dentro
-            # de uma chave chamada "lotofacil".
+            result = normalize_result(raw)
 
-            if isinstance(raw_home, dict):
+            # Garante que o resultado corresponde
+            # ao concurso solicitado.
+            if result["concurso"] != int(contest):
+                raise ValueError(
+                    "Concurso retornado diferente do solicitado"
+                )
 
-                candidate = raw_home.get("lotofacil")
+            result["_source"] = source
+            result["_response_time"] = elapsed
 
-                if candidate:
+            return result
 
-                    normalized = normalize_contest(
-                        candidate
-                    )
+        except Exception as e:
 
-                    CACHE["latest"] = normalized
-                    CACHE["latest_time"] = now
-
-                    CACHE["contests"][
-                        normalized["concurso"]
-                    ] = {
-                        **normalized,
-                        "_timestamp": now,
-                    }
-
-                    return normalized
-
-            raise RuntimeError(
-                "Formato alternativo da CAIXA não reconhecido."
+            errors.append(
+                f"{source}: {str(e)}"
             )
 
-        except Exception as second_error:
-
-            raise RuntimeError(
-                "Não foi possível consultar a CAIXA. "
-                f"Tentativa principal: {first_error}. "
-                f"Tentativa alternativa: {second_error}."
-            )
-
-
-# ============================================================
-# HOME
-# ============================================================
-
-@app.get("/")
-def root():
-
-    possible_files = [
-        "static/index.html",
-        "index.html",
-    ]
-
-    for file_path in possible_files:
-
-        if os.path.exists(file_path):
-
-            return FileResponse(file_path)
-
-    return {
-        "status": "online",
-        "app": APP_NAME,
-        "version": VERSION,
-    }
+    raise RuntimeError(
+        f"Concurso {contest} indisponível. "
+        + " | ".join(errors)
+    )
 
 
 # ============================================================
@@ -497,29 +355,29 @@ def health():
 
     return {
         "status": "online",
-        "app": APP_NAME,
-        "version": VERSION,
-        "time": datetime.utcnow().isoformat() + "Z",
+        "app": "Lotofácil Monitor",
+        "version": APP_VERSION,
+        "backend": "FastAPI",
+        "message": "Backend funcionando"
     }
 
 
 # ============================================================
-# INFO
+# STATUS
 # ============================================================
 
-@app.get("/api")
-def api_info():
+@app.get("/api/status")
+def api_status():
 
     return {
         "status": "online",
-        "app": APP_NAME,
-        "version": VERSION,
-        "endpoints": [
-            "/health",
-            "/api/lotofacil/latest",
-            "/api/lotofacil/{concurso}",
-            "/api/lotofacil/history",
-        ],
+        "version": APP_VERSION,
+        "sources": {
+            "fallback": FALLBACK_API,
+            "caixa": CAIXA_API
+        },
+        "cache_latest": bool(latest_cache["data"]),
+        "cache_history": len(history_cache)
     }
 
 
@@ -528,17 +386,33 @@ def api_info():
 # ============================================================
 
 @app.get("/api/lotofacil/latest")
-def latest_lotofacil():
+def latest():
+
+    now = time.time()
+
+    # Cache
+    if (
+        latest_cache["data"] is not None
+        and now - latest_cache["timestamp"]
+        < CACHE_LATEST_SECONDS
+    ):
+
+        return latest_cache["data"]
 
     try:
 
-        return get_latest()
+        result = fetch_latest()
+
+        latest_cache["data"] = result
+        latest_cache["timestamp"] = now
+
+        return result
 
     except Exception as e:
 
         raise HTTPException(
             status_code=502,
-            detail=str(e),
+            detail=f"Não foi possível consultar resultados: {str(e)}"
         )
 
 
@@ -547,24 +421,40 @@ def latest_lotofacil():
 # ============================================================
 
 @app.get("/api/lotofacil/{concurso}")
-def specific_contest(concurso: int):
+def contest(concurso: int):
 
     if concurso <= 0:
-
         raise HTTPException(
             status_code=400,
-            detail="Número de concurso inválido.",
+            detail="Número de concurso inválido"
         )
+
+    # Cache
+    cached = history_cache.get(concurso)
+
+    if cached:
+
+        age = time.time() - cached["timestamp"]
+
+        if age < CACHE_HISTORY_SECONDS:
+            return cached["data"]
 
     try:
 
-        return get_contest(concurso)
+        result = fetch_contest(concurso)
+
+        history_cache[concurso] = {
+            "data": result,
+            "timestamp": time.time()
+        }
+
+        return result
 
     except Exception as e:
 
         raise HTTPException(
             status_code=502,
-            detail=str(e),
+            detail=str(e)
         )
 
 
@@ -576,82 +466,206 @@ def specific_contest(concurso: int):
 def history(
     limit: int = Query(
         120,
-        ge=1,
-        le=120,
+        ge=10,
+        le=120
     )
 ):
 
+    # --------------------------------------------------------
+    # Descobre o concurso atual
+    # --------------------------------------------------------
+
     try:
 
-        latest_data = get_latest()
-
-        latest_number = latest_data["concurso"]
-
-        start_number = max(
-            1,
-            latest_number - limit + 1
-        )
-
-        contest_numbers = list(
-            range(
-                start_number,
-                latest_number + 1
-            )
-        )
-
-        results = []
-
-        # ----------------------------------------------------
-        # Para evitar sobrecarregar a CAIXA,
-        # usamos poucos workers.
-        # ----------------------------------------------------
-
-        with ThreadPoolExecutor(
-            max_workers=4
-        ) as executor:
-
-            future_map = {
-                executor.submit(
-                    get_contest,
-                    contest
-                ): contest
-
-                for contest in contest_numbers
-            }
-
-            for future in as_completed(future_map):
-
-                contest = future_map[future]
-
-                try:
-
-                    result = future.result()
-
-                    if result:
-                        results.append(result)
-
-                except Exception as e:
-
-                    print(
-                        f"Erro no concurso {contest}: {e}"
-                    )
-
-        results.sort(
-            key=lambda x: x["concurso"]
-        )
-
-        return results
+        current = fetch_latest()
 
     except Exception as e:
 
         raise HTTPException(
             status_code=502,
-            detail=str(e),
+            detail=f"Não foi possível descobrir o concurso atual: {str(e)}"
         )
+
+    ultimo_concurso = current["concurso"]
+
+    # Guarda o último no cache
+    history_cache[ultimo_concurso] = {
+        "data": current,
+        "timestamp": time.time()
+    }
+
+    # --------------------------------------------------------
+    # Lista de concursos
+    # --------------------------------------------------------
+
+    concursos = [
+        ultimo_concurso - i
+        for i in range(limit)
+        if ultimo_concurso - i > 0
+    ]
+
+    resultados = []
+
+    # --------------------------------------------------------
+    # Pega o que já está no cache
+    # --------------------------------------------------------
+
+    faltantes = []
+
+    agora = time.time()
+
+    for numero in concursos:
+
+        cached = history_cache.get(numero)
+
+        if cached:
+
+            idade = agora - cached["timestamp"]
+
+            if idade < CACHE_HISTORY_SECONDS:
+
+                resultados.append(
+                    cached["data"]
+                )
+
+                continue
+
+        faltantes.append(numero)
+
+    # --------------------------------------------------------
+    # Busca faltantes em paralelo
+    # --------------------------------------------------------
+
+    if faltantes:
+
+        # Poucos workers para não sobrecarregar
+        # o Render gratuito.
+        workers = min(5, len(faltantes))
+
+        with ThreadPoolExecutor(
+            max_workers=workers
+        ) as executor:
+
+            tarefas = {
+                executor.submit(
+                    fetch_contest,
+                    numero
+                ): numero
+                for numero in faltantes
+            }
+
+            for future in as_completed(tarefas):
+
+                numero = tarefas[future]
+
+                try:
+
+                    resultado = future.result()
+
+                    history_cache[numero] = {
+                        "data": resultado,
+                        "timestamp": time.time()
+                    }
+
+                    resultados.append(resultado)
+
+                except Exception as e:
+
+                    print(
+                        f"[HISTORY] Concurso {numero}: {e}"
+                    )
+
+    # --------------------------------------------------------
+    # Ordenação
+    # --------------------------------------------------------
+
+    resultados = sorted(
+        resultados,
+        key=lambda x: x.get("concurso", 0),
+        reverse=True
+    )
+
+    # Remove duplicados
+    unicos = {}
+
+    for item in resultados:
+
+        concurso_num = item["concurso"]
+
+        unicos[concurso_num] = item
+
+    resultados = list(
+        unicos.values()
+    )
+
+    resultados.sort(
+        key=lambda x: x["concurso"],
+        reverse=True
+    )
+
+    resultados = resultados[:limit]
+
+    # --------------------------------------------------------
+    # Retorno
+    # --------------------------------------------------------
+
+    return {
+        "concursoAtual": ultimo_concurso,
+        "total": len(resultados),
+        "resultados": resultados
+    }
 
 
 # ============================================================
-# EXECUÇÃO LOCAL / RENDER
+# ROOT
+# ============================================================
+
+@app.get("/")
+def root():
+
+    index_path = os.path.join(
+        STATIC_DIR,
+        "index.html"
+    )
+
+    if os.path.exists(index_path):
+
+        return FileResponse(
+            index_path
+        )
+
+    return {
+        "app": "Lotofácil Monitor",
+        "version": APP_VERSION,
+        "status": "online"
+    }
+
+
+# ============================================================
+# SERVIR ARQUIVOS ESTÁTICOS
+# ============================================================
+
+@app.get("/favicon.ico")
+def favicon():
+
+    favicon_path = os.path.join(
+        STATIC_DIR,
+        "favicon.ico"
+    )
+
+    if os.path.exists(favicon_path):
+
+        return FileResponse(
+            favicon_path
+        )
+
+    raise HTTPException(
+        status_code=404
+    )
+
+
+# ============================================================
+# START
 # ============================================================
 
 if __name__ == "__main__":
@@ -661,12 +675,12 @@ if __name__ == "__main__":
     port = int(
         os.environ.get(
             "PORT",
-            "8000"
+            8000
         )
     )
 
     uvicorn.run(
-        app,
+        "app:app",
         host="0.0.0.0",
-        port=port,
+        port=port
     )
