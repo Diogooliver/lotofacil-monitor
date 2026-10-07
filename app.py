@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,18 +14,20 @@ import os
 
 
 # ============================================================
-# LOTOFÁCIL MONITOR — V25.14
+# LOTOFÁCIL MONITOR — V25.15
 # ============================================================
 
-APP_VERSION = "V25.14"
+APP_VERSION = "V25.15"
 
 HISTORY_LIMIT = 120
 
 CACHE_TTL = 900
 
+HTTP_TIMEOUT = 25
+
 CAIXA_TIMEOUT = 20
 
-MAX_CAIXA_WORKERS = 10
+MAX_CAIXA_WORKERS = 8
 
 
 # ============================================================
@@ -39,6 +41,16 @@ MAX_CAIXA_WORKERS = 10
 REMOTE_HISTORY_URL = (
     "https://valorfinal.com.br/"
     "data/lotofacil-historico.json"
+)
+
+
+# ------------------------------------------------------------
+# PÁGINA DO DATASET — FALLBACK
+# ------------------------------------------------------------
+
+REMOTE_DATA_PAGE = (
+    "https://valorfinal.com.br/"
+    "dados/loteria-lotofacil"
 )
 
 
@@ -74,15 +86,23 @@ cache_lock = threading.Lock()
 
 
 # ============================================================
-# INFORMAÇÕES DA ÚLTIMA FONTE
+# STATUS DA FONTE
 # ============================================================
 
 source_status = {
+
     "fonte": None,
+
     "ultima_tentativa": None,
+
     "erro_valorfinal": None,
+
     "erro_caixa": None,
-    "total": 0
+
+    "total": 0,
+
+    "ultimo_concurso": None
+
 }
 
 source_status_lock = threading.Lock()
@@ -93,8 +113,14 @@ source_status_lock = threading.Lock()
 # ============================================================
 
 app = FastAPI(
+
     title="Lotofácil Monitor",
-    version=APP_VERSION
+
+    version=APP_VERSION,
+
+    description=(
+        "API do Lotofácil Monitor"
+    )
 )
 
 
@@ -103,36 +129,53 @@ app = FastAPI(
 # ============================================================
 
 app.add_middleware(
+
     CORSMiddleware,
+
     allow_origins=["*"],
-    allow_credentials=True,
+
+    allow_credentials=False,
+
     allow_methods=["*"],
-    allow_headers=["*"],
+
+    allow_headers=["*"]
+
 )
 
 
 # ============================================================
-# ATUALIZAR STATUS DA FONTE
+# STATUS
 # ============================================================
 
 def update_source_status(
+
     fonte=None,
+
     erro_valorfinal=None,
+
     erro_caixa=None,
-    total=None
+
+    total=None,
+
+    ultimo_concurso=None
+
 ):
 
     with source_status_lock:
 
-        source_status["ultima_tentativa"] = (
-            time.strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+        source_status[
+            "ultima_tentativa"
+        ] = time.strftime(
+            "%Y-%m-%d %H:%M:%S"
         )
+
 
         if fonte is not None:
 
-            source_status["fonte"] = fonte
+            source_status[
+                "fonte"
+            ] = fonte
+
 
         if erro_valorfinal is not None:
 
@@ -142,6 +185,7 @@ def update_source_status(
                 erro_valorfinal
             )
 
+
         if erro_caixa is not None:
 
             source_status[
@@ -150,11 +194,21 @@ def update_source_status(
                 erro_caixa
             )
 
+
         if total is not None:
 
             source_status[
                 "total"
-            ] = total
+            ] = int(total)
+
+
+        if ultimo_concurso is not None:
+
+            source_status[
+                "ultimo_concurso"
+            ] = int(
+                ultimo_concurso
+            )
 
 
 # ============================================================
@@ -162,64 +216,89 @@ def update_source_status(
 # ============================================================
 
 def http_get_json(
+
     url: str,
-    timeout=CAIXA_TIMEOUT
+
+    timeout=HTTP_TIMEOUT
+
 ):
 
     headers_list = [
 
         {
+
             "User-Agent": (
                 "Mozilla/5.0 "
-                "(Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 "
+                "(iPhone; CPU iPhone OS 18_0 "
+                "like Mac OS X) "
+                "AppleWebKit/605.1.15 "
                 "(KHTML, like Gecko) "
-                "Chrome/140.0 Safari/537.36"
+                "Version/18.0 "
+                "Mobile/15E148 "
+                "Safari/604.1"
             ),
+
             "Accept": (
                 "application/json,"
                 "text/plain,"
                 "*/*"
             ),
+
             "Accept-Language": (
-                "pt-BR,pt;q=0.9"
+                "pt-BR,pt;q=0.9,en;q=0.8"
             ),
+
             "Connection": "close"
+
         },
 
         {
+
             "User-Agent": (
                 "LotofacilMonitor/"
                 + APP_VERSION
             ),
+
             "Accept": (
                 "application/json,"
                 "*/*"
             ),
+
             "Connection": "close"
+
         }
 
     ]
 
+
     ultimo_erro = None
+
 
     for headers in headers_list:
 
         try:
 
             req = Request(
+
                 url,
-                headers=headers
+
+                headers=headers,
+
+                method="GET"
+
             )
 
+
             with urlopen(
+
                 req,
+
                 timeout=timeout
+
             ) as response:
 
-                raw = response.read().decode(
-                    "utf-8"
-                )
+                raw = response.read()
+
 
                 if not raw:
 
@@ -227,25 +306,63 @@ def http_get_json(
                         "Resposta vazia."
                     )
 
-                return json.loads(
-                    raw
+
+                charset = (
+                    response.headers.get_content_charset()
+                    or "utf-8"
                 )
+
+
+                text = raw.decode(
+                    charset,
+                    errors="replace"
+                )
+
+
+                if not text.strip():
+
+                    raise RuntimeError(
+                        "Resposta vazia."
+                    )
+
+
+                return json.loads(
+                    text
+                )
+
+
+        except HTTPError as e:
+
+            ultimo_erro = (
+                f"HTTP {e.code}: {e.reason}"
+            )
+
+
+        except URLError as e:
+
+            ultimo_erro = (
+                f"URL Error: {e.reason}"
+            )
+
 
         except Exception as e:
 
-            ultimo_erro = e
+            ultimo_erro = str(e)
 
-            time.sleep(
-                0.5
-            )
+
+        time.sleep(0.5)
+
 
     raise RuntimeError(
-        f"Falha HTTP: {ultimo_erro}"
+
+        "Falha HTTP em "
+        f"{url}: {ultimo_erro}"
+
     )
 
 
 # ============================================================
-# NORMALIZAÇÃO DE UM RESULTADO
+# NORMALIZAR RESULTADO INDIVIDUAL
 # ============================================================
 
 def normalize_result(data):
@@ -258,10 +375,6 @@ def normalize_result(data):
         return None
 
 
-    # --------------------------------------------------------
-    # NÚMERO DO CONCURSO
-    # --------------------------------------------------------
-
     numero = (
 
         data.get("numero")
@@ -271,12 +384,9 @@ def normalize_result(data):
         or data.get("numeroConcurso")
 
         or data.get("Concurso")
+
     )
 
-
-    # --------------------------------------------------------
-    # DEZENAS
-    # --------------------------------------------------------
 
     dezenas = (
 
@@ -289,12 +399,9 @@ def normalize_result(data):
         )
 
         or data.get("Dezenas")
+
     )
 
-
-    # --------------------------------------------------------
-    # DATA
-    # --------------------------------------------------------
 
     data_apuracao = (
 
@@ -305,6 +412,7 @@ def normalize_result(data):
         or data.get("Data")
 
         or ""
+
     )
 
 
@@ -313,14 +421,10 @@ def normalize_result(data):
         return None
 
 
-    if not dezenas:
+    if dezenas is None:
 
         return None
 
-
-    # --------------------------------------------------------
-    # CONVERTE NÚMERO
-    # --------------------------------------------------------
 
     try:
 
@@ -333,79 +437,73 @@ def normalize_result(data):
         return None
 
 
-    # --------------------------------------------------------
-    # CONVERTE DEZENAS
-    # --------------------------------------------------------
-
     try:
 
-        # API Caixa pode devolver string.
         if isinstance(
             dezenas,
             str
         ):
 
             dezenas = (
+
                 dezenas
-                .replace(
-                    ",",
-                    " "
-                )
+                .replace(",", " ")
+                .replace(";", " ")
                 .split()
+
             )
 
-        dezenas = sorted(
-            int(str(x))
+
+        dezenas = [
+
+            int(str(x).strip())
+
             for x in dezenas
+
+        ]
+
+
+        dezenas = sorted(
+            set(dezenas)
         )
+
 
     except Exception:
 
         return None
 
 
-    # --------------------------------------------------------
-    # FILTRA FAIXA
-    # --------------------------------------------------------
-
     dezenas = [
+
         x
+
         for x in dezenas
+
         if 1 <= x <= 25
+
     ]
 
-
-    # --------------------------------------------------------
-    # LOTOFÁCIL TEM 15 DEZENAS
-    # --------------------------------------------------------
 
     if len(dezenas) != 15:
 
         return None
 
 
-    # --------------------------------------------------------
-    # REMOVE DUPLICADAS
-    # --------------------------------------------------------
-
-    if len(
-        set(dezenas)
-    ) != 15:
-
-        return None
-
-
     return {
+
         "concurso": numero,
+
         "data": str(
             data_apuracao
         ),
+
         "dezenas": dezenas
+
     }
 
 
 # ============================================================
-# NORMALIZAÇÃO DO DATASET
+# NORMALIZAR DATASET
 # ============================================================
 
 def normalize_dataset(data):
@@ -414,7 +512,7 @@ def normalize_dataset(data):
 
 
     # ========================================================
-    # FORMATO DICIONÁRIO
+    # DICIONÁRIO
     # ========================================================
 
     if isinstance(
@@ -440,9 +538,27 @@ def normalize_dataset(data):
 
                 try:
 
+                    if isinstance(
+                        item,
+                        dict
+                    ):
+
+                        result = normalize_result(
+                            item
+                        )
+
+                        if result:
+
+                            resultados.append(
+                                result
+                            )
+
+                        continue
+
+
                     if not isinstance(
                         item,
-                        list
+                        (list, tuple)
                     ):
 
                         continue
@@ -460,37 +576,52 @@ def normalize_dataset(data):
 
                     data_sorteio = (
 
-                        str(
-                            item[1]
-                        )
+                        str(item[1])
 
                         if item[1] is not None
 
                         else ""
+
                     )
 
 
+                    dezenas = item[2]
+
+
+                    if isinstance(
+                        dezenas,
+                        str
+                    ):
+
+                        dezenas = (
+
+                            dezenas
+                            .replace(",", " ")
+                            .split()
+
+                        )
+
+
                     dezenas = sorted(
-                        int(x)
-                        for x in item[2]
+                        set(
+                            int(x)
+                            for x in dezenas
+                        )
                     )
 
 
                     dezenas = [
+
                         x
+
                         for x in dezenas
+
                         if 1 <= x <= 25
+
                     ]
 
 
                     if len(dezenas) != 15:
-
-                        continue
-
-
-                    if len(
-                        set(dezenas)
-                    ) != 15:
 
                         continue
 
@@ -505,6 +636,7 @@ def normalize_dataset(data):
 
                         "dezenas":
                             dezenas
+
                     })
 
 
@@ -514,14 +646,14 @@ def normalize_dataset(data):
 
 
         # ----------------------------------------------------
-        # FORMATO DICIONÁRIO
+        # FORMATO:
         #
         # {
-        #   "3798": [1,2,4,...]
+        #   "3798": [1,2,3,...]
         # }
         # ----------------------------------------------------
 
-        elif not concursos:
+        else:
 
             for chave, valor in data.items():
 
@@ -547,49 +679,50 @@ def normalize_dataset(data):
                 try:
 
                     dezenas = sorted(
-                        int(x)
-                        for x in valor
+                        set(
+                            int(x)
+                            for x in valor
+                        )
                     )
+
+
+                    dezenas = [
+
+                        x
+
+                        for x in dezenas
+
+                        if 1 <= x <= 25
+
+                    ]
+
+
+                    if len(dezenas) != 15:
+
+                        continue
+
+
+                    resultados.append({
+
+                        "concurso":
+                            numero,
+
+                        "data":
+                            "",
+
+                        "dezenas":
+                            dezenas
+
+                    })
+
 
                 except Exception:
 
                     continue
 
 
-                dezenas = [
-                    x
-                    for x in dezenas
-                    if 1 <= x <= 25
-                ]
-
-
-                if len(dezenas) != 15:
-
-                    continue
-
-
-                if len(
-                    set(dezenas)
-                ) != 15:
-
-                    continue
-
-
-                resultados.append({
-
-                    "concurso":
-                        numero,
-
-                    "data":
-                        "",
-
-                    "dezenas":
-                        dezenas
-                })
-
-
     # ========================================================
-    # FORMATO LISTA
+    # LISTA
     # ========================================================
 
     elif isinstance(
@@ -600,7 +733,7 @@ def normalize_dataset(data):
         for item in data:
 
             # ------------------------------------------------
-            # ITEM DICIONÁRIO
+            # DICIONÁRIO
             # ------------------------------------------------
 
             if isinstance(
@@ -612,6 +745,7 @@ def normalize_dataset(data):
                     item
                 )
 
+
                 if result:
 
                     resultados.append(
@@ -620,12 +754,12 @@ def normalize_dataset(data):
 
 
             # ------------------------------------------------
-            # ITEM LISTA
+            # LISTA
             # ------------------------------------------------
 
             elif isinstance(
                 item,
-                list
+                (list, tuple)
             ):
 
                 try:
@@ -642,37 +776,52 @@ def normalize_dataset(data):
 
                     data_sorteio = (
 
-                        str(
-                            item[1]
-                        )
+                        str(item[1])
 
                         if item[1] is not None
 
                         else ""
+
                     )
 
 
+                    dezenas = item[2]
+
+
+                    if isinstance(
+                        dezenas,
+                        str
+                    ):
+
+                        dezenas = (
+
+                            dezenas
+                            .replace(",", " ")
+                            .split()
+
+                        )
+
+
                     dezenas = sorted(
-                        int(x)
-                        for x in item[2]
+                        set(
+                            int(x)
+                            for x in dezenas
+                        )
                     )
 
 
                     dezenas = [
+
                         x
+
                         for x in dezenas
+
                         if 1 <= x <= 25
+
                     ]
 
 
                     if len(dezenas) != 15:
-
-                        continue
-
-
-                    if len(
-                        set(dezenas)
-                    ) != 15:
 
                         continue
 
@@ -687,6 +836,7 @@ def normalize_dataset(data):
 
                         "dezenas":
                             dezenas
+
                     })
 
 
@@ -704,13 +854,22 @@ def normalize_dataset(data):
 
     for resultado in resultados:
 
-        numero = resultado[
-            "concurso"
-        ]
+        try:
 
-        unicos[
-            numero
-        ] = resultado
+            numero = int(
+                resultado[
+                    "concurso"
+                ]
+            )
+
+
+            unicos[
+                numero
+            ] = resultado
+
+        except Exception:
+
+            continue
 
 
     resultados = list(
@@ -723,12 +882,100 @@ def normalize_dataset(data):
     # ========================================================
 
     resultados.sort(
+
         key=lambda x:
             x["concurso"]
+
     )
 
 
     return resultados
+
+
+# ============================================================
+# VALIDAR HISTÓRICO
+# ============================================================
+
+def validate_history(
+    resultados
+):
+
+    if not resultados:
+
+        return False
+
+
+    validos = []
+
+
+    for resultado in resultados:
+
+        if not isinstance(
+            resultado,
+            dict
+        ):
+
+            continue
+
+
+        try:
+
+            concurso = int(
+                resultado[
+                    "concurso"
+                ]
+            )
+
+
+            dezenas = resultado[
+                "dezenas"
+            ]
+
+
+            if concurso < 1:
+
+                continue
+
+
+            if not isinstance(
+                dezenas,
+                list
+            ):
+
+                continue
+
+
+            if len(dezenas) != 15:
+
+                continue
+
+
+            if len(
+                set(dezenas)
+            ) != 15:
+
+                continue
+
+
+            if any(
+                x < 1 or x > 25
+                for x in dezenas
+            ):
+
+                continue
+
+
+            validos.append(
+                resultado
+            )
+
+
+        except Exception:
+
+            continue
+
+
+    return len(validos) > 0
 
 
 # ============================================================
@@ -744,7 +991,7 @@ def cache_get(key):
         )
 
 
-        if not item:
+        if item is None:
 
             return None
 
@@ -757,6 +1004,11 @@ def cache_get(key):
             - timestamp
             > CACHE_TTL
         ):
+
+            cache.pop(
+                key,
+                None
+            )
 
             return None
 
@@ -776,47 +1028,79 @@ def cache_set(
     with cache_lock:
 
         cache[key] = (
+
             time.time(),
+
             value
+
         )
+
+
+# ============================================================
+# LIMPAR CACHE
+# ============================================================
+
+def cache_clear():
+
+    with cache_lock:
+
+        cache.clear()
 
 
 # ============================================================
 # SALVAR DATASET LOCAL
 # ============================================================
 
-def save_local_dataset(data):
+def save_local_dataset(
+    data
+):
 
     try:
 
         os.makedirs(
+
             LOCAL_DATA_DIR,
+
             exist_ok=True
+
         )
 
 
         temporary_file = (
+
             LOCAL_DATA_FILE
             + ".tmp"
+
         )
 
 
         with open(
+
             temporary_file,
+
             "w",
+
             encoding="utf-8"
+
         ) as f:
 
             json.dump(
+
                 data,
+
                 f,
+
                 ensure_ascii=False
+
             )
 
 
         os.replace(
+
             temporary_file,
+
             LOCAL_DATA_FILE
+
         )
 
 
@@ -844,9 +1128,13 @@ def load_local_dataset():
     try:
 
         with open(
+
             LOCAL_DATA_FILE,
+
             "r",
+
             encoding="utf-8"
+
         ) as f:
 
             data = json.load(
@@ -859,7 +1147,9 @@ def load_local_dataset():
         )
 
 
-        if resultados:
+        if validate_history(
+            resultados
+        ):
 
             return resultados
 
@@ -879,8 +1169,11 @@ def load_local_dataset():
 def load_remote_dataset():
 
     data = http_get_json(
+
         REMOTE_HISTORY_URL,
-        timeout=25
+
+        timeout=HTTP_TIMEOUT
+
     )
 
 
@@ -889,16 +1182,21 @@ def load_remote_dataset():
     )
 
 
-    if not resultados:
+    if not validate_history(
+        resultados
+    ):
 
         raise RuntimeError(
-            "Dataset ValorFinal inválido "
-            "ou formato não reconhecido."
+
+            "Dataset ValorFinal "
+            "inválido ou formato "
+            "não reconhecido."
+
         )
 
 
     # --------------------------------------------------------
-    # SALVA CÓPIA LOCAL
+    # SALVA SOMENTE SE FOR VÁLIDO
     # --------------------------------------------------------
 
     save_local_dataset(
@@ -910,7 +1208,7 @@ def load_remote_dataset():
 
 
 # ============================================================
-# CARREGAR UM CONCURSO DA CAIXA
+# CARREGAR CONCURSO DA CAIXA
 # ============================================================
 
 def load_caixa_contest(
@@ -918,15 +1216,20 @@ def load_caixa_contest(
 ):
 
     url = (
+
         CAIXA_BASE_URL
         + "/"
         + str(numero)
+
     )
 
 
     data = http_get_json(
+
         url,
+
         timeout=CAIXA_TIMEOUT
+
     )
 
 
@@ -938,8 +1241,10 @@ def load_caixa_contest(
     if not resultado:
 
         raise RuntimeError(
-            f"Resposta inválida "
+
+            "Resposta inválida "
             f"para concurso {numero}"
+
         )
 
 
@@ -947,14 +1252,17 @@ def load_caixa_contest(
 
 
 # ============================================================
-# DESCOBRIR ÚLTIMO CONCURSO NA CAIXA
+# ÚLTIMO CONCURSO DA CAIXA
 # ============================================================
 
 def get_caixa_latest():
 
     data = http_get_json(
+
         CAIXA_BASE_URL,
+
         timeout=CAIXA_TIMEOUT
+
     )
 
 
@@ -966,8 +1274,10 @@ def get_caixa_latest():
     if not resultado:
 
         raise RuntimeError(
+
             "API Caixa retornou "
             "dados inválidos."
+
         )
 
 
@@ -975,16 +1285,14 @@ def get_caixa_latest():
 
 
 # ============================================================
-# CARREGAR HISTÓRICO PELA CAIXA
+# HISTÓRICO DA CAIXA
 # ============================================================
 
 def load_caixa_history(
-    limit=HISTORY_LIMIT
-):
 
-    # --------------------------------------------------------
-    # PRIMEIRO DESCOBRE O ÚLTIMO
-    # --------------------------------------------------------
+    limit=HISTORY_LIMIT
+
+):
 
     latest = get_caixa_latest()
 
@@ -994,47 +1302,69 @@ def load_caixa_history(
     ]
 
 
-    limite = max(
-        1,
-        min(
-            int(limit),
-            HISTORY_LIMIT
+    try:
+
+        limite = int(
+            limit
         )
+
+    except Exception:
+
+        limite = HISTORY_LIMIT
+
+
+    limite = max(
+
+        1,
+
+        min(
+
+            limite,
+
+            HISTORY_LIMIT
+
+        )
+
     )
 
 
     primeiro_numero = max(
+
         1,
+
         ultimo_numero
         - limite
         + 1
+
     )
 
 
     numeros = list(
+
         range(
+
             primeiro_numero,
+
             ultimo_numero + 1
+
         )
+
     )
 
 
-    resultados = []
-
-
-    # --------------------------------------------------------
-    # CONCURSO MAIS RECENTE
-    # --------------------------------------------------------
-
-    resultados.append(
+    resultados = [
         latest
-    )
+    ]
 
 
     numeros_restantes = [
+
         n
+
         for n in numeros
+
         if n != ultimo_numero
+
     ]
 
 
@@ -1043,18 +1373,23 @@ def load_caixa_history(
     # --------------------------------------------------------
 
     with ThreadPoolExecutor(
+
         max_workers=MAX_CAIXA_WORKERS
+
     ) as executor:
 
         futures = {
 
             executor.submit(
+
                 load_caixa_contest,
-                numero
-            ):
+
                 numero
 
+            ): numero
+
             for numero in numeros_restantes
+
         }
 
 
@@ -1062,14 +1397,10 @@ def load_caixa_history(
             futures
         ):
 
-            numero = futures[
-                future
-            ]
-
-
             try:
 
                 resultado = future.result()
+
 
                 if resultado:
 
@@ -1093,7 +1424,9 @@ def load_caixa_history(
     for resultado in resultados:
 
         unicos[
-            resultado["concurso"]
+            resultado[
+                "concurso"
+            ]
         ] = resultado
 
 
@@ -1103,16 +1436,20 @@ def load_caixa_history(
 
 
     resultados.sort(
+
         key=lambda x:
             x["concurso"]
+
     )
 
 
     if not resultados:
 
         raise RuntimeError(
+
             "A API da Caixa não "
             "retornou concursos."
+
         )
 
 
@@ -1135,13 +1472,19 @@ def load_caixa_history(
         "concursos": [
 
             [
+
                 x["concurso"],
+
                 x["data"],
+
                 x["dezenas"]
+
             ]
 
             for x in resultados
+
         ]
+
     }
 
 
@@ -1154,20 +1497,205 @@ def load_caixa_history(
 
 
 # ============================================================
-# DATASET COMPLETO
+# ATUALIZAR HISTÓRICO
+# ============================================================
+
+def refresh_history():
+
+    erros = []
+
+
+    # ========================================================
+    # 1 — VALORFINAL
+    # ========================================================
+
+    try:
+
+        remoto = load_remote_dataset()
+
+
+        if validate_history(
+            remoto
+        ):
+
+            update_source_status(
+
+                fonte="ValorFinal",
+
+                erro_valorfinal=None,
+
+                total=len(remoto),
+
+                ultimo_concurso=(
+                    remoto[-1]["concurso"]
+                )
+
+            )
+
+
+            cache_set(
+
+                "all_history",
+
+                remoto
+
+            )
+
+
+            return remoto
+
+
+    except Exception as e:
+
+        erros.append(
+            f"ValorFinal: {e}"
+        )
+
+
+        update_source_status(
+
+            erro_valorfinal=e
+
+        )
+
+
+    # ========================================================
+    # 2 — CAIXA
+    # ========================================================
+
+    try:
+
+        caixa = load_caixa_history(
+
+            HISTORY_LIMIT
+
+        )
+
+
+        if validate_history(
+            caixa
+        ):
+
+            update_source_status(
+
+                fonte="Caixa",
+
+                erro_caixa=None,
+
+                total=len(caixa),
+
+                ultimo_concurso=(
+                    caixa[-1]["concurso"]
+                )
+
+            )
+
+
+            cache_set(
+
+                "all_history",
+
+                caixa
+
+            )
+
+
+            return caixa
+
+
+    except Exception as e:
+
+        erros.append(
+            f"Caixa: {e}"
+        )
+
+
+        update_source_status(
+
+            erro_caixa=e
+
+        )
+
+
+    # ========================================================
+    # 3 — ARQUIVO LOCAL
+    # ========================================================
+
+    try:
+
+        local = load_local_dataset()
+
+
+        if validate_history(
+            local
+        ):
+
+            update_source_status(
+
+                fonte="Local",
+
+                total=len(local),
+
+                ultimo_concurso=(
+                    local[-1]["concurso"]
+                )
+
+            )
+
+
+            cache_set(
+
+                "all_history",
+
+                local
+
+            )
+
+
+            return local
+
+
+    except Exception as e:
+
+        erros.append(
+            f"Local: {e}"
+        )
+
+
+    # ========================================================
+    # FALHA TOTAL
+    # ========================================================
+
+    raise HTTPException(
+
+        status_code=502,
+
+        detail={
+
+            "mensagem":
+                "Não foi possível "
+                "carregar o histórico.",
+
+            "erros":
+                erros
+
+        }
+
+    )
+
+
+# ============================================================
+# HISTÓRICO COMPLETO
 # ============================================================
 
 def get_all_history():
-
-    key = "all_history"
-
 
     # --------------------------------------------------------
     # CACHE
     # --------------------------------------------------------
 
     cached = cache_get(
-        key
+        "all_history"
     )
 
 
@@ -1177,122 +1705,10 @@ def get_all_history():
 
 
     # --------------------------------------------------------
-    # 1 — ARQUIVO LOCAL
+    # ATUALIZA
     # --------------------------------------------------------
 
-    local = load_local_dataset()
-
-
-    if local:
-
-        update_source_status(
-            fonte="local",
-            total=len(local)
-        )
-
-
-        cache_set(
-            key,
-            local
-        )
-
-
-        return local
-
-
-    # --------------------------------------------------------
-    # 2 — VALORFINAL
-    # --------------------------------------------------------
-
-    try:
-
-        remoto = load_remote_dataset()
-
-
-        update_source_status(
-            fonte="ValorFinal",
-            erro_valorfinal=None,
-            total=len(remoto)
-        )
-
-
-        cache_set(
-            key,
-            remoto
-        )
-
-
-        return remoto
-
-
-    except Exception as valorfinal_error:
-
-        update_source_status(
-            erro_valorfinal=
-                valorfinal_error
-        )
-
-
-    # --------------------------------------------------------
-    # 3 — CAIXA
-    # --------------------------------------------------------
-
-    try:
-
-        caixa = load_caixa_history(
-            HISTORY_LIMIT
-        )
-
-
-        update_source_status(
-            fonte="Caixa",
-            erro_caixa=None,
-            total=len(caixa)
-        )
-
-
-        cache_set(
-            key,
-            caixa
-        )
-
-
-        return caixa
-
-
-    except Exception as caixa_error:
-
-        update_source_status(
-            fonte="erro",
-            erro_caixa=caixa_error,
-            total=0
-        )
-
-
-        raise HTTPException(
-
-            status_code=502,
-
-            detail={
-
-                "mensagem":
-                    "Não foi possível "
-                    "carregar o histórico.",
-
-                "valorfinal":
-                    str(
-                        valorfinal_error
-                    )
-                    if 'valorfinal_error'
-                    in locals()
-                    else None,
-
-                "caixa":
-                    str(
-                        caixa_error
-                    )
-            }
-        )
+    return refresh_history()
 
 
 # ============================================================
@@ -1307,8 +1723,11 @@ def get_latest():
     if not history:
 
         raise HTTPException(
+
             status_code=502,
+
             detail="Histórico vazio."
+
         )
 
 
@@ -1316,7 +1735,7 @@ def get_latest():
 
 
 # ============================================================
-# HISTÓRICO
+# HISTÓRICO LIMITADO
 # ============================================================
 
 def get_history(
@@ -1338,17 +1757,21 @@ def get_history(
 
 
     limite = max(
+
         1,
+
         min(
+
             limite,
+
             HISTORY_LIMIT
+
         )
+
     )
 
 
-    return history[
-        -limite:
-    ]
+    return history[-limite:]
 
 
 # ============================================================
@@ -1359,31 +1782,33 @@ def get_history(
 def root():
 
     path = os.path.join(
+
         "static",
+
         "index.html"
+
     )
 
 
-    if not os.path.exists(
-        path
-    ):
+    if os.path.exists(path):
 
-        return JSONResponse({
-
-            "app":
-                "Lotofácil Monitor",
-
-            "version":
-                APP_VERSION,
-
-            "status":
-                "online"
-        })
+        return FileResponse(
+            path
+        )
 
 
-    return FileResponse(
-        path
-    )
+    return {
+
+        "app":
+            "Lotofácil Monitor",
+
+        "version":
+            APP_VERSION,
+
+        "status":
+            "online"
+
+    }
 
 
 # ============================================================
@@ -1403,6 +1828,7 @@ def health():
 
         "version":
             APP_VERSION
+
     }
 
 
@@ -1426,6 +1852,7 @@ def api_latest():
 
         "resultado":
             resultado
+
     }
 
 
@@ -1435,7 +1862,17 @@ def api_latest():
 
 @app.get("/api/history")
 def api_history(
-    limit: int = HISTORY_LIMIT
+
+    limit: int = Query(
+
+        HISTORY_LIMIT,
+
+        ge=1,
+
+        le=HISTORY_LIMIT
+
+    )
+
 ):
 
     resultados = get_history(
@@ -1456,16 +1893,68 @@ def api_history(
 
         "resultados":
             resultados
+
     }
 
 
 # ============================================================
-# ALIAS — HISTÓRICO
+# API — HISTÓRICO LOTOFÁCIL
+# ============================================================
+
+@app.get("/api/lotofacil/history")
+def api_lotofacil_history(
+
+    limit: int = Query(
+
+        HISTORY_LIMIT,
+
+        ge=1,
+
+        le=HISTORY_LIMIT
+
+    )
+
+):
+
+    resultados = get_history(
+        limit
+    )
+
+
+    return {
+
+        "status":
+            "ok",
+
+        "version":
+            APP_VERSION,
+
+        "total":
+            len(resultados),
+
+        "resultados":
+            resultados
+
+    }
+
+
+# ============================================================
+# ALIAS — HISTORY
 # ============================================================
 
 @app.get("/history")
 def history_alias(
-    limit: int = HISTORY_LIMIT
+
+    limit: int = Query(
+
+        HISTORY_LIMIT,
+
+        ge=1,
+
+        le=HISTORY_LIMIT
+
+    )
+
 ):
 
     resultados = get_history(
@@ -1486,11 +1975,12 @@ def history_alias(
 
         "resultados":
             resultados
+
     }
 
 
 # ============================================================
-# ALIAS — ÚLTIMO RESULTADO
+# ALIAS — ÚLTIMO
 # ============================================================
 
 @app.get("/latest")
@@ -1509,11 +1999,36 @@ def latest_alias():
 
         "resultado":
             resultado
+
     }
 
 
 # ============================================================
-# STATUS COMPLETO
+# API — ÚLTIMO LOTOFÁCIL
+# ============================================================
+
+@app.get("/api/lotofacil/latest")
+def api_lotofacil_latest():
+
+    resultado = get_latest()
+
+
+    return {
+
+        "status":
+            "ok",
+
+        "version":
+            APP_VERSION,
+
+        "resultado":
+            resultado
+
+    }
+
+
+# ============================================================
+# STATUS
 # ============================================================
 
 @app.get("/api/status")
@@ -1532,9 +2047,13 @@ def api_status():
 
 
         ultimo = (
+
             history[-1]
+
             if history
+
             else None
+
         )
 
 
@@ -1560,7 +2079,9 @@ def api_status():
             "ultimo_concurso":
                 (
                     ultimo["concurso"]
+
                     if ultimo
+
                     else None
                 ),
 
@@ -1581,6 +2102,7 @@ def api_status():
                 status_copy.get(
                     "erro_caixa"
                 )
+
         }
 
 
@@ -1618,12 +2140,14 @@ def api_status():
                     status_copy.get(
                         "erro_caixa"
                     )
+
             }
+
         )
 
 
 # ============================================================
-# TESTE DA FONTE VALORFINAL
+# TESTAR VALORFINAL
 # ============================================================
 
 @app.get("/api/test-source")
@@ -1638,19 +2162,26 @@ def test_source():
             None,
 
         "caixa":
+            None,
+
+        "local":
             None
+
     }
 
 
-    # --------------------------------------------------------
-    # TESTE VALORFINAL
-    # --------------------------------------------------------
+    # ========================================================
+    # VALORFINAL
+    # ========================================================
 
     try:
 
         data = http_get_json(
+
             REMOTE_HISTORY_URL,
-            timeout=20
+
+            timeout=HTTP_TIMEOUT
+
         )
 
 
@@ -1664,19 +2195,24 @@ def test_source():
         ] = {
 
             "status":
-                "ok",
+                "ok"
+                if validate_history(
+                    normalizado
+                )
+                else "invalido",
 
             "total":
-                len(
-                    normalizado
-                ),
+                len(normalizado),
 
             "ultimo":
                 (
                     normalizado[-1]
+
                     if normalizado
+
                     else None
                 )
+
         }
 
 
@@ -1691,12 +2227,13 @@ def test_source():
 
             "erro":
                 str(e)
+
         }
 
 
-    # --------------------------------------------------------
-    # TESTE CAIXA
-    # --------------------------------------------------------
+    # ========================================================
+    # CAIXA
+    # ========================================================
 
     try:
 
@@ -1712,6 +2249,7 @@ def test_source():
 
             "ultimo":
                 latest
+
         }
 
 
@@ -1726,6 +2264,57 @@ def test_source():
 
             "erro":
                 str(e)
+
+        }
+
+
+    # ========================================================
+    # LOCAL
+    # ========================================================
+
+    try:
+
+        local = load_local_dataset()
+
+
+        resultado[
+            "local"
+        ] = {
+
+            "status":
+                "ok"
+                if local
+                else "vazio",
+
+            "total":
+                len(local)
+                if local
+                else 0,
+
+            "ultimo":
+                (
+                    local[-1]
+
+                    if local
+
+                    else None
+                )
+
+        }
+
+
+    except Exception as e:
+
+        resultado[
+            "local"
+        ] = {
+
+            "status":
+                "erro",
+
+            "erro":
+                str(e)
+
         }
 
 
@@ -1733,7 +2322,147 @@ def test_source():
 
 
 # ============================================================
-# FINAL
+# FORÇAR ATUALIZAÇÃO
+# ============================================================
+
+@app.get("/api/refresh")
+def api_refresh():
+
+    cache_clear()
+
+
+    try:
+
+        history = refresh_history()
+
+
+        ultimo = (
+
+            history[-1]
+
+            if history
+
+            else None
+
+        )
+
+
+        return {
+
+            "status":
+                "ok",
+
+            "version":
+                APP_VERSION,
+
+            "fonte":
+                source_status[
+                    "fonte"
+                ],
+
+            "total":
+                len(history),
+
+            "ultimo":
+                ultimo
+
+        }
+
+
+    except HTTPException:
+
+        raise
+
+
+    except Exception as e:
+
+        raise HTTPException(
+
+            status_code=502,
+
+            detail=str(e)
+
+        )
+
+
+# ============================================================
+# DEBUG
+# ============================================================
+
+@app.get("/api/debug")
+def api_debug():
+
+    with source_status_lock:
+
+        status_copy = dict(
+            source_status
+        )
+
+
+    cached = cache_get(
+        "all_history"
+    )
+
+
+    return {
+
+        "app":
+            "Lotofácil Monitor",
+
+        "version":
+            APP_VERSION,
+
+        "remote_history_url":
+            REMOTE_HISTORY_URL,
+
+        "caixa_base_url":
+            CAIXA_BASE_URL,
+
+        "cache":
+            bool(cached),
+
+        "cache_total":
+            len(cached)
+            if cached
+            else 0,
+
+        "local_file_exists":
+            os.path.exists(
+                LOCAL_DATA_FILE
+            ),
+
+        "status":
+            status_copy
+
+    }
+
+
+# ============================================================
+# STARTUP
+# ============================================================
+
+@app.on_event("startup")
+def startup_event():
+
+    print(
+        "=========================================="
+    )
+
+    print(
+        f"LOTOFÁCIL MONITOR {APP_VERSION}"
+    )
+
+    print(
+        "Servidor iniciado."
+    )
+
+    print(
+        "=========================================="
+    )
+
+
+# ============================================================
+# MAIN
 # ============================================================
 
 if __name__ == "__main__":
@@ -1742,10 +2471,15 @@ if __name__ == "__main__":
 
 
     port = int(
+
         os.environ.get(
+
             "PORT",
+
             "8000"
+
         )
+
     )
 
 
@@ -1756,4 +2490,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
 
         port=port
+
     )
