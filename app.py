@@ -3,9 +3,6 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from urllib.request import Request, urlopen
-from urllib.error import HTTPError, URLError
-
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import json
 import time
@@ -22,6 +19,7 @@ APP_VERSION = "V25.13"
 HISTORY_LIMIT = 120
 CACHE_TTL = 900
 
+
 # ============================================================
 # FONTES
 # ============================================================
@@ -36,6 +34,7 @@ REMOTE_HISTORY_URL = (
 # Arquivo local opcional.
 # Se existir, ele terá prioridade sobre a fonte remota.
 LOCAL_DATA_DIR = "data"
+
 LOCAL_DATA_FILE = os.path.join(
     LOCAL_DATA_DIR,
     "lotofacil.json"
@@ -47,6 +46,7 @@ LOCAL_DATA_FILE = os.path.join(
 # ============================================================
 
 cache = {}
+
 cache_lock = threading.Lock()
 
 
@@ -74,7 +74,7 @@ app.add_middleware(
 
 
 # ============================================================
-# HTTP
+# HTTP GET JSON
 # ============================================================
 
 def http_get_json(url: str):
@@ -351,6 +351,7 @@ def normalize_dataset(data):
                 )
 
                 if result:
+
                     resultados.append(
                         result
                     )
@@ -425,7 +426,7 @@ def normalize_dataset(data):
 
 
 # ============================================================
-# CACHE
+# CACHE GET
 # ============================================================
 
 def cache_get(key):
@@ -437,6 +438,7 @@ def cache_get(key):
         )
 
         if not item:
+
             return None
 
         timestamp, value = item
@@ -450,6 +452,10 @@ def cache_get(key):
 
         return value
 
+
+# ============================================================
+# CACHE SET
+# ============================================================
 
 def cache_set(
     key,
@@ -515,6 +521,7 @@ def load_local_dataset():
     if not os.path.exists(
         LOCAL_DATA_FILE
     ):
+
         return None
 
     try:
@@ -657,10 +664,18 @@ def get_history(
 
     history = get_all_history()
 
+    try:
+
+        limite = int(limit)
+
+    except Exception:
+
+        limite = HISTORY_LIMIT
+
     limite = max(
         1,
         min(
-            int(limit),
+            limite,
             HISTORY_LIMIT
         )
     )
@@ -702,3 +717,145 @@ def root():
 # ============================================================
 
 @app.get("/health")
+def health():
+
+    return {
+        "status": "online",
+        "app": "Lotofácil Monitor",
+        "version": APP_VERSION
+    }
+
+
+# ============================================================
+# API — ÚLTIMO RESULTADO
+# ============================================================
+
+@app.get("/api/latest")
+def api_latest():
+
+    resultado = get_latest()
+
+    return {
+        "status": "ok",
+        "version": APP_VERSION,
+        "resultado": resultado
+    }
+
+
+# ============================================================
+# API — HISTÓRICO
+# ============================================================
+
+@app.get("/api/history")
+def api_history(
+    limit: int = HISTORY_LIMIT
+):
+
+    resultados = get_history(
+        limit
+    )
+
+    return {
+        "status": "ok",
+        "version": APP_VERSION,
+        "total": len(resultados),
+        "resultados": resultados
+    }
+
+
+# ============================================================
+# ALIAS — HISTÓRICO
+# ============================================================
+
+@app.get("/history")
+def history_alias(
+    limit: int = HISTORY_LIMIT
+):
+
+    resultados = get_history(
+        limit
+    )
+
+    return {
+        "status": "ok",
+        "version": APP_VERSION,
+        "total": len(resultados),
+        "resultados": resultados
+    }
+
+
+# ============================================================
+# ALIAS — ÚLTIMO RESULTADO
+# ============================================================
+
+@app.get("/latest")
+def latest_alias():
+
+    resultado = get_latest()
+
+    return {
+        "status": "ok",
+        "version": APP_VERSION,
+        "resultado": resultado
+    }
+
+
+# ============================================================
+# STATUS
+# ============================================================
+
+@app.get("/api/status")
+def api_status():
+
+    try:
+
+        history = get_all_history()
+
+        ultimo = history[-1] if history else None
+
+        return {
+            "status": "online",
+            "app": "Lotofácil Monitor",
+            "version": APP_VERSION,
+            "total_concursos": len(history),
+            "ultimo_concurso": (
+                ultimo["concurso"]
+                if ultimo
+                else None
+            ),
+            "cache_ttl": CACHE_TTL
+        }
+
+    except Exception as e:
+
+        return JSONResponse(
+            status_code=502,
+            content={
+                "status": "error",
+                "app": "Lotofácil Monitor",
+                "version": APP_VERSION,
+                "erro": str(e)
+            }
+        )
+
+
+# ============================================================
+# FINAL
+# ============================================================
+
+if __name__ == "__main__":
+
+    import uvicorn
+
+    port = int(
+        os.environ.get(
+            "PORT",
+            "8000"
+        )
+    )
+
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=port
+    )
