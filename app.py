@@ -2,10 +2,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import json
 import time
@@ -14,63 +14,31 @@ import os
 
 
 # ============================================================
-# LOTOFÁCIL MONITOR — V25.12
-# BACKEND
-#
-# V25.12
-#
-# PRINCIPAL:
-# API GUIDI
-#
-# FALLBACK 1:
-# API CAIXA
-#
-# FALLBACK 2:
-# GitHub Raw
-#
+# LOTOFÁCIL MONITOR — V25.13
 # ============================================================
 
-
-APP_VERSION = "V25.12"
-
-
-# ============================================================
-# CONFIGURAÇÕES
-# ============================================================
+APP_VERSION = "V25.13"
 
 HISTORY_LIMIT = 120
-
 CACHE_TTL = 900
-
-MAX_WORKERS = 4
-
-MAX_RETRIES = 3
-
-REQUEST_TIMEOUT = 12
-
-RETRY_DELAY = 1.0
-
 
 # ============================================================
 # FONTES
 # ============================================================
 
-GUIDI_BASE = (
-    "https://api.guidi.dev.br/loteria/lotofacil"
+# Fonte principal:
+# Histórico completo atualizado do ValorFinal.
+REMOTE_HISTORY_URL = (
+    "https://valorfinal.com.br/"
+    "data/lotofacil-historico.json"
 )
 
-
-CAIXA_BASE = (
-    "https://servicebus2.caixa.gov.br/"
-    "portaldeloterias/api/lotofacil"
-)
-
-
-GITHUB_RAW_BASE = (
-    "https://raw.githubusercontent.com/"
-    "maickon/free-apiloterias/"
-    "refs/heads/master/"
-    "database/lotofacil"
+# Arquivo local opcional.
+# Se existir, ele terá prioridade sobre a fonte remota.
+LOCAL_DATA_DIR = "data"
+LOCAL_DATA_FILE = os.path.join(
+    LOCAL_DATA_DIR,
+    "lotofacil.json"
 )
 
 
@@ -79,7 +47,6 @@ GITHUB_RAW_BASE = (
 # ============================================================
 
 cache = {}
-
 cache_lock = threading.Lock()
 
 
@@ -93,170 +60,368 @@ app = FastAPI(
 )
 
 
+# ============================================================
+# CORS
+# ============================================================
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
 # ============================================================
-# HTTP GENÉRICO
+# HTTP
 # ============================================================
 
-def http_get_json(
-    url,
-    retries=MAX_RETRIES
-):
+def http_get_json(url: str):
+
+    headers_list = [
+        {
+            "User-Agent": (
+                "Mozilla/5.0 "
+                "(Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 "
+                "(KHTML, like Gecko) "
+                "Chrome/140.0 Safari/537.36"
+            ),
+            "Accept": (
+                "application/json,"
+                "text/plain,"
+                "*/*"
+            ),
+            "Accept-Language": "pt-BR,pt;q=0.9",
+            "Connection": "close",
+        },
+        {
+            "User-Agent": "LotofacilMonitor/25.13",
+            "Accept": "application/json,*/*",
+            "Connection": "close",
+        }
+    ]
 
     ultimo_erro = None
 
-    for tentativa in range(
-        1,
-        retries + 1
-    ):
+    for headers in headers_list:
 
         try:
 
             req = Request(
                 url,
-                headers={
-                    "User-Agent": (
-                        "Mozilla/5.0 "
-                        "(iPhone; CPU iPhone OS 18_0 like Mac OS X) "
-                        "AppleWebKit/605.1.15 "
-                        "(KHTML, like Gecko) "
-                        "Version/18.0 Mobile/15E148 "
-                        "Safari/604.1"
-                    ),
-
-                    "Accept": (
-                        "application/json,"
-                        "text/plain,"
-                        "*/*"
-                    ),
-
-                    "Accept-Language":
-                        "pt-BR,pt;q=0.9",
-
-                    "Connection":
-                        "close"
-                }
+                headers=headers
             )
-
 
             with urlopen(
                 req,
-                timeout=REQUEST_TIMEOUT
+                timeout=25
             ) as response:
 
-                status = response.getcode()
-
-
-                if status != 200:
-
-                    raise RuntimeError(
-                        f"HTTP {status}"
-                    )
-
-
-                raw = (
-                    response
-                    .read()
-                    .decode(
-                        "utf-8"
-                    )
+                raw = response.read().decode(
+                    "utf-8"
                 )
 
-
-                if not raw:
-
-                    raise ValueError(
-                        "Resposta vazia"
-                    )
-
-
-                return json.loads(
-                    raw
-                )
-
-
-        except HTTPError as e:
-
-            ultimo_erro = (
-                f"HTTP {e.code}"
-            )
-
-
-            # ------------------------------------------------
-            # Erros temporários
-            # ------------------------------------------------
-
-            if e.code in (
-                408,
-                425,
-                429,
-                500,
-                502,
-                503,
-                504
-            ):
-
-                if tentativa < retries:
-
-                    time.sleep(
-                        RETRY_DELAY *
-                        tentativa
-                    )
-
-                    continue
-
-
-            break
-
-
-        except (
-            URLError,
-            TimeoutError,
-            ConnectionError,
-            ValueError,
-            json.JSONDecodeError
-        ) as e:
-
-            ultimo_erro = str(e)
-
-
-            if tentativa < retries:
-
-                time.sleep(
-                    RETRY_DELAY *
-                    tentativa
-                )
-
-                continue
-
+                return json.loads(raw)
 
         except Exception as e:
 
-            ultimo_erro = str(e)
+            ultimo_erro = e
 
-
-            if tentativa < retries:
-
-                time.sleep(
-                    RETRY_DELAY *
-                    tentativa
-                )
-
-                continue
-
+            time.sleep(0.5)
 
     raise RuntimeError(
-        ultimo_erro or
-        "Falha HTTP desconhecida"
+        f"Falha ao acessar fonte: {ultimo_erro}"
     )
+
+
+# ============================================================
+# NORMALIZAÇÃO DE UM RESULTADO
+# ============================================================
+
+def normalize_result(data):
+
+    if not isinstance(data, dict):
+        return None
+
+    numero = (
+        data.get("numero")
+        or data.get("concurso")
+        or data.get("numeroConcurso")
+    )
+
+    dezenas = (
+        data.get("listaDezenas")
+        or data.get("dezenas")
+        or data.get(
+            "dezenasSorteadasOrdemSorteio"
+        )
+    )
+
+    data_apuracao = (
+        data.get("dataApuracao")
+        or data.get("data")
+        or ""
+    )
+
+    if numero is None or not dezenas:
+        return None
+
+    try:
+
+        numero = int(numero)
+
+    except Exception:
+
+        return None
+
+    try:
+
+        dezenas = sorted(
+            int(str(x))
+            for x in dezenas
+        )
+
+    except Exception:
+
+        return None
+
+    dezenas = [
+        x
+        for x in dezenas
+        if 1 <= x <= 25
+    ]
+
+    if len(dezenas) != 15:
+        return None
+
+    return {
+        "concurso": numero,
+        "data": str(data_apuracao),
+        "dezenas": dezenas
+    }
+
+
+# ============================================================
+# NORMALIZAÇÃO DO DATASET
+# ============================================================
+
+def normalize_dataset(data):
+
+    resultados = []
+
+    # --------------------------------------------------------
+    # FORMATO VALORFINAL
+    #
+    # {
+    #   "atualizadoEm": "...",
+    #   "ultimoConcurso": 3798,
+    #   "concursos": [
+    #       [3798, "2026-10-06", [1,2,...]]
+    #   ]
+    # }
+    # --------------------------------------------------------
+
+    if isinstance(data, dict):
+
+        concursos = data.get(
+            "concursos"
+        )
+
+        if isinstance(
+            concursos,
+            list
+        ):
+
+            for item in concursos:
+
+                try:
+
+                    if not isinstance(
+                        item,
+                        list
+                    ):
+                        continue
+
+                    if len(item) < 3:
+                        continue
+
+                    numero = int(
+                        item[0]
+                    )
+
+                    data_sorteio = (
+                        str(item[1])
+                        if item[1] is not None
+                        else ""
+                    )
+
+                    dezenas = sorted(
+                        int(x)
+                        for x in item[2]
+                    )
+
+                    dezenas = [
+                        x
+                        for x in dezenas
+                        if 1 <= x <= 25
+                    ]
+
+                    if len(dezenas) != 15:
+                        continue
+
+                    resultados.append({
+                        "concurso": numero,
+                        "data": data_sorteio,
+                        "dezenas": dezenas
+                    })
+
+                except Exception:
+
+                    continue
+
+        # ----------------------------------------------------
+        # FORMATO DICIONÁRIO
+        #
+        # {
+        #   "3798": [1,2,4,...]
+        # }
+        # ----------------------------------------------------
+
+        elif not concursos:
+
+            for chave, valor in data.items():
+
+                try:
+
+                    numero = int(chave)
+
+                except Exception:
+
+                    continue
+
+                if not isinstance(
+                    valor,
+                    list
+                ):
+                    continue
+
+                try:
+
+                    dezenas = sorted(
+                        int(x)
+                        for x in valor
+                    )
+
+                except Exception:
+
+                    continue
+
+                dezenas = [
+                    x
+                    for x in dezenas
+                    if 1 <= x <= 25
+                ]
+
+                if len(dezenas) != 15:
+                    continue
+
+                resultados.append({
+                    "concurso": numero,
+                    "data": "",
+                    "dezenas": dezenas
+                })
+
+    # --------------------------------------------------------
+    # FORMATO LISTA
+    # --------------------------------------------------------
+
+    elif isinstance(data, list):
+
+        for item in data:
+
+            if isinstance(
+                item,
+                dict
+            ):
+
+                result = normalize_result(
+                    item
+                )
+
+                if result:
+                    resultados.append(
+                        result
+                    )
+
+            elif isinstance(
+                item,
+                list
+            ):
+
+                try:
+
+                    if len(item) >= 3:
+
+                        numero = int(
+                            item[0]
+                        )
+
+                        data_sorteio = (
+                            str(item[1])
+                            if item[1] is not None
+                            else ""
+                        )
+
+                        dezenas = sorted(
+                            int(x)
+                            for x in item[2]
+                        )
+
+                        dezenas = [
+                            x
+                            for x in dezenas
+                            if 1 <= x <= 25
+                        ]
+
+                        if len(dezenas) == 15:
+
+                            resultados.append({
+                                "concurso": numero,
+                                "data": data_sorteio,
+                                "dezenas": dezenas
+                            })
+
+                except Exception:
+
+                    continue
+
+    # --------------------------------------------------------
+    # REMOVE DUPLICADOS
+    # --------------------------------------------------------
+
+    unicos = {}
+
+    for resultado in resultados:
+
+        numero = resultado[
+            "concurso"
+        ]
+
+        unicos[
+            numero
+        ] = resultado
+
+    resultados = list(
+        unicos.values()
+    )
+
+    resultados.sort(
+        key=lambda x: x["concurso"]
+    )
+
+    return resultados
 
 
 # ============================================================
@@ -271,23 +436,17 @@ def cache_get(key):
             key
         )
 
-
         if not item:
-
             return None
-
 
         timestamp, value = item
 
-
         if (
-            time.time() -
-            timestamp
+            time.time() - timestamp
             > CACHE_TTL
         ):
 
             return None
-
 
         return value
 
@@ -306,684 +465,186 @@ def cache_set(
 
 
 # ============================================================
-# NORMALIZAÇÃO
+# SALVAR DATASET LOCAL
 # ============================================================
 
-def normalize_result(
-    data
-):
-
-    # --------------------------------------------------------
-    # Algumas APIs retornam:
-    #
-    # objeto
-    #
-    # ou lista contendo objetos
-    # --------------------------------------------------------
-
-    if isinstance(
-        data,
-        list
-    ):
-
-        if not data:
-
-            return None
-
-        # Procura primeiro
-        # elemento compatível
-
-        for item in data:
-
-            result = normalize_result(
-                item
-            )
-
-            if result:
-
-                return result
-
-        return None
-
-
-    if not isinstance(
-        data,
-        dict
-    ):
-
-        return None
-
-
-    # --------------------------------------------------------
-    # Alguns provedores podem
-    # encapsular o resultado
-    # --------------------------------------------------------
-
-    for key in (
-        "data",
-        "resultado",
-        "result",
-        "dados"
-    ):
-
-        nested = data.get(
-            key
-        )
-
-
-        if isinstance(
-            nested,
-            dict
-        ):
-
-            nested_result = (
-                normalize_result(
-                    nested
-                )
-            )
-
-
-            if nested_result:
-
-                return nested_result
-
-
-        if isinstance(
-            nested,
-            list
-        ):
-
-            nested_result = (
-                normalize_result(
-                    nested
-                )
-            )
-
-
-            if nested_result:
-
-                return nested_result
-
-
-    # --------------------------------------------------------
-    # CONCURSO
-    # --------------------------------------------------------
-
-    numero = (
-        data.get("numero")
-        or data.get("concurso")
-        or data.get("numeroConcurso")
-        or data.get("Concurso")
-    )
-
-
-    # --------------------------------------------------------
-    # DEZENAS
-    # --------------------------------------------------------
-
-    dezenas = (
-        data.get("listaDezenas")
-        or data.get("dezenas")
-        or data.get(
-            "dezenasSorteadasOrdemSorteio"
-        )
-        or data.get("Dezenas")
-    )
-
-
-    # --------------------------------------------------------
-    # DATA
-    # --------------------------------------------------------
-
-    data_apuracao = (
-        data.get("dataApuracao")
-        or data.get("data")
-        or data.get("Data")
-        or ""
-    )
-
-
-    if numero is None:
-
-        return None
-
-
-    if dezenas is None:
-
-        return None
-
-
-    # --------------------------------------------------------
-    # Número do concurso
-    # --------------------------------------------------------
+def save_local_dataset(data):
 
     try:
 
-        numero = int(
-            numero
+        os.makedirs(
+            LOCAL_DATA_DIR,
+            exist_ok=True
         )
+
+        temporary_file = (
+            LOCAL_DATA_FILE
+            + ".tmp"
+        )
+
+        with open(
+            temporary_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                data,
+                f,
+                ensure_ascii=False
+            )
+
+        os.replace(
+            temporary_file,
+            LOCAL_DATA_FILE
+        )
+
+        return True
 
     except Exception:
 
-        return None
+        return False
 
 
-    # --------------------------------------------------------
-    # Dezenas
-    #
-    # Pode chegar como:
-    #
-    # ["01","02","03"]
-    #
-    # ou:
-    #
-    # "01,02,03"
-    #
-    # ou:
-    #
-    # "01 02 03"
-    # --------------------------------------------------------
+# ============================================================
+# LER DATASET LOCAL
+# ============================================================
 
-    if isinstance(
-        dezenas,
-        str
+def load_local_dataset():
+
+    if not os.path.exists(
+        LOCAL_DATA_FILE
     ):
-
-        texto = (
-            dezenas
-            .replace(
-                ",",
-                " "
-            )
-            .replace(
-                ";",
-                " "
-            )
-        )
-
-
-        dezenas = (
-            texto
-            .split()
-        )
-
+        return None
 
     try:
 
-        dezenas = [
-            int(
-                str(x)
-                .strip()
-                .zfill(2)
-            )
-            for x in dezenas
-        ]
-
-    except Exception:
-
-        return None
-
-
-    # --------------------------------------------------------
-    # Remove duplicadas
-    # --------------------------------------------------------
-
-    dezenas = sorted(
-        set(
-            x
-            for x in dezenas
-            if 1 <= x <= 25
-        )
-    )
-
-
-    # --------------------------------------------------------
-    # Lotofácil sempre precisa
-    # ter 15 dezenas
-    # --------------------------------------------------------
-
-    if len(dezenas) != 15:
-
-        return None
-
-
-    return {
-
-        "concurso":
-            numero,
-
-        "data":
-            data_apuracao,
-
-        "dezenas":
-            dezenas
-    }
-
-
-# ============================================================
-# GUIDI — ÚLTIMO
-# ============================================================
-
-def get_guidi_latest():
-
-    url = (
-        GUIDI_BASE +
-        "/ultimo"
-    )
-
-
-    data = http_get_json(
-        url
-    )
-
-
-    result = normalize_result(
-        data
-    )
-
-
-    if not result:
-
-        raise ValueError(
-            "Resposta inválida da API Guidi"
-        )
-
-
-    return result
-
-
-# ============================================================
-# GUIDI — CONCURSO
-# ============================================================
-
-def get_guidi_contest(
-    numero
-):
-
-    url = (
-        GUIDI_BASE +
-        f"/{numero}"
-    )
-
-
-    data = http_get_json(
-        url
-    )
-
-
-    result = normalize_result(
-        data
-    )
-
-
-    if not result:
-
-        return None
-
-
-    if (
-        result["concurso"]
-        != int(numero)
-    ):
-
-        return None
-
-
-    return result
-
-
-# ============================================================
-# CAIXA — ÚLTIMO
-# ============================================================
-
-def get_caixa_latest():
-
-    data = http_get_json(
-        CAIXA_BASE
-    )
-
-
-    result = normalize_result(
-        data
-    )
-
-
-    if not result:
-
-        raise ValueError(
-            "Resposta inválida da CAIXA"
-        )
-
-
-    return result
-
-
-# ============================================================
-# CAIXA — CONCURSO
-# ============================================================
-
-def get_caixa_contest(
-    numero
-):
-
-    url = (
-        f"{CAIXA_BASE}/{numero}"
-    )
-
-
-    data = http_get_json(
-        url
-    )
-
-
-    result = normalize_result(
-        data
-    )
-
-
-    if not result:
-
-        return None
-
-
-    if (
-        result["concurso"]
-        != int(numero)
-    ):
-
-        return None
-
-
-    return result
-
-
-# ============================================================
-# GITHUB RAW — CONCURSO
-#
-# É apenas um fallback.
-# A base pública pode ficar atrasada.
-# ============================================================
-
-def get_github_contest(
-    numero
-):
-
-    url = (
-        f"{GITHUB_RAW_BASE}/"
-        f"{numero}.json"
-    )
-
-
-    try:
-
-        data = http_get_json(
-            url,
-            retries=1
-        )
-
-
-        result = normalize_result(
+        with open(
+            LOCAL_DATA_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            data = json.load(f)
+
+        resultados = normalize_dataset(
             data
         )
 
+        if resultados:
 
-        if not result:
-
-            return None
-
-
-        if (
-            result["concurso"]
-            != int(numero)
-        ):
-
-            return None
-
-
-        return result
-
+            return resultados
 
     except Exception:
 
-        return None
+        pass
+
+    return None
 
 
 # ============================================================
-# ÚLTIMO CONCURSO
-#
-# ORDEM:
-#
-# 1. CACHE
-# 2. GUIDI
-# 3. CAIXA
-# 4. GITHUB
+# CARREGAR DATASET REMOTO
+# ============================================================
+
+def load_remote_dataset():
+
+    data = http_get_json(
+        REMOTE_HISTORY_URL
+    )
+
+    resultados = normalize_dataset(
+        data
+    )
+
+    if not resultados:
+
+        raise RuntimeError(
+            "Dataset remoto inválido."
+        )
+
+    # Guarda uma cópia local
+    # para permitir recuperação.
+    save_local_dataset(
+        data
+    )
+
+    return resultados
+
+
+# ============================================================
+# DATASET COMPLETO
+# ============================================================
+
+def get_all_history():
+
+    key = "all_history"
+
+    cached = cache_get(
+        key
+    )
+
+    if cached:
+
+        return cached
+
+    # --------------------------------------------------------
+    # 1. Tenta arquivo local
+    # --------------------------------------------------------
+
+    local = load_local_dataset()
+
+    if local:
+
+        cache_set(
+            key,
+            local
+        )
+
+        return local
+
+    # --------------------------------------------------------
+    # 2. Tenta fonte remota
+    # --------------------------------------------------------
+
+    try:
+
+        remoto = load_remote_dataset()
+
+        cache_set(
+            key,
+            remoto
+        )
+
+        return remoto
+
+    except Exception as remote_error:
+
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                "Não foi possível carregar "
+                "o histórico da Lotofácil. "
+                f"Fonte: {remote_error}"
+            )
+        )
+
+
+# ============================================================
+# ÚLTIMO RESULTADO
 # ============================================================
 
 def get_latest():
 
-    key = "latest"
+    history = get_all_history()
 
+    if not history:
 
-    cached = cache_get(
-        key
-    )
-
-
-    if cached:
-
-        return cached
-
-
-    erros = []
-
-
-    # --------------------------------------------------------
-    # GUIDI
-    # --------------------------------------------------------
-
-    try:
-
-        result = get_guidi_latest()
-
-
-        if result:
-
-            cache_set(
-                key,
-                result
-            )
-
-
-            return result
-
-
-    except Exception as e:
-
-        erros.append(
-            "Guidi: " +
-            str(e)
+        raise HTTPException(
+            status_code=502,
+            detail="Histórico vazio."
         )
 
-
-    # --------------------------------------------------------
-    # CAIXA
-    # --------------------------------------------------------
-
-    try:
-
-        result = get_caixa_latest()
-
-
-        if result:
-
-            cache_set(
-                key,
-                result
-            )
-
-
-            return result
-
-
-    except Exception as e:
-
-        erros.append(
-            "CAIXA: " +
-            str(e)
-        )
-
-
-    # --------------------------------------------------------
-    # GITHUB
-    # --------------------------------------------------------
-
-    # Não usamos _ultimo como
-    # fonte oficial atual, pois
-    # pode estar atrasado.
-    #
-    # Portanto o GitHub fica
-    # apenas como fallback futuro
-    # para concursos específicos.
-    # --------------------------------------------------------
-
-
-    raise HTTPException(
-
-        status_code=502,
-
-        detail=(
-            "Não foi possível "
-            "obter o último "
-            "resultado. "
-            +
-            " | ".join(erros)
-        )
-    )
-
-
-# ============================================================
-# CONCURSO INDIVIDUAL
-#
-# ORDEM:
-#
-# 1. CACHE
-# 2. GUIDI
-# 3. CAIXA
-# 4. GITHUB
-# ============================================================
-
-def get_contest(
-    numero
-):
-
-    numero = int(
-        numero
-    )
-
-
-    key = (
-        f"contest:{numero}"
-    )
-
-
-    cached = cache_get(
-        key
-    )
-
-
-    if cached:
-
-        return cached
-
-
-    # --------------------------------------------------------
-    # GUIDI
-    # --------------------------------------------------------
-
-    try:
-
-        result = (
-            get_guidi_contest(
-                numero
-            )
-        )
-
-
-        if result:
-
-            cache_set(
-                key,
-                result
-            )
-
-
-            return result
-
-
-    except Exception:
-
-        pass
-
-
-    # --------------------------------------------------------
-    # CAIXA
-    # --------------------------------------------------------
-
-    try:
-
-        result = (
-            get_caixa_contest(
-                numero
-            )
-        )
-
-
-        if result:
-
-            cache_set(
-                key,
-                result
-            )
-
-
-            return result
-
-
-    except Exception:
-
-        pass
-
-
-    # --------------------------------------------------------
-    # GITHUB
-    # --------------------------------------------------------
-
-    try:
-
-        result = (
-            get_github_contest(
-                numero
-            )
-        )
-
-
-        if result:
-
-            cache_set(
-                key,
-                result
-            )
-
-
-            return result
-
-
-    except Exception:
-
-        pass
-
-
-    return None
+    return history[-1]
 
 
 # ============================================================
@@ -994,176 +655,19 @@ def get_history(
     limit=HISTORY_LIMIT
 ):
 
-    # --------------------------------------------------------
-    # Limite
-    # --------------------------------------------------------
-
-    try:
-
-        limite = int(
-            limit
-        )
-
-    except Exception:
-
-        limite = HISTORY_LIMIT
-
+    history = get_all_history()
 
     limite = max(
         1,
         min(
-            limite,
+            int(limit),
             HISTORY_LIMIT
         )
     )
 
-
-    # --------------------------------------------------------
-    # Último concurso
-    # --------------------------------------------------------
-
-    latest = get_latest()
-
-
-    ultimo = (
-        latest["concurso"]
-    )
-
-
-    # --------------------------------------------------------
-    # Lista
-    # --------------------------------------------------------
-
-    numeros = [
-        ultimo - i
-        for i in range(
-            limite
-        )
-        if ultimo - i > 0
+    return history[
+        -limite:
     ]
-
-
-    resultados = []
-
-
-    # --------------------------------------------------------
-    # Último resultado
-    # --------------------------------------------------------
-
-    resultados.append(
-        latest
-    )
-
-
-    numeros_restantes = [
-        n
-        for n in numeros
-        if n != ultimo
-    ]
-
-
-    # --------------------------------------------------------
-    # Busca controlada
-    # --------------------------------------------------------
-
-    with ThreadPoolExecutor(
-        max_workers=MAX_WORKERS
-    ) as executor:
-
-
-        futures = {
-
-            executor.submit(
-                get_contest,
-                numero
-            ):
-                numero
-
-            for numero
-            in numeros_restantes
-
-        }
-
-
-        for future in as_completed(
-            futures
-        ):
-
-            try:
-
-                result = (
-                    future.result()
-                )
-
-
-                if result:
-
-                    resultados.append(
-                        result
-                    )
-
-
-            except Exception:
-
-                continue
-
-
-    # --------------------------------------------------------
-    # Remove duplicados
-    # --------------------------------------------------------
-
-    unicos = {}
-
-
-    for resultado in resultados:
-
-        concurso = (
-            resultado.get(
-                "concurso"
-            )
-        )
-
-
-        if concurso is not None:
-
-            unicos[
-                int(concurso)
-            ] = resultado
-
-
-    resultados = list(
-        unicos.values()
-    )
-
-
-    # --------------------------------------------------------
-    # Ordena
-    # --------------------------------------------------------
-
-    resultados.sort(
-        key=lambda x:
-            x["concurso"]
-    )
-
-
-    # --------------------------------------------------------
-    # Segurança
-    # --------------------------------------------------------
-
-    if not resultados:
-
-        raise HTTPException(
-
-            status_code=502,
-
-            detail=(
-                "Nenhum concurso "
-                "foi carregado."
-            )
-        )
-
-
-    return resultados
 
 
 # ============================================================
@@ -1178,24 +682,15 @@ def root():
         "index.html"
     )
 
-
     if not os.path.exists(
         path
     ):
 
         return JSONResponse({
-
-            "app":
-                "Lotofácil Monitor",
-
-            "version":
-                APP_VERSION,
-
-            "status":
-                "online"
-
+            "app": "Lotofácil Monitor",
+            "version": APP_VERSION,
+            "status": "online"
         })
-
 
     return FileResponse(
         path
@@ -1207,156 +702,3 @@ def root():
 # ============================================================
 
 @app.get("/health")
-def health():
-
-    return {
-
-        "status":
-            "online",
-
-        "version":
-            APP_VERSION,
-
-        "timestamp":
-            int(
-                time.time()
-            )
-    }
-
-
-# ============================================================
-# STATUS
-# ============================================================
-
-@app.get("/api/status")
-def api_status():
-
-    latest = (
-        get_latest()
-    )
-
-
-    return {
-
-        "status":
-            "online",
-
-        "version":
-            APP_VERSION,
-
-        "ultimo_concurso":
-            latest[
-                "concurso"
-            ],
-
-        "data":
-            latest[
-                "data"
-            ]
-    }
-
-
-# ============================================================
-# ÚLTIMO
-# ============================================================
-
-@app.get(
-    "/api/lotofacil/latest"
-)
-def api_latest():
-
-    return get_latest()
-
-
-# ============================================================
-# HISTÓRICO
-# ============================================================
-
-@app.get(
-    "/api/lotofacil/history"
-)
-def api_history(
-    limit: int = HISTORY_LIMIT
-):
-
-    dados = get_history(
-        limit
-    )
-
-
-    return {
-
-        "version":
-            APP_VERSION,
-
-        "limit":
-            limit,
-
-        "count":
-            len(
-                dados
-            ),
-
-        "data":
-            dados
-    }
-
-
-# ============================================================
-# CONCURSO INDIVIDUAL
-# ============================================================
-
-@app.get(
-    "/api/lotofacil/{concurso}"
-)
-def api_contest(
-    concurso: int
-):
-
-    result = get_contest(
-        concurso
-    )
-
-
-    if not result:
-
-        raise HTTPException(
-
-            status_code=404,
-
-            detail=(
-                "Concurso "
-                "não encontrado"
-            )
-        )
-
-
-    return result
-
-
-# ============================================================
-# EXECUÇÃO
-# ============================================================
-
-if __name__ == "__main__":
-
-    import uvicorn
-
-
-    port = int(
-        os.environ.get(
-            "PORT",
-            "8000"
-        )
-    )
-
-
-    uvicorn.run(
-
-        "app:app",
-
-        host="0.0.0.0",
-
-        port=port
-
-    )
