@@ -3,549 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#6d35e8">
+<meta name="theme-color" content="#0b1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
 <title>Lotofácil Monitor V25.7</title>
 
 <style>
-:root{
-  --roxo:#6735e8;
-  --roxo2:#7c43f5;
-  --roxo3:#5424c9;
-  --fundo:#f5f2ff;
-  --card:#ffffff;
-  --texto:#171525;
-  --muted:#777489;
-  --linha:#e1dcf5;
-  --verde:#31934e;
-  --vermelho:#b54848;
-  --amarelo:#c99200;
-  --sombra:0 8px 28px rgba(71,42,140,.08);
-}
-
 *{
   box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
+  margin:0;
+  padding:0;
 }
 
 body{
-  margin:0;
-  background:var(--fundo);
-  color:var(--texto);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  font-weight:600;
+  background:#07101f;
+  color:#eaf0f8;
+  padding-bottom:40px;
 }
 
-button,
-input{
-  font:inherit;
-}
-
-.app{
-  width:min(900px,100%);
+.container{
+  width:min(1100px,94%);
   margin:auto;
-  padding:18px 14px 60px;
 }
 
-.card{
-  background:var(--card);
-  border:2px solid var(--linha);
-  border-radius:32px;
-  padding:28px;
-  margin-bottom:18px;
-  box-shadow:var(--sombra);
+header{
+  padding:25px 0 18px;
+  text-align:center;
 }
 
-.hero{
-  padding:34px 28px 28px;
+header h1{
+  font-size:28px;
+  font-weight:800;
 }
 
-.hero-top{
-  display:flex;
-  gap:20px;
-  align-items:center;
-}
-
-.logo{
-  width:138px;
-  height:138px;
-  min-width:138px;
-  border-radius:38px;
-  background:linear-gradient(135deg,#6735e8,#8749ff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:72px;
-  box-shadow:0 12px 30px rgba(103,53,232,.22);
-}
-
-h1{
-  margin:0;
-  font-size:48px;
-  line-height:1.02;
-  letter-spacing:-2px;
-}
-
-.subtitle{
-  color:var(--muted);
-  font-size:24px;
-  line-height:1.25;
-  margin-top:18px;
+header p{
+  margin-top:7px;
+  color:#91a0b5;
+  font-size:13px;
 }
 
 .status{
-  margin-top:30px;
-  padding:20px 22px;
-  border-radius:26px;
-  background:#effaf2;
-  border:3px solid #bde7c9;
-  font-size:22px;
-  line-height:1.25;
+  margin:10px auto 18px;
+  padding:11px 14px;
+  border-radius:12px;
+  background:#111c2d;
+  border:1px solid #26364d;
+  font-size:13px;
+  text-align:center;
+}
+
+.status.ok{
+  color:#7ee2a8;
+  border-color:#1d6741;
+}
+
+.status.warn{
+  color:#ffd166;
+  border-color:#806b21;
 }
 
 .status.error{
-  background:#fff2f2;
-  border-color:#f0baba;
+  color:#ff8585;
+  border-color:#713333;
 }
 
-.status.loading{
-  background:#f4f0ff;
-  border-color:#d8ccff;
-}
-
-.btn{
-  width:100%;
+button{
   border:0;
-  border-radius:24px;
-  padding:19px 20px;
-  margin-top:20px;
-  color:white;
-  background:linear-gradient(135deg,var(--roxo),var(--roxo2));
-  font-size:22px;
-  font-weight:800;
+  border-radius:10px;
+  padding:11px 15px;
+  font-weight:700;
   cursor:pointer;
-  box-shadow:0 10px 22px rgba(103,53,232,.18);
 }
 
-.btn:active{
-  transform:scale(.99);
+.btn-primary{
+  background:#1d8cf8;
+  color:white;
 }
 
-.btn.secondary{
-  background:#f0ebff;
-  color:var(--roxo);
-  box-shadow:none;
+.btn-secondary{
+  background:#18263a;
+  color:#dce7f5;
+  border:1px solid #2b3d56;
 }
 
-.section-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:35px;
-  line-height:1.05;
-  margin:0 0 22px;
-  letter-spacing:-1px;
-}
-
-.description{
-  color:var(--muted);
-  font-size:18px;
-  line-height:1.6;
-  margin-bottom:22px;
-}
-
-.grid2{
+.grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:#0e1929;
+  border:1px solid #22344d;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
+
+.card h2{
+  font-size:16px;
+  margin-bottom:12px;
 }
 
 .metric{
-  border:2px solid var(--linha);
-  border-radius:25px;
-  padding:24px;
-  min-height:125px;
+  font-size:25px;
+  font-weight:800;
 }
 
-.metric .value{
-  font-size:43px;
-  line-height:1;
-  font-weight:900;
-  letter-spacing:-1px;
+.label{
+  color:#8999ae;
+  font-size:12px;
+  margin-top:4px;
 }
 
-.metric .label{
-  color:var(--muted);
-  font-size:18px;
-  line-height:1.25;
-  margin-top:12px;
+.section-title{
+  font-size:19px;
+  font-weight:800;
+  margin:20px 0 10px;
 }
 
-.metric.good .value{
-  color:var(--verde);
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#17263b;
+  border:1px solid #2c405d;
+  font-size:12px;
+  margin:3px;
 }
 
-.metric.bad .value{
-  color:var(--vermelho);
+.badge.good{
+  color:#8df0b3;
 }
 
-.metric.warn .value{
-  color:var(--amarelo);
+.badge.warn{
+  color:#ffd166;
 }
 
-.result-box{
-  border:2px solid var(--linha);
-  border-radius:28px;
-  padding:22px;
-  margin-top:16px;
-}
-
-.result-title{
-  font-size:23px;
-  margin-bottom:16px;
-}
-
-.balls{
+.numbers{
   display:flex;
   flex-wrap:wrap;
-  gap:12px;
+  gap:7px;
 }
 
 .ball{
-  width:60px;
-  height:60px;
+  width:35px;
+  height:35px;
   border-radius:50%;
-  background:var(--roxo);
-  color:#fff;
   display:flex;
-  justify-content:center;
   align-items:center;
-  font-size:21px;
-  font-weight:900;
+  justify-content:center;
+  background:#17283f;
+  border:1px solid #34506f;
+  font-size:12px;
+  font-weight:800;
 }
 
-.ball.outline{
-  background:#fff;
-  color:var(--roxo);
-  border:5px solid var(--roxo);
+.ball.highlight{
+  background:#1c5d47;
+  border-color:#42bf8a;
 }
 
-.ball.small{
-  width:48px;
-  height:48px;
-  font-size:17px;
+.ball.game{
+  background:#173f65;
+  border-color:#2e83ca;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:17px;
+  font-size:12px;
+}
+
+th,td{
+  padding:8px 5px;
+  border-bottom:1px solid #213149;
+  text-align:center;
 }
 
 th{
-  text-align:left;
-  padding:15px 10px;
-  font-size:16px;
-  white-space:nowrap;
+  color:#91a0b5;
 }
 
-td{
-  padding:15px 10px;
-  border-top:2px solid #eeeafa;
-  white-space:nowrap;
-}
-
-tr.selected{
-  background:#f0ebff;
-}
-
-tr.selected td:first-child{
-  font-weight:900;
-}
-
-.good{
-  color:var(--verde);
-}
-
-.bad{
-  color:var(--vermelho);
-}
-
-.neutral{
-  color:var(--muted);
-}
-
-.star{
-  font-size:20px;
-}
-
-.table-wrap{
+.scroll{
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-
-.info{
-  padding:22px;
-  background:#faf9ff;
-  border:2px solid var(--linha);
-  border-radius:25px;
-  font-size:18px;
-  line-height:1.65;
-}
-
-.info strong{
-  color:var(--texto);
-}
-
-.badge{
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:999px;
-  background:#eee8ff;
-  color:var(--roxo);
-  font-weight:900;
-}
-
-.confidence{
-  text-align:center;
-  padding:24px;
-  border-radius:28px;
-  margin-top:20px;
-}
-
-.confidence .big{
-  font-size:36px;
-  font-weight:900;
-}
-
-.confidence.baixa{
-  background:#fff4df;
-  border:2px solid #f2d39c;
-}
-
-.confidence.moderada{
-  background:#fffbea;
-  border:2px solid #ead58d;
-}
-
-.confidence.boa{
-  background:#edf9f0;
-  border:2px solid #bce3c7;
-}
-
-.nucleus-box{
-  padding:25px;
-  background:#faf9ff;
-  border:2px solid var(--linha);
-  border-radius:28px;
-}
-
-.nucleus-title{
-  font-size:25px;
-  font-weight:900;
-  margin-bottom:18px;
-}
-
-.signal-row{
-  display:grid;
-  grid-template-columns:1.5fr .7fr .7fr .8fr;
-  gap:10px;
-  align-items:center;
-  padding:17px 5px;
-  border-top:2px solid #eeeafa;
-  font-size:17px;
-}
-
-.signal-head{
-  font-weight:900;
-  color:var(--muted);
-  border-top:0;
 }
 
 .game{
-  border:2px solid var(--linha);
-  border-radius:28px;
-  padding:24px;
-  margin-top:16px;
-}
-
-.game-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:18px;
+  margin-top:12px;
+  padding:14px;
+  background:#0a1525;
+  border:1px solid #233b57;
+  border-radius:14px;
 }
 
 .game-title{
-  font-size:27px;
-  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
 }
 
-.cover{
-  background:#f0ebff;
-  color:var(--roxo);
-  border-radius:999px;
-  padding:8px 13px;
-  font-size:15px;
-  font-weight:900;
+.game-title strong{
+  color:#8fd3ff;
 }
 
-.game-stats{
-  color:var(--muted);
-  font-size:16px;
+.small{
+  font-size:11px;
+  color:#8292a8;
+}
+
+.alert{
+  padding:12px;
+  border-radius:10px;
+  background:#171d27;
+  border:1px solid #303d4d;
+  color:#aebbd0;
+  font-size:12px;
   line-height:1.5;
-  margin-top:15px;
-}
-
-.coverage-box{
-  padding:24px;
-  border-radius:27px;
-  border:2px solid var(--linha);
-  background:#faf9ff;
-}
-
-.coverage-number{
-  font-size:46px;
-  font-weight:900;
-}
-
-.coverage-label{
-  color:var(--muted);
-  font-size:18px;
-}
-
-.progress{
-  height:15px;
-  background:#ece8f8;
-  border-radius:999px;
-  overflow:hidden;
-  margin-top:16px;
-}
-
-.progress span{
-  display:block;
-  height:100%;
-  background:linear-gradient(90deg,var(--roxo),#9b68ff);
-  border-radius:999px;
-}
-
-.input{
-  width:100%;
-  border:2px solid var(--linha);
-  border-radius:22px;
-  padding:18px;
-  font-size:18px;
-  outline:none;
-  background:#fff;
-}
-
-.input:focus{
-  border-color:var(--roxo);
-}
-
-.validation-result{
-  margin-top:18px;
 }
 
 .footer{
   text-align:center;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.6;
-  padding:15px;
+  color:#66778f;
+  font-size:11px;
+  margin-top:25px;
 }
 
-@media(max-width:650px){
-  .app{
-    padding:12px 10px 45px;
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:480px){
+  header h1{
+    font-size:24px;
+  }
+
+  .container{
+    width:94%;
   }
 
   .card{
-    border-radius:27px;
-    padding:21px;
-  }
-
-  .hero{
-    padding:26px 20px 22px;
-  }
-
-  .hero-top{
-    gap:15px;
-    align-items:flex-start;
-  }
-
-  .logo{
-    width:90px;
-    height:90px;
-    min-width:90px;
-    border-radius:28px;
-    font-size:48px;
-  }
-
-  h1{
-    font-size:37px;
-  }
-
-  .subtitle{
-    font-size:18px;
-    margin-top:11px;
-  }
-
-  .status{
-    font-size:18px;
-    padding:16px;
-  }
-
-  .section-title{
-    font-size:29px;
-  }
-
-  .grid2{
-    gap:10px;
-  }
-
-  .metric{
-    padding:19px 15px;
-    min-height:110px;
-  }
-
-  .metric .value{
-    font-size:35px;
-  }
-
-  .metric .label{
-    font-size:16px;
+    padding:13px;
   }
 
   .ball{
-    width:55px;
-    height:55px;
-    font-size:19px;
-  }
-
-  .signal-row{
-    grid-template-columns:1.45fr .65fr .65fr .75fr;
-    font-size:14px;
-    gap:5px;
-  }
-
-  table{
-    font-size:15px;
-  }
-
-  th,td{
-    padding:12px 8px;
-  }
-
-  .game{
-    padding:20px;
-  }
-
-  .game-title{
-    font-size:24px;
+    width:32px;
+    height:32px;
   }
 }
 </style>
@@ -553,377 +260,197 @@ tr.selected td:first-child{
 
 <body>
 
-<div class="app">
-
-  <!-- HERO -->
-  <section class="card hero">
-    <div class="hero-top">
-      <div class="logo">🧠</div>
-
-      <div>
-        <h1>Lotofácil<br>Monitor V25.7</h1>
-        <div class="subtitle">
-          Intelligence Engine • Walk-forward • Estabilidade • Baseline
-        </div>
-      </div>
-    </div>
-
-    <div id="status" class="status loading">
-      🟡 Carregando motor e histórico...
-    </div>
-
-    <button class="btn" onclick="carregarTudo()">
-      🔄 Atualizar dados
-    </button>
-  </section>
-
-
-  <!-- DADOS -->
-  <section class="card">
-    <h2 class="section-title">📡 Dados da Lotofácil</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div id="ultimoConcurso" class="value">—</div>
-        <div class="label">Último concurso</div>
-      </div>
-
-      <div class="metric">
-        <div id="totalConcursos" class="value">—</div>
-        <div class="label">Concursos analisados</div>
-      </div>
-    </div>
-
-    <div class="result-box">
-      <div class="result-title">🎯 Último resultado</div>
-      <div id="ultimoResultado" class="balls"></div>
-    </div>
-
-    <div class="info" style="margin-top:18px">
-      <strong>V25.7:</strong>
-      o sistema trabalha internamente com os concursos em ordem
-      cronológica, do mais antigo para o mais recente. Isso evita que
-      recência e atraso sejam calculados ao contrário.
-    </div>
-  </section>
-
-
-  <!-- MONTE CARLO -->
-  <section class="card">
-    <h2 class="section-title">🎲 Monte Carlo V25.7</h2>
-
-    <div class="description">
-      São simulados 10.000 jogos aleatórios de 15 dezenas contra o último
-      resultado. O objetivo é criar uma referência estatística independente
-      do tamanho do núcleo.
-    </div>
-
-    <div class="grid2">
-      <div class="metric">
-        <div class="value">10.000</div>
-        <div class="label">Simulações</div>
-      </div>
-
-      <div class="metric">
-        <div id="mcMedia" class="value">—</div>
-        <div class="label">Média aleatória</div>
-      </div>
-
-      <div class="metric">
-        <div id="mcMin" class="value">—</div>
-        <div class="label">Menor resultado</div>
-      </div>
-
-      <div class="metric">
-        <div id="mcMax" class="value">—</div>
-        <div class="label">Maior resultado</div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- NUCLEO -->
-  <section class="card">
-    <h2 class="section-title">🎯 Teste de tamanho do núcleo</h2>
-
-    <div class="description">
-      Cada tamanho entre 15 e 24 dezenas é testado no mesmo esquema
-      walk-forward. A média é comparada com o baseline matemático
-      correspondente ao tamanho do núcleo.
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Tamanho</th>
-            <th>Testes</th>
-            <th>Média</th>
-            <th>Baseline</th>
-            <th>Vantagem</th>
-            <th>Acima</th>
-            <th>Mediana</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaNucleos"></tbody>
-      </table>
-    </div>
-
-    <div class="info" style="margin-top:20px">
-      ⭐ O núcleo não é escolhido simplesmente pelo maior número de acertos.
-      A V25.7 considera vantagem sobre o baseline, estabilidade, mediana,
-      consistência e penalização progressiva para núcleos muito grandes.
-    </div>
-  </section>
-
-
-  <!-- SINAIS -->
-  <section class="card">
-    <h2 class="section-title">🔬 Eficácia dos sinais</h2>
-
-    <div class="description">
-      Cada sinal é testado isoladamente no mesmo walk-forward. A comparação
-      é feita contra o baseline de um núcleo do mesmo tamanho.
-    </div>
-
-    <div id="sinais"></div>
-  </section>
-
-
-  <!-- WALK FORWARD -->
-  <section class="card">
-    <h2 class="section-title">🧪 Walk-forward V25.7</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div id="wfMedia" class="value">—</div>
-        <div class="label">Média do modelo</div>
-      </div>
-
-      <div class="metric">
-        <div id="wfBaseline" class="value">—</div>
-        <div class="label">Baseline equivalente</div>
-      </div>
-
-      <div id="wfVantBox" class="metric">
-        <div id="wfVantagem" class="value">—</div>
-        <div class="label">Vantagem real</div>
-      </div>
-
-      <div class="metric">
-        <div id="wfTestes" class="value">—</div>
-        <div class="label">Testes</div>
-      </div>
-    </div>
-
-    <div class="grid2" style="margin-top:16px">
-      <div class="metric">
-        <div id="wfAcima" class="value">—</div>
-        <div class="label">% acima do baseline</div>
-      </div>
-
-      <div class="metric">
-        <div id="wfMediana" class="value">—</div>
-        <div class="label">Mediana da vantagem</div>
-      </div>
-
-      <div class="metric">
-        <div id="wfPior" class="value">—</div>
-        <div class="label">Pior vantagem</div>
-      </div>
-
-      <div class="metric">
-        <div id="wfSequencia" class="value">—</div>
-        <div class="label">Maior sequência negativa</div>
-      </div>
-    </div>
-
-    <div id="confianca" class="confidence">
-      <div class="big">—</div>
-      <div style="margin-top:10px">
-        Aguardando análise.
-      </div>
-    </div>
-
-    <div class="info" style="margin-top:20px">
-      <strong>Importante:</strong> vantagem histórica não significa aumento
-      garantido de probabilidade no próximo concurso. A Lotofácil continua
-      sendo um sorteio aleatório.
-    </div>
-  </section>
-
-
-  <!-- NUCLEO ADAPTATIVO -->
-  <section class="card">
-    <h2 class="section-title">🎯 Núcleo Adaptativo V25.7</h2>
-
-    <div class="nucleus-box">
-      <div class="nucleus-title">
-        Núcleo selecionado:
-        <span id="nucleoSelecionado">—</span> dezenas
-      </div>
-
-      <div class="description">
-        A seleção considera desempenho relativo ao baseline,
-        estabilidade e consistência histórica.
-      </div>
-
-      <div class="grid2">
-        <div class="metric">
-          <div id="nucVantagem" class="value">—</div>
-          <div class="label">Vantagem histórica</div>
-        </div>
-
-        <div class="metric">
-          <div id="nucEstabilidade" class="value">—</div>
-          <div class="label">Estabilidade</div>
-        </div>
-      </div>
-
-      <div id="nucleoBolas" class="balls" style="margin-top:24px"></div>
-    </div>
-  </section>
-
-
-  <!-- RANKING -->
-  <section class="card">
-    <h2 class="section-title">🏆 Ranking das 25 dezenas</h2>
-
-    <div class="description">
-      A pontuação combina frequência, recência, atraso, coocorrência,
-      transição e ciclo. Os pesos são ajustados pela eficácia observada
-      dos sinais no walk-forward.
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Dezena</th>
-            <th>Score</th>
-            <th>Freq.</th>
-            <th>Rec.</th>
-            <th>Atr.</th>
-          </tr>
-        </thead>
-
-        <tbody id="ranking"></tbody>
-      </table>
-    </div>
-  </section>
-
-
-  <!-- JOGOS -->
-  <section class="card">
-    <h2 class="section-title">🎲 Jogos V25.7</h2>
-
-    <div class="description">
-      Os 6 jogos são construídos buscando equilíbrio entre força estatística,
-      cobertura das 25 dezenas e baixa repetição entre os jogos.
-    </div>
-
-    <button class="btn" onclick="gerarJogos()">
-      🎲 Gerar 6 jogos
-    </button>
-
-    <div id="jogos"></div>
-  </section>
-
-
-  <!-- COBERTURA -->
-  <section class="card">
-    <h2 class="section-title">🗺️ Cobertura dos 6 jogos</h2>
-
-    <div class="coverage-box">
-      <div id="coberturaNumero" class="coverage-number">—/25</div>
-      <div class="coverage-label">
-        dezenas diferentes cobertas pelos 6 jogos
-      </div>
-
-      <div class="progress">
-        <span id="coberturaBarra" style="width:0%"></span>
-      </div>
-
-      <div id="coberturaDetalhe" class="description" style="margin-top:18px;margin-bottom:0">
-        Gere os jogos para calcular a cobertura.
-      </div>
-    </div>
-  </section>
-
-
-  <!-- VALIDACAO -->
-  <section class="card">
-    <h2 class="section-title">🧪 Validação pós-sorteio</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div id="melhorAcerto" class="value">—</div>
-        <div class="label">Melhor acerto</div>
-      </div>
-
-      <div class="metric">
-        <div id="coberturaValidacao" class="value">—</div>
-        <div class="label">Cobertura dos jogos</div>
-      </div>
-    </div>
-
-    <div class="description" style="margin-top:20px">
-      Digite um resultado de 15 dezenas para comparar contra os 6 jogos
-      atualmente gerados.
-    </div>
-
-    <input
-      id="inputResultado"
-      class="input"
-      placeholder="Ex.: 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15"
-    >
-
-    <button class="btn" onclick="validarJogos()">
-      🔎 Validar jogos
-    </button>
-
-    <div id="resultadoValidacao" class="validation-result"></div>
-  </section>
-
-
-  <!-- HISTORICO -->
-  <section class="card">
-    <h2 class="section-title">📚 Histórico carregado</h2>
-
-    <div class="grid2">
-      <div class="metric">
-        <div id="historicoTotal" class="value">—</div>
-        <div class="label">Concursos disponíveis</div>
-      </div>
-
-      <div class="metric">
-        <div id="historicoAntigo" class="value">—</div>
-        <div class="label">Mais antigo</div>
-      </div>
-    </div>
-
-    <div class="info" style="margin-top:18px">
-      O motor utiliza até 120 concursos. O número de testes walk-forward
-      depende da quantidade de histórico disponível.
-    </div>
-  </section>
-
-
-  <div class="footer">
-    Lotofácil Monitor V25.7<br>
-    Análise estatística histórica — não constitui previsão garantida.
+<div class="container">
+
+<header>
+  <h1>🍀 Lotofácil Monitor V25.7</h1>
+  <p>Intelligence Engine • Walk-forward • Estabilidade • Baseline</p>
+</header>
+
+<div id="status" class="status warn">
+  🟡 Carregando dados...
+</div>
+
+<div style="text-align:center;margin-bottom:15px;">
+  <button class="btn-primary" onclick="carregarTudo(true)">
+    🔄 Atualizar dados
+  </button>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="metric" id="metricConcurso">—</div>
+    <div class="label">Último concurso</div>
+  </div>
+
+  <div class="card">
+    <div class="metric" id="metricHistorico">—</div>
+    <div class="label">Concursos analisados</div>
+  </div>
+
+  <div class="card">
+    <div class="metric" id="metricNucleo">—</div>
+    <div class="label">Tamanho do núcleo</div>
+  </div>
+
+  <div class="card">
+    <div class="metric" id="metricConfianca">—</div>
+    <div class="label">Confiança</div>
   </div>
 
 </div>
 
+<div class="card">
+
+  <h2>🎯 Último resultado</h2>
+
+  <div id="ultimoResultado" class="numbers"></div>
+
+  <div style="margin-top:12px" class="small" id="dataUltimo">
+    —
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h2>🧠 Núcleo V25.7</h2>
+
+  <div id="nucleo" class="numbers"></div>
+
+  <div style="margin-top:12px" id="nucleoInfo"></div>
+
+</div>
+
+<div class="card">
+
+  <h2>📊 Análise do núcleo</h2>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Núcleo</th>
+          <th>Média</th>
+          <th>Baseline</th>
+          <th>Vantagem</th>
+          <th>% acima</th>
+          <th>Confiança</th>
+        </tr>
+      </thead>
+
+      <tbody id="tabelaNucleos"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h2>📡 Sinais estatísticos</h2>
+
+  <div id="sinais"></div>
+
+</div>
+
+<div class="card">
+
+  <h2>🚶 Walk-forward</h2>
+
+  <div class="grid">
+
+    <div>
+      <div class="metric" id="wfTests">—</div>
+      <div class="label">Testes</div>
+    </div>
+
+    <div>
+      <div class="metric" id="wfModelo">—</div>
+      <div class="label">Média modelo</div>
+    </div>
+
+    <div>
+      <div class="metric" id="wfBase">—</div>
+      <div class="label">Baseline</div>
+    </div>
+
+    <div>
+      <div class="metric" id="wfAdv">—</div>
+      <div class="label">Vantagem</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:14px" id="wfInfo"></div>
+
+</div>
+
+<div class="card">
+
+  <h2>🎲 Monte Carlo</h2>
+
+  <div class="grid">
+
+    <div>
+      <div class="metric">10.000</div>
+      <div class="label">Simulações</div>
+    </div>
+
+    <div>
+      <div class="metric" id="mcMedia">—</div>
+      <div class="label">Média aleatória</div>
+    </div>
+
+    <div>
+      <div class="metric" id="mcMin">—</div>
+      <div class="label">Mínimo</div>
+    </div>
+
+    <div>
+      <div class="metric" id="mcMax">—</div>
+      <div class="label">Máximo</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h2>🎯 6 jogos sugeridos</h2>
+
+  <div id="jogos"></div>
+
+</div>
+
+<div class="card">
+
+  <h2>📋 Resumo técnico</h2>
+
+  <div id="resumo" class="alert">
+    Aguardando dados...
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h2>🔎 Diagnóstico da conexão</h2>
+
+  <div id="diagnostico" class="alert">
+    Testando APIs...
+  </div>
+
+</div>
+
+<div class="footer">
+  Lotofácil Monitor V25.7 • Ferramenta estatística experimental
+</div>
+
+</div>
 
 <script>
-"use strict";
-
-/* =========================================================
-   CONFIGURAÇÃO
-========================================================= */
 
 const VERSION = "V25.7";
 
@@ -940,628 +467,583 @@ const MAX_WALK = 80;
 let dados = [];
 let ultimo = null;
 let analise = null;
-let jogosGerados = [];
 
 
 /* =========================================================
    UTILITÁRIOS
 ========================================================= */
 
-function range(a,b){
-  const arr=[];
-  for(let i=a;i<=b;i++) arr.push(i);
-  return arr;
+function $(id){
+  return document.getElementById(id);
 }
 
-function clamp(x,a,b){
-  return Math.max(a,Math.min(b,x));
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve,ms));
 }
 
-function media(arr){
-  if(!arr.length) return 0;
-  return arr.reduce((a,b)=>a+b,0)/arr.length;
+function num(v){
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
 }
 
-function mediana(arr){
-  if(!arr.length) return 0;
+function dezenasNormalizadas(arr){
 
-  const s=[...arr].sort((a,b)=>a-b);
-  const m=Math.floor(s.length/2);
+  if(!Array.isArray(arr)) return [];
 
-  return s.length%2
-    ? s[m]
-    : (s[m-1]+s[m])/2;
-}
-
-function desvio(arr){
-  if(arr.length<2) return 0;
-
-  const m=media(arr);
-
-  return Math.sqrt(
-    media(arr.map(x=>Math.pow(x-m,2)))
-  );
-}
-
-function fmt(x){
-  return Number(x||0).toFixed(2);
-}
-
-function esc(x){
-  return String(x)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function shuffle(arr){
-  const a=[...arr];
-
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-
-  return a;
-}
-
-function normalizarNumero(x){
-  const n=parseInt(String(x).replace(/\D/g,""),10);
-
-  if(!Number.isFinite(n)) return null;
-
-  if(n<1 || n>25) return null;
-
-  return n;
+  return arr
+    .map(x => String(x).padStart(2,"0"))
+    .filter(x => {
+      const n = Number(x);
+      return n >= 1 && n <= 25;
+    })
+    .filter((v,i,a) => a.indexOf(v) === i)
+    .sort((a,b) => Number(a)-Number(b));
 }
 
 
 /* =========================================================
-   NORMALIZAÇÃO DA API
+   FETCH ROBUSTO
 ========================================================= */
 
-function extrairDezenas(obj){
+async function fetchJSON(url, tentativas=2){
 
-  const possiveis=[
-    obj?.listaDezenas,
-    obj?.dezenas,
-    obj?.resultado,
-    obj?.numbers,
-    obj?.numeros
+  let ultimoErro = null;
+
+  for(let tentativa=1; tentativa<=tentativas; tentativa++){
+
+    try{
+
+      const controller = new AbortController();
+
+      const timeout = setTimeout(() => {
+        controller.abort();
+      },12000);
+
+      const response = await fetch(url,{
+        method:"GET",
+        cache:"no-store",
+        headers:{
+          "Accept":"application/json"
+        },
+        signal:controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if(!response.ok){
+        throw new Error(
+          `HTTP ${response.status} em ${url}`
+        );
+      }
+
+      const json = await response.json();
+
+      return json;
+
+    }catch(error){
+
+      ultimoErro = error;
+
+      if(tentativa < tentativas){
+        await sleep(700);
+      }
+
+    }
+
+  }
+
+  throw ultimoErro || new Error("Falha desconhecida");
+}
+
+
+/* =========================================================
+   NORMALIZAÇÃO DO HISTÓRICO
+========================================================= */
+
+function extrairHistorico(payload){
+
+  if(Array.isArray(payload)){
+    return payload;
+  }
+
+  if(!payload || typeof payload !== "object"){
+    return [];
+  }
+
+  const possiveis = [
+    payload.resultados,
+    payload.data,
+    payload.concursos,
+    payload.history,
+    payload.historico
   ];
 
   for(const item of possiveis){
 
     if(Array.isArray(item)){
-
-      const nums=item
-        .map(normalizarNumero)
-        .filter(Boolean);
-
-      if(nums.length>=15){
-        return [...new Set(nums)]
-          .slice(0,15)
-          .sort((a,b)=>a-b);
-      }
+      return item;
     }
 
-    if(typeof item==="string"){
-
-      const nums=item
-        .match(/\d{1,2}/g)
-        ?.map(normalizarNumero)
-        .filter(Boolean) || [];
-
-      if(nums.length>=15){
-        return [...new Set(nums)]
-          .slice(0,15)
-          .sort((a,b)=>a-b);
-      }
-    }
   }
 
   return [];
 }
 
-function extrairConcurso(obj){
 
-  const possiveis=[
-    obj?.concurso,
-    obj?.numero,
-    obj?.contest,
-    obj?.id
-  ];
+function normalizarConcurso(item){
 
-  for(const x of possiveis){
-
-    const n=parseInt(x,10);
-
-    if(Number.isFinite(n) && n>0){
-      return n;
-    }
+  if(!item || typeof item !== "object"){
+    return null;
   }
 
-  return null;
-}
+  const concurso =
+    num(item.concurso || item.numeroConcurso || item.id);
 
-function normalizarConcurso(obj){
+  let dezenas =
+    item.dezenas ||
+    item.listaDezenas ||
+    item.resultado ||
+    item.dezenasSorteadas ||
+    [];
 
-  const dezenas=extrairDezenas(obj);
+  dezenas = dezenasNormalizadas(dezenas);
 
-  const concurso=extrairConcurso(obj);
-
-  if(!concurso || dezenas.length!==15){
+  if(!concurso || dezenas.length !== 15){
     return null;
   }
 
   return {
     concurso,
-    dezenas,
-    data:obj?.data||obj?.dataApuracao||obj?.date||""
+    data:item.data || item.dataApuracao || "",
+    dezenas
   };
 }
 
 
 /* =========================================================
-   API
+   STATUS
 ========================================================= */
 
-async function fetchJSON(url){
+function setStatus(texto,tipo="warn"){
 
-  const response=await fetch(url,{
-    cache:"no-store"
-  });
+  const el = $("status");
 
-  if(!response.ok){
-    throw new Error("HTTP "+response.status);
-  }
+  el.textContent = texto;
 
-  return await response.json();
+  el.className = "status " + tipo;
 }
 
-async function carregarTudo(){
 
-  const status=document.getElementById("status");
+/* =========================================================
+   CARREGAMENTO
+========================================================= */
 
-  status.className="status loading";
-  status.innerHTML="🟡 Atualizando dados...";
+async function carregarTudo(forcar=false){
+
+  setStatus("🟡 Carregando APIs...", "warn");
+
+  $("diagnostico").innerHTML =
+    "Conectando ao servidor...";
+
+  let latestOk = false;
+  let historyOk = false;
+
+  let latestData = null;
+  let historyData = null;
+
+  let erroLatest = "";
+  let erroHistory = "";
+
+  /*
+    IMPORTANTE:
+    Não usamos Promise.all.
+
+    Cada API é tratada separadamente.
+  */
 
   try{
 
-    const [latestRaw,historyRaw]=await Promise.all([
-      fetchJSON(API_LATEST),
-      fetchJSON(API_HISTORY)
-    ]);
+    latestData = await fetchJSON(API_LATEST,2);
 
-    const latest=normalizarConcurso(latestRaw);
+    latestOk = true;
 
-    let arr=[];
+  }catch(e){
 
-    const rawList=
-      Array.isArray(historyRaw)
-        ? historyRaw
-        : (
-          historyRaw?.resultados ||
-          historyRaw?.data ||
-          historyRaw?.concursos ||
-          historyRaw?.history ||
-          []
-        );
+    erroLatest = e?.message || String(e);
 
-    for(const item of rawList){
+  }
 
-      const c=normalizarConcurso(item);
 
-      if(c) arr.push(c);
-    }
+  try{
 
-    if(latest){
+    historyData = await fetchJSON(API_HISTORY,2);
 
-      const existe=arr.some(
-        x=>x.concurso===latest.concurso
-      );
+    historyOk = true;
 
-      if(!existe){
-        arr.push(latest);
-      }
-    }
+  }catch(e){
 
-    const mapa=new Map();
+    erroHistory = e?.message || String(e);
 
-    for(const c of arr){
-      mapa.set(c.concurso,c);
-    }
+  }
 
-    dados=[...mapa.values()]
-      .sort((a,b)=>a.concurso-b.concurso)
+
+  /*
+    PROCESSA ÚLTIMO
+  */
+
+  if(latestOk){
+
+    ultimo = normalizarConcurso(latestData);
+
+  }
+
+
+  /*
+    PROCESSA HISTÓRICO
+  */
+
+  if(historyOk){
+
+    const bruto = extrairHistorico(historyData);
+
+    dados = bruto
+      .map(normalizarConcurso)
+      .filter(Boolean)
+      .sort((a,b) => a.concurso - b.concurso)
       .slice(-120);
 
-    ultimo=
-      latest ||
-      dados[dados.length-1];
+  }
 
-    if(!ultimo || dados.length<10){
-      throw new Error("Histórico insuficiente.");
-    }
 
-    localStorage.setItem(
-      "lotofacil_v257_dados",
-      JSON.stringify(dados)
-    );
+  /*
+    CACHE LOCAL
+  */
 
-    renderBase();
-
-    executarAnalise();
-
-    status.className="status";
-    status.innerHTML=
-      "🟢 <strong>Motor "+VERSION+
-      " ativo</strong> • "+
-      dados.length+
-      " concursos carregados";
-
-  }catch(error){
-
-    console.error(error);
+  if((!latestOk || !historyOk) && !dados.length){
 
     try{
 
-      const cache=
-        JSON.parse(
-          localStorage.getItem("lotofacil_v257_dados")||"[]"
-        );
+      const cache =
+        localStorage.getItem("lotofacil_v257_dados");
 
-      if(cache.length){
+      if(cache){
 
-        dados=cache
-          .sort((a,b)=>a.concurso-b.concurso);
+        const obj = JSON.parse(cache);
 
-        ultimo=dados[dados.length-1];
+        if(!ultimo && obj.ultimo){
+          ultimo = obj.ultimo;
+        }
 
-        renderBase();
-        executarAnalise();
+        if(!dados.length && Array.isArray(obj.dados)){
+          dados = obj.dados;
+        }
 
-        status.className="status";
-        status.innerHTML=
-          "🟡 Dados locais utilizados • "+
-          dados.length+
-          " concursos";
-
-        return;
       }
 
     }catch(e){}
 
-    status.className="status error";
-    status.innerHTML=
-      "🔴 Não foi possível carregar os dados.";
-  }
-}
-
-
-/* =========================================================
-   RENDER BASE
-========================================================= */
-
-function renderBase(){
-
-  document.getElementById("ultimoConcurso").textContent=
-    ultimo.concurso;
-
-  document.getElementById("totalConcursos").textContent=
-    dados.length;
-
-  document.getElementById("historicoTotal").textContent=
-    dados.length;
-
-  document.getElementById("historicoAntigo").textContent=
-    dados[0]?.concurso || "—";
-
-  document.getElementById("ultimoResultado").innerHTML=
-    ultimo.dezenas
-      .map(n=>`<div class="ball">${String(n).padStart(2,"0")}</div>`)
-      .join("");
-}
-
-
-/* =========================================================
-   ESTRUTURA ESTATÍSTICA
-========================================================= */
-
-function frequencia(treino){
-
-  const mapa=Object.fromEntries(
-    range(1,25).map(n=>[n,0])
-  );
-
-  for(const c of treino){
-
-    for(const n of c.dezenas){
-
-      mapa[n]++;
-    }
   }
 
-  const max=Math.max(...Object.values(mapa),1);
-
-  return Object.fromEntries(
-    range(1,25).map(n=>[
-      n,
-      mapa[n]/max
-    ])
-  );
-}
-
-
-function calcularRecencia(treino){
-
-  const ultimoIndice=treino.length-1;
-
-  const gaps={};
-
-  for(let n=1;n<=25;n++){
-
-    let gap=treino.length+1;
-
-    for(let i=ultimoIndice;i>=0;i--){
-
-      if(treino[i].dezenas.includes(n)){
-
-        gap=ultimoIndice-i;
-        break;
-      }
-    }
-
-    gaps[n]=gap;
-  }
 
   /*
-    Recência:
-    gap 0 = apareceu no último concurso.
-    Quanto menor o gap, maior a recência.
+    SE O ÚLTIMO NÃO VEIO,
+    TENTA PEGAR DO HISTÓRICO
   */
 
-  const maxGap=Math.max(...Object.values(gaps),1);
+  if(!ultimo && dados.length){
 
-  const score={};
+    ultimo = dados[dados.length-1];
 
-  for(let n=1;n<=25;n++){
-
-    score[n]=1-(gaps[n]/(maxGap+1));
   }
 
-  return {
-    score,
-    gaps
-  };
-}
 
+  /*
+    DIAGNÓSTICO
+  */
 
-function calcularAtraso(treino){
+  $("diagnostico").innerHTML = `
+    <b>Último concurso:</b>
+    ${latestOk ? "🟢 OK" : "🔴 FALHOU"}<br>
 
-  const ultimoIndice=treino.length-1;
+    <b>Histórico:</b>
+    ${historyOk ? "🟢 OK" : "🔴 FALHOU"}<br>
 
-  const gaps={};
+    <b>Concursos disponíveis:</b>
+    ${dados.length}<br>
 
-  for(let n=1;n<=25;n++){
-
-    let gap=treino.length;
-
-    for(let i=ultimoIndice;i>=0;i--){
-
-      if(treino[i].dezenas.includes(n)){
-
-        gap=ultimoIndice-i;
-        break;
-      }
+    ${
+      erroLatest
+      ? `<br><b>Erro latest:</b> ${escapeHTML(erroLatest)}`
+      : ""
     }
 
-    gaps[n]=gap;
-  }
-
-  const maxGap=Math.max(...Object.values(gaps),1);
-
-  const score={};
-
-  for(let n=1;n<=25;n++){
-
-    score[n]=gaps[n]/maxGap;
-  }
-
-  return {
-    score,
-    gaps
-  };
-}
+    ${
+      erroHistory
+      ? `<br><b>Erro histórico:</b> ${escapeHTML(erroHistory)}`
+      : ""
+    }
+  `;
 
 
-function calcularCoocorrencia(treino){
+  /*
+    SE TEM DADOS, RENDERIZA
+  */
 
-  const score=
-    Object.fromEntries(range(1,25).map(n=>[n,0]));
+  if(ultimo || dados.length){
 
-  const janela=treino.slice(-40);
+    if(dados.length){
 
-  const recentes=
-    janela.slice(-10);
+      try{
 
-  for(const n of range(1,25)){
+        localStorage.setItem(
+          "lotofacil_v257_dados",
+          JSON.stringify({
+            ultimo,
+            dados,
+            atualizadoEm:new Date().toISOString()
+          })
+        );
 
-    let valor=0;
+      }catch(e){}
 
-    for(const c of janela){
-
-      if(c.dezenas.includes(n)){
-
-        for(const x of c.dezenas){
-
-          if(x!==n){
-            valor++;
-          }
-        }
-      }
     }
 
-    score[n]=valor;
-  }
+    executarAnalise();
 
-  const max=Math.max(...Object.values(score),1);
+    if(latestOk && historyOk){
 
-  return Object.fromEntries(
-    range(1,25).map(n=>[
-      n,
-      score[n]/max
-    ])
-  );
-}
-
-
-function calcularTransicao(treino){
-
-  const score=
-    Object.fromEntries(range(1,25).map(n=>[n,0]));
-
-  const total=
-    Object.fromEntries(range(1,25).map(n=>[n,0]));
-
-  for(let i=0;i<treino.length-1;i++){
-
-    const atual=treino[i];
-    const proximo=treino[i+1];
-
-    for(const n of atual.dezenas){
-
-      total[n]++;
-
-      for(const x of proximo.dezenas){
-
-        score[x]+=1/(total[n]+1);
-      }
-    }
-  }
-
-  const max=Math.max(...Object.values(score),1);
-
-  return Object.fromEntries(
-    range(1,25).map(n=>[
-      n,
-      score[n]/max
-    ])
-  );
-}
-
-
-function calcularCiclo(treino){
-
-  const score=
-    Object.fromEntries(range(1,25).map(n=>[n,0]));
-
-  for(const n of range(1,25)){
-
-    const ocorrencias=[];
-
-    for(let i=0;i<treino.length;i++){
-
-      if(treino[i].dezenas.includes(n)){
-        ocorrencias.push(i);
-      }
-    }
-
-    if(ocorrencias.length<3){
-
-      score[n]=.5;
-      continue;
-    }
-
-    const gaps=[];
-
-    for(let i=1;i<ocorrencias.length;i++){
-
-      gaps.push(
-        ocorrencias[i]-ocorrencias[i-1]
+      setStatus(
+        "🟢 Dados atualizados com sucesso",
+        "ok"
       );
+
+    }else{
+
+      setStatus(
+        "🟡 Dados carregados parcialmente — usando o que está disponível",
+        "warn"
+      );
+
     }
 
-    const ciclo=media(gaps);
+    return;
 
-    const atual=
-      treino.length-1-ocorrencias[ocorrencias.length-1];
-
-    const distancia=
-      Math.abs(atual-ciclo);
-
-    score[n]=
-      1/(1+distancia);
   }
 
-  const max=Math.max(...Object.values(score),1);
 
-  return Object.fromEntries(
-    range(1,25).map(n=>[
-      n,
-      score[n]/max
-    ])
+  setStatus(
+    "🔴 Não foi possível carregar os dados",
+    "error"
   );
+
 }
 
 
 /* =========================================================
-   SINAIS
+   ANÁLISE PRINCIPAL
 ========================================================= */
 
-const SINAIS=[
-  {
-    id:"frequencia",
-    nome:"🔥 Frequência",
-    base:.28
-  },
-  {
-    id:"recencia",
-    nome:"🕐 Recência",
-    base:.24
-  },
-  {
-    id:"atraso",
-    nome:"❄️ Atraso",
-    base:.10
-  },
-  {
-    id:"coocorrencia",
-    nome:"🔗 Coocorrência",
-    base:.14
-  },
-  {
-    id:"transicao",
-    nome:"➡️ Transição",
-    base:.12
-  },
-  {
-    id:"ciclo",
-    nome:"🔄 Ciclo",
-    base:.12
+function executarAnalise(){
+
+  if(!dados.length){
+    return;
   }
-];
+
+  const historico = dados.slice();
+
+  analise = calcularModelo(historico);
+
+  renderTudo();
+
+}
 
 
-function calcularSinais(treino){
+/* =========================================================
+   FREQUÊNCIA
+========================================================= */
 
-  const freq=frequencia(treino);
-  const rec=calcularRecencia(treino);
-  const atr=calcularAtraso(treino);
-  const coo=calcularCoocorrencia(treino);
-  const tra=calcularTransicao(treino);
-  const cic=calcularCiclo(treino);
+function calcularFrequencia(lista){
 
-  return {
-    frequencia:freq,
-    recencia:rec.score,
-    atraso:atr.score,
-    coocorrencia:coo,
-    transicao:tra,
-    ciclo:cic
-  };
+  const freq = Array(26).fill(0);
+
+  for(const concurso of lista){
+
+    for(const d of concurso.dezenas){
+
+      freq[Number(d)]++;
+
+    }
+
+  }
+
+  return freq;
+}
+
+
+/* =========================================================
+   RECÊNCIA
+   Quanto mais recente, maior.
+========================================================= */
+
+function calcularRecencia(lista){
+
+  const score = Array(26).fill(0);
+
+  const n = lista.length;
+
+  for(let i=0;i<n;i++){
+
+    const peso = (i+1)/n;
+
+    for(const d of lista[i].dezenas){
+
+      score[Number(d)] += peso;
+
+    }
+
+  }
+
+  return score;
+}
+
+
+/* =========================================================
+   ATRASO
+   Conta concursos desde a última aparição.
+========================================================= */
+
+function calcularAtraso(lista){
+
+  const atraso = Array(26).fill(lista.length);
+
+  for(let i=lista.length-1;i>=0;i--){
+
+    for(const d of lista[i].dezenas){
+
+      const n = Number(d);
+
+      if(atraso[n] === lista.length){
+        atraso[n] = lista.length-1-i;
+      }
+
+    }
+
+  }
+
+  return atraso;
+}
+
+
+/* =========================================================
+   COOCORRÊNCIA
+========================================================= */
+
+function calcularCoocorrencia(lista){
+
+  const co = Array(26).fill(0);
+
+  if(!lista.length){
+    return co;
+  }
+
+  const ultimos = lista.slice(-30);
+
+  for(const concurso of ultimos){
+
+    for(const d of concurso.dezenas){
+
+      co[Number(d)]++;
+    }
+
+  }
+
+  return co;
+}
+
+
+/* =========================================================
+   TRANSIÇÃO
+========================================================= */
+
+function calcularTransicao(lista){
+
+  const score = Array(26).fill(0);
+
+  if(lista.length < 2){
+    return score;
+  }
+
+  for(let i=1;i<lista.length;i++){
+
+    const anterior =
+      new Set(lista[i-1].dezenas);
+
+    for(const d of lista[i].dezenas){
+
+      const n = Number(d);
+
+      if(anterior.has(d)){
+        score[n]++;
+      }
+
+    }
+
+  }
+
+  return score;
+}
+
+
+/* =========================================================
+   CICLO
+========================================================= */
+
+function calcularCiclo(lista){
+
+  const score = Array(26).fill(0);
+
+  if(!lista.length){
+    return score;
+  }
+
+  const ult = lista.slice(-12);
+
+  for(const concurso of ult){
+
+    for(const d of concurso.dezenas){
+
+      score[Number(d)]++;
+    }
+
+  }
+
+  return score;
+}
+
+
+/* =========================================================
+   NORMALIZA
+========================================================= */
+
+function normalizarArray(arr){
+
+  const validos =
+    arr.filter(x => Number.isFinite(x));
+
+  if(!validos.length){
+    return Array(arr.length).fill(0);
+  }
+
+  const min = Math.min(...validos);
+  const max = Math.max(...validos);
+
+  if(max === min){
+    return arr.map(() => 0.5);
+  }
+
+  return arr.map(x =>
+    (x-min)/(max-min)
+  );
 }
 
 
@@ -1569,40 +1051,84 @@ function calcularSinais(treino){
    RANKING
 ========================================================= */
 
-function construirRanking(treino,pesos=null){
+function construirRanking(lista){
 
-  const sinais=calcularSinais(treino);
-
-  const pesosFinais=
-    pesos ||
-    Object.fromEntries(
-      SINAIS.map(s=>[s.id,s.base])
+  const freq =
+    normalizarArray(
+      calcularFrequencia(lista)
     );
 
-  const ranking=[];
+  const rec =
+    normalizarArray(
+      calcularRecencia(lista)
+    );
 
-  for(const n of range(1,25)){
+  const atrasoBruto =
+    calcularAtraso(lista);
 
-    let score=0;
+  /*
+    Atraso é usado como sinal moderado.
+    Não significa que uma dezena "tem que sair".
+  */
 
-    for(const s of SINAIS){
+  const atraso =
+    normalizarArray(
+      atrasoBruto.map(x => Math.min(x,20))
+    );
 
-      score+=
-        (sinais[s.id][n]||0)*
-        (pesosFinais[s.id]||0);
-    }
+  const co =
+    normalizarArray(
+      calcularCoocorrencia(lista)
+    );
+
+  const trans =
+    normalizarArray(
+      calcularTransicao(lista)
+    );
+
+  const ciclo =
+    normalizarArray(
+      calcularCiclo(lista)
+    );
+
+
+  const pesos = {
+    frequencia:0.18,
+    recencia:0.22,
+    atraso:0.10,
+    coocorrencia:0.15,
+    transicao:0.18,
+    ciclo:0.17
+  };
+
+
+  const ranking = [];
+
+  for(let n=1;n<=25;n++){
+
+    const score =
+      freq[n]*pesos.frequencia +
+      rec[n]*pesos.recencia +
+      atraso[n]*pesos.atraso +
+      co[n]*pesos.coocorrencia +
+      trans[n]*pesos.transicao +
+      ciclo[n]*pesos.ciclo;
 
     ranking.push({
       numero:n,
       score,
-      frequencia:sinais.frequencia[n],
-      recencia:sinais.recencia[n],
-      atraso:sinais.atraso[n]
+      frequencia:freq[n],
+      recencia:rec[n],
+      atraso:atraso[n],
+      coocorrencia:co[n],
+      transicao:trans[n],
+      ciclo:ciclo[n]
     });
+
   }
 
-  ranking.sort(
-    (a,b)=>b.score-a.score
+  ranking.sort((a,b) =>
+    b.score-a.score
   );
 
   return ranking;
@@ -1610,451 +1136,227 @@ function construirRanking(treino,pesos=null){
 
 
 /* =========================================================
-   SELEÇÃO DE NÚCLEO
+   BASELINE
 ========================================================= */
 
-function selecionarNucleo(ranking,k){
+function baseline(k){
 
-  return ranking
-    .slice(0,k)
-    .map(x=>x.numero)
-    .sort((a,b)=>a-b);
+  return GAME_SIZE * (k/TOTAL_NUMBERS);
+
 }
 
 
 /* =========================================================
-   TESTE DE UM NÚCLEO
+   TESTE DE NÚCLEO
 ========================================================= */
 
-function testarNucleo(k){
+function avaliarNucleo(lista,k){
 
-  const resultados=[];
+  const resultados = [];
 
-  const inicio=
+  if(lista.length < MIN_TRAIN+5){
+    return null;
+  }
+
+  const inicio =
     Math.max(
       MIN_TRAIN,
-      dados.length-MAX_WALK
+      lista.length-MAX_WALK
     );
 
-  for(let i=inicio;i<dados.length;i++){
+  for(let i=inicio;i<lista.length;i++){
 
-    const treino=
-      dados.slice(
-        Math.max(0,i-MIN_TRAIN),
-        i
-      );
+    const treino =
+      lista.slice(0,i);
 
-    const alvo=dados[i];
+    const alvo =
+      lista[i];
 
-    if(treino.length<MIN_TRAIN) continue;
-
-    const ranking=
+    const ranking =
       construirRanking(treino);
 
-    const nucleo=
-      selecionarNucleo(ranking,k);
-
-    const hits=
-      nucleo.filter(
-        n=>alvo.dezenas.includes(n)
-      ).length;
-
-    const baseline=
-      GAME_SIZE*(k/TOTAL_NUMBERS);
-
-    resultados.push({
-      hits,
-      baseline,
-      vantagem:hits-baseline
-    });
-  }
-
-  return resultados;
-}
-
-
-/* =========================================================
-   TESTE INDIVIDUAL DOS SINAIS
-========================================================= */
-
-function construirRankingSinal(treino,id){
-
-  const sinais=calcularSinais(treino);
-
-  return range(1,25)
-    .map(n=>({
-      numero:n,
-      score:sinais[id][n]||0
-    }))
-    .sort((a,b)=>b.score-a.score);
-}
-
-
-function testarSinal(id,k){
-
-  const resultados=[];
-
-  const inicio=
-    Math.max(
-      MIN_TRAIN,
-      dados.length-MAX_WALK
-    );
-
-  const baseline=
-    GAME_SIZE*(k/TOTAL_NUMBERS);
-
-  for(let i=inicio;i<dados.length;i++){
-
-    const treino=
-      dados.slice(
-        Math.max(0,i-MIN_TRAIN),
-        i
-      );
-
-    const alvo=dados[i];
-
-    if(treino.length<MIN_TRAIN) continue;
-
-    const ranking=
-      construirRankingSinal(
-        treino,
-        id
-      );
-
-    const escolhido=
+    const nucleo =
       ranking
         .slice(0,k)
-        .map(x=>x.numero);
+        .map(x => x.numero);
 
-    const hits=
-      escolhido.filter(
-        n=>alvo.dezenas.includes(n)
-      ).length;
+    const real =
+      new Set(
+        alvo.dezenas.map(Number)
+      );
 
-    resultados.push({
-      hits,
-      baseline,
-      vantagem:hits-baseline
-    });
-  }
+    let hits = 0;
 
-  return resultados;
-}
+    for(const n of nucleo){
 
+      if(real.has(n)){
+        hits++;
+      }
 
-/* =========================================================
-   ESTABILIDADE
-========================================================= */
-
-function analisarSerie(resultados){
-
-  if(!resultados.length){
-
-    return {
-      media:0,
-      mediana:0,
-      desvio:0,
-      vantagem:0,
-      acima:0,
-      pior:0,
-      melhor:0,
-      sequenciaNegativa:0,
-      estabilidade:0
-    };
-  }
-
-  const vantagens=
-    resultados.map(x=>x.vantagem);
-
-  let atual=0;
-  let maiorNeg=0;
-
-  for(const v of vantagens){
-
-    if(v<0){
-
-      atual++;
-      maiorNeg=
-        Math.max(maiorNeg,atual);
-
-    }else{
-
-      atual=0;
     }
-  }
-
-  const mediaV=media(vantagens);
-  const med=mediana(vantagens);
-  const sd=desvio(vantagens);
-
-  const acima=
-    resultados.filter(
-      x=>x.hits>x.baseline
-    ).length/resultados.length;
-
-  /*
-    Estabilidade:
-    vantagem média +
-    mediana +
-    frequência acima +
-    controle da volatilidade.
-  */
-
-  const consistencia=
-    acima;
-
-  const volatilidade=
-    1/(1+sd);
-
-  const estabilidade=
-    clamp(
-      (
-        (consistencia*.5)+
-        (clamp((med+1)/2,0,1)*.3)+
-        (volatilidade*.2)
-      )*100,
-      0,
-      100
-    );
-
-  return {
-    media:media(
-      resultados.map(x=>x.hits)
-    ),
-    mediana:mediana(
-      resultados.map(x=>x.hits)
-    ),
-    desvio:sd,
-    vantagem:mediaV,
-    acima,
-    pior:Math.min(...vantagens),
-    melhor:Math.max(...vantagens),
-    sequenciaNegativa:maiorNeg,
-    estabilidade
-  };
-}
-
-
-/* =========================================================
-   SELEÇÃO ADAPTATIVA
-========================================================= */
-
-function selecionarMelhorNucleo(){
-
-  const tabela=[];
-
-  for(let k=15;k<=24;k++){
-
-    const resultados=
-      testarNucleo(k);
-
-    const stats=
-      analisarSerie(resultados);
-
-    /*
-      Penalização progressiva.
-
-      O objetivo é impedir que o sistema
-      escolha automaticamente um núcleo grande
-      apenas porque ele contém mais dezenas.
-    */
-
-    const penalizacao=
-      Math.pow(k-15,1.25)*.025;
-
-    const scoreAjustado=
-      stats.vantagem+
-      (stats.estabilidade/100)*.08+
-      (stats.acima-.5)*.10-
-      penalizacao;
-
-    tabela.push({
-      k,
-      resultados,
-      ...stats,
-      penalizacao,
-      scoreAjustado
-    });
-  }
-
-  tabela.sort(
-    (a,b)=>b.scoreAjustado-a.scoreAjustado
-  );
-
-  return {
-    tabela,
-    melhor:tabela[0]
-  };
-}
-
-
-/* =========================================================
-   PESOS ADAPTATIVOS DOS SINAIS
-========================================================= */
-
-function calcularPesosAdaptativos(k){
-
-  const resultados=[];
-
-  for(const s of SINAIS){
-
-    const serie=
-      testarSinal(s.id,k);
-
-    const stats=
-      analisarSerie(serie);
-
-    resultados.push({
-      ...s,
-      ...stats
-    });
-  }
-
-  /*
-    Peso inicial.
-    Sinais negativos perdem influência.
-    Sinais positivos ganham influência.
-  */
-
-  const pesos={};
-
-  let soma=0;
-
-  for(const s of resultados){
-
-    const vantagem=
-      s.vantagem;
-
-    const consistencia=
-      s.acima;
-
-    let peso=
-      Math.max(
-        .02,
-        s.base*
-        (
-          1+
-          vantagem*.8+
-          (consistencia-.5)*.5
-        )
-      );
-
-    pesos[s.id]=peso;
-    soma+=peso;
-  }
-
-  for(const id of Object.keys(pesos)){
-
-    pesos[id]=
-      pesos[id]/soma;
-  }
-
-  return {
-    resultados,
-    pesos
-  };
-}
-
-
-/* =========================================================
-   WALK FORWARD FINAL
-========================================================= */
-
-function executarWalkForward(k,pesos){
-
-  const resultados=[];
-
-  const inicio=
-    Math.max(
-      MIN_TRAIN,
-      dados.length-MAX_WALK
-    );
-
-  for(let i=inicio;i<dados.length;i++){
-
-    const treino=
-      dados.slice(
-        Math.max(0,i-MIN_TRAIN),
-        i
-      );
-
-    const alvo=dados[i];
-
-    if(treino.length<MIN_TRAIN) continue;
-
-    const ranking=
-      construirRanking(
-        treino,
-        pesos
-      );
-
-    const nucleo=
-      selecionarNucleo(ranking,k);
-
-    const hits=
-      nucleo.filter(
-        n=>alvo.dezenas.includes(n)
-      ).length;
-
-    const baseline=
-      GAME_SIZE*(k/TOTAL_NUMBERS);
 
     resultados.push({
       concurso:alvo.concurso,
       hits,
-      baseline,
-      vantagem:hits-baseline
+      baseline:baseline(k),
+      vantagem:hits-baseline(k)
     });
+
   }
 
-  return resultados;
+  if(!resultados.length){
+    return null;
+  }
+
+  const hits =
+    resultados.map(x => x.hits);
+
+  const vantagens =
+    resultados.map(x => x.vantagem);
+
+  const media =
+    hits.reduce((a,b)=>a+b,0)/hits.length;
+
+  const mediana =
+    [...hits].sort((a,b)=>a-b)
+      [Math.floor(hits.length/2)];
+
+  const mediaVantagem =
+    vantagens.reduce((a,b)=>a+b,0)
+    /vantagens.length;
+
+  const acima =
+    resultados.filter(
+      x => x.hits >= x.baseline
+    ).length
+    / resultados.length;
+
+  const pior =
+    Math.min(...vantagens);
+
+  let maxNegativa = 0;
+  let atualNegativa = 0;
+
+  for(const x of vantagens){
+
+    if(x < 0){
+
+      atualNegativa++;
+
+      maxNegativa =
+        Math.max(
+          maxNegativa,
+          atualNegativa
+        );
+
+    }else{
+
+      atualNegativa=0;
+
+    }
+
+  }
+
+  const mediaQuadrados =
+    hits.reduce(
+      (s,x) => s + Math.pow(x-media,2),
+      0
+    ) / hits.length;
+
+  const desvio =
+    Math.sqrt(mediaQuadrados);
+
+  const estabilidade =
+    1/(1+desvio);
+
+  return {
+    k,
+    resultados,
+    media,
+    mediana,
+    mediaVantagem,
+    acima,
+    pior,
+    maxNegativa,
+    desvio,
+    estabilidade
+  };
+
 }
 
 
 /* =========================================================
-   CONFIANÇA
+   ESCOLHA ADAPTATIVA DO NÚCLEO
 ========================================================= */
 
-function calcularConfianca(stats){
+function selecionarNucleo(lista){
 
-  const vantagem=stats.vantagem;
-  const acima=stats.acima;
-  const med=stats.mediana;
-  const estabilidade=stats.estabilidade;
+  const avaliacoes = [];
 
-  if(
-    vantagem>=.35 &&
-    acima>=.55 &&
-    med>0 &&
-    estabilidade>=60
-  ){
-    return {
-      classe:"boa",
-      titulo:"🟢 Confiança boa",
-      texto:
-        "O modelo apresentou vantagem e consistência acima dos critérios mínimos."
-    };
+  for(let k=15;k<=24;k++){
+
+    const a =
+      avaliarNucleo(lista,k);
+
+    if(a){
+      avaliacoes.push(a);
+    }
+
   }
 
-  if(
-    vantagem>=.10 &&
-    acima>=.50 &&
-    estabilidade>=45
-  ){
+  if(!avaliacoes.length){
+
+    const ranking =
+      construirRanking(lista);
+
     return {
-      classe:"moderada",
-      titulo:"🟡 Confiança moderada",
-      texto:
-        "Existe uma pequena vantagem histórica, mas ainda há incerteza estatística."
+      escolhido:15,
+      ranking,
+      avaliacoes:[]
     };
+
   }
+
+
+  for(const a of avaliacoes){
+
+    /*
+      Score adaptativo.
+
+      A vantagem é o principal fator,
+      mas estabilidade e consistência
+      também entram na decisão.
+    */
+
+    const penalidade =
+      Math.max(0,a.k-20)*0.025;
+
+    a.scoreFinal =
+      a.mediaVantagem*1.00 +
+      a.estabilidade*0.20 +
+      a.acima*0.20 -
+      penalidade -
+      Math.max(0,-a.pior)*0.03;
+
+  }
+
+
+  avaliacoes.sort(
+    (a,b) => b.scoreFinal-a.scoreFinal
+  );
+
+  const escolhido =
+    avaliacoes[0].k;
+
+  const ranking =
+    construirRanking(lista);
 
   return {
-    classe:"baixa",
-    titulo:"🔴 Confiança baixa",
-    texto:
-      "O desempenho histórico não apresenta evidência suficiente de vantagem robusta."
+    escolhido,
+    ranking,
+    avaliacoes
   };
+
 }
 
 
@@ -2062,214 +1364,417 @@ function calcularConfianca(stats){
    MONTE CARLO
 ========================================================= */
 
-function executarMonteCarlo(){
+function monteCarlo(){
 
-  const alvo=
-    new Set(ultimo.dezenas);
-
-  const resultados=[];
+  const valores = [];
 
   for(let i=0;i<10000;i++){
 
-    const jogo=
-      shuffle(range(1,25))
-        .slice(0,15);
+    const jogo = [];
+
+    const numeros =
+      Array.from(
+        {length:25},
+        (_,i)=>i+1
+      );
+
+    while(jogo.length<15){
+
+      const idx =
+        Math.floor(
+          Math.random()*numeros.length
+        );
+
+      jogo.push(
+        numeros.splice(idx,1)[0]
+      );
+
+    }
+
+    /*
+      Comparação com um conjunto
+      aleatório de 15 dezenas.
+      A métrica exibida é teórica
+      para hits contra outro jogo.
+    */
+
+    const alvo = new Set(jogo);
 
     let hits=0;
 
-    for(const n of jogo){
+    for(let n=1;n<=25;n++){
 
-      if(alvo.has(n)){
-        hits++;
+      if(Math.random()<15/25){
+        if(alvo.has(n)){
+          hits++;
+        }
       }
+
     }
 
-    resultados.push(hits);
+    valores.push(hits);
+
   }
 
-  const m=media(resultados);
+  const media =
+    valores.reduce((a,b)=>a+b,0)
+    /valores.length;
 
-  document.getElementById("mcMedia").textContent=
-    fmt(m);
+  return {
+    media,
+    min:Math.min(...valores),
+    max:Math.max(...valores)
+  };
 
-  document.getElementById("mcMin").textContent=
-    Math.min(...resultados);
-
-  document.getElementById("mcMax").textContent=
-    Math.max(...resultados);
 }
 
 
 /* =========================================================
-   RENDER NÚCLEOS
+   GERADOR DE JOGOS
 ========================================================= */
 
-function renderNucleos(tabela,melhor){
+function sortearPonderado(ranking, usadas){
 
-  const tbody=
-    document.getElementById("tabelaNucleos");
+  const candidatos =
+    ranking.map(x => {
 
-  tbody.innerHTML=
-    tabela
-      .slice()
-      .sort((a,b)=>a.k-b.k)
-      .map(x=>{
+      let peso =
+        0.25 + x.score;
 
-        const selecionado=
-          x.k===melhor.k;
+      /*
+        Penaliza repetição excessiva entre jogos,
+        mas não proíbe dezenas fortes.
+      */
 
-        const vantagemClass=
-          x.vantagem>0
-            ?"good"
-            :x.vantagem<0
-              ?"bad"
-              :"neutral";
+      if(usadas.has(x.numero)){
+        peso *= 0.72;
+      }
 
-        return `
-          <tr class="${selecionado?"selected":""}">
-            <td>
-              ${x.k}
-              ${selecionado
-                ?'<span class="star">⭐</span>'
-                :""
-              }
-            </td>
+      return {
+        numero:x.numero,
+        peso
+      };
 
-            <td>${x.resultados.length}</td>
-
-            <td>${fmt(x.media)}</td>
-
-            <td>${fmt(
-              GAME_SIZE*(x.k/TOTAL_NUMBERS)
-            )}</td>
-
-            <td class="${vantagemClass}">
-              ${x.vantagem>=0?"+":""}${fmt(x.vantagem)}
-            </td>
-
-            <td>${fmt(x.acima*100)}%</td>
-
-            <td>
-              ${x.mediana>=0?"+":""}${fmt(
-                mediana(
-                  x.resultados.map(r=>r.vantagem)
-                )
-              )}
-            </td>
-          </tr>
-        `;
-      })
-      .join("");
-}
+    });
 
 
-/* =========================================================
-   RENDER SINAIS
-========================================================= */
+  const escolhidos = [];
 
-function renderSinais(resultado){
+  while(escolhidos.length<15){
 
-  const box=
-    document.getElementById("sinais");
+    const disponiveis =
+      candidatos.filter(
+        x => !escolhidos.includes(x.numero)
+      );
 
-  box.innerHTML=`
+    const total =
+      disponiveis.reduce(
+        (s,x)=>s+x.peso,
+        0
+      );
 
-    <div class="signal-row signal-head">
-      <div>Sinal</div>
-      <div>Média</div>
-      <div>Baseline</div>
-      <div>Vantagem</div>
-    </div>
+    let r =
+      Math.random()*total;
 
-    ${resultado.map(s=>{
+    let escolhido =
+      disponiveis[disponiveis.length-1];
 
-      const cls=
-        s.vantagem>0
-          ?"good"
-          :s.vantagem<0
-            ?"bad"
-            :"neutral";
+    for(const item of disponiveis){
 
-      return `
-        <div class="signal-row">
+      r -= item.peso;
 
-          <div>
-            <strong>${s.nome}</strong>
-          </div>
+      if(r<=0){
 
-          <div>
-            ${fmt(s.media)}
-          </div>
+        escolhido=item;
+        break;
 
-          <div>
-            ${fmt(s.resultados[0]?.baseline||0)}
-          </div>
+      }
 
-          <div class="${cls}">
-            ${s.vantagem>=0?"+":""}${fmt(s.vantagem)}
-          </div>
+    }
 
-        </div>
-      `;
-
-    }).join("")}
-  `;
-}
-
-
-/* =========================================================
-   RENDER WALK FORWARD
-========================================================= */
-
-function renderWalkForward(stats){
-
-  document.getElementById("wfMedia").textContent=
-    fmt(stats.media);
-
-  document.getElementById("wfBaseline").textContent=
-    fmt(
-      stats.media-stats.vantagem
+    escolhidos.push(
+      escolhido.numero
     );
 
-  document.getElementById("wfVantagem").textContent=
-    (stats.vantagem>=0?"+":"")+
-    fmt(stats.vantagem);
+  }
 
-  document.getElementById("wfTestes").textContent=
-    stats.testes || "—";
+  return escolhidos.sort((a,b)=>a-b);
 
-  document.getElementById("wfAcima").textContent=
-    fmt(stats.acima*100)+"%";
+}
 
-  document.getElementById("wfMediana").textContent=
-    (stats.mediana>=0?"+":"")+
-    fmt(stats.mediana);
 
-  document.getElementById("wfPior").textContent=
-    (stats.pior>=0?"+":"")+
-    fmt(stats.pior);
+/* =========================================================
+   QUALIDADE DO JOGO
+========================================================= */
 
-  document.getElementById("wfSequencia").textContent=
-    stats.sequenciaNegativa;
+function qualidadeJogo(jogo){
 
-  const box=
-    document.getElementById("confianca");
+  let pares=0;
+  let impares=0;
 
-  const conf=
-    calcularConfianca(stats);
+  for(const n of jogo){
 
-  box.className=
-    "confidence "+conf.classe;
+    if(n%2===0) pares++;
+    else impares++;
 
-  box.innerHTML=`
-    <div class="big">
-      ${conf.titulo}
-    </div>
+  }
 
-    <div style="margin-top:10px">
-      ${conf.texto}
-    </div>
-  `;
+  const soma =
+    jogo.reduce((a,b)=>a+b,0);
+
+  let consecutivas=0;
+
+  for(let i=1;i<jogo.length;i++){
+
+    if(jogo[i]===jogo[i-1]+1){
+      consecutivas++;
+    }
+
+  }
+
+  const faixas =
+    [
+      jogo.filter(n=>n<=5).length,
+      jogo.filter(n=>n>=6 && n<=10).length,
+      jogo.filter(n=>n>=11 && n<=15).length,
+      jogo.filter(n=>n>=16 && n<=20).length,
+      jogo.filter(n=>n>=21).length
+    ];
+
+
+  let score=100;
+
+  if(pares<5 || pares>10){
+    score-=15;
+  }
+
+  if(soma<150 || soma>240){
+    score-=12;
+  }
+
+  if(consecutivas>8){
+    score-=10;
+  }
+
+  if(faixas.some(x=>x===0)){
+    score-=8;
+  }
+
+  return {
+    score,
+    pares,
+    impares,
+    soma,
+    consecutivas,
+    faixas
+  };
+
+}
+
+
+/* =========================================================
+   GERAR 6 JOGOS
+========================================================= */
+
+function gerarJogos(ranking,nucleo){
+
+  const jogos=[];
+  const usadas=new Set();
+
+  let tentativas=0;
+
+  while(
+    jogos.length<TOTAL_GAMES &&
+    tentativas<3000
+  ){
+
+    tentativas++;
+
+    const jogo =
+      sortearPonderado(
+        ranking,
+        usadas
+      );
+
+    const q =
+      qualidadeJogo(jogo);
+
+    if(q.score<72){
+      continue;
+    }
+
+    /*
+      Evita jogos muito semelhantes.
+    */
+
+    let parecido=false;
+
+    for(const anterior of jogos){
+
+      const intersecao =
+        jogo.filter(
+          n=>anterior.includes(n)
+        ).length;
+
+      if(intersecao>=13){
+
+        parecido=true;
+        break;
+
+      }
+
+    }
+
+    if(parecido){
+      continue;
+    }
+
+    jogos.push(jogo);
+
+    /*
+      Atualiza conjunto usado.
+      Não proíbe repetição futura,
+      apenas reduz a probabilidade.
+    */
+
+    jogo.forEach(n=>usadas.add(n));
+
+  }
+
+
+  /*
+    Fallback.
+  */
+
+  while(jogos.length<TOTAL_GAMES){
+
+    jogos.push(
+      sortearPonderado(
+        ranking,
+        new Set()
+      )
+    );
+
+  }
+
+  return jogos;
+
+}
+
+
+/* =========================================================
+   MODELO COMPLETO
+========================================================= */
+
+function calcularModelo(lista){
+
+  const selecao =
+    selecionarNucleo(lista);
+
+  const ranking =
+    selecao.ranking;
+
+  const nucleo =
+    ranking
+      .slice(0,selecao.escolhido)
+      .map(x=>x.numero)
+      .sort((a,b)=>a-b);
+
+
+  /*
+    Walk-forward do núcleo escolhido
+  */
+
+  const wf =
+    avaliarNucleo(
+      lista,
+      selecao.escolhido
+    );
+
+
+  /*
+    Monte Carlo
+  */
+
+  const mc =
+    monteCarlo();
+
+
+  /*
+    Confiança
+  */
+
+  let confianca="Baixa";
+
+  if(wf){
+
+    if(
+      wf.mediaVantagem>=0.20 &&
+      wf.acima>=0.55 &&
+      wf.maxNegativa<=8
+    ){
+
+      confianca="Boa";
+
+    }else if(
+      wf.mediaVantagem>=0.05 &&
+      wf.acima>=0.50
+    ){
+
+      confianca="Moderada";
+
+    }
+
+  }
+
+
+  const jogos =
+    gerarJogos(
+      ranking,
+      nucleo
+    );
+
+
+  return {
+    nucleo,
+    ranking,
+    nucleoEscolhido:selecao.escolhido,
+    avaliacoes:selecao.avaliacoes,
+    wf,
+    mc,
+    confianca,
+    jogos
+  };
+
+}
+
+
+/* =========================================================
+   RENDER ÚLTIMO RESULTADO
+========================================================= */
+
+function renderUltimo(){
+
+  if(!ultimo){
+    return;
+  }
+
+  $("metricConcurso").textContent =
+    ultimo.concurso;
+
+  $("metricHistorico").textContent =
+    dados.length;
+
+  $("ultimoResultado").innerHTML =
+    ultimo.dezenas.map(d =>
+      `<div class="ball highlight">${d}</div>`
+    ).join("");
+
+  $("dataUltimo").textContent =
+    ultimo.data
+      ? `Data: ${ultimo.data}`
+      : "";
+
 }
 
 
@@ -2277,79 +1782,253 @@ function renderWalkForward(stats){
    RENDER NÚCLEO
 ========================================================= */
 
-function renderNucleo(nucleo,stats){
+function renderNucleo(){
 
-  document.getElementById("nucleoSelecionado")
-    .textContent=nucleo.length;
+  const nucleo =
+    analise.nucleo;
 
-  document.getElementById("nucVantagem")
-    .textContent=
-      (stats.vantagem>=0?"+":"")+
-      fmt(stats.vantagem);
+  $("metricNucleo").textContent =
+    nucleo.length;
 
-  document.getElementById("nucEstabilidade")
-    .textContent=
-      fmt(stats.estabilidade)+"%";
+  $("metricConfianca").textContent =
+    analise.confianca;
 
-  document.getElementById("nucleoBolas")
-    .innerHTML=
-      nucleo.map(n=>
-        `<div class="ball outline">
-          ${String(n).padStart(2,"0")}
-        </div>`
-      ).join("");
+  $("nucleo").innerHTML =
+    nucleo.map(n =>
+      `<div class="ball">${String(n).padStart(2,"0")}</div>`
+    ).join("");
+
+
+  const wf=analise.wf;
+
+  if(wf){
+
+    $("nucleoInfo").innerHTML = `
+      <span class="badge good">
+        Média: ${wf.media.toFixed(2)}
+      </span>
+
+      <span class="badge">
+        Baseline: ${baseline(nucleo.length).toFixed(2)}
+      </span>
+
+      <span class="badge ${
+        wf.mediaVantagem>=0
+        ? "good"
+        : "warn"
+      }">
+        Vantagem:
+        ${wf.mediaVantagem>=0?"+":""}
+        ${wf.mediaVantagem.toFixed(2)}
+      </span>
+    `;
+
+  }
+
 }
 
 
 /* =========================================================
-   RENDER RANKING
+   TABELA NÚCLEOS
 ========================================================= */
 
-function renderRanking(ranking,nucleo){
+function renderTabelaNucleos(){
 
-  const setNucleo=
-    new Set(nucleo);
+  const lista =
+    analise.avaliacoes || [];
 
-  document.getElementById("ranking")
-    .innerHTML=
-      ranking.map((x,i)=>{
+  $("tabelaNucleos").innerHTML =
+    lista.map(a => {
 
-        return `
-          <tr class="${setNucleo.has(x.numero)?"selected":""}">
+      let confianca="Baixa";
 
-            <td>
-              ${i+1}
-              ${setNucleo.has(x.numero)
-                ?' ⭐'
-                :""
-              }
-            </td>
+      if(
+        a.mediaVantagem>=0.15 &&
+        a.acima>=0.53
+      ){
+        confianca="Boa";
+      }else if(
+        a.mediaVantagem>=0 &&
+        a.acima>=0.50
+      ){
+        confianca="Moderada";
+      }
 
-            <td>
-              <strong>
-                ${String(x.numero).padStart(2,"0")}
-              </strong>
-            </td>
+      return `
+        <tr>
 
-            <td>
-              ${fmt(x.score*100)}
-            </td>
+          <td><b>${a.k}</b></td>
 
-            <td>
-              ${fmt(x.frequencia*100)}
-            </td>
+          <td>${a.media.toFixed(2)}</td>
 
-            <td>
-              ${fmt(x.recencia*100)}
-            </td>
+          <td>${baseline(a.k).toFixed(2)}</td>
 
-            <td>
-              ${fmt(x.atraso*100)}
-            </td>
+          <td>
+            ${
+              a.mediaVantagem>=0
+              ? "+"
+              : ""
+            }${a.mediaVantagem.toFixed(2)}
+          </td>
 
-          </tr>
-        `;
-      }).join("");
+          <td>
+            ${(a.acima*100).toFixed(1)}%
+          </td>
+
+          <td>${confianca}</td>
+
+        </tr>
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   SINAIS
+========================================================= */
+
+function renderSinais(){
+
+  const ranking =
+    analise.ranking;
+
+  const top =
+    ranking.slice(0,10);
+
+  $("sinais").innerHTML = `
+
+    <div style="margin-bottom:10px">
+      <span class="badge good">
+        Recência +0.22
+      </span>
+
+      <span class="badge good">
+        Frequência +0.18
+      </span>
+
+      <span class="badge good">
+        Ciclo +0.17
+      </span>
+
+      <span class="badge good">
+        Transição +0.18
+      </span>
+
+      <span class="badge">
+        Coocorrência +0.15
+      </span>
+
+      <span class="badge">
+        Atraso +0.10
+      </span>
+    </div>
+
+    <div class="small" style="margin-bottom:8px">
+      Top 10 ranking atual:
+    </div>
+
+    <div class="numbers">
+
+      ${top.map((x,i)=>`
+        <div class="ball">
+          ${String(x.numero).padStart(2,"0")}
+        </div>
+      `).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   WALK-FORWARD
+========================================================= */
+
+function renderWalkForward(){
+
+  const wf =
+    analise.wf;
+
+  if(!wf){
+
+    $("wfTests").textContent="—";
+    $("wfModelo").textContent="—";
+    $("wfBase").textContent="—";
+    $("wfAdv").textContent="—";
+
+    $("wfInfo").innerHTML =
+      "Dados insuficientes para realizar o walk-forward.";
+
+    return;
+  }
+
+  $("wfTests").textContent =
+    wf.resultados.length;
+
+  $("wfModelo").textContent =
+    wf.media.toFixed(2);
+
+  $("wfBase").textContent =
+    baseline(analise.nucleoEscolhido)
+      .toFixed(2);
+
+  $("wfAdv").textContent =
+    (wf.mediaVantagem>=0?"+":"")+
+    wf.mediaVantagem.toFixed(2);
+
+
+  $("wfInfo").innerHTML = `
+
+    <span class="badge">
+      Mediana: ${wf.mediana.toFixed(2)}
+    </span>
+
+    <span class="badge">
+      Desvio: ${wf.desvio.toFixed(2)}
+    </span>
+
+    <span class="badge">
+      Acima do baseline:
+      ${(wf.acima*100).toFixed(1)}%
+    </span>
+
+    <span class="badge">
+      Pior vantagem:
+      ${wf.pior.toFixed(2)}
+    </span>
+
+    <span class="badge">
+      Maior sequência negativa:
+      ${wf.maxNegativa}
+    </span>
+
+  `;
+
+}
+
+
+/* =========================================================
+   MONTE CARLO
+========================================================= */
+
+function renderMonteCarlo(){
+
+  const mc =
+    analise.mc;
+
+  $("mcMedia").textContent =
+    mc.media.toFixed(2);
+
+  $("mcMin").textContent =
+    mc.min;
+
+  $("mcMax").textContent =
+    mc.max;
+
 }
 
 
@@ -2357,630 +2036,149 @@ function renderRanking(ranking,nucleo){
    JOGOS
 ========================================================= */
 
-function sortearPonderado(ranking,quantidade,jaUsadas=[]){
-
-  const pool=
-    ranking.map(x=>({
-      ...x,
-      peso:
-        Math.max(.01,x.score)
-    }));
-
-  const selecionadas=[];
-
-  const bloqueadas=
-    new Set(jaUsadas);
-
-  while(
-    selecionadas.length<quantidade &&
-    pool.length
-  ){
-
-    let soma=0;
-
-    for(const item of pool){
-
-      const penalidade=
-        bloqueadas.has(item.numero)
-          ? .18
-          :1;
-
-      soma+=
-        item.peso*penalidade;
-    }
-
-    let alvo=
-      Math.random()*soma;
-
-    let escolhidoIndex=0;
-
-    for(let i=0;i<pool.length;i++){
-
-      const item=pool[i];
-
-      const penalidade=
-        bloqueadas.has(item.numero)
-          ? .18
-          :1;
-
-      alvo-=
-        item.peso*penalidade;
-
-      if(alvo<=0){
-
-        escolhidoIndex=i;
-        break;
-      }
-    }
-
-    const escolhido=
-      pool.splice(escolhidoIndex,1)[0];
-
-    if(
-      !selecionadas.includes(
-        escolhido.numero
-      )
-    ){
-      selecionadas.push(
-        escolhido.numero
-      );
-    }
-  }
-
-  return selecionadas.sort((a,b)=>a-b);
-}
-
-
-function contarConsecutivas(jogo){
-
-  let total=0;
-
-  for(let i=1;i<jogo.length;i++){
-
-    if(jogo[i]===jogo[i-1]+1){
-      total++;
-    }
-  }
-
-  return total;
-}
-
-
-function contarPares(jogo){
-
-  return jogo.filter(
-    n=>n%2===0
-  ).length;
-}
-
-
-function somaJogo(jogo){
-
-  return jogo.reduce(
-    (a,b)=>a+b,0
-  );
-}
-
-
-function faixas(jogo){
-
-  const f=[0,0,0,0,0];
-
-  for(const n of jogo){
-
-    if(n<=5) f[0]++;
-    else if(n<=10) f[1]++;
-    else if(n<=15) f[2]++;
-    else if(n<=20) f[3]++;
-    else f[4]++;
-  }
-
-  return f.join("-");
-}
-
-
-function intersecao(a,b){
-
-  const set=new Set(a);
-
-  return b.filter(
-    x=>set.has(x)
-  ).length;
-}
-
-
-function qualidadeJogo(jogo,ranking,anteriores){
-
-  let score=0;
-
-  const mapa=
-    new Map(
-      ranking.map(
-        (x,i)=>[x.numero,i]
-      )
-    );
-
-  /*
-    força estatística
-  */
-
-  score+=
-    media(
-      jogo.map(
-        n=>1-(mapa.get(n)||24)/24
-      )
-    )*4;
-
-  /*
-    equilíbrio par/ímpar
-  */
-
-  const pares=
-    contarPares(jogo);
-
-  if(pares>=6 && pares<=9){
-    score+=2;
-  }
-
-  /*
-    soma
-  */
-
-  const soma=
-    somaJogo(jogo);
-
-  if(soma>=165 && soma<=220){
-    score+=2;
-  }
-
-  /*
-    consecutivas
-  */
-
-  const cons=
-    contarConsecutivas(jogo);
-
-  if(cons>=5 && cons<=10){
-    score+=1;
-  }
-
-  /*
-    diversidade entre jogos
-  */
-
-  for(const antigo of anteriores){
-
-    const overlap=
-      intersecao(jogo,antigo);
-
-    if(overlap<=9){
-      score+=2;
-    }
-
-    if(overlap>=12){
-      score-=4;
-    }
-  }
-
-  return score;
-}
-
-
-function gerarJogos(){
-
-  if(!analise){
-    alert("Aguarde a análise terminar.");
-    return;
-  }
-
-  const ranking=
-    analise.ranking;
-
-  const jogos=[];
-
-  for(let g=0;g<TOTAL_GAMES;g++){
-
-    let melhor=null;
-    let melhorScore=-Infinity;
-
-    /*
-      várias tentativas para buscar
-      melhor equilíbrio e cobertura
-    */
-
-    for(let tentativa=0;tentativa<250;tentativa++){
-
-      const jogo=
-        sortearPonderado(
-          ranking,
-          GAME_SIZE,
-          jogos.flat()
-        );
-
-      if(jogo.length!==GAME_SIZE) continue;
-
-      const score=
-        qualidadeJogo(
-          jogo,
-          ranking,
-          jogos
-        );
-
-      if(score>melhorScore){
-
-        melhorScore=score;
-        melhor=jogo;
-      }
-    }
-
-    if(melhor){
-      jogos.push(melhor);
-    }
-  }
-
-  jogosGerados=jogos;
-
-  renderJogos();
-
-  renderCobertura();
-
-  document.getElementById("resultadoValidacao")
-    .innerHTML="";
-}
-
-
 function renderJogos(){
 
-  const box=
-    document.getElementById("jogos");
+  $("jogos").innerHTML =
+    analise.jogos.map((jogo,i)=>{
 
-  box.innerHTML=
-    jogosGerados.map((jogo,index)=>{
+      const q =
+        qualidadeJogo(jogo);
 
-      const pares=
-        contarPares(jogo);
-
-      const soma=
-        somaJogo(jogo);
-
-      const cons=
-        contarConsecutivas(jogo);
+      const soma =
+        jogo.reduce((a,b)=>a+b,0);
 
       return `
+
         <div class="game">
 
-          <div class="game-head">
+          <div class="game-title">
 
-            <div class="game-title">
-              Jogo ${index+1}
-            </div>
+            <strong>
+              Jogo ${i+1}
+            </strong>
 
-            <div class="cover">
-              🎯 Cobertura
-            </div>
+            <span class="small">
+              Qualidade ${q.score}/100
+            </span>
 
           </div>
 
-          <div class="balls">
+          <div class="numbers">
 
-            ${jogo.map(n=>
-              `<div class="ball">
+            ${jogo.map(n=>`
+              <div class="ball game">
                 ${String(n).padStart(2,"0")}
-              </div>`
-            ).join("")}
+              </div>
+            `).join("")}
 
           </div>
 
-          <div class="game-stats">
-            Pares: ${pares}
-            • Soma: ${soma}
-            • Consecutivas: ${cons}
-            <br>
-            Faixas: ${faixas(jogo)}
+          <div style="margin-top:10px">
+
+            <span class="badge">
+              Soma ${soma}
+            </span>
+
+            <span class="badge">
+              ${q.pares} pares
+            </span>
+
+            <span class="badge">
+              ${q.impares} ímpares
+            </span>
+
+            <span class="badge">
+              ${q.consecutivas} consecutivas
+            </span>
+
           </div>
 
         </div>
+
       `;
 
     }).join("");
+
 }
 
 
 /* =========================================================
-   COBERTURA REAL
+   RESUMO
 ========================================================= */
 
-function renderCobertura(){
+function renderResumo(){
 
-  if(!jogosGerados.length){
+  const wf =
+    analise.wf;
 
-    document.getElementById("coberturaNumero")
-      .textContent="—/25";
+  const nucleo =
+    analise.nucleo;
 
-    document.getElementById("coberturaBarra")
-      .style.width="0%";
+  let texto =
+    `O modelo selecionou um núcleo de ${nucleo.length} dezenas `+
+    `com base em frequência, recência, atraso, coocorrência, `+
+    `transição e ciclo. `;
 
-    document.getElementById("coberturaDetalhe")
-      .textContent=
-        "Gere os jogos para calcular a cobertura.";
 
-    return;
+  if(wf){
+
+    texto +=
+      `No walk-forward foram realizados `+
+      `${wf.resultados.length} testes. `+
+      `A média foi ${wf.media.toFixed(2)} acertos `+
+      `contra baseline de `+
+      `${baseline(nucleo.length).toFixed(2)}, `+
+      `resultando em vantagem de `+
+      `${wf.mediaVantagem>=0?"+":""}`+
+      `${wf.mediaVantagem.toFixed(2)}. `;
+
   }
 
-  const conjunto=
-    new Set(
-      jogosGerados.flat()
-    );
 
-  const cobertos=
-    conjunto.size;
+  texto +=
+    `A confiança estatística atual foi classificada `+
+    `como ${analise.confianca}. `+
+    `Isso é uma análise matemática de histórico e `+
+    `não representa garantia de premiação.`;
 
-  const percentual=
-    cobertos/25*100;
 
-  const ausentes=
-    range(1,25)
-      .filter(
-        n=>!conjunto.has(n)
-      );
+  $("resumo").textContent =
+    texto;
 
-  document.getElementById("coberturaNumero")
-    .textContent=
-      cobertos+"/25";
-
-  document.getElementById("coberturaBarra")
-    .style.width=
-      percentual+"%";
-
-  document.getElementById("coberturaDetalhe")
-    .innerHTML=
-      `
-        <strong>${fmt(percentual)}%</strong>
-        das dezenas foram cobertas pelos 6 jogos.
-        ${
-          ausentes.length
-            ? " Ausentes: "+
-              ausentes
-                .map(n=>String(n).padStart(2,"0"))
-                .join(", ")+"."
-            : " Todas as 25 dezenas foram cobertas."
-        }
-      `;
 }
 
 
 /* =========================================================
-   VALIDAÇÃO
+   RENDER GERAL
 ========================================================= */
 
-function validarJogos(){
+function renderTudo(){
 
-  if(!jogosGerados.length){
+  renderUltimo();
+  renderNucleo();
+  renderTabelaNucleos();
+  renderSinais();
+  renderWalkForward();
+  renderMonteCarlo();
+  renderJogos();
+  renderResumo();
 
-    alert("Primeiro gere os 6 jogos.");
-
-    return;
-  }
-
-  const texto=
-    document.getElementById("inputResultado")
-      .value;
-
-  const nums=
-    texto.match(/\d{1,2}/g)
-      ?.map(normalizarNumero)
-      .filter(Boolean) || [];
-
-  const resultado=
-    [...new Set(nums)]
-      .sort((a,b)=>a-b);
-
-  if(resultado.length!==15){
-
-    alert(
-      "Digite exatamente 15 dezenas válidas."
-    );
-
-    return;
-  }
-
-  const alvo=
-    new Set(resultado);
-
-  const resultados=
-    jogosGerados.map((jogo,index)=>{
-
-      const hits=
-        jogo.filter(
-          n=>alvo.has(n)
-        );
-
-      return {
-        index:index+1,
-        jogo,
-        hits:hits.length,
-        dezenas:hits
-      };
-    });
-
-  const melhor=
-    Math.max(
-      ...resultados.map(x=>x.hits)
-    );
-
-  const cobertura=
-    new Set(
-      jogosGerados.flat()
-        .filter(n=>alvo.has(n))
-    ).size;
-
-  document.getElementById("melhorAcerto")
-    .textContent=
-      melhor+"/15";
-
-  document.getElementById("coberturaValidacao")
-    .textContent=
-      cobertura+"/15";
-
-  document.getElementById("resultadoValidacao")
-    .innerHTML=`
-
-      <div class="info">
-
-        <strong>Resultado validado:</strong>
-        ${resultado
-          .map(n=>String(n).padStart(2,"0"))
-          .join(" • ")}
-
-      </div>
-
-      ${resultados.map(r=>`
-
-        <div class="result-box">
-
-          <div class="result-title">
-            Jogo ${r.index} —
-            <strong>${r.hits}/15</strong>
-          </div>
-
-          <div class="balls">
-
-            ${r.dezenas.map(n=>
-              `<div class="ball">
-                ${String(n).padStart(2,"0")}
-              </div>`
-            ).join("")}
-
-          </div>
-
-        </div>
-
-      `).join("")}
-
-    `;
 }
 
 
 /* =========================================================
-   EXECUÇÃO PRINCIPAL
+   ESCAPE HTML
 ========================================================= */
 
-function executarAnalise(){
+function escapeHTML(text){
 
-  /*
-    1. Monte Carlo
-  */
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
-  executarMonteCarlo();
-
-
-  /*
-    2. Seleciona núcleo
-  */
-
-  const selecao=
-    selecionarMelhorNucleo();
-
-  const melhorInicial=
-    selecao.melhor.k;
-
-
-  /*
-    3. Mede eficácia dos sinais
-       usando o núcleo selecionado.
-  */
-
-  const sinais=
-    calcularPesosAdaptativos(
-      melhorInicial
-    );
-
-
-  /*
-    4. Recalcula ranking com pesos
-       adaptativos.
-  */
-
-  let ranking=
-    construirRanking(
-      dados,
-      sinais.pesos
-    );
-
-
-  /*
-    5. Walk-forward final.
-  */
-
-  let wf=
-    executarWalkForward(
-      melhorInicial,
-      sinais.pesos
-    );
-
-  let stats=
-    analisarSerie(wf);
-
-  stats.testes=wf.length;
-
-
-  /*
-    6. Verifica se outro núcleo fica
-       melhor quando usamos a lógica
-       adaptativa final.
-
-       Mantemos o núcleo selecionado
-       pela análise estrutural para evitar
-       overfitting excessivo.
-  */
-
-  analise={
-    tabelaNucleos:selecao.tabela,
-    melhor:selecao.melhor,
-    sinais:sinais.resultados,
-    pesos:sinais.pesos,
-    ranking,
-    nucleo:
-      selecionarNucleo(
-        ranking,
-        melhorInicial
-      ),
-    wf,
-    stats
-  };
-
-
-  /*
-    7. Renderização
-  */
-
-  renderNucleos(
-    selecao.tabela,
-    selecao.melhor
-  );
-
-  renderSinais(
-    sinais.resultados
-  );
-
-  renderWalkForward(
-    stats
-  );
-
-  renderNucleo(
-    analise.nucleo,
-    {
-      vantagem:stats.vantagem,
-      estabilidade:stats.estabilidade
-    }
-  );
-
-  renderRanking(
-    ranking,
-    analise.nucleo
-  );
-
-  gerarJogos();
 }
 
 
@@ -2988,10 +2186,12 @@ function executarAnalise(){
    INICIALIZAÇÃO
 ========================================================= */
 
-document.addEventListener(
+window.addEventListener(
   "DOMContentLoaded",
-  ()=>{
-    carregarTudo();
+  () => {
+
+    carregarTudo(false);
+
   }
 );
 
