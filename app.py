@@ -1,17 +1,17 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import FileResponse, JSONResponse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import json
 import time
-import os
 import threading
+import os
 
 
 # ============================================================
-# LOTOFÁCIL MONITOR V25.6
-# Backend FastAPI
+# LOTOFÁCIL MONITOR
+# BACKEND V25.6
 # ============================================================
 
 APP_VERSION = "V25.6"
@@ -44,6 +44,7 @@ FALLBACK_BASE = (
 REQUEST_TIMEOUT = 8
 
 LATEST_CACHE_TTL = 60
+
 HISTORY_CACHE_TTL = 21600
 
 MAX_HISTORY = 120
@@ -77,6 +78,7 @@ def http_get_json(url: str):
                 "Mozilla/5.0 "
                 "(iPhone; CPU iPhone OS 17_0 like Mac OS X) "
                 "AppleWebKit/605.1.15 "
+                "(KHTML, like Gecko) "
                 "Version/17.0 Mobile/15E148 Safari/604.1"
             ),
             "Accept": "application/json,text/plain,*/*"
@@ -128,9 +130,14 @@ def http_get_json(url: str):
 # NORMALIZAÇÃO
 # ============================================================
 
-def normalize_result(data, source, response_time):
+def normalize_result(
+    data,
+    source,
+    response_time
+):
 
     if not isinstance(data, dict):
+
         raise RuntimeError(
             "Resposta inválida da API"
         )
@@ -208,8 +215,9 @@ def buscar_concurso(concurso):
 
     erros = []
 
+
     # --------------------------------------------------------
-    # 1. FALLBACK
+    # FALLBACK
     # --------------------------------------------------------
 
     fallback_url = (
@@ -236,7 +244,7 @@ def buscar_concurso(concurso):
 
 
     # --------------------------------------------------------
-    # 2. CAIXA
+    # CAIXA
     # --------------------------------------------------------
 
     caixa_url = (
@@ -275,6 +283,11 @@ def buscar_latest():
 
     agora = time.time()
 
+
+    # --------------------------------------------------------
+    # CACHE
+    # --------------------------------------------------------
+
     with _cache_lock:
 
         cached = _cache["latest"]
@@ -283,7 +296,8 @@ def buscar_latest():
 
         if (
             cached is not None
-            and agora - cached_time < LATEST_CACHE_TTL
+            and agora - cached_time
+            < LATEST_CACHE_TTL
         ):
 
             return cached
@@ -293,7 +307,7 @@ def buscar_latest():
 
 
     # --------------------------------------------------------
-    # 1. FALLBACK
+    # FALLBACK
     # --------------------------------------------------------
 
     try:
@@ -324,7 +338,7 @@ def buscar_latest():
 
 
     # --------------------------------------------------------
-    # 2. CAIXA
+    # CAIXA
     # --------------------------------------------------------
 
     try:
@@ -355,7 +369,7 @@ def buscar_latest():
 
 
     # --------------------------------------------------------
-    # ÚLTIMO CACHE DISPONÍVEL
+    # CACHE ANTIGO
     # --------------------------------------------------------
 
     with _cache_lock:
@@ -383,25 +397,35 @@ def buscar_historico(limit=120):
 
     agora = time.time()
 
+
+    # --------------------------------------------------------
+    # CACHE
+    # --------------------------------------------------------
+
     with _cache_lock:
 
-        cached = _cache["history"].get(limit)
+        cached = _cache["history"].get(
+            limit
+        )
 
-        cached_time = _cache["history_time"].get(
+        cached_time = _cache[
+            "history_time"
+        ].get(
             limit,
             0
         )
 
         if (
             cached is not None
-            and agora - cached_time < HISTORY_CACHE_TTL
+            and agora - cached_time
+            < HISTORY_CACHE_TTL
         ):
 
             return cached
 
 
     # --------------------------------------------------------
-    # Descobrir concurso atual
+    # DESCOBRIR CONCURSO ATUAL
     # --------------------------------------------------------
 
     latest = buscar_latest()
@@ -427,7 +451,7 @@ def buscar_historico(limit=120):
 
 
     # --------------------------------------------------------
-    # Busca paralela
+    # BUSCA PARALELA
     # --------------------------------------------------------
 
     with ThreadPoolExecutor(
@@ -435,22 +459,26 @@ def buscar_historico(limit=120):
     ) as executor:
 
         futures = {
+
             executor.submit(
                 buscar_concurso,
                 concurso
             ): concurso
 
             for concurso in concursos
+
         }
 
 
-        for future in as_completed(futures):
-
-            concurso = futures[future]
+        for future in as_completed(
+            futures
+        ):
 
             try:
 
-                resultado = future.result()
+                resultado = (
+                    future.result()
+                )
 
                 resultados.append(
                     resultado
@@ -458,11 +486,12 @@ def buscar_historico(limit=120):
 
             except Exception:
 
-                # Um concurso individual com erro
-                # não derruba todo o histórico.
-
                 continue
 
+
+    # --------------------------------------------------------
+    # ORDENAR
+    # --------------------------------------------------------
 
     resultados.sort(
         key=lambda x: x["concurso"],
@@ -474,17 +503,31 @@ def buscar_historico(limit=120):
 
 
     retorno = {
+
         "concursoAtual": atual,
-        "total": len(resultados),
+
+        "total": len(
+            resultados
+        ),
+
         "resultados": resultados
+
     }
 
 
+    # --------------------------------------------------------
+    # SALVAR CACHE
+    # --------------------------------------------------------
+
     with _cache_lock:
 
-        _cache["history"][limit] = retorno
+        _cache["history"][limit] = (
+            retorno
+        )
 
-        _cache["history_time"][limit] = time.time()
+        _cache["history_time"][limit] = (
+            time.time()
+        )
 
 
     return retorno
@@ -498,11 +541,21 @@ def buscar_historico(limit=120):
 def health():
 
     return {
+
         "status": "online",
-        "app": "Lotofácil Monitor",
-        "version": APP_VERSION,
-        "backend": "FastAPI",
-        "message": "Backend funcionando"
+
+        "app":
+            "Lotofácil Monitor",
+
+        "version":
+            APP_VERSION,
+
+        "backend":
+            "FastAPI",
+
+        "message":
+            "Backend funcionando"
+
     }
 
 
@@ -518,24 +571,47 @@ def api_status():
         latest = buscar_latest()
 
         return {
-            "status": "online",
-            "version": APP_VERSION,
-            "ultimoConcurso": latest["concurso"],
-            "source": latest.get("_source"),
-            "response_time": latest.get(
-                "_response_time"
-            )
+
+            "status":
+                "online",
+
+            "version":
+                APP_VERSION,
+
+            "ultimoConcurso":
+                latest["concurso"],
+
+            "source":
+                latest.get(
+                    "_source"
+                ),
+
+            "response_time":
+                latest.get(
+                    "_response_time"
+                )
+
         }
 
     except Exception as e:
 
         return JSONResponse(
+
             status_code=503,
+
             content={
-                "status": "offline",
-                "version": APP_VERSION,
-                "error": str(e)
+
+                "status":
+                    "offline",
+
+                "version":
+                    APP_VERSION,
+
+                "error":
+                    str(e)
+
             }
+
         )
 
 
@@ -543,7 +619,9 @@ def api_status():
 # ÚLTIMO RESULTADO
 # ============================================================
 
-@app.get("/api/lotofacil/latest")
+@app.get(
+    "/api/lotofacil/latest"
+)
 def lotofacil_latest():
 
     try:
@@ -553,8 +631,11 @@ def lotofacil_latest():
     except Exception as e:
 
         raise HTTPException(
+
             status_code=503,
+
             detail=str(e)
+
         )
 
 
@@ -562,22 +643,30 @@ def lotofacil_latest():
 # HISTÓRICO
 #
 # IMPORTANTE:
-# ESTA ROTA PRECISA VIR ANTES DE /{concurso}
-# PARA "history" NÃO SER INTERPRETADO COMO NÚMERO.
+# ESTA ROTA VEM ANTES DE /{concurso}
 # ============================================================
 
-@app.get("/api/lotofacil/history")
-def lotofacil_history(limit: int = 120):
+@app.get(
+    "/api/lotofacil/history"
+)
+def lotofacil_history(
+    limit: int = 120
+):
 
     try:
 
-        return buscar_historico(limit)
+        return buscar_historico(
+            limit
+        )
 
     except Exception as e:
 
         raise HTTPException(
+
             status_code=503,
+
             detail=str(e)
+
         )
 
 
@@ -585,15 +674,24 @@ def lotofacil_history(limit: int = 120):
 # CONCURSO ESPECÍFICO
 # ============================================================
 
-@app.get("/api/lotofacil/{concurso}")
-def lotofacil_concurso(concurso: int):
+@app.get(
+    "/api/lotofacil/{concurso}"
+)
+def lotofacil_concurso(
+    concurso: int
+):
 
     if concurso <= 0:
 
         raise HTTPException(
+
             status_code=400,
-            detail="Número de concurso inválido"
+
+            detail=
+                "Número de concurso inválido"
+
         )
+
 
     try:
 
@@ -604,86 +702,47 @@ def lotofacil_concurso(concurso: int):
     except Exception as e:
 
         raise HTTPException(
+
             status_code=404,
+
             detail=str(e)
+
         )
 
 
 # ============================================================
-# RAIZ
+# PÁGINA PRINCIPAL
+#
+# ABRE O FRONTEND V25.7
 # ============================================================
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 def root():
 
-    return f"""
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width,initial-scale=1">
-        <title>Lotofácil Monitor</title>
+    frontend = os.path.join(
+        "static",
+        "index.html"
+    )
 
-        <style>
 
-            body {{
-                background:#07101f;
-                color:#fff;
-                font-family:Arial,sans-serif;
-                text-align:center;
-                padding:40px 20px;
-            }}
+    if not os.path.exists(
+        frontend
+    ):
 
-            .box {{
-                max-width:600px;
-                margin:auto;
-                background:#0e1929;
-                border:1px solid #263b56;
-                border-radius:16px;
-                padding:25px;
-            }}
+        raise HTTPException(
 
-            h1 {{
-                margin-bottom:10px;
-            }}
+            status_code=404,
 
-            p {{
-                color:#9baabe;
-            }}
+            detail=
+                "static/index.html não encontrado"
 
-            .ok {{
-                color:#66e6a0;
-                font-weight:bold;
-            }}
+        )
 
-        </style>
 
-    </head>
-
-    <body>
-
-        <div class="box">
-
-            <h1>🍀 Lotofácil Monitor</h1>
-
-            <p>
-                Backend FastAPI
-            </p>
-
-            <p class="ok">
-                ● Online
-            </p>
-
-            <p>
-                Versão {APP_VERSION}
-            </p>
-
-        </div>
-
-    </body>
-    </html>
-    """
+    return FileResponse(
+        frontend,
+        media_type="text/html"
+    )
 
 
 # ============================================================
